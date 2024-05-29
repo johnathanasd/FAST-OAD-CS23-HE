@@ -870,6 +870,42 @@ GEARBOX = {
     VARIESN_T_MASS: False,
     ETA: 0.98,
 }
+HYDROGEN_GAS_TANK = {
+    ID: "fastga_he.pt_component.hydrogen_gas_tank",
+    CN: "HydrogenGasTank",
+    CN_ID: "hydrogen_gas_tank_id",
+    CT: "hydrogen_gas_tank",
+    ATT: None,
+    PT: [],
+    SPT: [],
+    PTS: [],
+    IN: None,
+    OUT: [("fuel_consumed_t", None)],
+    CTC: "tank",
+    MP: [
+        {"hydrogen_remaining_t": "kg"},
+    ],
+    SMP: [
+        {"delta_Cd": None},
+    ],
+    ICON: "fuel_tank",
+    ICON_SIZE: 30,
+    RSD: ["hydrogen_remaining_t"],
+    SETS_V: False,
+    IO_INDEP_V: False,
+    V_TO_SET: [],
+    P_TO_SET: [],
+    I_TO_SET: [],
+    SFR: False,
+    SWL: False,
+    DST_W: [],
+    PCT_W: [],
+    DST_W_F: [],
+    PCT_W_F: [],
+    VARIES_MASS: False,  # Seems weird but the ICE already does the job so we won't double up
+    VARIESN_T_MASS: True,
+    ETA: 1.0,
+}
 
 KNOWN_COMPONENTS = [
     PROPELLER,
@@ -891,6 +927,7 @@ KNOWN_COMPONENTS = [
     PLANETARY_GEAR,
     TURBO_GENERATOR,
     GEARBOX,
+    HYDROGEN_GAS_TANK,
 ]
 
 KNOWN_ID = []
