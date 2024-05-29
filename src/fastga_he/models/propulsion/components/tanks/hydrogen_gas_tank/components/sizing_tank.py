@@ -4,8 +4,8 @@
 
 import openmdao.api as om
 
-from .sizing_tank_unusable_fuel import SizingFuelTankUnusableFuel
-from .sizing_tank_total_fuel_mission import SizingHydrogenGasTankTotalHydrogenMission
+from .sizing_tank_unusable_hydrogen import SizingFuelTankUnusableFuel
+from .sizing_tank_total_hydrogen_mission import SizingHydrogenGasTankTotalHydrogenMission
 from .sizing_tank_volume import SizingFuelTankVolume
 from .sizing_tank_cg_x import SizingHydrogenGasTankCGX
 from .sizing_tank_cg_y import SizingFuelTankCGY
