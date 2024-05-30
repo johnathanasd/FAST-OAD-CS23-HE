@@ -870,6 +870,7 @@ GEARBOX = {
     VARIESN_T_MASS: False,
     ETA: 0.98,
 }
+# TODO: Modify based on the change done for hydrogen gas tank modeling
 HYDROGEN_GAS_TANK = {
     ID: "fastga_he.pt_component.hydrogen_gas_tank",
     CN: "HydrogenGasTank",
@@ -905,6 +906,46 @@ HYDROGEN_GAS_TANK = {
     VARIES_MASS: False,  # Seems weird but the ICE already does the job so we won't double up
     VARIESN_T_MASS: True,
     ETA: 1.0,
+}
+# TODO: Modify based on the change done for PEMFC modeling
+PEMFC_STACK = {
+    ID: "fastga_he.pt_component.PEMFC_stack",
+    CN: "PEMFCStack",
+    CN_ID: "PEMFC_stack_id",
+    CT: "PEMFC_stack",
+    ATT: None,
+    PT: ["time_step"],
+    SPT: [],
+    PTS: [],
+    IN: None,
+    OUT: [(None, "voltage_out"), ("dc_current_out", None)],
+    CTC: "source",
+    MP: [
+        {"open_circuit_voltage": "V"},
+        {"voltage_out": "V"},
+        {"efficiency": None},
+        {"power_out": "kW"},
+    ],
+    SMP: [
+        {"delta_Cd": None},
+    ],
+    ICON: "battery",
+    ICON_SIZE: 40,
+    RSD: ["voltage_out"],
+    SETS_V: False,
+    IO_INDEP_V: False,
+    V_TO_SET: [],
+    P_TO_SET: [("power_out", "out")],
+    I_TO_SET: [],
+    SFR: False,
+    SWL: False,
+    DST_W: ["inside_the_wing"],
+    PCT_W: [],
+    DST_W_F: [],
+    PCT_W_F: [],
+    VARIES_MASS: False,
+    VARIESN_T_MASS: True,
+    ETA: 0.5,
 }
 
 KNOWN_COMPONENTS = [

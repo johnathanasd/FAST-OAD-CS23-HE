@@ -6,7 +6,7 @@ import openmdao.api as om
 import numpy as np
 
 
-class SlipstreamBatteryPack(om.Group):
+class SlipstreamPEMFCStack(om.Group):
     """
     Component that computes the variation of aerodynamic coefficient during the mission. This
     component is required as all components are required to provide one component that computes
@@ -16,9 +16,9 @@ class SlipstreamBatteryPack(om.Group):
     def initialize(self):
 
         self.options.declare(
-            name="battery_pack_id",
+            name="PEMFC_stack_id",
             default=None,
-            desc="Identifier of the battery pack",
+            desc="Identifier of the PEMFC stack",
             allow_none=False,
         )
         self.options.declare(
