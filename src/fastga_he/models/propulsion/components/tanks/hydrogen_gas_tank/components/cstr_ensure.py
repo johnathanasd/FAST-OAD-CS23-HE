@@ -34,20 +34,26 @@ class ConstraintsHydrogenGasTankCapacityEnsure(om.ExplicitComponent):
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
 
         self.add_input(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":hydrogen_total_mission",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":hydrogen_total_mission",
             units="kg",
             val=np.nan,
             desc="Total amount of hydrogen gas loaded in the tank for the mission",
         )
         self.add_input(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":capacity",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":capacity",
             units="kg",
             val=np.nan,
             desc="Capacity of the tank in terms of weight",
         )
 
         self.add_output(
-            "constraints:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":capacity",
+            "constraints:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":capacity",
             units="kg",
             val=-0.0,
             desc="Constraints on the tank capacity in kg, respected if <0",
@@ -59,11 +65,21 @@ class ConstraintsHydrogenGasTankCapacityEnsure(om.ExplicitComponent):
 
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
 
-        outputs["constraints:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":capacity"] = (
+        outputs[
+            "constraints:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":capacity"
+        ] = (
             inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":hydrogen_total_mission"
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":hydrogen_total_mission"
             ]
-            - inputs["data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":capacity"]
+            - inputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":capacity"
+            ]
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
@@ -71,10 +87,18 @@ class ConstraintsHydrogenGasTankCapacityEnsure(om.ExplicitComponent):
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
 
         partials[
-            "constraints:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":capacity",
-            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":hydrogen_total_mission",
+            "constraints:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":capacity",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":hydrogen_total_mission",
         ] = 1.0
         partials[
-            "constraints:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":capacity",
-            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":capacity",
+            "constraints:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":capacity",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":capacity",
         ] = -1.0

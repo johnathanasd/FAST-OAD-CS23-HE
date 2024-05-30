@@ -62,6 +62,10 @@ class ConstraintsFuelTankCapacityEnforce(om.ExplicitComponent):
 
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
 
-        outputs["data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":capacity"] = inputs[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":hydrogen_total_mission"
+        outputs[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":capacity"
+        ] = inputs[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":hydrogen_total_mission"
         ]
