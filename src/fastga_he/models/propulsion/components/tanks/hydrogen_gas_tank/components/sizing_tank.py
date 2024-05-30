@@ -4,11 +4,10 @@
 
 import openmdao.api as om
 
-from .sizing_tank_unusable_hydrogen import SizingFuelTankUnusableFuel
+from .sizing_tank_unusable_hydrogen import SizingHydrogenGasTankUnusableHydrogen
 from .sizing_tank_total_hydrogen_mission import SizingHydrogenGasTankTotalHydrogenMission
 from .sizing_tank_volume import SizingFuelTankVolume
 from .sizing_tank_cg_x import SizingHydrogenGasTankCGX
-from .sizing_tank_cg_y import SizingFuelTankCGY
 from .sizing_tank_length import SizingFuelTankLength
 from .sizing_tank_height import SizingFuelTankHeight
 from .sizing_tank_width import SizingFuelTankWidth
@@ -66,12 +65,9 @@ class SizingHydrogenGasTank(om.Group):
 
         self.add_subsystem(
             name="tank_cg_x",
-            subsys=SizingFuelTankCGX(hydrogen_gas_tank_id=hydrogen_gas_tank_id, position=position),
-            promotes=["*"],
-        )
-        self.add_subsystem(
-            name="tank_cg_y",
-            subsys=SizingFuelTankCGY(hydrogen_gas_tank_id=hydrogen_gas_tank_id, position=position),
+            subsys=SizingHydrogenGasTankCGX(
+                hydrogen_gas_tank_id=hydrogen_gas_tank_id, position=position
+            ),
             promotes=["*"],
         )
 

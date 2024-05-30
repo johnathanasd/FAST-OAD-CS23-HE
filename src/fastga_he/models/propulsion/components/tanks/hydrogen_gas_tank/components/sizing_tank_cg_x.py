@@ -65,14 +65,18 @@ class SizingHydrogenGasTankCGX(om.ExplicitComponent):
 
         if position == "inside_the_wing" or position == "wing_pod":
 
-            outputs["data:propulsion:he_power_train:fuel_tank:" + hydrogen_gas_tank_id + ":CG:x"] = (
+            outputs[
+                "data:propulsion:he_power_train:fuel_tank:" + hydrogen_gas_tank_id + ":CG:x"
+            ] = (
                 inputs["data:geometry:wing:MAC:at25percent:x"]
                 + 0.25 * inputs["data:geometry:wing:MAC:length"]
             )
 
         else:
 
-            outputs["data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:x"] = (
+            outputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:x"
+            ] = (
                 inputs["data:geometry:fuselage:front_length"]
                 + 0.5 * inputs["data:geometry:cabin:length"]
             )
