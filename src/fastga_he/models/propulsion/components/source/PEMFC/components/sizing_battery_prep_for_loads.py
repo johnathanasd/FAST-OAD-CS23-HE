@@ -21,7 +21,7 @@ class SizingBatteryPreparationForLoads(om.ExplicitComponent):
 
     def initialize(self):
         self.options.declare(
-            name="PEMFC_stack_id",
+            name="pemfc_stack_id",
             default=None,
             desc="Identifier of the battery pack",
             allow_none=False,
@@ -37,7 +37,7 @@ class SizingBatteryPreparationForLoads(om.ExplicitComponent):
 
     def setup(self):
 
-        PEMFC_stack_id = self.options["PEMFC_stack_id"]
+        pemfc_stack_id = self.options["pemfc_stack_id"]
         position = self.options["position"]
 
         if position == "inside_the_wing":
@@ -47,44 +47,42 @@ class SizingBatteryPreparationForLoads(om.ExplicitComponent):
             self.add_input("data:geometry:wing:span", val=np.nan, units="m")
 
             self.add_input(
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
-                + ":dimension:width",
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width",
                 units="m",
                 val=np.nan,
                 desc="Width of the battery, as in the size of the battery along the Y-axis",
             )
             self.add_input(
-                "data:propulsion:he_power_train:PEMFC_stack:" + PEMFC_stack_id + ":CG:y_ratio",
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":CG:y_ratio",
                 val=np.nan,
                 desc="X position of the battery center of gravity as a ratio of the wing half-span",
             )
 
             self.add_output(
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
                 + ":distributed_mass:y_ratio_start",
                 val=0.15,
                 desc="When battery is considered as a distributed mass, the position of the start as a ratio of the half-span",
             )
             self.add_output(
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
                 + ":distributed_mass:y_ratio_end",
                 val=0.9,
                 desc="When battery is considered as a distributed mass, the position of the end as a ratio of the half-span",
             )
             self.add_output(
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
                 + ":distributed_mass:start_chord",
                 units="m",
                 val=1.0,
                 desc="When battery is considered as a distributed mass, the chord at the start",
             )
             self.add_output(
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
                 + ":distributed_mass:chord_slope",
                 val=0.0,
                 desc="When battery is considered as a distributed mass, the rate at which the chord varies",
@@ -92,27 +90,25 @@ class SizingBatteryPreparationForLoads(om.ExplicitComponent):
 
             self.declare_partials(
                 of=[
-                    "data:propulsion:he_power_train:PEMFC_stack:"
-                    + PEMFC_stack_id
+                    "data:propulsion:he_power_train:pemfc_stack:"
+                    + pemfc_stack_id
                     + ":distributed_mass:y_ratio_start",
-                    "data:propulsion:he_power_train:PEMFC_stack:"
-                    + PEMFC_stack_id
+                    "data:propulsion:he_power_train:pemfc_stack:"
+                    + pemfc_stack_id
                     + ":distributed_mass:y_ratio_end",
                 ],
                 wrt=[
-                    "data:propulsion:he_power_train:PEMFC_stack:"
-                    + PEMFC_stack_id
-                    + ":CG:y_ratio",
-                    "data:propulsion:he_power_train:PEMFC_stack:"
-                    + PEMFC_stack_id
+                    "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":CG:y_ratio",
+                    "data:propulsion:he_power_train:pemfc_stack:"
+                    + pemfc_stack_id
                     + ":dimension:width",
                     "data:geometry:wing:span",
                 ],
                 method="exact",
             )
             self.declare_partials(
-                of="data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
+                of="data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
                 + ":distributed_mass:start_chord",
                 wrt=["data:geometry:wing:tip:chord", "data:geometry:wing:root:chord"],
                 val=0.5,
@@ -120,7 +116,7 @@ class SizingBatteryPreparationForLoads(om.ExplicitComponent):
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
-        PEMFC_stack_id = self.options["PEMFC_stack_id"]
+        pemfc_stack_id = self.options["pemfc_stack_id"]
         position = self.options["position"]
 
         if position == "inside_the_wing":
@@ -130,12 +126,10 @@ class SizingBatteryPreparationForLoads(om.ExplicitComponent):
             half_span = inputs["data:geometry:wing:span"] / 2.0
 
             cg_y_ratio = inputs[
-                "data:propulsion:he_power_train:PEMFC_stack:" + PEMFC_stack_id + ":CG:y_ratio"
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":CG:y_ratio"
             ]
             battery_width = inputs[
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
-                + ":dimension:width"
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width"
             ]
 
             y_ratio_start = cg_y_ratio - 0.5 * battery_width / half_span
@@ -144,87 +138,81 @@ class SizingBatteryPreparationForLoads(om.ExplicitComponent):
             chord_start = (root_chord + tip_chord) / 2.0
 
             outputs[
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
                 + ":distributed_mass:y_ratio_start"
             ] = y_ratio_start
             outputs[
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
                 + ":distributed_mass:y_ratio_end"
             ] = y_ratio_end
             outputs[
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
                 + ":distributed_mass:start_chord"
             ] = chord_start
 
             outputs[
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
                 + ":distributed_mass:chord_slope"
             ] = 0.0
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
-        PEMFC_stack_id = self.options["PEMFC_stack_id"]
+        pemfc_stack_id = self.options["pemfc_stack_id"]
         position = self.options["position"]
 
         if position == "inside_the_wing":
             half_span = inputs["data:geometry:wing:span"] / 2.0
 
             battery_width = inputs[
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
-                + ":dimension:width"
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width"
             ]
 
             partials[
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
                 + ":distributed_mass:y_ratio_start",
                 "data:geometry:wing:span",
             ] = (
                 0.25 * battery_width / half_span ** 2.0
             )
             partials[
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
                 + ":distributed_mass:y_ratio_start",
-                "data:propulsion:he_power_train:PEMFC_stack:" + PEMFC_stack_id + ":CG:y_ratio",
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":CG:y_ratio",
             ] = 1.0
             partials[
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
                 + ":distributed_mass:y_ratio_start",
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
-                + ":dimension:width",
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width",
             ] = (
                 -0.5 / half_span
             )
 
             partials[
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
                 + ":distributed_mass:y_ratio_end",
                 "data:geometry:wing:span",
             ] = (
                 -0.25 * battery_width / half_span ** 2.0
             )
             partials[
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
                 + ":distributed_mass:y_ratio_end",
-                "data:propulsion:he_power_train:PEMFC_stack:" + PEMFC_stack_id + ":CG:y_ratio",
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":CG:y_ratio",
             ] = 1.0
             partials[
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
                 + ":distributed_mass:y_ratio_end",
-                "data:propulsion:he_power_train:PEMFC_stack:"
-                + PEMFC_stack_id
-                + ":dimension:width",
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width",
             ] = (
                 0.5 / half_span
             )

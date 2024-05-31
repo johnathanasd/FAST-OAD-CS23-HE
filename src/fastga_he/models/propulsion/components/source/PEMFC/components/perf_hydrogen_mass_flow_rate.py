@@ -14,9 +14,9 @@ class PerformancesHydrogenMassFlowRate(om.ExplicitComponent):
     def initialize(self):
 
         self.options.declare(
-            name="pemfc_id",
+            name="pemfc_stack_id",
             default=None,
-            desc="Identifier of the Proton ",
+            desc="Identifier of the PEMFC stack",
             allow_none=False,
         )
         self.options.declare(
@@ -25,7 +25,7 @@ class PerformancesHydrogenMassFlowRate(om.ExplicitComponent):
 
     def setup(self):
 
-        ice_id = self.options["ice_id"]
+        pemfc_id = self.options["pemfc_id"]
         number_of_points = self.options["number_of_points"]
 
         self.add_input("mean_effective_pressure", units="bar", val=np.nan, shape=number_of_points)

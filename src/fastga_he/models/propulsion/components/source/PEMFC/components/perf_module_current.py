@@ -18,7 +18,7 @@ class PerformancesModuleCurrent(om.ExplicitComponent):
             "number_of_points", default=1, desc="number of equilibrium to be treated"
         )
         self.options.declare(
-            name="battery_pack_id",
+            name="pemfc_stack_id",
             default=None,
             desc="Identifier of the battery pack",
             allow_none=False,

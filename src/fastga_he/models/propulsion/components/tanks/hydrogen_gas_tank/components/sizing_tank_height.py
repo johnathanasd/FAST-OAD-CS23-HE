@@ -62,7 +62,9 @@ class SizingHydrogenGasTankHeight(om.ExplicitComponent):
             desc="Ratio between the fuselage height and the tank height",
         )
 
-        self.declare_partials(of="*", wrt="data:geometry:fuselage:maximum_height", val=FUSELAGE_HEIGHT_RATIO)
+        self.declare_partials(
+            of="*", wrt="data:geometry:fuselage:maximum_height", val=FUSELAGE_HEIGHT_RATIO
+        )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 

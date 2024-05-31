@@ -16,7 +16,7 @@ class SlipstreamPEMFCStack(om.Group):
     def initialize(self):
 
         self.options.declare(
-            name="PEMFC_stack_id",
+            name="pemfc_stack_id",
             default=None,
             desc="Identifier of the PEMFC stack",
             allow_none=False,

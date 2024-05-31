@@ -29,13 +29,13 @@ class PerformancesModuleVoltage(om.ExplicitComponent):
         number_of_points = self.options["number_of_points"]
         battery_pack_id = self.options["battery_pack_id"]
 
-        self.add_input("terminal_voltage", units="V", val=np.full(number_of_points, np.nan))
+        self.add_input("ac_voltage_peak_in", units="V", val=np.nan)
         self.add_input(
             "data:propulsion:he_power_train:battery_pack:"
             + battery_pack_id
             + ":module:number_cells",
             val=np.nan,
-            desc="Number of cells in series inside one battery module",
+            desc="Number of cells in series inside one pemfc stack",
         )
 
         self.add_output("module_voltage", units="V", val=np.full(number_of_points, 500.0))

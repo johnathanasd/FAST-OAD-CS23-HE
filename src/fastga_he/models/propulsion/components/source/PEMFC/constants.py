@@ -4,4 +4,4 @@
 
 SUBMODEL_CONSTRAINTS_BATTERY_SOC = "submodel.propulsion.constraints.battery.state_of_charge"
 
-POSSIBLE_POSITION = ["inside_the_wing","in_the_front", "in_the_back", "underbelly"]
+POSSIBLE_POSITION = ["wing_pod", "in_the_front", "in_the_back", "underbelly"]
