@@ -16,7 +16,7 @@ from .sizing_battery_drag import SizingBatteryDrag
 from .sizing_battery_prep_for_loads import SizingBatteryPreparationForLoads
 
 
-from .cstr_battery_pack import ConstraintsBattery
+from .cstr_pemfc_stack import ConstraintsBattery
 
 from ..constants import POSSIBLE_POSITION
 
@@ -27,7 +27,7 @@ class SizingBatteryPack(om.Group):
     def initialize(self):
 
         self.options.declare(
-            name="battery_pack_id",
+            name="pemfc_stack_id",
             default=None,
             desc="Identifier of the battery pack",
             allow_none=False,
@@ -43,7 +43,7 @@ class SizingBatteryPack(om.Group):
 
     def setup(self):
 
-        battery_pack_id = self.options["battery_pack_id"]
+        pemfc_stack_id = self.options["pemfc_stack_id"]
         position = self.options["position"]
 
         # It was decided to add the constraints computation at the beginning of the sizing to
@@ -51,48 +51,48 @@ class SizingBatteryPack(om.Group):
         # configuration file.
         self.add_subsystem(
             name="constraints_battery",
-            subsys=ConstraintsBattery(battery_pack_id=battery_pack_id),
+            subsys=ConstraintsBattery(pemfc_stack_id=pemfc_stack_id),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="number_of_cells",
-            subsys=SizingBatteryNumberCells(battery_pack_id=battery_pack_id),
+            subsys=SizingBatteryNumberCells(pemfc_stack_id=pemfc_stack_id),
             promotes=["*"],
         )
         self.add_subsystem(
             name="module_weight",
-            subsys=SizingBatteryModuleWeight(battery_pack_id=battery_pack_id),
+            subsys=SizingBatteryModuleWeight(pemfc_stack_id=pemfc_stack_id),
             promotes=["*"],
         )
         self.add_subsystem(
             name="module_volume",
-            subsys=SizingBatteryModuleVolume(battery_pack_id=battery_pack_id),
+            subsys=SizingBatteryModuleVolume(pemfc_stack_id=pemfc_stack_id),
             promotes=["*"],
         )
         self.add_subsystem(
             name="battery_weight",
-            subsys=SizingBatteryWeight(battery_pack_id=battery_pack_id),
+            subsys=SizingBatteryWeight(pemfc_stack_id=pemfc_stack_id),
             promotes=["*"],
         )
         self.add_subsystem(
             name="battery_volume",
-            subsys=SizingBatteryVolume(battery_pack_id=battery_pack_id),
+            subsys=SizingBatteryVolume(pemfc_stack_id=pemfc_stack_id),
             promotes=["*"],
         )
         self.add_subsystem(
             name="battery_dimensions",
-            subsys=SizingBatteryDimensions(battery_pack_id=battery_pack_id, position=position),
+            subsys=SizingBatteryDimensions(pemfc_stack_id=pemfc_stack_id, position=position),
             promotes=["*"],
         )
         self.add_subsystem(
             name="battery_CG_x",
-            subsys=SizingBatteryCGX(battery_pack_id=battery_pack_id, position=position),
+            subsys=SizingBatteryCGX(pemfc_stack_id=pemfc_stack_id, position=position),
             promotes=["*"],
         )
         self.add_subsystem(
             name="battery_CG_y",
-            subsys=SizingBatteryCGY(battery_pack_id=battery_pack_id, position=position),
+            subsys=SizingBatteryCGY(pemfc_stack_id=pemfc_stack_id, position=position),
             promotes=["*"],
         )
         for low_speed_aero in [True, False]:
@@ -100,7 +100,7 @@ class SizingBatteryPack(om.Group):
             self.add_subsystem(
                 name=system_name,
                 subsys=SizingBatteryDrag(
-                    battery_pack_id=battery_pack_id,
+                    pemfc_stack_id=pemfc_stack_id,
                     position=position,
                     low_speed_aero=low_speed_aero,
                 ),
@@ -112,7 +112,7 @@ class SizingBatteryPack(om.Group):
             self.add_subsystem(
                 name="preparation_for_loads",
                 subsys=SizingBatteryPreparationForLoads(
-                    battery_pack_id=battery_pack_id,
+                    pemfc_stack_id=pemfc_stack_id,
                     position=position,
                 ),
                 promotes=["*"],
