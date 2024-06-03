@@ -6,7 +6,7 @@ import openmdao.api as om
 import numpy as np
 
 
-class PerformancesBatteryPower(om.ExplicitComponent):
+class PerformancesPEMFCPower(om.ExplicitComponent):
     """
     Computation of the power at the output of the battery. As of when I wrote this, it will only
     be used as a post-processing value

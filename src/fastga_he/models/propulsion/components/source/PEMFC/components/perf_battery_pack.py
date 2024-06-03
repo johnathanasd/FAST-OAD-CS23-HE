@@ -13,15 +13,6 @@ from ..components.perf_internal_resistance import PerformancesInternalResistance
 from ..components.perf_cell_voltage import PerformancesCellVoltage
 from ..components.perf_module_voltage import PerformancesModuleVoltage
 from ..components.perf_battery_voltage import PerformancesBatteryVoltage
-from ..components.perf_battery_c_rate import PerformancesModuleCRate
-from ..components.perf_battery_relative_capacity import PerformancesRelativeCapacity
-from ..components.perf_soc_decrease import PerformancesSOCDecrease
-from ..components.perf_update_soc import PerformancesUpdateSOC
-from ..components.perf_joule_losses import PerformancesCellJouleLosses
-from ..components.perf_entropic_heat_coefficient import PerformancesEntropicHeatCoefficient
-from ..components.perf_entropic_losses import PerformancesCellEntropicLosses
-from ..components.perf_cell_losses import PerformancesCellLosses
-from ..components.perf_battery_losses import PerformancesBatteryLosses
 from ..components.perf_battery_power import PerformancesBatteryPower
 from ..components.perf_maximum import PerformancesMaximum
 from ..components.perf_battery_efficiency import PerformancesBatteryEfficiency
