@@ -6,7 +6,7 @@ import openmdao.api as om
 import numpy as np
 
 
-class PerformancesHydrogenConsumed(om.ExplicitComponent):
+class PerformancesPEMFCFuelConsumed(om.ExplicitComponent):
     """
     Computation of the hydrogen at each flight point for the required power. Simply based on the
     results of the hydrogen consumption and time
@@ -22,10 +22,10 @@ class PerformancesHydrogenConsumed(om.ExplicitComponent):
 
         number_of_points = self.options["number_of_points"]
 
-        self.add_input("hydrogen_consumption", units="kg/h", val=np.nan, shape=number_of_points)
+        self.add_input("fuel_consumption", units="kg/h", val=np.nan, shape=number_of_points)
         self.add_input("time_step", units="h", val=np.full(number_of_points, np.nan))
 
-        self.add_output("hydrogen_consumed_t", np.full(number_of_points, 1.0), units="kg")
+        self.add_output("fuel_consumed_t", np.full(number_of_points, 1.0), units="kg")
 
         self.declare_partials(
             of="*",
@@ -37,9 +37,9 @@ class PerformancesHydrogenConsumed(om.ExplicitComponent):
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
-        outputs["hydrogen_consumed_t"] = inputs["time_step"] * inputs["hydrogen_consumption"]
+        outputs["fuel_consumed_t"] = inputs["time_step"] * inputs["fuel_consumption"]
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
-        partials["hydrogen_consumed_t", "time_step"] = inputs["hydrogen_consumption"]
-        partials["hydrogen_consumed_t", "fuel_consumption"] = inputs["time_step"]
+        partials["fuel_consumed_t", "time_step"] = inputs["fuel_consumption"]
+        partials["fuel_consumed_t", "fuel_consumption"] = inputs["time_step"]

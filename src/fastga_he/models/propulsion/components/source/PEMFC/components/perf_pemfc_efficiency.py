@@ -6,19 +6,24 @@ import openmdao.api as om
 import numpy as np
 
 
-class PerformancesBatteryEfficiency(om.ExplicitComponent):
+class PerformancesPEMFCEfficiency(om.ExplicitComponent):
     """
     Computation of efficiency of the battery based on the losses at battery level and the output
     voltage and current.
     """
 
     def initialize(self):
+
         self.options.declare(
-            "number_of_points", default=1, desc="number of equilibrium to be treated"
+            name="pemfc_stack_id",
+            default=None,
+            desc="Identifier of the pemfc stack",
+            allow_none=False,
         )
 
     def setup(self):
-        number_of_points = self.options["number_of_points"]
+
+        pemfc_stack_id = self.options["pemfc_stack_id"]
 
         self.add_input(
             name="data:propulsion:he_power_train:pemfc_stack:"

@@ -26,7 +26,6 @@ class SizingBatteryNumberCells(om.ExplicitComponent):
     def setup(self):
 
         pemfc_stack_id = self.options["pemfc_stack_id"]
-        number_of_points = self.options["number_of_points"]
         self.add_input(
             "fc_current_density",
             units="A/cm**2",
@@ -42,7 +41,12 @@ class SizingBatteryNumberCells(om.ExplicitComponent):
             "effective_area", units="cm**2", val=16.8, desc="Effective fuel cell area in the stack"
         )
 
-        self.add_input("power_out", units="W", val=np.full(number_of_points, np.nan))
+        self.add_input(
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max",
+            units="W",
+            val=np.nan,
+            desc="Maximum power needed by the pemfc during the mission",
+        )
 
         self.add_input(
             "data:propulsion:he_power_train:pemfc_stack:"
@@ -63,7 +67,9 @@ class SizingBatteryNumberCells(om.ExplicitComponent):
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
         pemfc_stack_id = self.options["pemfc_stack_id"]
-        power_required = np.max(inputs["power_out"])
+        power_required = inputs[
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"
+        ]
         power_fc = (
             inputs["single_layer_pemfc_voltage"]
             * inputs[
@@ -82,67 +88,58 @@ class SizingBatteryNumberCells(om.ExplicitComponent):
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
         pemfc_stack_id = self.options["pemfc_stack_id"]
-
+        power_required = inputs[
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"
+        ]
+        power_fc = (
+            inputs["single_layer_pemfc_voltage"]
+            * inputs[
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
+                + ":module:number_layers"
+            ]
+            * inputs["fc_current_density"]
+            * inputs["effective_area"]
+        )
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_stacks",
             "data:propulsion:he_power_train:pemfc_stack:"
             + pemfc_stack_id
             + ":module:number_layers",
         ] = (
-            inputs["single_layer_pemfc_voltage"]
-            * inputs["fc_current_density"]
-            * inputs["effective_area"]
+            -power_required
+            / power_fc
+            / inputs[
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
+                + ":module:number_layers"
+            ]
         )
 
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_cells",
             "fc_current_density",
         ] = (
-            inputs["single_layer_pemfc_voltage"]
-            * inputs[
-                "data:propulsion:he_power_train:pemfc_stack:"
-                + pemfc_stack_id
-                + ":module:number_layers"
-            ]
-            * inputs["effective_area"]
+            -power_required / power_fc / inputs["fc_current_density"]
         )
 
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_cells",
             "effective_area",
         ] = (
-            inputs["single_layer_pemfc_voltage"]
-            * inputs[
-                "data:propulsion:he_power_train:pemfc_stack:"
-                + pemfc_stack_id
-                + ":module:number_layers"
-            ]
-            * inputs["fc_current_density"]
+            -power_required / power_fc / inputs["effective_area"]
         )
 
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_cells",
             "single_layer_pemfc_voltage",
         ] = (
-            inputs[
-                "data:propulsion:he_power_train:pemfc_stack:"
-                + pemfc_stack_id
-                + ":module:number_layers"
-            ]
-            * inputs["fc_current_density"]
-            * inputs["effective_area"]
+            -power_required / power_fc / inputs["single_layer_pemfc_voltage"]
         )
 
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_cells",
-            "power_out",
-        ] = 1 / (
-            inputs["single_layer_pemfc_voltage"]
-            * inputs[
-                "data:propulsion:he_power_train:pemfc_stack:"
-                + pemfc_stack_id
-                + ":module:number_layers"
-            ]
-            * inputs["fc_current_density"]
-            * inputs["effective_area"]
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max",
+        ] = (
+            1 / power_fc
         )

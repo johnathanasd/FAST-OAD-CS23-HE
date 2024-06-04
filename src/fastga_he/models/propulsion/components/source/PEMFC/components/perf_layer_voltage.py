@@ -25,10 +25,6 @@ class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
             allow_none=False,
         )
 
-        self.options.declare(
-            "number_of_points", default=1, desc="number of equilibrium to be treated"
-        )
-
     def setup(self):
 
         pemfc_stack_id = self.options["pemfc_stack_id"]
@@ -58,6 +54,7 @@ class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
         self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
+        pemfc_stack_id = self.options["pemfc_stack_id"]
 
         V0 = 0.83
         B = 0.014
@@ -66,13 +63,16 @@ class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
         n = 11.42
         C = 0.06
         i = inputs["fc_current_density"]
-        Pop = inputs["operation_pressure"]
+        Pop = inputs[
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + "operation_pressure"
+        ]
         Pnom = inputs["nominal_pressure"]
         outputs["single_layer_pemfc_voltage"] = (
             V0 - B * np.log(i) - R * i - m * np.exp(n * i) + C * np.log(Pop / Pnom)
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
+        pemfc_stack_id = self.options["pemfc_stack_id"]
 
         number_of_points = self.options["number_of_points"]
         B = 0.014
@@ -84,7 +84,15 @@ class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
         partials["single_layer_pemfc_voltage", "fc_current_density"] = (
             B / i - R - m * n * np.exp(n * i)
         )
-        partials["single_layer_pemfc_voltage", "operation_pressure"] = (
-            C / inputs["operation_pressure"]
+        partials[
+            "single_layer_pemfc_voltage",
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + "operation_pressure",
+        ] = (
+            C
+            / inputs[
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
+                + "operation_pressure"
+            ]
         )
         partials["single_layer_pemfc_voltage", "nominal_pressure"] = -C / inputs["nominal_pressure"]

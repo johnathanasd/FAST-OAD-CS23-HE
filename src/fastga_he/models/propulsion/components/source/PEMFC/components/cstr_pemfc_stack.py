@@ -9,7 +9,7 @@ import fastoad.api as oad
 from ..constants import SUBMODEL_CONSTRAINTS_BATTERY_SOC
 
 
-class ConstraintsBattery(om.Group):
+class ConstraintsPEMFC(om.Group):
     """
     Class that gather the different constraints for the battery, be they ensure or enforce.
     """

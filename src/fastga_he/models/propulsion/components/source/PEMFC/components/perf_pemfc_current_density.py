@@ -68,7 +68,7 @@ class PerformancesCurrentDensity(om.ExplicitComponent):
     def compute_partials(self, inputs, partials, discrete_inputs=None):
         pemfc_stack_id = self.options["pemfc_stack_id"]
         number_of_points = self.options["number_of_points"]
-        current = np.max(inputs["dc_current_out"])
+
         partials["fc_current_density", "dc_current_out"] = (
             np.ones(number_of_points)
             / inputs[

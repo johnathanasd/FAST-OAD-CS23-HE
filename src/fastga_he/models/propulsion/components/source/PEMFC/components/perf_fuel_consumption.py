@@ -6,7 +6,7 @@ import openmdao.api as om
 import numpy as np
 
 
-class PerformancesHydrogenConsumption(om.ExplicitComponent):
+class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
     """
     Computation of the hydrogen consumption for the required power. Simply based on the
     results of the currrent density and effective area
@@ -20,7 +20,7 @@ class PerformancesHydrogenConsumption(om.ExplicitComponent):
         self.options.declare(
             name="pemfc_stack_id",
             default=None,
-            desc="Identifier of the battery pack",
+            desc="Identifier of the PEMFC stack",
             allow_none=False,
         )
 
@@ -47,7 +47,7 @@ class PerformancesHydrogenConsumption(om.ExplicitComponent):
             desc="Total number of layers in the pemfc stacks",
         )
 
-        self.add_output("hydrogen_consumption", units="kg/h", val=10.0, shape=number_of_points)
+        self.add_output("fuel_consumption", units="kg/h", val=10.0, shape=number_of_points)
 
         self.declare_partials(
             of="*",
@@ -61,7 +61,7 @@ class PerformancesHydrogenConsumption(om.ExplicitComponent):
 
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
-        outputs["hydrogen_consumption"] = (
+        outputs["fuel_consumption"] = (
             inputs[
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id
@@ -79,7 +79,7 @@ class PerformancesHydrogenConsumption(om.ExplicitComponent):
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
         partials[
-            "hydrogen_consumption",
+            "fuel_consumption",
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":total_number_layers",
         ] = (
             np.ones(number_of_points)
@@ -88,7 +88,7 @@ class PerformancesHydrogenConsumption(om.ExplicitComponent):
             * 3600
             / (2 * 96500 * 500)
         )
-        partials["hydrogen_consumption", "fc_current_density"] = (
+        partials["fuel_consumption", "fc_current_density"] = (
             inputs[
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id
@@ -98,7 +98,7 @@ class PerformancesHydrogenConsumption(om.ExplicitComponent):
             * 3600
             / (2 * 96500 * 500)
         )
-        partials["hydrogen_consumption", "effective_area"] = (
+        partials["fuel_consumption", "effective_area"] = (
             inputs[
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id
