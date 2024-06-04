@@ -8,4 +8,5 @@ SUBMODEL_CONSTRAINTS_HYDROGEN_GAS_TANK_CAPACITY = (
 
 POSSIBLE_POSITION = [
     "in_the_fuselage",
+    "wing_pod",
 ]
