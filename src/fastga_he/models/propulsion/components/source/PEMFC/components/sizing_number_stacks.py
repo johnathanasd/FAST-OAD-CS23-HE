@@ -8,7 +8,7 @@ import numpy as np
 MAXIMUM_VOLTAGE_PER_LAYER = 1.2
 
 
-class SizingBatteryNumberCells(om.ExplicitComponent):
+class SizingBatteryNumberLayers(om.ExplicitComponent):
     """
     Computation of the total number of cells inside the battery based on the number of cells in
     each module and number of modules.

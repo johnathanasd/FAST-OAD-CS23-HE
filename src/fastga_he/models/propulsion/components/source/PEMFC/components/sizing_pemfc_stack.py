@@ -4,19 +4,18 @@
 
 import openmdao.api as om
 
-from .sizing_module_weight import SizingBatteryModuleWeight
-from .sizing_battery_weight import SizingBatteryWeight
-from .sizing_number_cells import SizingBatteryNumberCells
-from .sizing_module_volume import SizingBatteryModuleVolume
-from .sizing_battery_volume import SizingBatteryVolume
-from .sizing_battery_dimensions import SizingBatteryDimensions
-from .sizing_battery_cg_x import SizingBatteryCGX
-from .sizing_battery_cg_y import SizingBatteryCGY
-from .sizing_battery_drag import SizingBatteryDrag
-from .sizing_battery_prep_for_loads import SizingBatteryPreparationForLoads
+
+from .sizing_pemfc_weight import SizingPEMFCWeight
+from .sizing_number_stacks import SizingBatteryNumberLayers
+from .sizing_pemfc_volume import SizingPEMFCVolume
+from .sizing_pemfc_dimensions import SizingBatteryDimensions
+from .sizing_pemfc_cg_x import SizingBatteryCGX
+from .sizing_pemfc_cg_y import SizingBatteryCGY
+from .sizing_pemfc_drag import SizingBatteryDrag
+from .sizing_pemfc_prep_for_loads import SizingBatteryPreparationForLoads
 
 
-from .cstr_battery_pack import ConstraintsBattery
+from .cstr_pemfc_stack import ConstraintsBattery
 
 from ..constants import POSSIBLE_POSITION
 
@@ -56,28 +55,19 @@ class SizingBatteryPack(om.Group):
         )
 
         self.add_subsystem(
-            name="number_of_cells",
-            subsys=SizingBatteryNumberCells(battery_pack_id=battery_pack_id),
+            name="number_of_layers",
+            subsys=SizingBatteryNumberLayers(battery_pack_id=battery_pack_id),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            name="pemfc_weight",
+            subsys=SizingPEMFCWeight(battery_pack_id=battery_pack_id),
             promotes=["*"],
         )
         self.add_subsystem(
-            name="module_weight",
-            subsys=SizingBatteryModuleWeight(battery_pack_id=battery_pack_id),
-            promotes=["*"],
-        )
-        self.add_subsystem(
-            name="module_volume",
-            subsys=SizingBatteryModuleVolume(battery_pack_id=battery_pack_id),
-            promotes=["*"],
-        )
-        self.add_subsystem(
-            name="battery_weight",
-            subsys=SizingBatteryWeight(battery_pack_id=battery_pack_id),
-            promotes=["*"],
-        )
-        self.add_subsystem(
-            name="battery_volume",
-            subsys=SizingBatteryVolume(battery_pack_id=battery_pack_id),
+            name="pemfc_volume",
+            subsys=SizingPEMFCVolume(battery_pack_id=battery_pack_id),
             promotes=["*"],
         )
         self.add_subsystem(

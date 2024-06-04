@@ -8,7 +8,7 @@ import numpy as np
 
 class SizingPEMFCVolume(om.ExplicitComponent):
     """
-    Computation of the volume the battery based on the volume of the modules.
+    Computation of the volume the PEMFC based on number of layers.
     """
 
     # TODO: Adding another way of mass estimation from D.Juschus
