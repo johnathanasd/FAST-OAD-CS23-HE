@@ -20,34 +20,47 @@ class PerformancesBatteryEfficiency(om.ExplicitComponent):
     def setup(self):
         number_of_points = self.options["number_of_points"]
 
-        self.add_input("losses_battery", units="W", val=np.full(number_of_points, np.nan))
-        self.add_input("power_out", units="W", val=np.full(number_of_points, np.nan))
+        self.add_input(
+            name="data:propulsion:he_power_train:pemfc_stack:"
+            + pemfc_stack_id
+            + "operation_pressure",
+            units="atm",
+            val=1.0,
+        )
 
-        self.add_output("efficiency", val=np.full(number_of_points, 1.0), lower=0.0, upper=1.0)
+        self.add_input("nominal_pressure", units="atm", val=1.0)
+
+        self.add_output(
+            "single_layer_pemfc_voltage",
+            units="V",
+            val=np.nan,
+        )
+
+        self.add_output("efficiency", val=np.nan, lower=0.0, upper=1.0)
 
         self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
-
-        efficiency = np.where(
-            np.abs(inputs["power_out"]) < 200.0,
-            1.0,
-            1.0 - inputs["losses_battery"] / inputs["power_out"],
-        )
+        E0 = 1.23  # ideal potential of the pemfc
+        C = 0.06
+        Pop = inputs["operation_pressure"]
+        Pnom = inputs["nominal_pressure"]
+        E = E0 + C * np.log(Pop / Pnom)
+        efficiency = inputs["single_layer_pemfc_voltage"] / E
         outputs["efficiency"] = efficiency
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
+        E0 = 1.23  # ideal potential of the pemfc
+        C = 0.06
+        Pop = inputs["operation_pressure"]
+        Pnom = inputs["nominal_pressure"]
+        E = E0 + C * np.log(Pop / Pnom)
 
-        partials_losses = np.where(
-            np.abs(inputs["power_out"]) < 200.0,
-            1e-6,
-            -1.0 / inputs["power_out"],
-        )
-        partials["efficiency", "losses_battery"] = np.diag(partials_losses)
+        partials["efficiency", "single_layer_pemfc_voltage"] = 1 / E
 
-        partials_current_out = np.where(
-            np.abs(inputs["power_out"]) < 200.0,
-            1e-6,
-            inputs["losses_battery"] / inputs["power_out"] ** 2.0,
+        partials["efficiency", "operation_pressure"] = -inputs["single_layer_pemfc_voltage"] / (
+            C * Pop * np.log(Pop / Pnom) ** 2
         )
-        partials["efficiency", "power_out"] = np.diag(partials_current_out)
+        partials["efficiency", "nominal_pressure"] = inputs["single_layer_pemfc_voltage"] / (
+            C * Pnom * np.log(Pop / Pnom) ** 2
+        )
