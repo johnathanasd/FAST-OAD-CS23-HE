@@ -28,19 +28,19 @@ class PerformancesMaximum(om.ExplicitComponent):
         pemfc_stack_id = self.options["pemfc_stack_id"]
         number_of_points = self.options["number_of_points"]
 
-        self.add_input("fc_current_density", units="A/cm**2", val=np.full(number_of_points, np.nan))
+        self.add_input("dc_current_out", units="A", val=np.full(number_of_points, np.nan))
 
         self.add_output(
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_density_min",
-            units="A/cm**2",
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_min",
+            units="A",
             val=1,
-            desc="Minimum current current in the pemfc during the mission",
+            desc="Minimum current to the pemfc during the mission",
         )
         self.add_output(
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_density_max",
-            units="A/cm**2",
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_max",
+            units="A",
             val=10,
-            desc="Maximum current density in the pemfc during the mission",
+            desc="Maximum current to the pemfc during the mission",
         )
         self.declare_partials(
             of="*",
@@ -53,21 +53,21 @@ class PerformancesMaximum(om.ExplicitComponent):
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
         outputs[
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_density_max"
-        ] = np.max(inputs["fc_current_density"])
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_max"
+        ] = np.max(inputs["dc_current_out"])
         outputs[
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_density_min"
-        ] = np.min(inputs["fc_current_density"])
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_min"
+        ] = np.min(inputs["dc_current_out"])
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
         partials[
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_density_max",
-            "fc_current_density",
-        ] = np.where(inputs["fc_current_density"] == np.max(inputs["fc_current_density"]), 1.0, 0.0)
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_max",
+            "dc_current_out",
+        ] = np.where(inputs["dc_current_out"] == np.max(inputs["dc_current_out"]), 1.0, 0.0)
         partials[
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_density_min",
-            "fc_current_density",
-        ] = np.where(inputs["fc_current_density"] == np.min(inputs["fc_current_density"]), 1.0, 0.0)
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_min",
+            "dc_current_out",
+        ] = np.where(inputs["dc_current_out"] == np.min(inputs["dc_current_out"]), 1.0, 0.0)

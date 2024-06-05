@@ -5,20 +5,22 @@
 import openmdao.api as om
 import numpy as np
 
-from ..constants import SUBMODEL_CONSTRAINTS_PEMFC_NL_POWER
+from ..constants import SUBMODEL_CONSTRAINTS_PEMFC_EFFECTIVE_AREA
 
 import fastoad.api as oad
 
 oad.RegisterSubmodel.active_models[
-    SUBMODEL_CONSTRAINTS_PEMFC_NL_POWER
-] = "submodel.propulsion.constraints.pemfc_stack.norminal_power.enforce"
+    SUBMODEL_CONSTRAINTS_PEMFC_EFFECTIVE_AREA
+] = "submodel.propulsion.constraints.pemfc_stack.effective_area.enforce"
+
+MAX_CURRENT_DENSITY = 0.7  # A/cm^2
 
 
 @oad.RegisterSubmodel(
-    SUBMODEL_CONSTRAINTS_PEMFC_NL_POWER,
-    "fastga_he.submodel.propulsion.constraints.pemfc_stack.nominal_power.enforce",
+    SUBMODEL_CONSTRAINTS_PEMFC_EFFECTIVE_AREA,
+    "fastga_he.submodel.propulsion.constraints.pemfc_stack.effective_area.enforce",
 )
-class ConstraintsNorminalPowerEnforce(om.ExplicitComponent):
+class ConstraintsEffectiveAreaEnforce(om.ExplicitComponent):
     """
     Class that enforces that the maximum power seen by the pemfc during the mission is used for
     the sizing.
@@ -38,23 +40,23 @@ class ConstraintsNorminalPowerEnforce(om.ExplicitComponent):
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
         self.add_input(
-            "data:propulsion:he_power_train:pemfc_stack_stack:" + pemfc_stack_id + ":power_max",
-            units="kW",
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_max",
+            units="A",
             val=np.nan,
-            desc="Maximum power the PEMFC stack has to provide during mission",
+            desc="Maximum current the PEMFC stack has be given during mission",
         )
 
         self.add_output(
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_nominal",
-            units="kW",
-            val=25.0,
-            desc="Maximum power the pemfc_stack can provide at Nominal pressure condition",
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
+            units="cm**2",
+            val=16.8,
+            desc="Effective area of PEMFC chemical reaction",
         )
 
         self.declare_partials(
-            of="data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_nominal",
-            wrt="data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max",
-            val=1.0,
+            of="data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
+            wrt="data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_max",
+            val=1 / MAX_CURRENT_DENSITY,
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
@@ -62,5 +64,8 @@ class ConstraintsNorminalPowerEnforce(om.ExplicitComponent):
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
         outputs[
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_nominal"
-        ] = inputs["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"]
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
+        ] = (
+            inputs["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_max"]
+            / MAX_CURRENT_DENSITY
+        )

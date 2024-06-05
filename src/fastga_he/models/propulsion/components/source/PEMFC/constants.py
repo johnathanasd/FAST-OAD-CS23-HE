@@ -2,6 +2,6 @@
 # Electric Aircraft.
 # Copyright (C) 2022 ISAE-SUPAERO
 
-SUBMODEL_CONSTRAINTS_PEMFC_NL_POWER = "submodel.propulsion.constraints.pemfc.norminal_power"
+SUBMODEL_CONSTRAINTS_PEMFC_EFFECTIVE_AREA = "submodel.propulsion.constraints.pemfc.effective_area"
 
 POSSIBLE_POSITION = ["wing_pod", "in_the_front", "in_the_back", "underbelly"]
