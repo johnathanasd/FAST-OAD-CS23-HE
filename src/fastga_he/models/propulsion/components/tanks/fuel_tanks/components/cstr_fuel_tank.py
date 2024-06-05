@@ -28,7 +28,7 @@ class ConstraintsFuelTank(om.Group):
         option_fuel_tank_id = {"fuel_tank_id": self.options["fuel_tank_id"]}
 
         self.add_subsystem(
-            name="constraints_soc_battery",
+            name="constraints_fuel_tank",
             subsys=oad.RegisterSubmodel.get_submodel(
                 SUBMODEL_CONSTRAINTS_FUEL_TANK_CAPACITY, options=option_fuel_tank_id
             ),

@@ -28,7 +28,7 @@ class ConstraintsHydrogenGasTank(om.Group):
         option_hydrogen_gas_tank_id = {"hydrogen_gas_tank_id": self.options["hydrogen_gas_tank_id"]}
 
         self.add_subsystem(
-            name="constraints_soc_battery",
+            name="constraints_hydrogen_gas_tank",
             subsys=oad.RegisterSubmodel.get_submodel(
                 SUBMODEL_CONSTRAINTS_HYDROGEN_GAS_TANK_CAPACITY, options=option_hydrogen_gas_tank_id
             ),
