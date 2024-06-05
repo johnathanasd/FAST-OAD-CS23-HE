@@ -2,168 +2,84 @@
 # Electric Aircraft.
 # Copyright (C) 2022 ISAE-SUPAERO
 
-from ..constants import SUBMODEL_CONSTRAINTS_BATTERY_SOC
-
 import openmdao.api as om
 import numpy as np
+
+from ..constants import SUBMODEL_CONSTRAINTS_PEMFC_NL_POWER
+
 
 import fastoad.api as oad
 
 
-oad.RegisterSubmodel.active_models[
-    SUBMODEL_CONSTRAINTS_BATTERY_SOC
-] = "fastga_he.submodel.propulsion.constraints.battery.state_of_charge.ensure"
-
-
 @oad.RegisterSubmodel(
-    SUBMODEL_CONSTRAINTS_BATTERY_SOC,
-    "fastga_he.submodel.propulsion.constraints.battery.state_of_charge.ensure",
+    SUBMODEL_CONSTRAINTS_PEMFC_NL_POWER,
+    "fastga_he.submodel.propulsion.constraints.pemfc_stack.nominal_power.ensure",
 )
-class ConstraintsSOCEnsure(om.ExplicitComponent):
+class ConstraintsNominalPowerEnsure(om.ExplicitComponent):
     """
-    Class that computes the difference between the minimum SOC seen by the battery during the
-    mission and the value used for sizing, ensuring each component works below its maxima.
+    Class that ensures that the maximum power seen by the PEMFC stack during the mission is below the
+    one used for sizing, ensuring each component works below its minimum.
     """
 
     def initialize(self):
 
         self.options.declare(
-            name="battery_pack_id",
+            name="pemfc_stack_id",
             default=None,
-            desc="Identifier of the battery pack",
+            desc="Identifier of the PEMFC stack",
             allow_none=False,
         )
 
     def setup(self):
 
-        battery_pack_id = self.options["battery_pack_id"]
+        pemfc_stack_id = self.options["pemfc_stack_id"]
 
         self.add_input(
-            "data:propulsion:he_power_train:battery_pack:" + battery_pack_id + ":SOC_min",
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max",
+            units="kW",
             val=np.nan,
-            units="percent",
-            desc="Minimum state-of-charge of the battery during the mission",
+            desc="Maximum power the pemfc has to provide in whole mission",
         )
         self.add_input(
-            "data:propulsion:he_power_train:battery_pack:" + battery_pack_id + ":min_safe_SOC",
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_nominal",
+            units="kW",
             val=np.nan,
-            units="percent",
-            desc="Minimum state-of-charge that the battery can have without degradation",
+            desc="Maximum power the pemfc can provide with nominal pressure condition",
         )
 
         self.add_output(
-            "constraints:propulsion:he_power_train:battery_pack:"
-            + battery_pack_id
-            + ":min_safe_SOC",
-            val=0.0,
-            units="percent",
-            desc="Constraints on minimum battery SOC, respected if <0",
+            "constraints:propulsion:he_power_train:pemfc_stack:"
+            + pemfc_stack_id
+            + ":power_nominal",
+            units="kW",
+            val=-0.0,
+            desc="Respected if <0",
         )
 
         self.declare_partials(
-            of="constraints:propulsion:he_power_train:battery_pack:"
-            + battery_pack_id
-            + ":min_safe_SOC",
-            wrt=[
-                "data:propulsion:he_power_train:battery_pack:" + battery_pack_id + ":SOC_min",
-                "data:propulsion:he_power_train:battery_pack:" + battery_pack_id + ":min_safe_SOC",
-            ],
-            method="exact",
+            of="constraints:propulsion:he_power_train:pemfc_stack:"
+            + pemfc_stack_id
+            + ":power_nominal",
+            wrt="data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max",
+            val=1.0,
         )
-
-        self.add_input(
-            "data:propulsion:he_power_train:battery_pack:" + battery_pack_id + ":c_rate_max",
-            val=np.nan,
-            units="h**-1",
-            desc="Maximum C-rate of the battery modules during the mission",
-        )
-        self.add_input(
-            "data:propulsion:he_power_train:battery_pack:"
-            + battery_pack_id
-            + ":cell:c_rate_caliber",
-            val=2.4,
-            units="h**-1",
-            desc="Maximum C-rate that the battery reference cell can provide",
-        )
-
-        self.add_output(
-            "constraints:propulsion:he_power_train:battery_pack:"
-            + battery_pack_id
-            + ":cell:max_c_rate",
-            val=0.0,
-            units="percent",
-            desc="Constraints on the maximum cell c_rate, respected if <0",
-        )
-
         self.declare_partials(
-            of="constraints:propulsion:he_power_train:battery_pack:"
-            + battery_pack_id
-            + ":cell:max_c_rate",
-            wrt=[
-                "data:propulsion:he_power_train:battery_pack:"
-                + battery_pack_id
-                + ":cell:c_rate_caliber",
-                "data:propulsion:he_power_train:battery_pack:" + battery_pack_id + ":c_rate_max",
-            ],
-            method="exact",
+            of="constraints:propulsion:he_power_train:pemfc_stack:"
+            + pemfc_stack_id
+            + ":power_nominal",
+            wrt="data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_nominal",
+            val=-1.0,
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
-        battery_pack_id = self.options["battery_pack_id"]
+        pemfc_stack_id = self.options["pemfc_stack_id"]
 
         outputs[
-            "constraints:propulsion:he_power_train:battery_pack:"
-            + battery_pack_id
-            + ":min_safe_SOC"
+            "constraints:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_nominal"
         ] = (
-            inputs[
-                "data:propulsion:he_power_train:battery_pack:" + battery_pack_id + ":min_safe_SOC"
-            ]
-            - inputs["data:propulsion:he_power_train:battery_pack:" + battery_pack_id + ":SOC_min"]
-        )
-
-        outputs[
-            "constraints:propulsion:he_power_train:battery_pack:"
-            + battery_pack_id
-            + ":cell:max_c_rate"
-        ] = (
-            inputs["data:propulsion:he_power_train:battery_pack:" + battery_pack_id + ":c_rate_max"]
+            inputs["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"]
             - inputs[
-                "data:propulsion:he_power_train:battery_pack:"
-                + battery_pack_id
-                + ":cell:c_rate_caliber"
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_nominal"
             ]
         )
-
-    def compute_partials(self, inputs, partials, discrete_inputs=None):
-
-        battery_pack_id = self.options["battery_pack_id"]
-
-        partials[
-            "constraints:propulsion:he_power_train:battery_pack:"
-            + battery_pack_id
-            + ":min_safe_SOC",
-            "data:propulsion:he_power_train:battery_pack:" + battery_pack_id + ":min_safe_SOC",
-        ] = 1.0
-        partials[
-            "constraints:propulsion:he_power_train:battery_pack:"
-            + battery_pack_id
-            + ":min_safe_SOC",
-            "data:propulsion:he_power_train:battery_pack:" + battery_pack_id + ":SOC_min",
-        ] = -1.0
-
-        partials[
-            "constraints:propulsion:he_power_train:battery_pack:"
-            + battery_pack_id
-            + ":cell:max_c_rate",
-            "data:propulsion:he_power_train:battery_pack:" + battery_pack_id + ":c_rate_max",
-        ] = 1.0
-        partials[
-            "constraints:propulsion:he_power_train:battery_pack:"
-            + battery_pack_id
-            + ":cell:max_c_rate",
-            "data:propulsion:he_power_train:battery_pack:"
-            + battery_pack_id
-            + ":cell:c_rate_caliber",
-        ] = -1.0
