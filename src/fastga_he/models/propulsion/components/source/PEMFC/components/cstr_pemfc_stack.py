@@ -11,14 +11,14 @@ from ..constants import SUBMODEL_CONSTRAINTS_PEMFC_NL_POWER
 
 class ConstraintsPEMFC(om.Group):
     """
-    Class that gather the different constraints for the battery, be they ensure or enforce.
+    Class that gather the different constraints for the pemfc, be they ensure or enforce.
     """
 
     def initialize(self):
         self.options.declare(
             name="pemfc_stack_id",
             default=None,
-            desc="Identifier of the battery pack",
+            desc="Identifier of the pemfc stack",
             allow_none=False,
         )
 
