@@ -14,9 +14,10 @@ from ..components.perf_layer_voltage import PerformancesSinglePEMFCVoltage
 from ..components.perf_fuel_consumption import PerformancesPEMFCFuelConsumption
 from ..components.perf_fuel_consumed import PerformancesPEMFCFuelConsumed
 from ..components.perf_pemfc_efficiency import PerformancesPEMFCEfficiency
+from ..components.perf_pemfc_nominal_power import PerformancesPEMFCNominalPower
 
 
-class PerformancesBatteryPack(om.Group):
+class PerformancesPEMFCStack(om.Group):
     def initialize(self):
 
         self.options.declare(
@@ -91,6 +92,11 @@ class PerformancesBatteryPack(om.Group):
             PerformancesMaximum(number_of_points=number_of_points, pemfc_stack_id=pemfc_stack_id),
             promotes=["*"],
         )
+        self.add_subsystem(
+            "nominal_power",
+            PerformancesPEMFCNominalPower(pemfc_stack_id=pemfc_stack_id),
+            promotes=["*"],
+        )
 
         energy_consumed = om.IndepVarComp()
         energy_consumed.add_output(
@@ -102,6 +108,7 @@ class PerformancesBatteryPack(om.Group):
             promotes=["non_consumable_energy_t"],
         )
 
+    # TODO: Check if this is required
     def guess_nonlinear(
         self, inputs, outputs, residuals, discrete_inputs=None, discrete_outputs=None
     ):

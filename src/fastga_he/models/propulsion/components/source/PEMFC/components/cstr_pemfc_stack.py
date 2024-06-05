@@ -6,7 +6,7 @@ import openmdao.api as om
 
 import fastoad.api as oad
 
-from ..constants import SUBMODEL_CONSTRAINTS_BATTERY_SOC
+from ..constants import SUBMODEL_CONSTRAINTS_PEMFC_NL_POWER
 
 
 class ConstraintsPEMFC(om.Group):
@@ -16,7 +16,7 @@ class ConstraintsPEMFC(om.Group):
 
     def initialize(self):
         self.options.declare(
-            name="battery_pack_id",
+            name="pemfc_stack_id",
             default=None,
             desc="Identifier of the battery pack",
             allow_none=False,
@@ -24,12 +24,12 @@ class ConstraintsPEMFC(om.Group):
 
     def setup(self):
 
-        option_battery_pack_id = {"battery_pack_id": self.options["battery_pack_id"]}
+        option_pemfc_stack_id = {"pemfc_stack_id": self.options["pemfc_stack_id"]}
 
         self.add_subsystem(
-            name="constraints_soc_battery",
+            name="constraints_pemfc_nominal_power",
             subsys=oad.RegisterSubmodel.get_submodel(
-                SUBMODEL_CONSTRAINTS_BATTERY_SOC, options=option_battery_pack_id
+                SUBMODEL_CONSTRAINTS_PEMFC_NL_POWER, options=option_pemfc_stack_id
             ),
             promotes=["*"],
         )

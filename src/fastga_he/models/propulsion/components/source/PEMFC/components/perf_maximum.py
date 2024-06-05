@@ -43,15 +43,8 @@ class PerformancesMaximum(om.ExplicitComponent):
             desc="Maximum power needed by the pemfc during the mission",
         )
         self.declare_partials(
-            of=[
-                "data:propulsion:he_power_train:pemfc_stack:"
-                + pemfc_stack_id
-                + ":cell:voltage_min",
-                "data:propulsion:he_power_train:pemfc_stack:"
-                + pemfc_stack_id
-                + ":cell:voltage_max",
-            ],
-            wrt="terminal_voltage",
+            of="*",
+            wrt="*",
             method="exact",
         )
 
