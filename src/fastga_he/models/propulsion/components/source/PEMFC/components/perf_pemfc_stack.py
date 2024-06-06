@@ -6,7 +6,7 @@ import numpy as np
 import openmdao.api as om
 
 
-from ..components.perf_direct_bus_connection import PerformancesBatteryDirectBusConnection
+from ..components.perf_direct_bus_connection import PerformancesPEMFCDirectBusConnection
 from ..components.perf_pemfc_power import PerformancesPEMFCPower
 from ..components.perf_maximum import PerformancesMaximum
 from ..components.perf_pemfc_current_density import PerformancesCurrentDensity
@@ -14,7 +14,6 @@ from ..components.perf_layer_voltage import PerformancesSinglePEMFCVoltage
 from ..components.perf_fuel_consumption import PerformancesPEMFCFuelConsumption
 from ..components.perf_fuel_consumed import PerformancesPEMFCFuelConsumed
 from ..components.perf_pemfc_efficiency import PerformancesPEMFCEfficiency
-from ..components.perf_pemfc_nominal_power import PerformancesPEMFCNominalPower
 
 
 class PerformancesPEMFCStack(om.Group):
@@ -52,7 +51,7 @@ class PerformancesPEMFCStack(om.Group):
         if self.options["direct_bus_connection"]:
             self.add_subsystem(
                 "direct_bus_connection",
-                PerformancesBatteryDirectBusConnection(number_of_points=number_of_points),
+                PerformancesPEMFCDirectBusConnection(number_of_points=number_of_points),
                 promotes=["*"],
             )
 
@@ -92,11 +91,7 @@ class PerformancesPEMFCStack(om.Group):
             PerformancesMaximum(number_of_points=number_of_points, pemfc_stack_id=pemfc_stack_id),
             promotes=["*"],
         )
-        self.add_subsystem(
-            "nominal_power",
-            PerformancesPEMFCNominalPower(pemfc_stack_id=pemfc_stack_id),
-            promotes=["*"],
-        )
+
 
         energy_consumed = om.IndepVarComp()
         energy_consumed.add_output(
@@ -116,19 +111,19 @@ class PerformancesPEMFCStack(om.Group):
         number_of_points = self.options["number_of_points"]
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
-        number_of_cells_module = inputs[
+        number_of_layers = inputs[
             "module_voltage.data:propulsion:he_power_train:pemfc_stack:"
             + pemfc_stack_id
-            + ":module:number_cells"
+            + ":module:number_of_layers"
         ]
 
         # Based on the max voltage and cut off voltage of the battery cell
-        fake_cell_voltage = np.linspace(4.2, 2.65, number_of_points)
-        module_voltage = fake_cell_voltage * number_of_cells_module
+        fake_layer_voltage = np.linspace(1.2, 0.1, number_of_points)
+        stack_voltage = fake_layer_voltage * number_of_layers
 
-        outputs["module_voltage"] = module_voltage
+        outputs["module_voltage"] = stack_voltage
 
         if self.options["direct_bus_connection"]:
-            outputs["battery_voltage"] = module_voltage
+            outputs["pemfc_voltage"] = stack_voltage
         else:
-            outputs["voltage_out"] = module_voltage
+            outputs["voltage_out"] = stack_voltage

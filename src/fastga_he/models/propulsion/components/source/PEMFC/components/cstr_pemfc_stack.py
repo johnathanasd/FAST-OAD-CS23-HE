@@ -6,7 +6,7 @@ import openmdao.api as om
 
 import fastoad.api as oad
 
-from ..constants import SUBMODEL_CONSTRAINTS_PEMFC_NL_POWER
+from ..constants import SUBMODEL_CONSTRAINTS_PEMFC_EFFECTIVE_AREA
 
 
 class ConstraintsPEMFC(om.Group):
@@ -27,9 +27,9 @@ class ConstraintsPEMFC(om.Group):
         option_pemfc_stack_id = {"pemfc_stack_id": self.options["pemfc_stack_id"]}
 
         self.add_subsystem(
-            name="constraints_pemfc_nominal_power",
+            name="constraints_pemfc_effective_area",
             subsys=oad.RegisterSubmodel.get_submodel(
-                SUBMODEL_CONSTRAINTS_PEMFC_NL_POWER, options=option_pemfc_stack_id
+                SUBMODEL_CONSTRAINTS_PEMFC_EFFECTIVE_AREA, options=option_pemfc_stack_id
             ),
             promotes=["*"],
         )

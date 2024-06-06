@@ -5,10 +5,12 @@
 import openmdao.api as om
 import numpy as np
 
+FC_WEIGHT_DENSITY = 8.5e-8  # kg/m^2
+
 
 class SizingPEMFCWeight(om.ExplicitComponent):
     """
-    Computation of the weight the battery based on the weight of the modules.
+    Computation of the weight the PEMFC based on the layer weight density of the stack.
     """
 
     # TODO: Adding another way of mass estimation from D.Juschus
@@ -25,16 +27,13 @@ class SizingPEMFCWeight(om.ExplicitComponent):
 
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
+        self.add_input("number_of_layers", val=np.nan, desc="Number of layer in 1 PEMFC stack")
+
         self.add_input(
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":mass_per_layer",
-            units="kg",
-            val=0.014286,
-            desc="Mass of one layer of the pemfc stack",
-        )
-        self.add_input(
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":total_number_layers",
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
+            units="m**2",
             val=np.nan,
-            desc="Total number of layers in the pemfc stacks",
+            desc="Effective fuel cell area in the stack",
         )
 
         self.add_output(
@@ -51,13 +50,10 @@ class SizingPEMFCWeight(om.ExplicitComponent):
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
         outputs["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":mass"] = (
-            inputs[
-                "data:propulsion:he_power_train:pemfc_stack:"
-                + pemfc_stack_id
-                + ":total_number_layers"
-            ]
+            FC_WEIGHT_DENSITY
+            * inputs["number_of_layers"]
             * inputs[
-                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":mass_per_layer"
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
             ]
         )
 
@@ -67,13 +63,16 @@ class SizingPEMFCWeight(om.ExplicitComponent):
 
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":mass",
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":total_number_layers",
-        ] = inputs[
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":mass_per_layer"
-        ]
+            "number_of_layers",
+        ] = (
+            FC_WEIGHT_DENSITY
+            * inputs[
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
+            ]
+        )
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":mass",
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":mass_per_layer",
-        ] = inputs[
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":total_number_layers"
-        ]
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
+        ] = (
+            FC_WEIGHT_DENSITY * inputs["number_of_layers"]
+        )

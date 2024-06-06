@@ -15,7 +15,7 @@ from .sizing_pemfc_drag import SizingBatteryDrag
 from .sizing_pemfc_prep_for_loads import SizingBatteryPreparationForLoads
 
 
-from .cstr_pemfc_stack import ConstraintsBattery
+from .cstr_pemfc_stack import ConstraintsPEMFC
 
 from ..constants import POSSIBLE_POSITION
 

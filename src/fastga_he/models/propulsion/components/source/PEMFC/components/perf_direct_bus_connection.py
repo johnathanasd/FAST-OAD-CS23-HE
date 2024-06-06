@@ -6,7 +6,7 @@ import openmdao.api as om
 import numpy as np
 
 
-class PerformancesBatteryDirectBusConnection(om.ImplicitComponent):
+class PerformancesPEMFCDirectBusConnection(om.ImplicitComponent):
     """
     In case we attempt to directly plug the battery into a bus, a small change to its
     inputs/outputs will be required. This is what this component does.
@@ -25,7 +25,7 @@ class PerformancesBatteryDirectBusConnection(om.ImplicitComponent):
         # This input will come from the bus
         self.add_input("voltage_out", units="V", val=np.full(number_of_points, np.nan))
         # This one because the current imposes a voltage
-        self.add_input("battery_voltage", units="V", val=np.full(number_of_points, np.nan))
+        self.add_input("pemfc_voltage", units="V", val=np.full(number_of_points, np.nan))
 
         self.add_output(
             "dc_current_out",
@@ -36,15 +36,25 @@ class PerformancesBatteryDirectBusConnection(om.ImplicitComponent):
             upper=1000.0,
         )
 
-        self.declare_partials(of="*", wrt="*", method="exact")
+        self.declare_partials(
+            of="dc_current_out",
+            wrt="voltage_out",
+            method="exact",
+            cols=np.arange(number_of_points),
+            rows=np.arange(number_of_points),
+            val=np.ones(number_of_points),
+        )
+        self.declare_partials(
+            of="dc_current_out",
+            wrt="pemfc_voltage",
+            method="exact",
+            cols=np.arange(number_of_points),
+            rows=np.arange(number_of_points),
+            val=-np.ones(number_of_points),
+        )
 
-    def apply_nonlinear(self, inputs, outputs, residuals):
+    def apply_nonlinear(
+        self, inputs, outputs, residuals, discrete_inputs=None, discrete_outputs=None
+    ):
 
-        residuals["dc_current_out"] = inputs["voltage_out"] - inputs["battery_voltage"]
-
-    def linearize(self, inputs, outputs, partials):
-
-        number_of_points = self.options["number_of_points"]
-
-        partials["dc_current_out", "voltage_out"] = np.eye(number_of_points)
-        partials["dc_current_out", "battery_voltage"] = -np.eye(number_of_points)
+        residuals["dc_current_out"] = inputs["voltage_out"] - inputs["pemfc_voltage"]
