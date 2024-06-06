@@ -72,9 +72,7 @@ class SizingPEMFCCGY(om.ExplicitComponent):
 
         else:
 
-            outputs[
-                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":CG:y"
-            ] = 0.0
+            outputs["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":CG:y"] = 0.0
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 

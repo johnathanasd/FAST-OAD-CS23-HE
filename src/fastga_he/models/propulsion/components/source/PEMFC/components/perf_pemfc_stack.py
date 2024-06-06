@@ -92,7 +92,6 @@ class PerformancesPEMFCStack(om.Group):
             promotes=["*"],
         )
 
-
         energy_consumed = om.IndepVarComp()
         energy_consumed.add_output(
             "non_consumable_energy_t", np.full(number_of_points, 0.0), units="W*h"
