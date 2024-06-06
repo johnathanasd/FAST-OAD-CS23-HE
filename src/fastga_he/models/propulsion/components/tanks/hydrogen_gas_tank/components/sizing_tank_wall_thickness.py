@@ -5,18 +5,15 @@
 import openmdao.api as om
 import numpy as np
 
-
-class PerformancesHydrogenGasConsumedMission(om.ExplicitComponent):
+# To modify
+class SizingFuelTankWallThickness(om.ExplicitComponent):
     """
-    Computation of the amount of hydrogen in that particular tank which will be consumed. Simple
-    summation.
+    Computation of the weight of the tank. The very simplistic approach we will use is to say
+    that weight of tank is the weight of unused fuel and the weight of the tank itself.
     """
 
     def initialize(self):
 
-        self.options.declare(
-            "number_of_points", default=1, desc="number of equilibrium to be treated"
-        )
         self.options.declare(
             name="hydrogen_gas_tank_id",
             default=None,
@@ -26,33 +23,34 @@ class PerformancesHydrogenGasConsumedMission(om.ExplicitComponent):
 
     def setup(self):
 
-        number_of_points = self.options["number_of_points"]
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
 
         self.add_input(
-            "fuel_consumed_t",
-            units="kg",
-            val=np.full(number_of_points, np.nan),
-            desc="Hydrogen from this tank consumed at each time step",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":radius",
+            units="m",
+            val=np.nan,
+            desc="Outer Radius of the hydrogen gas tank",
         )
 
         self.add_output(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            name="data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":fuel_consumed_mission",
+            + ":mass",
             units="kg",
-            val=50.0,
-            desc="Amount of fuel from that tank which will be consumed during mission",
+            val=1.0,
+            desc="Weight of the hydrogen gas tanks",
         )
 
-        self.declare_partials(of="*", wrt="*", val=np.ones(number_of_points))
+        self.declare_partials(of="*", wrt="*", val=1.0)
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
 
         outputs[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass"
+        ] = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":fuel_consumed_mission"
-        ] = sum(inputs["fuel_consumed_t"])
+            + ":unusable_fuel_mission"
+        ]

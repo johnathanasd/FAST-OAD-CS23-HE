@@ -6,17 +6,17 @@ import openmdao.api as om
 import numpy as np
 
 
-class PerformancesFuelRemainingMission(om.ExplicitComponent):
+class PerformancesHydrogenGasRemainingMission(om.ExplicitComponent):
     """
-    Computation of the amount of the amount of fuel remaining inside the tank.
+    Computation of the amount of the amount of hydrogen remaining inside the tank.
     """
 
     def initialize(self):
 
         self.options.declare(
-            name="fuel_tank_id",
+            name="hydrogen_gas_tank_id",
             default=None,
-            desc="Identifier of the fuel tank",
+            desc="Identifier of the hydrogen gas tank",
             allow_none=False,
         )
         self.options.declare(
@@ -25,38 +25,42 @@ class PerformancesFuelRemainingMission(om.ExplicitComponent):
 
     def setup(self):
 
-        fuel_tank_id = self.options["fuel_tank_id"]
+        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
         number_of_points = self.options["number_of_points"]
 
         self.add_input(
-            "data:propulsion:he_power_train:fuel_tank:" + fuel_tank_id + ":fuel_consumed_mission",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":fuel_consumed_mission",
             units="kg",
             val=np.nan,
-            desc="Total amount of fuel loaded in the tank",
+            desc="Total amount of hydrogen loaded in the tank",
         )
         self.add_input(
             "fuel_consumed_t",
             units="kg",
             val=np.full(number_of_points, np.nan),
-            desc="Fuel from this tank consumed at each time step",
+            desc="Hydrogen from this tank consumed at each time step",
         )
 
         self.add_output(
             "fuel_remaining_t",
             units="kg",
             val=np.linspace(50.5, 0.5, number_of_points),
-            desc="Fuel remaining inside the tank at each time step",
+            desc="Hydrogen remaining inside the tank at each time step",
         )
 
         self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
-        fuel_tank_id = self.options["fuel_tank_id"]
+        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
         number_of_points = self.options["number_of_points"]
 
         total_fuel = inputs[
-            "data:propulsion:he_power_train:fuel_tank:" + fuel_tank_id + ":fuel_consumed_mission"
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":fuel_consumed_mission"
         ]
 
         outputs["fuel_remaining_t"] = np.full(number_of_points, total_fuel) - np.cumsum(
@@ -65,12 +69,14 @@ class PerformancesFuelRemainingMission(om.ExplicitComponent):
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
-        fuel_tank_id = self.options["fuel_tank_id"]
+        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
         number_of_points = self.options["number_of_points"]
 
         partials[
             "fuel_remaining_t",
-            "data:propulsion:he_power_train:fuel_tank:" + fuel_tank_id + ":fuel_consumed_mission",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":fuel_consumed_mission",
         ] = np.ones(number_of_points)
         partials["fuel_remaining_t", "fuel_consumed_t"] = -(
             np.tri(number_of_points, number_of_points) - np.eye(number_of_points)

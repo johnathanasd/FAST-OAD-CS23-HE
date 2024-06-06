@@ -28,7 +28,7 @@ class SizingHydrogenGasTankTotalHydrogenMission(om.ExplicitComponent):
         self.add_input(
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":hydrogen_consumed_mission",
+            + ":fuel_consumed_mission",
             units="kg",
             val=np.nan,
             desc="Amount of hydrogen from that tank which will be consumed during mission",
@@ -36,7 +36,7 @@ class SizingHydrogenGasTankTotalHydrogenMission(om.ExplicitComponent):
         self.add_input(
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":unusable_hydrogen_mission",
+            + ":unusable_fuel_mission",
             units="kg",
             val=np.nan,
             desc="Amount of trapped hydrogen in the tank",
@@ -45,7 +45,7 @@ class SizingHydrogenGasTankTotalHydrogenMission(om.ExplicitComponent):
         self.add_output(
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":hydrogen_total_mission",
+            + ":fuel_total_mission",
             units="kg",
             val=50.5,
             desc="Total amount of hydrogen loaded in the tank for the mission",
@@ -60,16 +60,16 @@ class SizingHydrogenGasTankTotalHydrogenMission(om.ExplicitComponent):
         outputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":hydrogen_total_mission"
+            + ":fuel_total_mission"
         ] = (
             inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
-                + ":hydrogen_consumed_mission"
+                + ":fuel_consumed_mission"
             ]
             + inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
-                + ":unusable_hydrogen_mission"
+                + ":unusable_fuel_mission"
             ]
         )

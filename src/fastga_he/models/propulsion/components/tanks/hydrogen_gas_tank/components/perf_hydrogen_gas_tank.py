@@ -4,8 +4,8 @@
 
 import openmdao.api as om
 
-from ..components.perf_fuel_mission_consumed import PerformancesFuelConsumedMission
-from ..components.perf_fuel_remaining import PerformancesFuelRemainingMission
+from ..components.perf_fuel_mission_consumed import PerformancesHydrogenGasConsumedMission
+from ..components.perf_fuel_remaining import PerformancesHydrogenGasRemainingMission
 
 
 class PerformancesHydrogenGasTank(om.Group):
@@ -23,7 +23,7 @@ class PerformancesHydrogenGasTank(om.Group):
             "number_of_points", default=1, desc="number of equilibrium to be treated"
         )
         self.options.declare(
-            name="fuel_tank_id",
+            name="hydrogen_gas_tank_id",
             default=None,
             desc="Identifier of the fuel tank",
             allow_none=False,
@@ -32,19 +32,19 @@ class PerformancesHydrogenGasTank(om.Group):
     def setup(self):
 
         number_of_points = self.options["number_of_points"]
-        fuel_tank_id = self.options["fuel_tank_id"]
+        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
 
         self.add_subsystem(
-            "fuel_consumed_mission",
-            PerformancesFuelConsumedMission(
-                number_of_points=number_of_points, fuel_tank_id=fuel_tank_id
+            "hydrogen_gas_consumed_mission",
+            PerformancesHydrogenGasConsumedMission(
+                number_of_points=number_of_points, hydrogen_gas_tank_id=hydrogen_gas_tank_id
             ),
             promotes=["*"],
         )
         self.add_subsystem(
-            "fuel_remaining_mission",
-            PerformancesFuelRemainingMission(
-                number_of_points=number_of_points, fuel_tank_id=fuel_tank_id
+            "hydrogen_gas_remaining_mission",
+            PerformancesHydrogenGasRemainingMission(
+                number_of_points=number_of_points, hydrogen_gas_tank_id=hydrogen_gas_tank_id
             ),
             promotes=["*"],
         )

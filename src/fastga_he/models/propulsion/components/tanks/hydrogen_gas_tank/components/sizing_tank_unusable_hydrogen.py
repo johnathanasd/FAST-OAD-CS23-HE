@@ -27,7 +27,7 @@ class SizingHydrogenGasTankUnusableHydrogen(om.ExplicitComponent):
         self.add_input(
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":hydrogen_consumed_mission",
+            + ":fuel_consumed_mission",
             units="kg",
             val=np.nan,
             desc="Amount of hydrogen from that tank which will be consumed during mission",
@@ -36,7 +36,7 @@ class SizingHydrogenGasTankUnusableHydrogen(om.ExplicitComponent):
         self.add_output(
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":unusable_hydrogen_mission",
+            + ":unusable_fuel_mission",
             units="kg",
             val=0.5,
             desc="Amount of trapped hydrogen in the tank",

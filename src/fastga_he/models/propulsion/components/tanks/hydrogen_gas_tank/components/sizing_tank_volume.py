@@ -8,6 +8,7 @@ import openmdao.api as om
 import numpy as np
 
 _LOGGER = logging.getLogger(__name__)
+HYDROGEN_GAS_CONSTANT = 4157.2  # (N.m/K.kg)
 
 
 class SizingFuelTankVolume(om.ExplicitComponent):
@@ -27,7 +28,7 @@ class SizingFuelTankVolume(om.ExplicitComponent):
     def initialize(self):
 
         self.options.declare(
-            name="fuel_tank_id",
+            name="hydrogen_gas_tank_id",
             default=None,
             desc="Identifier of the fuel tank",
             allow_none=False,
@@ -35,63 +36,111 @@ class SizingFuelTankVolume(om.ExplicitComponent):
 
     def setup(self):
 
-        fuel_tank_id = self.options["fuel_tank_id"]
+        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
 
         self.add_input(
-            "data:propulsion:he_power_train:fuel_tank:" + fuel_tank_id + ":capacity",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":capacity",
             units="kg",
             val=np.nan,
             desc="Capacity of the tank in terms of weight",
         )
         self.add_input(
-            "data:propulsion:he_power_train:fuel_tank:" + fuel_tank_id + ":fuel_type",
-            val=1.0,
-            desc="Type of fuel stored in the tank, 1.0 - gasoline, 2.0 - Diesel, 3.0 - Jet A1",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":tank_pressure",
+            val=np.nan,
+            units="Pa",
+            desc="Hydrogen gas tank static pressure",
+        )
+        self.add_input(
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":tank_temperature",
+            val=300.0,
+            units="K",
+            desc="Hydrogen gas tank temperature",
         )
 
         self.add_output(
-            "data:propulsion:he_power_train:fuel_tank:" + fuel_tank_id + ":volume",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":volume",
             units="m**3",
             val=0.07,
             desc="Capacity of the tank in terms of volume",
         )
 
         self.declare_partials(
-            of="data:propulsion:he_power_train:fuel_tank:" + fuel_tank_id + ":volume",
-            wrt="data:propulsion:he_power_train:fuel_tank:" + fuel_tank_id + ":capacity",
+            of="*",
+            wrt="*",
             method="exact",
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
-        fuel_tank_id = self.options["fuel_tank_id"]
+        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
 
-        fuel_mass = inputs["data:propulsion:he_power_train:fuel_tank:" + fuel_tank_id + ":capacity"]
-        fuel_type = inputs[
-            "data:propulsion:he_power_train:fuel_tank:" + fuel_tank_id + ":fuel_type"
+        fuel_mass = inputs[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":capacity"
+        ]
+        tank_pressure = inputs[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":tank_pressure"
+        ]
+        z = 0.99704 + 6.4149e-9 * tank_pressure  # compressibility correction
+        tank_temperature = inputs[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":tank_temperature"
         ]
 
-        if fuel_type == 1.0:
-            self.rho_fuel = 718.9  # gasoline volume-mass [kg/m**3], cold worst case, Avgas
-        elif fuel_type == 2.0:
-            self.rho_fuel = 860.0  # Diesel volume-mass [kg/m**3], cold worst case
-        elif fuel_type == 3.0:
-            self.rho_fuel = 804.0  # Jet-A1 volume mass [kg/m**3], cold worst case
-        else:
-            self.rho_fuel = 718.9
-            _LOGGER.warning("Fuel type %f does not exist, replaced by type 1!", fuel_type)
-
-        outputs["data:propulsion:he_power_train:fuel_tank:" + fuel_tank_id + ":volume"] = (
-            fuel_mass / self.rho_fuel
-        )
+        outputs[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":volume"
+        ] = (z * HYDROGEN_GAS_CONSTANT * fuel_mass * tank_temperature / tank_pressure)
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
-        fuel_tank_id = self.options["fuel_tank_id"]
+        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+
+        fuel_mass = inputs[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":capacity"
+        ]
+        tank_pressure = inputs[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":tank_pressure"
+        ]
+        z = 0.99704 + 6.4149e-9 * tank_pressure  # compressibility correction
+        tank_temperature = inputs[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":tank_temperature"
+        ]
 
         partials[
-            "data:propulsion:he_power_train:fuel_tank:" + fuel_tank_id + ":volume",
-            "data:propulsion:he_power_train:fuel_tank:" + fuel_tank_id + ":capacity",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":volume",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":capacity",
         ] = (
-            1.0 / self.rho_fuel
+            z * HYDROGEN_GAS_CONSTANT * tank_temperature / tank_pressure
+        )
+
+        partials[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":volume",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":tank_temperature",
+        ] = (
+            z * HYDROGEN_GAS_CONSTANT * fuel_mass / tank_pressure
+        )
+
+        partials[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":volume",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":tank_pressure",
+        ] = (
+            -0.99704 * HYDROGEN_GAS_CONSTANT * fuel_mass / tank_pressure ** 2
         )
