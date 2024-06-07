@@ -19,7 +19,7 @@ oad.RegisterSubmodel.active_models[
     SUBMODEL_CONSTRAINTS_HYDROGEN_GAS_TANK_CAPACITY,
     "fastga_he.submodel.propulsion.constraints.hydrogen_gas_tank.capacity.enforce",
 )
-class ConstraintsFuelTankCapacityEnforce(om.ExplicitComponent):
+class ConstraintsHydrogenGasTankCapacityEnforce(om.ExplicitComponent):
     """
     Class that enforces that the capacity of the tank is equal to the amount of fuel needed for
     the mission (which includes the unusable fuel).

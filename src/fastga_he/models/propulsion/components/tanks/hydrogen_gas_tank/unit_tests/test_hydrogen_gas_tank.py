@@ -7,26 +7,27 @@ import openmdao.api as om
 import pytest
 import numpy as np
 
-from ..components.sizing_tank_unusable_fuel import SizingFuelTankUnusableFuel
-from ..components.sizing_tank_total_fuel_mission import SizingFuelTankTotalFuelMission
-from ..components.sizing_tank_volume import SizingFuelTankVolume
-from ..components.sizing_tank_cg_x import SizingFuelTankCGX
-from ..components.sizing_tank_cg_y import SizingFuelTankCGY
-from ..components.sizing_tank_length import SizingFuelTankLength
-from ..components.sizing_tank_height import SizingFuelTankHeight
-from ..components.sizing_tank_width import SizingFuelTankWidth
-from ..components.sizing_tank_weight import SizingFuelTankWeight
-from ..components.sizing_tank_drag import SizingFuelTankDrag
-from ..components.sizing_tank_prep_for_loads import SizingFuelTankPreparationForLoads
+from ..components.sizing_tank_inner_volume import SizingHydrogenGasTankInnerVolume
+from ..components.sizing_tank_total_hydrogen_mission import SizingHydrogenGasTankTotalHydrogenMission
+from ..components.sizing_tank_unusable_hydrogen import SizingHydrogenGasTankUnusableHydrogen
+from ..components.sizing_tank_cg_x import SizingHydrogenGasTankCGX
+from ..components.sizing_tank_cg_y import SizingHydrogenGasTankCGY
+from ..components.sizing_tank_length import SizingHydrogenGasTankLength
+from ..components.sizing_tank_inner_diameter import SizingHydrogenGasTankInnerDiameter
+from ..components.sizing_tank_outer_diameter import SizingHydrogenGasTankOuterDiameter
+from ..components.sizing_tank_weight import SizingHydrogenGasTankWeight
+from ..components.sizing_tank_drag import SizingHydrogenGasTankDrag
+from ..components.sizing_tank_wall_thickness import SizingHydrogenGasTankWallThickness
 
-from ..components.cstr_enforce import ConstraintsFuelTankCapacityEnforce
-from ..components.cstr_ensure import ConstraintsFuelTankCapacityEnsure
+from ..components.cstr_enforce import ConstraintsHydrogenGasTankCapacityEnforce
+from ..components.cstr_ensure import ConstraintsHydrogenGasTankCapacityEnsure
+from ..components.cstr_hydrogen_gas_tank import ConstraintsHydrogenGasTank
 
-from ..components.perf_fuel_mission_consumed import PerformancesFuelConsumedMission
-from ..components.perf_fuel_remaining import PerformancesFuelRemainingMission
+from ..components.perf_fuel_mission_consumed import PerformancesHydrogenGasConsumedMission
+from ..components.perf_fuel_remaining import PerformancesHydrogenGasRemainingMission
 
-from ..components.sizing_tank import SizingFuelTank
-from ..components.perf_fuel_tank import PerformancesFuelTank
+from ..components.sizing_tank import SizingHydrogenGasTank
+from ..components.perf_hydrogen_gas_tank import PerformancesHydrogenGasTank
 
 from ..constants import POSSIBLE_POSITION
 
