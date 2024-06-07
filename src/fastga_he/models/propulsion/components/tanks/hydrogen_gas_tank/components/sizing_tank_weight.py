@@ -5,14 +5,13 @@
 import openmdao.api as om
 import numpy as np
 import logging
-#TODO: finish the partial part and think about how define the partial of the material choice
-_LOGGER = logging.getLogger(__name__)
+
 # To modify
 class SizingHydrogenGasTankWeight(om.ExplicitComponent):
     """
     Computation of the weight of the tank. The very simplistic approach we will use is to say
     that weight of tank is the weight of unused fuel and the weight of the tank itself.
-    material density are cite from: Hydrogen Storage for Aircraft Application Overview, NASA 2002
+    Reference material density are cite from: Hydrogen Storage for Aircraft Application Overview, NASA 2002
     """
 
     def initialize(self):
@@ -38,7 +37,9 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
         )
 
         self.add_input(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":volume",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":inner_volume",
             units="m**3",
             val=np.nan,
             desc="Capacity of the tank in terms of volume",
@@ -64,9 +65,11 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
         self.add_input(
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":tank_material",
-            val=np.nan,
-            desc="Choice of the tank material 1:Steel(ASTM-A514), 2:Aluminum(2014-T6), 3:Titanium(6%Al,4%V), 4:Carbon Composite",
+            + ":material_density",
+            units="kg/m**3",
+            val=7860.0,
+            desc="Choice of the tank material,Some reference: Steel(ASTM-A514):7860, "
+            "Aluminum(2014-T6):2800, Titanium(6%Al,4%V):4460, Carbon Composite:1530",
         )
 
         self.add_output(
@@ -83,22 +86,12 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
-        material = inputs[
+        wall_density = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":tank_material"
+            + ":material_density"
         ]
-        if material == 1.0:
-            wall_density = 7860.0  # kg/m^3
-        elif material == 2.0:
-            wall_density = 2800.0  # kg/m^3
-        elif material == 3.0:
-            wall_density = 4460  # kg/m^3
-        elif material == 4.0:
-            wall_density = 1530  # kg/m^3
-        else:
-            wall_density = 7860.0  # kg/m^3
-        _LOGGER.warning("Fuel type %f does not exist, replaced by type 1!", fuel_type)
+
         r = (
             inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -121,9 +114,67 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
             - inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
-                + ":volume"
+                + ":inner_volume"
             ]
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        r = (
+            inputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:diameter"
+            ]
+            / 2
+        )
+        d = 2 * r
+        l = inputs[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":dimension:length"
+        ]
+
+        wall_density = inputs[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":material_density"
+        ]
+
+        partials[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":material_density",
+        ] = (
+            0.75 * np.pi * r ** 3
+            + np.pi * r ** 2 * l
+            - inputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":inner_volume"
+            ]
+        )
+
+        partials[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":dimension:length",
+        ] = (
+            wall_density * np.pi * r ** 2
+        )
+
+        partials[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":inner_volume",
+        ] = -1.0
+
+        partials[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":dimension:diameter",
+        ] = wall_density * (0.75 * np.pi * d ** 2 * 3 / 8 + np.pi * d * l / 2)

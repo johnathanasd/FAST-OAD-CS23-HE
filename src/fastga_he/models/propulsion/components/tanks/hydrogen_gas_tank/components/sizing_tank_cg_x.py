@@ -37,16 +37,54 @@ class SizingHydrogenGasTankCGX(om.ExplicitComponent):
             "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:x",
             units="m",
             val=2.5,
-            desc="X position of the battery center of gravity",
+            desc="X position of the tank center of gravity",
         )
 
-        if position == "inside_the_wing" or position == "wing_pod":
+        if position == "wing_pod":
 
             self.add_input("data:geometry:wing:MAC:at25percent:x", val=np.nan, units="m")
             self.add_input("data:geometry:wing:MAC:length", val=np.nan, units="m")
 
             self.declare_partials(of="*", wrt="data:geometry:wing:MAC:at25percent:x", val=1)
             self.declare_partials(of="*", wrt="data:geometry:wing:MAC:length", val=0.25)
+            
+        elif position == "in_the_back":
+
+            self.add_input("data:geometry:fuselage:front_length", val=np.nan, units="m")
+            self.add_input("data:geometry:cabin:length", val=np.nan, units="m")
+            self.add_input(
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:length",
+                units="m",
+                val=np.nan,
+                desc="Length of the pemfc, as in the size of the pemfc along the X-axis",
+            )
+            self.add_input(
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:diameter",
+                units="m",
+                val=np.nan,
+                desc="Outer diameter of the hydrogen gas tank",
+            )
+
+            self.declare_partials(of="*", wrt="data:geometry:fuselage:front_length", val=1.0)
+            self.declare_partials(of="*", wrt="data:geometry:cabin:length", val=1.0)
+            self.declare_partials(
+                of="*",
+                wrt="data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:length",
+                val=0.5,
+            )
+            self.declare_partials(
+                of="*",
+                wrt="data:propulsion:he_power_train:hydrogen_gas_tank:"
+                    + hydrogen_gas_tank_id
+                    + ":dimension:diameter",
+                val=0.5,
+            )
 
         # We can do an else for the last option since we gave OpenMDAO the possible, ensuring it
         # is one among them
@@ -63,13 +101,28 @@ class SizingHydrogenGasTankCGX(om.ExplicitComponent):
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
         position = self.options["position"]
 
-        if position == "inside_the_wing" or position == "wing_pod":
+        if position == "wing_pod":
 
             outputs[
                 "data:propulsion:he_power_train:fuel_tank:" + hydrogen_gas_tank_id + ":CG:x"
             ] = (
                 inputs["data:geometry:wing:MAC:at25percent:x"]
                 + 0.25 * inputs["data:geometry:wing:MAC:length"]
+            )
+            
+        elif position == "in_the_back":
+
+            outputs["data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:x"] = (
+                inputs["data:geometry:fuselage:front_length"]
+                + inputs["data:geometry:cabin:length"]
+                + 0.5
+                * inputs[
+                    "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                    + hydrogen_gas_tank_id
+                    + ":dimension:length"
+                ] + 0.5*inputs["data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:diameter"]
             )
 
         else:
