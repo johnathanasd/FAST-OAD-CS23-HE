@@ -6,10 +6,9 @@ import openmdao.api as om
 import numpy as np
 
 # To modify
-class SizingFuelTankWallThickness(om.ExplicitComponent):
+class SizingHydrogenGasTankWallThickness(om.ExplicitComponent):
     """
-    Computation of the weight of the tank. The very simplistic approach we will use is to say
-    that weight of tank is the weight of unused fuel and the weight of the tank itself.
+    Computation of the wall thickness of the tank. Using tank pressure and yield stress of material
     """
 
     def initialize(self):

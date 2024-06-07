@@ -13,12 +13,9 @@ STEP = 1e-7
 TE_CHORD_MARGIN_RATIO = 0.05  # Ratio of the chord left between the flaps and the tank
 
 
-class SizingFuelTankLength(om.ExplicitComponent):
+class SizingHydrogenGasTankLength(om.ExplicitComponent):
     """
-    Computation of the reference length for the computation of the tank width. If the tank is in
-    a pod, it will depend on volume and a fineness ratio. If it is in the wing, it will depend on
-    the wing chord law, its position and some factor. If it is in the fuselage it will be equal
-    to the cabin length.
+    Computation of the cylindrical part length of the tank, which does not include the cap from both end.
     """
 
     def __init__(self, **kwargs):

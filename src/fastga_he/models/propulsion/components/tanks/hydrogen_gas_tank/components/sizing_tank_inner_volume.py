@@ -11,13 +11,9 @@ _LOGGER = logging.getLogger(__name__)
 HYDROGEN_GAS_CONSTANT = 4157.2  # (N.m/K.kg)
 
 
-class SizingFuelTankInnerVolume(om.ExplicitComponent):
+class SizingHydrogenGasTankInnerVolume(om.ExplicitComponent):
     """
-    Computation of the volume of fuel to be stored in the tank. Assumes that there is no
-    significant difference between tank volume and fuel volume, can be change easily later. Also,
-    the fuel type will be an input of this component though I am not pleased with this idea since
-    it should depend on what type of fuel burning engine it is connected to, thus the info should
-    come from there.
+    Computation of the volume of fuel to be stored in the tank. Calculate under ideal gas assumption.
     """
 
     def __init__(self, **kwargs):

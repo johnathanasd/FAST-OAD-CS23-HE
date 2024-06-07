@@ -4,9 +4,12 @@
 
 import openmdao.api as om
 import numpy as np
+from ..constants import POSSIBLE_POSITION
 import logging
 
-# To modify
+_LOGGER = logging.getLogger(__name__)
+
+
 class SizingHydrogenGasTankWeight(om.ExplicitComponent):
     """
     Computation of the weight of the tank. The very simplistic approach we will use is to say
@@ -56,7 +59,7 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
         self.add_input(
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":dimension:diameter",
+            + ":dimension:outer_diameter",
             units="m",
             val=np.nan,
             desc="Outer diameter of the hydrogen gas tank",
@@ -86,6 +89,7 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+
         wall_density = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
@@ -96,10 +100,11 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
             inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
-                + ":dimension:diameter"
+                + ":dimension:outer_diameter"
             ]
             / 2
         )
+
         l = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
@@ -124,7 +129,7 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
             inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
-                + ":dimension:diameter"
+                + ":dimension:outer_diameter"
             ]
             / 2
         )
@@ -176,5 +181,5 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
             "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass",
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":dimension:diameter",
+            + ":dimension:outer_diameter",
         ] = wall_density * (0.75 * np.pi * d ** 2 * 3 / 8 + np.pi * d * l / 2)

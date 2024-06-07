@@ -6,10 +6,10 @@ import openmdao.api as om
 import numpy as np
 
 # To modify
-class SizingFuelTankInnerDiameter(om.ExplicitComponent):
+class SizingHydrogenGasTankInnerDiameter(om.ExplicitComponent):
     """
-    Computation of the weight of the tank. The very simplistic approach we will use is to say
-    that weight of tank is the weight of unused fuel and the weight of the tank itself.
+    Computation of the inner diameter of the tank. Using the relation of the tank pressure and the yield strength of
+    the wall material
     """
 
     def initialize(self):
@@ -28,7 +28,7 @@ class SizingFuelTankInnerDiameter(om.ExplicitComponent):
         self.add_input(
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":dimension:diameter",
+            + ":dimension:outer_diameter",
             units="m",
             val=np.nan,
             desc="Outer diameter of the hydrogen gas tank",
@@ -76,7 +76,7 @@ class SizingFuelTankInnerDiameter(om.ExplicitComponent):
         ] = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":dimension:diameter"
+            + ":dimension:outer_diameter"
         ] / (
             1
             + 0.5
@@ -94,7 +94,7 @@ class SizingFuelTankInnerDiameter(om.ExplicitComponent):
         d_outer = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":dimension:diameter"
+            + ":dimension:outer_diameter"
         ]
         partials[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -102,7 +102,7 @@ class SizingFuelTankInnerDiameter(om.ExplicitComponent):
             + ":dimension:inner_diameter",
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":dimension:diameter",
+            + ":dimension:outer_diameter",
         ] = 1 // (1 + 0.5 * pt * sf / sigma)
         partials[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"

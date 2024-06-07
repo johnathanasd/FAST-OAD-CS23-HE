@@ -48,7 +48,9 @@ class SizingHydrogenGasTankCGY(om.ExplicitComponent):
         if position == "wing_pod":
 
             self.add_input(
-                "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:y_ratio",
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":CG:y_ratio",
                 val=np.nan,
                 desc="X position of the pemfc center of gravity as a ratio of the wing half-span",
             )
@@ -62,17 +64,23 @@ class SizingHydrogenGasTankCGY(om.ExplicitComponent):
 
         if position == "wing_pod":
 
-            outputs["data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:y"] = (
+            outputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:y"
+            ] = (
                 inputs["data:geometry:wing:span"]
                 * inputs[
-                    "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:y_ratio"
+                    "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                    + hydrogen_gas_tank_id
+                    + ":CG:y_ratio"
                 ]
                 / 2.0
             )
 
         else:
 
-            outputs["data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:y"] = 0.0
+            outputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:y"
+            ] = 0.0
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
@@ -82,17 +90,25 @@ class SizingHydrogenGasTankCGY(om.ExplicitComponent):
         if position == "wing_pod":
 
             partials[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:y",
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":CG:y",
                 "data:geometry:wing:span",
             ] = (
                 inputs[
-                    "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:y_ratio"
+                    "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                    + hydrogen_gas_tank_id
+                    + ":CG:y_ratio"
                 ]
                 / 2.0
             )
             partials[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:y",
-                "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:y_ratio",
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":CG:y",
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":CG:y_ratio",
             ] = (
                 inputs["data:geometry:wing:span"] / 2.0
             )

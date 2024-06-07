@@ -47,7 +47,7 @@ class SizingHydrogenGasTankCGX(om.ExplicitComponent):
 
             self.declare_partials(of="*", wrt="data:geometry:wing:MAC:at25percent:x", val=1)
             self.declare_partials(of="*", wrt="data:geometry:wing:MAC:length", val=0.25)
-            
+
         elif position == "in_the_back":
 
             self.add_input("data:geometry:fuselage:front_length", val=np.nan, units="m")
@@ -81,8 +81,8 @@ class SizingHydrogenGasTankCGX(om.ExplicitComponent):
             self.declare_partials(
                 of="*",
                 wrt="data:propulsion:he_power_train:hydrogen_gas_tank:"
-                    + hydrogen_gas_tank_id
-                    + ":dimension:diameter",
+                + hydrogen_gas_tank_id
+                + ":dimension:diameter",
                 val=0.5,
             )
 
@@ -109,10 +109,12 @@ class SizingHydrogenGasTankCGX(om.ExplicitComponent):
                 inputs["data:geometry:wing:MAC:at25percent:x"]
                 + 0.25 * inputs["data:geometry:wing:MAC:length"]
             )
-            
+
         elif position == "in_the_back":
 
-            outputs["data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:x"] = (
+            outputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:x"
+            ] = (
                 inputs["data:geometry:fuselage:front_length"]
                 + inputs["data:geometry:cabin:length"]
                 + 0.5
@@ -120,9 +122,13 @@ class SizingHydrogenGasTankCGX(om.ExplicitComponent):
                     "data:propulsion:he_power_train:hydrogen_gas_tank:"
                     + hydrogen_gas_tank_id
                     + ":dimension:length"
-                ] + 0.5*inputs["data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
-                + ":dimension:diameter"]
+                ]
+                + 0.5
+                * inputs[
+                    "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                    + hydrogen_gas_tank_id
+                    + ":dimension:diameter"
+                ]
             )
 
         else:
