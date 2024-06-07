@@ -9,41 +9,30 @@ import openmdao.api as om
 import pytest
 import numpy as np
 
-from ..components.sizing_module_weight import SizingBatteryModuleWeight
-from ..components.sizing_battery_weight import SizingBatteryWeight
-from ..components.sizing_number_cells import SizingBatteryNumberCells
-from ..components.sizing_battery_cg_x import SizingBatteryCGX
-from ..components.sizing_battery_cg_y import SizingBatteryCGY
-from ..components.sizing_module_volume import SizingBatteryModuleVolume
-from ..components.sizing_battery_volume import SizingBatteryVolume
-from ..components.sizing_battery_dimensions import SizingBatteryDimensions
-from ..components.sizing_battery_drag import SizingBatteryDrag
-from ..components.sizing_battery_prep_for_loads import SizingBatteryPreparationForLoads
-from ..components.perf_cell_temperature import PerformancesCellTemperatureMission
-from ..components.perf_module_current import PerformancesModuleCurrent
-from ..components.perf_open_circuit_voltage import PerformancesOpenCircuitVoltage
-from ..components.perf_internal_resistance import PerformancesInternalResistance
-from ..components.perf_cell_voltage import PerformancesCellVoltage
-from ..components.perf_module_voltage import PerformancesModuleVoltage
-from ..components.perf_battery_voltage import PerformancesBatteryVoltage
-from ..components.perf_battery_c_rate import PerformancesModuleCRate
-from ..components.perf_battery_relative_capacity import PerformancesRelativeCapacity
-from ..components.perf_soc_decrease import PerformancesSOCDecrease
-from ..components.perf_update_soc import PerformancesUpdateSOC
-from ..components.perf_joule_losses import PerformancesCellJouleLosses
-from ..components.perf_entropic_heat_coefficient import PerformancesEntropicHeatCoefficient
-from ..components.perf_entropic_losses import PerformancesCellEntropicLosses
-from ..components.perf_cell_losses import PerformancesCellLosses
-from ..components.perf_battery_losses import PerformancesBatteryLosses
-from ..components.perf_maximum import PerformancesMaximum
-from ..components.perf_battery_efficiency import PerformancesBatteryEfficiency
-from ..components.perf_battery_power import PerformancesBatteryPower
-from ..components.perf_energy_consumption import PerformancesEnergyConsumption
-from ..components.cstr_ensure import ConstraintsSOCEnsure
-from ..components.cstr_enforce import ConstraintsSOCEnforce
 
-from ..components.sizing_battery_pack import SizingBatteryPack
-from ..components.perf_battery_pack import PerformancesBatteryPack
+from ..components.sizing_pemfc_weight import SizingPEMFCWeight
+from ..components.sizing_pemfc_cg_x import SizingPEMFCCGX
+from ..components.sizing_pemfc_cg_y import SizingPEMFCCGY
+from ..components.sizing_pemfc_volume import SizingPEMFCVolume
+from ..components.sizing_pemfc_dimensions import SizingPEMFCDimensions
+from ..components.sizing_pemfc_drag import SizingPEMFCDrag
+
+from ..components.perf_direct_bus_connection import PerformancesPEMFCDirectBusConnection
+from ..components.perf_fuel_consumption import PerformancesPEMFCFuelConsumption
+from ..components.perf_fuel_consumed import PerformancesPEMFCFuelConsumed
+from ..components.perf_layer_voltage import PerformancesSinglePEMFCVoltage
+from ..components.perf_pemfc_current_density import PerformancesCurrentDensity
+from ..components.perf_maximum import PerformancesMaximum
+from ..components.perf_pemfc_efficiency import PerformancesPEMFCEfficiency
+from ..components.perf_pemfc_power import PerformancesPEMFCPower
+from ..components.perf_pemfc_voltage import PerformancesPEMFCVoltage
+
+from ..components.cstr_ensure import ConstraintsEffectiveAreaEnsure
+from ..components.cstr_enforce import ConstraintsEffectiveAreaEnforce
+
+from ..components.sizing_pemfc_stack import SizingPEMFCStack
+from ..components.perf_pemfc_stack import PerformancesPEMFCStack
+from ..components.cstr_pemfc_stack import ConstraintsPEMFC
 
 from ..constants import POSSIBLE_POSITION
 
