@@ -8,6 +8,8 @@ import logging
 from ..constants import POSSIBLE_POSITION
 
 _LOGGER = logging.getLogger(__name__)
+
+
 class SizingHydrogenGasTankLength(om.ExplicitComponent):
     """
     Computation of the cylindrical part length of the tank, which does not include the cap from both end.
