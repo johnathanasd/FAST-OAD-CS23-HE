@@ -3,16 +3,11 @@
 # Copyright (C) 2022 ISAE-SUPAERO
 
 import numpy as np
-from scipy.interpolate import InterpolatedUnivariateSpline
-
 import openmdao.api as om
-
+import logging
 from ..constants import POSSIBLE_POSITION
 
-STEP = 1e-7
-TE_CHORD_MARGIN_RATIO = 0.05  # Ratio of the chord left between the flaps and the tank
-
-
+_LOGGER = logging.getLogger(__name__)
 class SizingHydrogenGasTankLength(om.ExplicitComponent):
     """
     Computation of the cylindrical part length of the tank, which does not include the cap from both end.
@@ -63,16 +58,15 @@ class SizingHydrogenGasTankLength(om.ExplicitComponent):
             desc="Inner diameter of the hydrogen gas tanks",
         )
 
-        self.add_input(
-            name="data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
-            + ":dimension:outer_diameter",
-            units="m",
-            val=np.nan,
-            desc="Outer diameter of the hydrogen gas tanks",
-        )
-
         if position == "underbelly" or position == "in_the_fuselage":
+            self.add_input(
+                name="data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:outer_diameter",
+                units="m",
+                val=np.nan,
+                desc="Outer diameter of the hydrogen gas tanks",
+            )
             self.add_input("data:geometry:cabin:length", val=np.nan, units="m")
             self.add_output(
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -115,6 +109,9 @@ class SizingHydrogenGasTankLength(om.ExplicitComponent):
         if (position == "underbelly" or position == "in_the_fuselage") and length > inputs[
             "data:geometry:cabin:length"
         ]:
+            _LOGGER.warning(
+                msg="Tank length greater than cabin length!! Tank length adjust to proper size"
+            )
             outputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
@@ -163,6 +160,11 @@ class SizingHydrogenGasTankLength(om.ExplicitComponent):
 
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
         position = self.options["position"]
+        d = inputs[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":dimension:inner_diameter"
+        ]
         length = (
             inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -171,10 +173,10 @@ class SizingHydrogenGasTankLength(om.ExplicitComponent):
             ]
             - np.pi * d ** 3 / 6
         ) / (np.pi * d ** 2 / 4)
-        d = inputs[
+        vin = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":dimension:inner_diameter"
+            + ":inner_volume"
         ]
         if (position == "underbelly" or position == "in_the_fuselage") and length > inputs[
             "data:geometry:cabin:length"
@@ -211,7 +213,7 @@ class SizingHydrogenGasTankLength(om.ExplicitComponent):
                     + ":dimension:outer_diameter"
                 ]
             )
-            # TODO: Calculate the partial
+
             partials[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
@@ -219,9 +221,23 @@ class SizingHydrogenGasTankLength(om.ExplicitComponent):
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
                 + ":dimension:inner_diameter",
-            ] = 0.0
+            ] = (
+                -inputs[
+                    "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                    + hydrogen_gas_tank_id
+                    + ":dimension:outer_diameter"
+                ]
+                * (np.pi * d ** 3 + 12 * vin)
+                / (
+                    6
+                    * np.sqrt(np.pi)
+                    * inputs["data:geometry:cabin:length"]
+                    * d
+                    * np.sqrt((vin - np.pi * d ** 3 / 6) / inputs["data:geometry:cabin:length"])
+                    * np.abs(d)
+                )
+            )
 
-            # TODO: Calculate the partial
             partials[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
@@ -229,7 +245,16 @@ class SizingHydrogenGasTankLength(om.ExplicitComponent):
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
                 + ":inner_volume",
-            ] = 0.0
+            ] = inputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:outer_diameter"
+            ] / (
+                np.sqrt(np.pi)
+                * inputs["data:geometry:cabin:length"]
+                * np.abs(d)
+                * np.sqrt((vin - np.pi * d ** 3 / 6) / inputs["data:geometry:cabin:length"])
+            )
 
         elif (position == "underbelly" or position == "in_the_fuselage") and length < inputs[
             "data:geometry:cabin:length"
