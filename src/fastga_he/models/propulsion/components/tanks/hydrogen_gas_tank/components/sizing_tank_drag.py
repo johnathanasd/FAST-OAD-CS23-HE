@@ -47,7 +47,7 @@ class SizingHydrogenGasTankDrag(om.ExplicitComponent):
         self.add_input(
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":dimension:diameter",
+            + ":dimension:outer_diameter",
             units="m",
             val=np.nan,
             desc="Outer diameter of the hydrogen gas tank",
@@ -131,7 +131,7 @@ class SizingHydrogenGasTankDrag(om.ExplicitComponent):
             belly_width = inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
-                + ":dimension:diameter"
+                + ":dimension:outer_diameter"
             ]
             belly_length = inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -141,7 +141,7 @@ class SizingHydrogenGasTankDrag(om.ExplicitComponent):
             belly_height = inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
-                + ":dimension:diameter"
+                + ":dimension:outer_diameter"
             ]
             added_wet_area = (
                 belly_length * belly_width
