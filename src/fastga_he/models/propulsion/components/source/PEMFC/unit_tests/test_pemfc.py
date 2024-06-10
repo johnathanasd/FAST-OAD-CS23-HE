@@ -32,7 +32,6 @@ from ..components.cstr_enforce import ConstraintsEffectiveAreaEnforce
 
 from ..components.sizing_pemfc_stack import SizingPEMFCStack
 from ..components.perf_pemfc_stack import PerformancesPEMFCStack
-from ..components.cstr_pemfc_stack import ConstraintsPEMFC
 
 from ..constants import POSSIBLE_POSITION
 
@@ -395,7 +394,9 @@ def test_pemfc_current_density():
 def test_direct_bus_connection():
 
     ivc = om.IndepVarComp()
-    ivc.add_output("state_of_charge", val=np.linspace(100, 40, NB_POINTS_TEST), units="percent")
+    ivc.add_output("voltage_out", val=np.linspace(400, 400, NB_POINTS_TEST), units="V")
+    ivc.add_output("pemfc_voltage", val=np.linspace(390, 400, NB_POINTS_TEST), units="V")
+
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
@@ -413,28 +414,20 @@ def test_single_layer_voltage():
 
     ivc = om.IndepVarComp()
     ivc.add_output(
-        "current_one_module",
-        units="A",
-        val=np.array([10.0, 10.03, 10.06, 10.08, 10.11, 10.14, 10.17, 10.19, 10.22, 10.25]),
+        "fc_current_density",
+        units="A/cm**2",
+        val=np.array([0.1,0.2,0.3,0.4,0.5,0.6,0.7]),
     )
-    ivc.add_output(
-        "open_circuit_voltage",
-        units="V",
-        val=np.array([4.04, 3.96, 3.89, 3.84, 3.79, 3.75, 3.72, 3.68, 3.65, 3.62]),
-    )
-    ivc.add_output(
-        "internal_resistance",
-        units="ohm",
-        val=np.array([2.96, 3.44, 3.83, 4.13, 4.35, 4.51, 4.62, 4.68, 4.71, 4.71]) * 1e-3,
-    )
-
+    ivc.add_output(name="data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:operation_pressure",
+            units="atm",
+            val=1.2,)
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
-        PerformancesSinglePEMFCVoltage(pemfc_stack_id="pemfc_stack_1"),
+        PerformancesSinglePEMFCVoltage(pemfc_stack_id="pemfc_stack_1", number_of_points=7),
         ivc,
     )
-    assert problem.get_val("terminal_voltage", units="V") == pytest.approx(
-        [4.01, 3.93, 3.85, 3.8, 3.75, 3.7, 3.67, 3.63, 3.6, 3.57], rel=1e-2
+    assert problem.get_val("single_layer_pemfc_voltage", units="V") == pytest.approx(
+        [0.849,0.815,0.786,0.757,0.729,0.699,0.66], rel=1e-2
     )
 
     problem.check_partials(compact_print=True)

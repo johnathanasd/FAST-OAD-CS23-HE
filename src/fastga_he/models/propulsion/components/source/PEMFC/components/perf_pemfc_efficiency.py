@@ -35,13 +35,13 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
 
         self.add_input("nominal_pressure", units="atm", val=1.0)
 
-        self.add_output(
+        self.add_input(
             "single_layer_pemfc_voltage",
             units="V",
             val=np.nan,
         )
 
-        self.add_output("efficiency", val=np.nan, lower=0.0, upper=1.0)
+        self.add_output("efficiency", val=0.4, lower=0.0, upper=1.0)
 
         self.declare_partials(of="*", wrt="*", method="exact")
 

@@ -2,6 +2,6 @@
 # Electric Aircraft.
 # Copyright (C) 2022 ISAE-SUPAERO
 
-from .components.sizing_battery_pack import SizingBatteryPack
-from .components.perf_battery_pack import PerformancesBatteryPack
-from .components.slipstream_battery_pack import SlipstreamBatteryPack
+from .components.sizing_pemfc_stack import SizingPEMFCStack
+from .components.perf_pemfc_stack import PerformancesPEMFCStack
+from .components.slipstream_pemfc_stack import SlipstreamPEMFCStack

@@ -42,7 +42,7 @@ class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
         self.add_input(
             name="data:propulsion:he_power_train:pemfc_stack:"
             + pemfc_stack_id
-            + "operation_pressure",
+            + ":operation_pressure",
             units="atm",
             val=1.0,
         )
@@ -74,7 +74,7 @@ class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
         C = 0.06
         i = inputs["fc_current_density"]
         Pop = inputs[
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + "operation_pressure"
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":operation_pressure"
         ]
         Pnom = inputs["nominal_pressure"]
         outputs["single_layer_pemfc_voltage"] = (
@@ -96,16 +96,15 @@ class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
         )
         partials[
             "single_layer_pemfc_voltage",
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + "operation_pressure",
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":operation_pressure",
         ] = (
             C
-            * np.ones(number_of_points)
             / inputs[
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id
-                + "operation_pressure"
-            ]
+                + ":operation_pressure"
+            ]*np.ones((number_of_points, 1))
         )
         partials["single_layer_pemfc_voltage", "nominal_pressure"] = (
-            -C * np.ones(number_of_points) / inputs["nominal_pressure"]
+            -C / inputs["nominal_pressure"]*np.ones((number_of_points, 1))
         )
