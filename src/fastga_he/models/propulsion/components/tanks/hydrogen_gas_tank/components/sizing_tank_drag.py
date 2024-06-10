@@ -206,7 +206,9 @@ class SizingHydrogenGasTankDrag(om.ExplicitComponent):
                 + ls_tag
                 + ":CD0",
                 "data:geometry:wing:area",
-            ] = (-0.10 * frontal_area / inputs["data:geometry:wing:area"] ** 2)
+            ] = (
+                -0.10 * frontal_area / inputs["data:geometry:wing:area"] ** 2
+            )
 
         elif position == "underbelly":
             d = inputs[
@@ -232,7 +234,9 @@ class SizingHydrogenGasTankDrag(om.ExplicitComponent):
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
                 + ":dimension:diameter",
-            ] = (cd0_fus * (3 * l + 4 * d) / wet_area)
+            ] = (
+                cd0_fus * (3 * l + 4 * d) / wet_area
+            )
 
             partials[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -243,7 +247,9 @@ class SizingHydrogenGasTankDrag(om.ExplicitComponent):
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
                 + ":dimension:length",
-            ] = (cd0_fus * 3 * d / wet_area)
+            ] = (
+                cd0_fus * 3 * d / wet_area
+            )
             partials[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
@@ -251,7 +257,9 @@ class SizingHydrogenGasTankDrag(om.ExplicitComponent):
                 + ls_tag
                 + ":CD0",
                 "data:geometry:fuselage:wet_area",
-            ] = (-cd0_fus * (3 * d * l + 2 * d ** 2) / wet_area ** 2)
+            ] = (
+                -cd0_fus * (3 * d * l + 2 * d ** 2) / wet_area ** 2
+            )
             partials[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id

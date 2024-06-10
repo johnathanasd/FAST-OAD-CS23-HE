@@ -14,6 +14,7 @@ from ..components.perf_layer_voltage import PerformancesSinglePEMFCVoltage
 from ..components.perf_fuel_consumption import PerformancesPEMFCFuelConsumption
 from ..components.perf_fuel_consumed import PerformancesPEMFCFuelConsumed
 from ..components.perf_pemfc_efficiency import PerformancesPEMFCEfficiency
+from ..components.perf_pemfc_voltage import PerformancesPEMFCVoltage
 
 
 class PerformancesPEMFCStack(om.Group):
@@ -45,6 +46,14 @@ class PerformancesPEMFCStack(om.Group):
         self.add_subsystem(
             "single_layer_voltage",
             PerformancesSinglePEMFCVoltage(pemfc_stack_id=pemfc_stack_id),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            "pemfc_voltage",
+            PerformancesPEMFCVoltage(
+                number_of_points=number_of_points, direct_bus_connection=direct_bus_connection
+            ),
             promotes=["*"],
         )
 

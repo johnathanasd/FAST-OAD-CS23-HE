@@ -8,7 +8,9 @@ import pytest
 import numpy as np
 
 from ..components.sizing_tank_inner_volume import SizingHydrogenGasTankInnerVolume
-from ..components.sizing_tank_total_hydrogen_mission import SizingHydrogenGasTankTotalHydrogenMission
+from ..components.sizing_tank_total_hydrogen_mission import (
+    SizingHydrogenGasTankTotalHydrogenMission,
+)
 from ..components.sizing_tank_unusable_hydrogen import SizingHydrogenGasTankUnusableHydrogen
 from ..components.sizing_tank_cg_x import SizingHydrogenGasTankCGX
 from ..components.sizing_tank_cg_y import SizingHydrogenGasTankCGY

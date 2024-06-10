@@ -113,4 +113,6 @@ class SizingHydrogenGasTankLength(om.ExplicitComponent):
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
             + ":dimension:inner_diameter",
-        ] = (-2 * d / 3)
+        ] = (
+            -2 * d / 3
+        )

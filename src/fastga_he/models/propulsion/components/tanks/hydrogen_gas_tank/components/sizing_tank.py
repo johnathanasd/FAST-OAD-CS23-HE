@@ -54,7 +54,9 @@ class SizingHydrogenGasTank(om.Group):
         )
         self.add_subsystem(
             name="total_hydrogen_gas",
-            subsys=SizingHydrogenGasTankTotalHydrogenMission(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
+            subsys=SizingHydrogenGasTankTotalHydrogenMission(
+                hydrogen_gas_tank_id=hydrogen_gas_tank_id
+            ),
             promotes=["*"],
         )
 
@@ -97,7 +99,9 @@ class SizingHydrogenGasTank(om.Group):
         )
         self.add_subsystem(
             name="tank_outer_diameter",
-            subsys=SizingHydrogenGasTankOuterDiameter(hydrogen_gas_tank_id=hydrogen_gas_tank_id, position=position),
+            subsys=SizingHydrogenGasTankOuterDiameter(
+                hydrogen_gas_tank_id=hydrogen_gas_tank_id, position=position
+            ),
             promotes=["*"],
         )
 
@@ -124,4 +128,3 @@ class SizingHydrogenGasTank(om.Group):
                 ),
                 promotes=["*"],
             )
-
