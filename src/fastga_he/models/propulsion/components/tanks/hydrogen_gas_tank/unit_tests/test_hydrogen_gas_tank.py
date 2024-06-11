@@ -475,7 +475,11 @@ def test_hydrogen_gas_remaining_mission():
 
     # Research independent input value in .xml file
     ivc = om.IndepVarComp()
-    ivc.add_output("data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:fuel_consumed_mission", units="kg",val=140.)
+    ivc.add_output(
+        "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:fuel_consumed_mission",
+        units="kg",
+        val=140.0,
+    )
     ivc.add_output("fuel_consumed_t", val=np.full(NB_POINTS_TEST, 14.0))
 
     # Run problem and check obtained value(s) is/(are) correct

@@ -23,11 +23,22 @@ class SizingPEMFCWeight(om.ExplicitComponent):
             allow_none=False,
         )
 
+        self.options.declare(
+            name="pemfc_stack_id",
+            default=None,
+            desc="Identifier of the pemfc pack",
+            allow_none=False,
+        )
+
     def setup(self):
 
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
-        self.add_input("number_of_layers", val=np.nan, desc="Number of layer in 1 PEMFC stack")
+        self.add_input(
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers",
+            val=np.nan,
+            desc="Number of layer in 1 PEMFC stack",
+        )
 
         self.add_input(
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
@@ -51,7 +62,9 @@ class SizingPEMFCWeight(om.ExplicitComponent):
 
         outputs["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":mass"] = (
             FC_WEIGHT_DENSITY
-            * inputs["number_of_layers"]
+            * inputs[
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers"
+            ]
             * inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
             ]
@@ -63,7 +76,7 @@ class SizingPEMFCWeight(om.ExplicitComponent):
 
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":mass",
-            "number_of_layers",
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers",
         ] = (
             FC_WEIGHT_DENSITY
             * inputs[
@@ -74,5 +87,8 @@ class SizingPEMFCWeight(om.ExplicitComponent):
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":mass",
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
         ] = (
-            FC_WEIGHT_DENSITY * inputs["number_of_layers"]
+            FC_WEIGHT_DENSITY
+            * inputs[
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers"
+            ]
         )

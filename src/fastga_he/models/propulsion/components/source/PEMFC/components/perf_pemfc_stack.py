@@ -44,15 +44,27 @@ class PerformancesPEMFCStack(om.Group):
         direct_bus_connection = self.options["direct_bus_connection"]
 
         self.add_subsystem(
+            "pemfc_current_density",
+            PerformancesCurrentDensity(
+                number_of_points=number_of_points, pemfc_stack_id=pemfc_stack_id
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
             "single_layer_voltage",
-            PerformancesSinglePEMFCVoltage(pemfc_stack_id=pemfc_stack_id),
+            PerformancesSinglePEMFCVoltage(
+                pemfc_stack_id=pemfc_stack_id, number_of_points=number_of_points
+            ),
             promotes=["*"],
         )
 
         self.add_subsystem(
             "pemfc_voltage",
             PerformancesPEMFCVoltage(
-                number_of_points=number_of_points, direct_bus_connection=direct_bus_connection
+                number_of_points=number_of_points,
+                direct_bus_connection=direct_bus_connection,
+                pemfc_stack_id=pemfc_stack_id,
             ),
             promotes=["*"],
         )
@@ -63,14 +75,6 @@ class PerformancesPEMFCStack(om.Group):
                 PerformancesPEMFCDirectBusConnection(number_of_points=number_of_points),
                 promotes=["*"],
             )
-
-        self.add_subsystem(
-            "pemfc_current_density",
-            PerformancesCurrentDensity(
-                number_of_points=number_of_points, pemfc_stack_id=pemfc_stack_id
-            ),
-            promotes=["*"],
-        )
 
         self.add_subsystem(
             "fuel_consumption",
@@ -86,7 +90,9 @@ class PerformancesPEMFCStack(om.Group):
         )
         self.add_subsystem(
             "pemfc_efficiency",
-            PerformancesPEMFCEfficiency(pemfc_stack_id=pemfc_stack_id),
+            PerformancesPEMFCEfficiency(
+                pemfc_stack_id=pemfc_stack_id, number_of_points=number_of_points
+            ),
             promotes=["*"],
         )
 
@@ -110,28 +116,3 @@ class PerformancesPEMFCStack(om.Group):
             energy_consumed,
             promotes=["non_consumable_energy_t"],
         )
-
-    # TODO: Check if this is required
-    def guess_nonlinear(
-        self, inputs, outputs, residuals, discrete_inputs=None, discrete_outputs=None
-    ):
-
-        number_of_points = self.options["number_of_points"]
-        pemfc_stack_id = self.options["pemfc_stack_id"]
-
-        number_of_layers = inputs[
-            "module_voltage.data:propulsion:he_power_train:pemfc_stack:"
-            + pemfc_stack_id
-            + ":module:number_of_layers"
-        ]
-
-        # Based on the max voltage and cut off voltage of the battery cell
-        fake_layer_voltage = np.linspace(1.2, 0.1, number_of_points)
-        stack_voltage = fake_layer_voltage * number_of_layers
-
-        outputs["module_voltage"] = stack_voltage
-
-        if self.options["direct_bus_connection"]:
-            outputs["pemfc_voltage"] = stack_voltage
-        else:
-            outputs["voltage_out"] = stack_voltage

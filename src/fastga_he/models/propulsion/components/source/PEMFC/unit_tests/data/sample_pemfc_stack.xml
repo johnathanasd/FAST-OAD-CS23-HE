@@ -48,17 +48,16 @@
         <propulsion>
             <he_power_train>
                 <pemfc_stack>
-                    <dc_current_out units="A">1.68</dc_current_out>
-                    <number_of_layers>35</number_of_layers>
                     <pemfc_stack_1>
+                        <number_of_layers>35.0</number_of_layers>
                         <effective_area units="cm**2">16.8</effective_area>
-                        <operation_pressure units="atm">1.0</operation_pressure>
+                        <operation_pressure units="atm">1.2</operation_pressure>
                         <dimension>
-                            <length units="m">0.81</length>
-                            <height units="m">1.67</height>
-                            <width units="m">1.14</width>
+                            <length units="m">0.11998</length>
+                            <height units="m">0.1162</height>
+                            <width units="m">0.1162</width>
                         </dimension>
-                        <volume units="L">1550.0</volume>
+                        <volume units="L">1.62</volume>
                     </pemfc_stack_1>
                 </pemfc_stack>
             </he_power_train>

@@ -27,8 +27,13 @@ class PerformancesPEMFCPower(om.ExplicitComponent):
 
         self.add_output("power_out", units="kW", val=np.full(number_of_points, 20.0))
 
-        self.declare_partials(of="*", wrt="*", method="exact",rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points))
+        self.declare_partials(
+            of="*",
+            wrt="*",
+            method="exact",
+            rows=np.arange(number_of_points),
+            cols=np.arange(number_of_points),
+        )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 

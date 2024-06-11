@@ -32,10 +32,17 @@ class PerformancesPEMFCVoltage(om.ExplicitComponent):
             desc="If the battery is directly connected to a bus, a special mode is required to "
             "interface the two",
         )
+        self.options.declare(
+            name="pemfc_stack_id",
+            default=None,
+            desc="Identifier of the PEMFC stack",
+            allow_none=False,
+        )
 
     def setup(self):
 
         number_of_points = self.options["number_of_points"]
+        pemfc_stack_id = self.options["pemfc_stack_id"]
 
         if self.options["direct_bus_connection"]:
             self.output_name = "pemfc_voltage"
@@ -44,13 +51,19 @@ class PerformancesPEMFCVoltage(om.ExplicitComponent):
             "single_layer_pemfc_voltage", units="V", val=np.full(number_of_points, np.nan)
         )
 
-        self.add_input("number_of_layers", val=np.nan, desc="Number of layer in 1 PEMFC stack")
+        self.add_input(
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers",
+            val=np.nan,
+            desc="Total number of layers in the pemfc stacks",
+        )
 
         self.add_output(self.output_name, units="V", val=np.full(number_of_points, 500.0))
 
         self.declare_partials(
             of=self.output_name,
-            wrt="number_of_layers",
+            wrt="data:propulsion:he_power_train:pemfc_stack:"
+            + pemfc_stack_id
+            + ":number_of_layers",
             method="exact",
             rows=np.arange(number_of_points),
             cols=np.zeros(number_of_points),
@@ -65,17 +78,27 @@ class PerformancesPEMFCVoltage(om.ExplicitComponent):
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
+        pemfc_stack_id = self.options["pemfc_stack_id"]
 
         outputs[self.output_name] = (
-            inputs["single_layer_pemfc_voltage"] * inputs["number_of_layers"]
+            inputs["single_layer_pemfc_voltage"]
+            * inputs[
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers"
+            ]
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
-
+        pemfc_stack_id = self.options["pemfc_stack_id"]
         number_of_points = self.options["number_of_points"]
 
         partials[self.output_name, "single_layer_pemfc_voltage"] = (
-            np.ones(number_of_points) * inputs["number_of_layers"]
+            np.ones(number_of_points)
+            * inputs[
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers"
+            ]
         )
 
-        partials[self.output_name, "number_of_layers"] = inputs["single_layer_pemfc_voltage"]
+        partials[
+            self.output_name,
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers",
+        ] = inputs["single_layer_pemfc_voltage"]

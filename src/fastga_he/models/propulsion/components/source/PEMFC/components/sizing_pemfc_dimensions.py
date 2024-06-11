@@ -8,8 +8,8 @@ import numpy as np
 from ..constants import POSSIBLE_POSITION
 
 UNDERBELLY_RATIO = 0.8  # Ratio between underbelly width and fuselage width
-DIMENSION_RATIO = 0.8958  # Ratio between the effective area length size and the actual FC size
-LENGTH_LAYER_RATIO = 3.428e-3
+DIMENSION_RATIO = 0.3528  # Ratio between the effective area length size and the actual FC size
+LENGTH_LAYER_RATIO = 3.428e-3  # in meters
 
 
 class SizingPEMFCDimensions(om.ExplicitComponent):
@@ -30,7 +30,7 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
         )
         self.options.declare(
             name="position",
-            default="inside_the_wing",
+            default="in_the_back",
             values=POSSIBLE_POSITION,
             desc="Option to give the position of the pemfc, possible position include "
             + ", ".join(POSSIBLE_POSITION),
@@ -68,7 +68,11 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
             desc="Effective fuel cell area in the stack",
         )
 
-        self.add_input("number_of_layers", val=np.nan, desc="Number of layer in 1 PEMFC stack")
+        self.add_input(
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers",
+            val=np.nan,
+            desc="Number of layer in 1 PEMFC stack",
+        )
 
         if position == "underbelly":
 
@@ -82,14 +86,19 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
         position = self.options["position"]
 
         pemfc_area = (
-            DIMENSION_RATIO ** 2
-            * inputs[
+            inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
             ]
+            / DIMENSION_RATIO ** 2
         )
         outputs[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:length"
-        ] = (LENGTH_LAYER_RATIO * inputs["number_of_layers"])
+        ] = (
+            LENGTH_LAYER_RATIO
+            * inputs[
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers"
+            ]
+        )
         if position in "underbelly":
             outputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width"
@@ -118,7 +127,7 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
         )
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:length",
-            "number_of_layers",
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers",
         ] = LENGTH_LAYER_RATIO
 
         if position in "underbelly":

@@ -29,7 +29,7 @@ class SizingPEMFCStack(om.Group):
         )
         self.options.declare(
             name="position",
-            default="underbelly",
+            default="in_the_back",
             values=POSSIBLE_POSITION,
             desc="Option to give the position of the pemfc, possible position include "
             + ", ".join(POSSIBLE_POSITION),

@@ -45,7 +45,7 @@ class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
         )
 
         self.add_input(
-            "number_of_layers",
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers",
             val=np.nan,
             desc="Total number of layers in the pemfc stacks",
         )
@@ -54,7 +54,12 @@ class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
 
         self.declare_partials(
             of="*",
-            wrt=["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area","number_of_layers"],
+            wrt=[
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
+                + ":number_of_layers",
+            ],
             method="exact",
             rows=np.arange(number_of_points),
             cols=np.zeros(number_of_points),
@@ -73,10 +78,12 @@ class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
         outputs["fuel_consumption"] = (
-            inputs["number_of_layers"]
+            inputs[
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
+            ]
             * inputs["fc_current_density"]
             * inputs[
-                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers"
             ]
             * 3600
             / (2 * 96500 * 500)
@@ -87,7 +94,10 @@ class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
         number_of_points = self.options["number_of_points"]
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
-        partials["fuel_consumption", "number_of_layers",] = (
+        partials[
+            "fuel_consumption",
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers",
+        ] = (
             inputs["fc_current_density"]
             * inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
@@ -97,9 +107,11 @@ class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
         )
         partials["fuel_consumption", "fc_current_density"] = (
             np.ones(number_of_points)
-            * inputs["number_of_layers"]
             * inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
+            ]
+            * inputs[
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers"
             ]
             * 3600
             / (2 * 96500 * 500)
@@ -108,5 +120,10 @@ class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
             "fuel_consumption",
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
         ] = (
-            inputs["number_of_layers"] * inputs["fc_current_density"] * 3600 / (2 * 96500 * 500)
+            inputs[
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers"
+            ]
+            * inputs["fc_current_density"]
+            * 3600
+            / (2 * 96500 * 500)
         )

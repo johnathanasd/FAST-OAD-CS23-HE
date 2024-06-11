@@ -4,7 +4,9 @@
 
 import openmdao.api as om
 import numpy as np
-#TODO: Check how to calculate the residuals
+
+# TODO: Check how to calculate the residuals
+
 
 class PerformancesPEMFCDirectBusConnection(om.ImplicitComponent):
     """

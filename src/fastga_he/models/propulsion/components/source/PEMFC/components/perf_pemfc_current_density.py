@@ -82,7 +82,10 @@ class PerformancesCurrentDensity(om.ExplicitComponent):
             ]
         )
 
-        partials["fc_current_density", "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",] = (
+        partials[
+            "fc_current_density",
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
+        ] = (
             -inputs["dc_current_out"]
             / inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
