@@ -51,7 +51,7 @@ class PerformancesCurrentDensity(om.ExplicitComponent):
             wrt="data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
             method="exact",
             rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
+            cols=np.zeros(number_of_points),
         )
 
         self.declare_partials(
@@ -59,7 +59,7 @@ class PerformancesCurrentDensity(om.ExplicitComponent):
             wrt="dc_current_out",
             method="exact",
             rows=np.arange(number_of_points),
-            cols=np.zeros(number_of_points),
+            cols=np.arange(number_of_points),
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):

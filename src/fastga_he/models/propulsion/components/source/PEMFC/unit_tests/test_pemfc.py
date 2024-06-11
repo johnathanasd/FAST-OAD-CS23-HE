@@ -439,10 +439,11 @@ def test_pemfc_voltage():
     ivc = om.IndepVarComp()
     # TODO: Check varaible name
     ivc.add_output(
-        "stack_voltage",
-        val=np.array([802.0, 786.0, 770.0, 760.0, 750.0, 740.0, 734.0, 726.0, 720.0, 714.0]),
+        "single_layer_pemfc_voltage",
+        val=np.array([0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95]),
         units="V",
     )
+    ivc.add_output("number_of_layers", val=35.)
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
@@ -450,7 +451,7 @@ def test_pemfc_voltage():
         ivc,
     )
     assert problem.get_val("voltage_out", units="V") == pytest.approx(
-        [802.0, 786.0, 770.0, 760.0, 750.0, 740.0, 734.0, 726.0, 720.0, 714.0], rel=1e-2
+        [17.5,19.25,21,22.75,24.5,26.25,28,29.75,31.5,33.25], rel=1e-2
     )
 
     problem.check_partials(compact_print=True)
@@ -461,7 +462,7 @@ def test_pemfc_voltage():
         ivc,
     )
     assert problem.get_val("pemfc_voltage", units="V") == pytest.approx(
-        [802.0, 786.0, 770.0, 760.0, 750.0, 740.0, 734.0, 726.0, 720.0, 714.0], rel=1e-2
+        [17.5,19.25,21,22.75,24.5,26.25,28,29.75,31.5,33.25], rel=1e-2
     )
 
     problem.check_partials(compact_print=True)

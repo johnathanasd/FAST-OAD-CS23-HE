@@ -105,7 +105,7 @@ class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
         C = 0.06
         i = inputs["fc_current_density"]
         partials["single_layer_pemfc_voltage", "fc_current_density"] = (
-            B / i - R - m * n * np.exp(n * i)
+            -B / i - R - m * n * np.exp(n * i)
         )
         partials[
             "single_layer_pemfc_voltage",
