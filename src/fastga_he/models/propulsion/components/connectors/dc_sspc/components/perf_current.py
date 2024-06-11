@@ -42,24 +42,7 @@ class PerformancesDCSSPCCurrent(om.ExplicitComponent):
             upper=1000.0,
         )
 
-        if self.options["closed"]:
-            self.declare_partials(
-                of="*",
-                wrt="*",
-                method="exact",
-                rows=np.arange(number_of_points),
-                cols=np.arange(number_of_points),
-                val=np.ones(number_of_points),
-            )
-        else:
-            self.declare_partials(
-                of="*",
-                wrt="*",
-                method="exact",
-                rows=np.arange(number_of_points),
-                cols=np.arange(number_of_points),
-                val=np.zeros(number_of_points),
-            )
+        self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -69,3 +52,14 @@ class PerformancesDCSSPCCurrent(om.ExplicitComponent):
             outputs["dc_current_in"] = inputs["dc_current_out"]
         else:
             outputs["dc_current_in"] = np.zeros(number_of_points)
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+
+        number_of_points = self.options["number_of_points"]
+
+        if self.options["closed"]:
+            partials["dc_current_in", "dc_current_out"] = np.eye(number_of_points)
+        else:
+            partials["dc_current_in", "dc_current_out"] = np.zeros(
+                (number_of_points, number_of_points)
+            )

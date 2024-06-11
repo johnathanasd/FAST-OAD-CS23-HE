@@ -41,8 +41,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:ICE:" + ice_id + ":power_max_SL",
             wrt="equivalent_SL_power",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -56,8 +54,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:ICE:" + ice_id + ":shaft_power_max",
             wrt="shaft_power_out",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):

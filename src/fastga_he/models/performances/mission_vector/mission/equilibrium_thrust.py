@@ -66,18 +66,6 @@ class EquilibriumThrust(om.ImplicitComponent):
                 "d_vx_dt",
                 "mass",
                 "true_airspeed",
-                "delta_Cd",
-                "alpha",
-                "thrust",
-                "delta_m",
-            ],
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
-        self.declare_partials(
-            of="thrust",
-            wrt=[
                 "data:geometry:wing:area",
                 "data:aerodynamics:aircraft:cruise:CD0",
                 "data:aerodynamics:wing:cruise:CL0_clean",
@@ -88,29 +76,23 @@ class EquilibriumThrust(om.ImplicitComponent):
                 "data:aerodynamics:horizontal_tail:cruise:induced_drag_coefficient",
                 "data:aerodynamics:elevator:low_speed:CD_delta",
                 "data:aerodynamics:elevator:low_speed:CL_delta",
+                "delta_Cd",
+                "alpha",
+                "thrust",
+                "delta_m",
             ],
             method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.zeros(number_of_points),
         )
         if self.options["flaps_position"] == "takeoff":
             self.declare_partials(
-                of="thrust",
-                wrt="data:aerodynamics:flaps:takeoff:CD",
-                method="exact",
-                rows=np.arange(number_of_points),
-                cols=np.zeros(number_of_points),
+                of="thrust", wrt="data:aerodynamics:flaps:takeoff:CD", method="exact"
             )
         if self.options["flaps_position"] == "landing":
             self.declare_partials(
-                of="thrust",
-                wrt="data:aerodynamics:flaps:landing:CD",
-                method="exact",
-                rows=np.arange(number_of_points),
-                cols=np.zeros(number_of_points),
+                of="thrust", wrt="data:aerodynamics:flaps:landing:CD", method="exact"
             )
 
-    def linearize(self, inputs, outputs, jacobian, discrete_inputs=None, discrete_outputs=None):
+    def linearize(self, inputs, outputs, partials):
 
         mass = inputs["mass"]
         d_vx_dt = inputs["d_vx_dt"]
@@ -166,33 +148,33 @@ class EquilibriumThrust(om.ImplicitComponent):
         d_thrust_d_cl_w = -2.0 * dynamic_pressure * wing_area * coeff_k_wing * cl_wing
         d_thrust_d_cl_h = -2.0 * dynamic_pressure * wing_area * coeff_k_htp * cl_htp
 
-        jacobian["thrust", "d_vx_dt"] = -mass
-        jacobian["thrust", "gamma"] = -mass * g * np.cos(gamma) * np.pi / 180.0
-        jacobian["thrust", "density"] = -wing_area * cd_tot * 0.5 * true_airspeed ** 2.0
-        jacobian["thrust", "mass"] = -d_vx_dt - g * np.sin(gamma)
-        jacobian["thrust", "true_airspeed"] = -wing_area * cd_tot * rho * true_airspeed
-        jacobian["thrust", "data:geometry:wing:area"] = -dynamic_pressure * cd_tot
-        jacobian["thrust", "data:aerodynamics:aircraft:cruise:CD0"] = -dynamic_pressure * wing_area
-        jacobian["thrust", "data:aerodynamics:horizontal_tail:cruise:induced_drag_coefficient"] = (
+        partials["thrust", "d_vx_dt"] = np.diag(-mass)
+        partials["thrust", "gamma"] = np.diag(-mass * g * np.cos(gamma) * np.pi / 180.0)
+        partials["thrust", "density"] = -np.diag(wing_area * cd_tot * 0.5 * true_airspeed ** 2.0)
+        partials["thrust", "mass"] = np.diag(-d_vx_dt - g * np.sin(gamma))
+        partials["thrust", "true_airspeed"] = -np.diag(wing_area * cd_tot * rho * true_airspeed)
+        partials["thrust", "data:geometry:wing:area"] = -dynamic_pressure * cd_tot
+        partials["thrust", "data:aerodynamics:aircraft:cruise:CD0"] = -dynamic_pressure * wing_area
+        partials["thrust", "data:aerodynamics:horizontal_tail:cruise:induced_drag_coefficient"] = (
             -dynamic_pressure * wing_area * cl_htp ** 2.0
         )
-        jacobian["thrust", "data:aerodynamics:wing:cruise:induced_drag_coefficient"] = (
+        partials["thrust", "data:aerodynamics:wing:cruise:induced_drag_coefficient"] = (
             -dynamic_pressure * wing_area * cl_wing ** 2.0
         )
-        jacobian["thrust", "delta_Cd"] = -dynamic_pressure * wing_area
-        jacobian["thrust", "data:aerodynamics:elevator:low_speed:CD_delta"] = (
+        partials["thrust", "delta_Cd"] = -np.diag(dynamic_pressure * wing_area)
+        partials["thrust", "data:aerodynamics:elevator:low_speed:CD_delta"] = (
             -dynamic_pressure * wing_area * delta_m ** 2.0
         )
-        jacobian["thrust", "data:aerodynamics:elevator:low_speed:CL_delta"] = (
+        partials["thrust", "data:aerodynamics:elevator:low_speed:CL_delta"] = (
             d_thrust_d_cl_h * delta_m
         )
-        jacobian["thrust", "data:aerodynamics:wing:cruise:CL0_clean"] = d_thrust_d_cl_w
-        jacobian["thrust", "data:aerodynamics:wing:cruise:CL_alpha"] = d_thrust_d_cl_w * alpha
-        jacobian["thrust", "data:aerodynamics:horizontal_tail:cruise:CL0"] = d_thrust_d_cl_h
-        jacobian["thrust", "data:aerodynamics:horizontal_tail:cruise:CL_alpha"] = (
+        partials["thrust", "data:aerodynamics:wing:cruise:CL0_clean"] = d_thrust_d_cl_w
+        partials["thrust", "data:aerodynamics:wing:cruise:CL_alpha"] = d_thrust_d_cl_w * alpha
+        partials["thrust", "data:aerodynamics:horizontal_tail:cruise:CL0"] = d_thrust_d_cl_h
+        partials["thrust", "data:aerodynamics:horizontal_tail:cruise:CL_alpha"] = (
             d_thrust_d_cl_h * alpha
         )
-        jacobian["thrust", "thrust"] = np.cos(alpha)
+        partials["thrust", "thrust"] = np.diag(np.cos(alpha))
         d_thrust_d_alpha_vector = (
             (
                 -thrust * np.sin(alpha)
@@ -202,7 +184,7 @@ class EquilibriumThrust(om.ImplicitComponent):
             * np.pi
             / 180.0
         )
-        jacobian["thrust", "alpha"] = d_thrust_d_alpha_vector
+        partials["thrust", "alpha"] = np.diag(d_thrust_d_alpha_vector)
         d_thrust_d_delta_m_vector = (
             (
                 d_thrust_d_cl_h * cl_delta_m
@@ -211,11 +193,11 @@ class EquilibriumThrust(om.ImplicitComponent):
             * np.pi
             / 180.0
         )
-        jacobian["thrust", "delta_m"] = d_thrust_d_delta_m_vector
+        partials["thrust", "delta_m"] = np.diag(d_thrust_d_delta_m_vector)
         if self.options["flaps_position"] == "takeoff":
-            jacobian["thrust", "data:aerodynamics:flaps:takeoff:CD"] = -dynamic_pressure * wing_area
+            partials["thrust", "data:aerodynamics:flaps:takeoff:CD"] = -dynamic_pressure * wing_area
         if self.options["flaps_position"] == "landing":
-            jacobian["thrust", "data:aerodynamics:flaps:landing:CD"] = -dynamic_pressure * wing_area
+            partials["thrust", "data:aerodynamics:flaps:landing:CD"] = -dynamic_pressure * wing_area
 
     def apply_nonlinear(
         self, inputs, outputs, residuals, discrete_inputs=None, discrete_outputs=None

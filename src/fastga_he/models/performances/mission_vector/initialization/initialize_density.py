@@ -50,13 +50,7 @@ class InitializeDensity(om.ExplicitComponent):
 
         self.add_output("density", shape=number_of_points, units="kg/m**3", val=1.225)
 
-        self.declare_partials(
-            of="*",
-            wrt="*",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
+        self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -66,6 +60,8 @@ class InitializeDensity(om.ExplicitComponent):
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
-        partials["density", "altitude"] = AtmosphereWithPartials(
-            inputs["altitude"], altitude_in_feet=False
-        ).partial_density_altitude
+        partials["density", "altitude"] = np.diag(
+            AtmosphereWithPartials(
+                inputs["altitude"], altitude_in_feet=False
+            ).partial_density_altitude
+        )

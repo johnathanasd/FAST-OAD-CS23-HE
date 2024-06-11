@@ -52,8 +52,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:generator:" + generator_id + ":current_ac_max",
             wrt="ac_current_rms_out_one_phase",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -66,8 +64,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:generator:" + generator_id + ":voltage_ac_max",
             wrt="ac_voltage_peak_out",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -80,8 +76,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:generator:" + generator_id + ":torque_max",
             wrt="torque_in",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -94,8 +88,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:generator:" + generator_id + ":rpm_max",
             wrt="rpm",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -107,8 +99,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:generator:" + generator_id + ":losses_max",
             wrt="power_losses",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -120,8 +110,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:generator:" + generator_id + ":shaft_power_max",
             wrt="shaft_power_in",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):

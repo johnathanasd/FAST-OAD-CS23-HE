@@ -39,8 +39,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:propeller:" + propeller_id + ":tip_mach_max",
             wrt="tip_mach",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -52,8 +50,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:propeller:" + propeller_id + ":advance_ratio_max",
             wrt="advance_ratio",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -66,8 +62,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:propeller:" + propeller_id + ":torque_max",
             wrt="torque_in",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -80,8 +74,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:propeller:" + propeller_id + ":rpm_max",
             wrt="rpm",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):

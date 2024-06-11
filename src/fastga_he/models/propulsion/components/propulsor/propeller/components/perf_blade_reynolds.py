@@ -37,20 +37,7 @@ class PerformancesBladeReynoldsNumber(om.ExplicitComponent):
 
         self.add_output("reynolds_D", val=2e7, shape=number_of_points)
 
-        self.declare_partials(
-            of="reynolds_D",
-            wrt="data:propulsion:he_power_train:propeller:" + propeller_id + ":diameter",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.zeros(number_of_points),
-        )
-        self.declare_partials(
-            of="reynolds_D",
-            wrt=["true_airspeed", "rpm", "altitude"],
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
+        self.declare_partials(of="reynolds_D", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -81,10 +68,11 @@ class PerformancesBladeReynoldsNumber(om.ExplicitComponent):
 
         omega = inputs["rpm"] * 2.0 * np.pi / 60.0
 
-        partials["reynolds_D", "true_airspeed"] = (
-            diameter / viscosity / np.sqrt(true_airspeed ** 2.0 + (omega * diameter / 2.0) ** 2.0)
-        ) * true_airspeed
-        partials["reynolds_D", "rpm"] = (
+        partials["reynolds_D", "true_airspeed"] = np.diag(
+            (diameter / viscosity / np.sqrt(true_airspeed ** 2.0 + (omega * diameter / 2.0) ** 2.0))
+            * true_airspeed
+        )
+        partials["reynolds_D", "rpm"] = np.diag(
             (diameter / viscosity / np.sqrt(true_airspeed ** 2.0 + (omega * diameter / 2.0) ** 2.0))
             * (diameter / 2.0) ** 2.0
             * omega
@@ -101,7 +89,7 @@ class PerformancesBladeReynoldsNumber(om.ExplicitComponent):
             * (2.0 * true_airspeed ** 2.0 * diameter + 4.0 * (omega / 2.0) ** 2.0 * diameter ** 3.0)
             / 2.0
         )
-        partials["reynolds_D", "altitude"] = (
+        partials["reynolds_D", "altitude"] = np.diag(
             -(
                 np.sqrt(true_airspeed ** 2.0 + (omega * diameter / 2.0) ** 2.0)
                 * diameter

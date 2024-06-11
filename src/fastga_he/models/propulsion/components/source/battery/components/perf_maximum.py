@@ -56,8 +56,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             ],
             wrt="terminal_voltage",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -70,8 +68,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:battery_pack:" + battery_pack_id + ":SOC_min",
             wrt="state_of_charge",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -84,8 +80,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:battery_pack:" + battery_pack_id + ":c_rate_max",
             wrt="c_rate",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -100,8 +94,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             + ":cell:losses_max",
             wrt="losses_cell",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):

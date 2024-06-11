@@ -39,13 +39,7 @@ class PerformancesLossesOneCable(om.ExplicitComponent):
             desc="Joule losses in one cable of the harness",
         )
 
-        self.declare_partials(
-            of="*",
-            wrt="*",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
+        self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -55,9 +49,9 @@ class PerformancesLossesOneCable(om.ExplicitComponent):
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
-        partials["conduction_losses", "resistance_per_cable"] = (
+        partials["conduction_losses", "resistance_per_cable"] = np.diag(
             inputs["dc_current_one_cable"] ** 2.0
         )
-        partials["conduction_losses", "dc_current_one_cable"] = (
+        partials["conduction_losses", "dc_current_one_cable"] = np.diag(
             2.0 * inputs["resistance_per_cable"] * inputs["dc_current_one_cable"]
         )

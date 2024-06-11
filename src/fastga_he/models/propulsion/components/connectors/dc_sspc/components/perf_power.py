@@ -45,13 +45,7 @@ class PerformancesDCSSPCPower(om.ExplicitComponent):
             desc="Power at the terminal of the SSPC with the greatest voltage",
         )
 
-        self.declare_partials(
-            of="*",
-            wrt="*",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
+        self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -65,11 +59,10 @@ class PerformancesDCSSPCPower(om.ExplicitComponent):
         voltage_out = inputs["dc_voltage_out"]
         voltage = np.maximum(voltage_in, voltage_out)
 
-        partials["power_flow", "dc_current_in"] = voltage
-        partials["power_flow", "dc_voltage_in"] = (
+        partials["power_flow", "dc_current_in"] = np.diag(voltage)
+        partials["power_flow", "dc_voltage_in"] = np.diag(
             np.where(voltage == voltage_in, 1.0, 0.0) * inputs["dc_current_in"]
         )
-
-        partials["power_flow", "dc_voltage_out"] = (
+        partials["power_flow", "dc_voltage_out"] = np.diag(
             np.where(voltage == voltage_out, 1.0, 0.0) * inputs["dc_current_in"]
         )

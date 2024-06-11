@@ -90,8 +90,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:inverter:" + inverter_id + ":current_ac_max",
             wrt="ac_current_rms_out_one_phase",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -104,8 +102,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:inverter:" + inverter_id + ":voltage_ac_max",
             wrt="ac_voltage_peak_out",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -118,8 +114,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:inverter:" + inverter_id + ":current_dc_max",
             wrt="dc_current_in",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -132,8 +126,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:inverter:" + inverter_id + ":voltage_dc_max",
             wrt="dc_voltage_in",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -145,8 +137,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:inverter:" + inverter_id + ":igbt:temperature_max",
             wrt="IGBT_temperature",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -158,8 +148,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:inverter:" + inverter_id + ":diode:temperature_max",
             wrt="diode_temperature",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -171,8 +159,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:inverter:" + inverter_id + ":casing:temperature_max",
             wrt="casing_temperature",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -184,8 +170,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:inverter:" + inverter_id + ":losses_max",
             wrt="losses_inverter",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -199,10 +183,7 @@ class PerformancesMaximum(om.ExplicitComponent):
             + ":switching_frequency_max",
             wrt="switching_frequency",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
-
         self.add_output(
             "data:propulsion:he_power_train:inverter:" + inverter_id + ":modulation_idx_max",
             val=1.0,
@@ -212,8 +193,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             of="data:propulsion:he_power_train:inverter:" + inverter_id + ":modulation_idx_max",
             wrt="modulation_index",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):

@@ -61,9 +61,7 @@ class EnergyConsumptionFromPTFile(om.ExplicitComponent):
             self.declare_partials(
                 of="fuel_consumed_t_econ",
                 wrt=source_name + "_fuel_consumed_t",
-                rows=np.arange(number_of_points),
-                cols=np.arange(number_of_points),
-                val=np.ones(number_of_points),
+                val=np.eye(number_of_points),
             )
 
             self.add_input(
@@ -74,9 +72,7 @@ class EnergyConsumptionFromPTFile(om.ExplicitComponent):
             self.declare_partials(
                 of="non_consumable_energy_t_econ",
                 wrt=source_name + "_non_consumable_energy_t",
-                rows=np.arange(number_of_points),
-                cols=np.arange(number_of_points),
-                val=np.ones(number_of_points),
+                val=np.eye(number_of_points),
             )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):

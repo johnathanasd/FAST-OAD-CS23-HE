@@ -52,13 +52,7 @@ class PerformancesDCSSPCLosses(om.ExplicitComponent):
             units="W",
         )
 
-        self.declare_partials(
-            of="*",
-            wrt="*",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
+        self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -84,19 +78,25 @@ class PerformancesDCSSPCLosses(om.ExplicitComponent):
 
         if not self.options["closed"]:
 
-            partials["power_losses", "dc_current_in"] = np.zeros(number_of_points)
-            partials["power_losses", "dc_voltage_in"] = np.zeros(number_of_points)
-            partials["power_losses", "dc_voltage_out"] = np.zeros(number_of_points)
+            partials["power_losses", "dc_current_in"] = np.zeros(
+                (number_of_points, number_of_points)
+            )
+            partials["power_losses", "dc_voltage_in"] = np.zeros(
+                (number_of_points, number_of_points)
+            )
+            partials["power_losses", "dc_voltage_out"] = np.zeros(
+                (number_of_points, number_of_points)
+            )
 
         else:
-            partials["power_losses", "dc_current_in"] = np.abs(
-                inputs["dc_voltage_in"] - inputs["dc_voltage_out"]
+            partials["power_losses", "dc_current_in"] = np.diag(
+                np.abs(inputs["dc_voltage_in"] - inputs["dc_voltage_out"])
             )
-            partials["power_losses", "dc_voltage_in"] = (
+            partials["power_losses", "dc_voltage_in"] = np.diag(
                 np.sign(inputs["dc_voltage_in"] - inputs["dc_voltage_out"])
                 * inputs["dc_current_in"]
             )
-            partials["power_losses", "dc_voltage_out"] = (
+            partials["power_losses", "dc_voltage_out"] = np.diag(
                 -np.sign(inputs["dc_voltage_in"] - inputs["dc_voltage_out"])
                 * inputs["dc_current_in"]
             )

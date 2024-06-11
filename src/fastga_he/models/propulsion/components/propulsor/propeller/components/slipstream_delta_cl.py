@@ -55,18 +55,10 @@ class SlipstreamPropellerDeltaCl(om.ExplicitComponent):
         )
 
         self.declare_partials(
-            of="delta_Cl",
-            wrt=["blown_area_ratio", "delta_Cl_2D"],
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
+            of="delta_Cl", wrt=["blown_area_ratio", "delta_Cl_2D"], method="exact"
         )
         self.declare_partials(
-            of="delta_Cl_AOA_0",
-            wrt=["blown_area_ratio", "delta_Cl_2D_AOA_0"],
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
+            of="delta_Cl_AOA_0", wrt=["blown_area_ratio", "delta_Cl_2D_AOA_0"], method="exact"
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
@@ -76,8 +68,8 @@ class SlipstreamPropellerDeltaCl(om.ExplicitComponent):
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
-        partials["delta_Cl", "delta_Cl_2D"] = inputs["blown_area_ratio"]
-        partials["delta_Cl", "blown_area_ratio"] = inputs["delta_Cl_2D"]
+        partials["delta_Cl", "delta_Cl_2D"] = np.diag(inputs["blown_area_ratio"])
+        partials["delta_Cl", "blown_area_ratio"] = np.diag(inputs["delta_Cl_2D"])
 
-        partials["delta_Cl_AOA_0", "delta_Cl_2D_AOA_0"] = inputs["blown_area_ratio"]
-        partials["delta_Cl_AOA_0", "blown_area_ratio"] = inputs["delta_Cl_2D_AOA_0"]
+        partials["delta_Cl_AOA_0", "delta_Cl_2D_AOA_0"] = np.diag(inputs["blown_area_ratio"])
+        partials["delta_Cl_AOA_0", "blown_area_ratio"] = np.diag(inputs["delta_Cl_2D_AOA_0"])

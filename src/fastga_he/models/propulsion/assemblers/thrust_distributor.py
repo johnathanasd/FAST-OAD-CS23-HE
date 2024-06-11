@@ -54,15 +54,7 @@ class ThrustDistributor(om.ExplicitComponent):
 
             self.declare_partials(
                 of=propulsor_name + "_thrust",
-                wrt="thrust",
-                method="exact",
-                rows=np.arange(number_of_points),
-                cols=np.arange(number_of_points),
-            )
-            self.declare_partials(
-                of=propulsor_name + "_thrust",
-                wrt="data:propulsion:he_power_train:thrust_distribution",
-                method="exact",
+                wrt=["thrust", "data:propulsion:he_power_train:thrust_distribution"],
             )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
@@ -97,7 +89,7 @@ class ThrustDistributor(om.ExplicitComponent):
 
         for propulsor_name in propulsor_names:
             partials[propulsor_name + "_thrust", "thrust"] = (
-                np.ones(number_of_points)
+                np.eye(number_of_points)
                 * thrust_distribution[propulsor_names.index(propulsor_name)]
             )
 

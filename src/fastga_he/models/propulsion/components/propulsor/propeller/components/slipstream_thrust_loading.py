@@ -39,20 +39,7 @@ class SlipstreamPropellerThrustLoading(om.ExplicitComponent):
 
         self.add_output("thrust_loading", val=0.01, shape=number_of_points)
 
-        self.declare_partials(
-            of="thrust_loading",
-            wrt=["thrust", "true_airspeed", "density"],
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
-        self.declare_partials(
-            of="thrust_loading",
-            wrt="data:propulsion:he_power_train:propeller:" + propeller_id + ":diameter",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.zeros(number_of_points),
-        )
+        self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -82,10 +69,10 @@ class SlipstreamPropellerThrustLoading(om.ExplicitComponent):
         ] = (
             -2.0 * thrust / (rho * tas ** 2.0 * prop_dia ** 3.0)
         )
-        partials["thrust_loading", "thrust"] = 1.0 / (rho * tas ** 2.0 * prop_dia ** 2.0)
-        partials["thrust_loading", "true_airspeed"] = (
+        partials["thrust_loading", "thrust"] = np.diag(1.0 / (rho * tas ** 2.0 * prop_dia ** 2.0))
+        partials["thrust_loading", "true_airspeed"] = np.diag(
             -2.0 * thrust / (rho * tas ** 3.0 * prop_dia ** 2.0)
         )
-        partials["thrust_loading", "density"] = -thrust / (
-            rho ** 2.0 * tas ** 2.0 * prop_dia ** 2.0
+        partials["thrust_loading", "density"] = np.diag(
+            -thrust / (rho ** 2.0 * tas ** 2.0 * prop_dia ** 2.0)
         )

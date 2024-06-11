@@ -38,20 +38,7 @@ class PerformancesRPMIn(om.ExplicitComponent):
 
         self.add_output("rpm_in", units="min**-1", val=5000.0, shape=number_of_points)
 
-        self.declare_partials(
-            of="*",
-            wrt="rpm_out_1",
-            method="exact",
-            cols=np.arange(number_of_points),
-            rows=np.arange(number_of_points),
-        )
-        self.declare_partials(
-            of="*",
-            wrt="data:propulsion:he_power_train:gearbox:" + gearbox_id + ":gear_ratio",
-            method="exact",
-            cols=np.zeros(number_of_points),
-            rows=np.arange(number_of_points),
-        )
+        self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -70,7 +57,7 @@ class PerformancesRPMIn(om.ExplicitComponent):
         number_of_points = self.options["number_of_points"]
 
         partials["rpm_in", "rpm_out_1"] = (
-            np.ones(number_of_points)
+            np.eye(number_of_points)
             * inputs["data:propulsion:he_power_train:gearbox:" + gearbox_id + ":gear_ratio"]
         )
         partials[

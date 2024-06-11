@@ -118,7 +118,7 @@ class PerformancesHarnessTemperature(om.Group):
         )
         self.add_subsystem(
             "cable_current",
-            PerformancesCurrent(number_of_points=number_of_points),
+            PerformancesCurrent(harness_id=harness_id, number_of_points=number_of_points),
             promotes=["*"],
         )
         self.add_subsystem(

@@ -32,21 +32,7 @@ class PerformancesCellVoltage(om.ExplicitComponent):
 
         self.add_output("terminal_voltage", units="V", val=np.full(number_of_points, 4.0))
 
-        self.declare_partials(
-            of="terminal_voltage",
-            wrt=["internal_resistance", "current_one_module"],
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
-        self.declare_partials(
-            of="terminal_voltage",
-            wrt="open_circuit_voltage",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-            val=np.ones(number_of_points),
-        )
+        self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -61,5 +47,8 @@ class PerformancesCellVoltage(om.ExplicitComponent):
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
-        partials["terminal_voltage", "internal_resistance"] = -inputs["current_one_module"]
-        partials["terminal_voltage", "current_one_module"] = -inputs["internal_resistance"]
+        number_of_points = self.options["number_of_points"]
+
+        partials["terminal_voltage", "open_circuit_voltage"] = np.eye(number_of_points)
+        partials["terminal_voltage", "internal_resistance"] = -np.diag(inputs["current_one_module"])
+        partials["terminal_voltage", "current_one_module"] = -np.diag(inputs["internal_resistance"])
