@@ -37,17 +37,8 @@ class PerformancesThrustCoefficient(om.ExplicitComponent):
 
         self.declare_partials(
             of="thrust_coefficient",
-            wrt="data:propulsion:he_power_train:propeller:" + propeller_id + ":diameter",
+            wrt=["*"],
             method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.zeros(number_of_points),
-        )
-        self.declare_partials(
-            of="thrust_coefficient",
-            wrt=["thrust", "density", "rpm"],
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
@@ -76,10 +67,10 @@ class PerformancesThrustCoefficient(om.ExplicitComponent):
             inputs["thrust"] > 0, np.ones_like(inputs["thrust"]), np.zeros_like(inputs["thrust"])
         )
 
-        partials["thrust_coefficient", "thrust"] = partial_thrust / (
-            rho * rps ** 2.0 * diameter ** 4.0
+        partials["thrust_coefficient", "thrust"] = np.diag(
+            partial_thrust / (rho * rps ** 2.0 * diameter ** 4.0)
         )
-        partials["thrust_coefficient", "rpm"] = (
+        partials["thrust_coefficient", "rpm"] = np.diag(
             -2.0
             * np.maximum(inputs["thrust"], np.zeros_like(inputs["thrust"]))
             / (rho * rps ** 3 * diameter ** 4.0)
@@ -93,7 +84,7 @@ class PerformancesThrustCoefficient(om.ExplicitComponent):
             * np.maximum(inputs["thrust"], np.zeros_like(inputs["thrust"]))
             / (rho * rps ** 2.0 * diameter ** 5.0)
         )
-        partials["thrust_coefficient", "density"] = -(
+        partials["thrust_coefficient", "density"] = -np.diag(
             np.maximum(inputs["thrust"], np.zeros_like(inputs["thrust"]))
             / (rho ** 2.0 * rps ** 2.0 * diameter ** 4.0)
         )

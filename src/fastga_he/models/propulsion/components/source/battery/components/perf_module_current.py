@@ -38,22 +38,7 @@ class PerformancesModuleCurrent(om.ExplicitComponent):
 
         self.add_output("current_one_module", units="A", val=np.full(number_of_points, 20.0))
 
-        self.declare_partials(
-            of="current_one_module",
-            wrt="data:propulsion:he_power_train:battery_pack:"
-            + battery_pack_id
-            + ":number_modules",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.zeros(number_of_points),
-        )
-        self.declare_partials(
-            of="current_one_module",
-            wrt="dc_current_out",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
+        self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -81,12 +66,11 @@ class PerformancesModuleCurrent(om.ExplicitComponent):
         battery_pack_id = self.options["battery_pack_id"]
         number_of_points = self.options["number_of_points"]
 
-        partials["current_one_module", "dc_current_out"] = np.full(
-            number_of_points,
-            1.0
+        partials["current_one_module", "dc_current_out"] = (
+            np.eye(number_of_points)
             / inputs[
                 "data:propulsion:he_power_train:battery_pack:" + battery_pack_id + ":number_modules"
-            ],
+            ]
         )
         partials[
             "current_one_module",

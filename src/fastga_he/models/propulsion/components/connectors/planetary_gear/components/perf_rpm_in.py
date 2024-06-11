@@ -43,22 +43,7 @@ class PerformancesRPMIn(om.ExplicitComponent):
         self.add_output("rpm_in_1", units="min**-1", val=5000.0, shape=number_of_points)
         self.add_output("rpm_in_2", units="min**-1", val=5000.0, shape=number_of_points)
 
-        self.declare_partials(
-            of="*",
-            wrt="rpm_out",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
-        self.declare_partials(
-            of="*",
-            wrt="data:propulsion:he_power_train:planetary_gear:"
-            + planetary_gear_id
-            + ":gear_ratio",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.zeros(number_of_points),
-        )
+        self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -82,7 +67,7 @@ class PerformancesRPMIn(om.ExplicitComponent):
         # For compactness
         for input_number in ("1", "2"):
             partials["rpm_in_" + input_number, "rpm_out"] = (
-                np.ones(number_of_points)
+                np.eye(number_of_points)
                 * inputs[
                     "data:propulsion:he_power_train:planetary_gear:"
                     + planetary_gear_id

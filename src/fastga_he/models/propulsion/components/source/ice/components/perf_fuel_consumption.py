@@ -29,13 +29,7 @@ class PerformancesICEFuelConsumption(om.ExplicitComponent):
 
         self.add_output("fuel_consumption", units="kg/h", val=30.0, shape=number_of_points)
 
-        self.declare_partials(
-            of="*",
-            wrt="*",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
+        self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -46,8 +40,8 @@ class PerformancesICEFuelConsumption(om.ExplicitComponent):
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
         partials["fuel_consumption", "shaft_power_out"] = (
-            inputs["specific_fuel_consumption"] / 1000.0
+            np.diag(inputs["specific_fuel_consumption"]) / 1000.0
         )
         partials["fuel_consumption", "specific_fuel_consumption"] = (
-            inputs["shaft_power_out"] / 1000.0
+            np.diag(inputs["shaft_power_out"]) / 1000.0
         )

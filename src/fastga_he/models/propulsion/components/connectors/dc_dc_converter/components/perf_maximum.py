@@ -92,8 +92,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             + ":current_in_max",
             wrt="dc_current_in",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -109,8 +107,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             + ":igbt:current_max",
             wrt="current_IGBT",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -126,8 +122,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             + ":diode:current_max",
             wrt="current_diode",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -143,8 +137,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             + ":inductor:current_max",
             wrt="current_inductor",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -160,8 +152,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             + ":capacitor:current_max",
             wrt="current_capacitor",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -177,8 +167,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             + ":voltage_in_max",
             wrt="dc_voltage_in",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -194,8 +182,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             + ":voltage_out_max",
             wrt="dc_voltage_out",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -209,8 +195,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             + ":losses_max",
             wrt="losses_converter",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
         self.add_output(
@@ -226,8 +210,6 @@ class PerformancesMaximum(om.ExplicitComponent):
             + ":switching_frequency_max",
             wrt="switching_frequency",
             method="exact",
-            rows=np.zeros(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):

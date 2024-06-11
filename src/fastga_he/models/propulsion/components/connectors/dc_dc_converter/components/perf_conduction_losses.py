@@ -120,13 +120,9 @@ class PerformancesConductionLosses(om.ExplicitComponent):
 
         self.declare_partials(
             of="conduction_losses_diode",
-            wrt=["dc_current_out", "current_diode"],
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
-        self.declare_partials(
-            of="conduction_losses_diode",
             wrt=[
+                "dc_current_out",
+                "current_diode",
                 "data:propulsion:he_power_train:DC_DC_converter:"
                 + dc_dc_converter_id
                 + ":diode:resistance",
@@ -134,59 +130,33 @@ class PerformancesConductionLosses(om.ExplicitComponent):
                 + dc_dc_converter_id
                 + ":diode:gate_voltage",
             ],
-            rows=np.arange(number_of_points),
-            cols=np.zeros(number_of_points),
-        )
-
-        self.declare_partials(
-            of="conduction_losses_IGBT",
-            wrt="current_IGBT",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
         )
         self.declare_partials(
             of="conduction_losses_IGBT",
-            wrt="data:propulsion:he_power_train:DC_DC_converter:"
-            + dc_dc_converter_id
-            + ":igbt:resistance",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.zeros(number_of_points),
-        )
-
-        self.declare_partials(
-            of="conduction_losses_inductor",
-            wrt="current_inductor",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
+            wrt=[
+                "current_IGBT",
+                "data:propulsion:he_power_train:DC_DC_converter:"
+                + dc_dc_converter_id
+                + ":igbt:resistance",
+            ],
         )
         self.declare_partials(
             of="conduction_losses_inductor",
-            wrt="data:propulsion:he_power_train:DC_DC_converter:"
-            + dc_dc_converter_id
-            + ":inductor:resistance",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.zeros(number_of_points),
-        )
-
-        self.declare_partials(
-            of="conduction_losses_capacitor",
-            wrt="current_capacitor",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
+            wrt=[
+                "current_inductor",
+                "data:propulsion:he_power_train:DC_DC_converter:"
+                + dc_dc_converter_id
+                + ":inductor:resistance",
+            ],
         )
         self.declare_partials(
             of="conduction_losses_capacitor",
-            wrt="data:propulsion:he_power_train:DC_DC_converter:"
-            + dc_dc_converter_id
-            + ":capacitor:resistance",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.zeros(number_of_points),
+            wrt=[
+                "current_capacitor",
+                "data:propulsion:he_power_train:DC_DC_converter:"
+                + dc_dc_converter_id
+                + ":capacitor:resistance",
+            ],
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
@@ -290,8 +260,8 @@ class PerformancesConductionLosses(om.ExplicitComponent):
         ] = (
             i_d ** 2.0
         )
-        partials["conduction_losses_diode", "current_diode"] = 2.0 * r_d * i_d
-        partials["conduction_losses_diode", "dc_current_out"] = np.ones(number_of_points) * v_d0
+        partials["conduction_losses_diode", "current_diode"] = np.diag(2.0 * r_d * i_d)
+        partials["conduction_losses_diode", "dc_current_out"] = np.eye(number_of_points) * v_d0
 
         partials[
             "conduction_losses_IGBT",
@@ -301,7 +271,7 @@ class PerformancesConductionLosses(om.ExplicitComponent):
         ] = (
             i_igbt ** 2.0
         )
-        partials["conduction_losses_IGBT", "current_IGBT"] = 2.0 * r_igbt * i_igbt
+        partials["conduction_losses_IGBT", "current_IGBT"] = np.diag(2.0 * r_igbt * i_igbt)
 
         partials[
             "conduction_losses_inductor",
@@ -311,7 +281,9 @@ class PerformancesConductionLosses(om.ExplicitComponent):
         ] = (
             i_inductor ** 2.0
         )
-        partials["conduction_losses_inductor", "current_inductor"] = 2.0 * r_inductor * i_inductor
+        partials["conduction_losses_inductor", "current_inductor"] = np.diag(
+            2.0 * r_inductor * i_inductor
+        )
 
         partials[
             "conduction_losses_capacitor",
@@ -321,6 +293,6 @@ class PerformancesConductionLosses(om.ExplicitComponent):
         ] = (
             i_capacitor ** 2.0
         )
-        partials["conduction_losses_capacitor", "current_capacitor"] = (
+        partials["conduction_losses_capacitor", "current_capacitor"] = np.diag(
             2.0 * r_capacitor * i_capacitor
         )

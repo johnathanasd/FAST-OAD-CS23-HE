@@ -34,13 +34,7 @@ class PerformancesTemperatureIncrease(om.ExplicitComponent):
             shape=number_of_points,
         )
 
-        self.declare_partials(
-            of="*",
-            wrt="*",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
+        self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -52,9 +46,9 @@ class PerformancesTemperatureIncrease(om.ExplicitComponent):
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
-        partials["cable_temperature_increase", "cable_temperature_time_derivative"] = inputs[
-            "time_step"
-        ]
-        partials["cable_temperature_increase", "time_step"] = inputs[
-            "cable_temperature_time_derivative"
-        ]
+        partials["cable_temperature_increase", "cable_temperature_time_derivative"] = np.diag(
+            inputs["time_step"]
+        )
+        partials["cable_temperature_increase", "time_step"] = np.diag(
+            inputs["cable_temperature_time_derivative"]
+        )

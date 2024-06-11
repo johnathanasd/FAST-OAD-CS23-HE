@@ -64,23 +64,7 @@ class InitializeCoG(om.ExplicitComponent):
 
         self.add_output("x_cg", shape=number_of_points, units="m")
 
-        self.declare_partials(
-            of="x_cg",
-            wrt=["fuel_mass_t", "fuel_lever_arm_t"],
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
-        self.declare_partials(
-            of="*",
-            wrt=[
-                "data:weight:aircraft:in_flight_variation:fixed_mass_comp:mass",
-                "data:weight:aircraft:in_flight_variation:fixed_mass_comp:equivalent_moment",
-            ],
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.zeros(number_of_points),
-        )
+        self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -115,11 +99,11 @@ class InitializeCoG(om.ExplicitComponent):
         partials[
             "x_cg", "data:weight:aircraft:in_flight_variation:fixed_mass_comp:equivalent_moment"
         ] = 1.0 / (fuel_mass_t + equivalent_mass)
-        partials["x_cg", "fuel_lever_arm_t"] = 1.0 / (fuel_mass_t + equivalent_mass)
+        partials["x_cg", "fuel_lever_arm_t"] = np.diag(1.0 / (fuel_mass_t + equivalent_mass))
 
         partials["x_cg", "data:weight:aircraft:in_flight_variation:fixed_mass_comp:mass"] = (
             -(equivalent_moment + fuel_lever_arm_t) / (equivalent_mass + fuel_mass_t) ** 2.0
         )
-        partials["x_cg", "fuel_mass_t"] = (
+        partials["x_cg", "fuel_mass_t"] = np.diag(
             -(equivalent_moment + fuel_lever_arm_t) / (equivalent_mass + fuel_mass_t) ** 2.0
         )

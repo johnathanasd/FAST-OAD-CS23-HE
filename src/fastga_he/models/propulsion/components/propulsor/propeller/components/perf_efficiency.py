@@ -34,8 +34,6 @@ class PerformancesEfficiency(om.ExplicitComponent):
             of="*",
             wrt="*",
             method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
@@ -52,6 +50,6 @@ class PerformancesEfficiency(om.ExplicitComponent):
         ct = inputs["thrust_coefficient"]
         cp = inputs["power_coefficient"]
 
-        partials["efficiency", "advance_ratio"] = ct / cp
-        partials["efficiency", "thrust_coefficient"] = j / cp
-        partials["efficiency", "power_coefficient"] = -j * ct / cp ** 2.0
+        partials["efficiency", "advance_ratio"] = np.diag(ct / cp)
+        partials["efficiency", "thrust_coefficient"] = np.diag(j / cp)
+        partials["efficiency", "power_coefficient"] = -np.diag(j * ct / cp ** 2.0)

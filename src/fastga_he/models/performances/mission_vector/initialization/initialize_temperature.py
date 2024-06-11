@@ -50,13 +50,7 @@ class InitializeTemperature(om.ExplicitComponent):
 
         self.add_output("exterior_temperature", shape=number_of_points, units="degK", val=297.15)
 
-        self.declare_partials(
-            of="*",
-            wrt="*",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
+        self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -66,6 +60,8 @@ class InitializeTemperature(om.ExplicitComponent):
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
-        partials["exterior_temperature", "altitude"] = AtmosphereWithPartials(
-            inputs["altitude"], altitude_in_feet=False
-        ).partial_temperature_altitude
+        partials["exterior_temperature", "altitude"] = np.diag(
+            AtmosphereWithPartials(
+                inputs["altitude"], altitude_in_feet=False
+            ).partial_temperature_altitude
+        )

@@ -98,22 +98,13 @@ class PerformancesGateVoltage(om.ExplicitComponent):
                 "data:propulsion:he_power_train:inverter:"
                 + inverter_id
                 + ":properties:voltage_temperature_scale_factor:igbt",
+                "IGBT_temperature",
                 "settings:propulsion:he_power_train:inverter:"
                 + inverter_id
                 + ":reference_temperature",
             ],
             method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.zeros(number_of_points),
         )
-        self.declare_partials(
-            of="gate_voltage_igbt",
-            wrt="IGBT_temperature",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
-
         self.declare_partials(
             of="gate_voltage_diode",
             wrt=[
@@ -121,20 +112,12 @@ class PerformancesGateVoltage(om.ExplicitComponent):
                 "data:propulsion:he_power_train:inverter:"
                 + inverter_id
                 + ":properties:voltage_temperature_scale_factor:diode",
+                "diode_temperature",
                 "settings:propulsion:he_power_train:inverter:"
                 + inverter_id
                 + ":reference_temperature",
             ],
             method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.zeros(number_of_points),
-        )
-        self.declare_partials(
-            of="gate_voltage_diode",
-            wrt="diode_temperature",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
@@ -225,7 +208,7 @@ class PerformancesGateVoltage(om.ExplicitComponent):
         ] = (
             -reference_gate_voltage_igbt * alpha_v_igbt
         )
-        partials["gate_voltage_igbt", "IGBT_temperature"] = np.ones(number_of_points) * (
+        partials["gate_voltage_igbt", "IGBT_temperature"] = np.eye(number_of_points) * (
             reference_gate_voltage_igbt * alpha_v_igbt
         )
 
@@ -245,6 +228,6 @@ class PerformancesGateVoltage(om.ExplicitComponent):
         ] = (
             -alpha_v_diode * reference_gate_voltage_diode
         )
-        partials["gate_voltage_diode", "diode_temperature"] = np.ones(number_of_points) * (
+        partials["gate_voltage_diode", "diode_temperature"] = np.eye(number_of_points) * (
             alpha_v_diode * reference_gate_voltage_diode
         )

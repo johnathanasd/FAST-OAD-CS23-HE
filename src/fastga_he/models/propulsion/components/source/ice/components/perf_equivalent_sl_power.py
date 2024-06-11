@@ -33,13 +33,7 @@ class PerformancesEquivalentSeaLevelPower(om.ExplicitComponent):
 
         self.add_output("equivalent_SL_power", units="W", val=np.full(number_of_points, 250e6))
 
-        self.declare_partials(
-            of="equivalent_SL_power",
-            wrt="*",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
+        self.declare_partials(of="equivalent_SL_power", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -59,7 +53,7 @@ class PerformancesEquivalentSeaLevelPower(om.ExplicitComponent):
 
         corrective_factor = sigma - (1 - sigma) / 7.55
 
-        partials["equivalent_SL_power", "shaft_power_out"] = 1.0 / corrective_factor
-        partials["equivalent_SL_power", "density"] = -(
+        partials["equivalent_SL_power", "shaft_power_out"] = np.diag(1.0 / corrective_factor)
+        partials["equivalent_SL_power", "density"] = -np.diag(
             shaft_power_out / corrective_factor ** 2.0 * (8.55 / 7.55) / RHO_SL
         )

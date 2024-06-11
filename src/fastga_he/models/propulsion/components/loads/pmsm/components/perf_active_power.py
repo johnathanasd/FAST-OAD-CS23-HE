@@ -26,13 +26,7 @@ class PerformancesActivePower(om.ExplicitComponent):
             "active_power", units="W", val=np.full(number_of_points, 50e3), shape=number_of_points
         )
 
-        self.declare_partials(
-            of="*",
-            wrt="*",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
+        self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -40,7 +34,7 @@ class PerformancesActivePower(om.ExplicitComponent):
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
-        partials["active_power", "shaft_power_out"] = 1.0 / inputs["efficiency"]
-        partials["active_power", "efficiency"] = -(
+        partials["active_power", "shaft_power_out"] = np.diag(1.0 / inputs["efficiency"])
+        partials["active_power", "efficiency"] = -np.diag(
             inputs["shaft_power_out"] / inputs["efficiency"] ** 2.0
         )

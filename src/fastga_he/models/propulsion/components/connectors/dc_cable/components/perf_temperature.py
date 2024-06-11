@@ -85,28 +85,11 @@ class PerformancesTemperature(om.ExplicitComponent):
             wrt=[
                 "data:propulsion:he_power_train:DC_cable_harness:" + harness_id + ":length",
                 "data:propulsion:he_power_train:DC_cable_harness:" + harness_id + ":cable:radius",
-            ],
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.zeros(number_of_points),
-        )
-        self.declare_partials(
-            of="*",
-            wrt=[
+                "exterior_temperature",
                 "heat_transfer_coefficient",
                 "conduction_losses",
             ],
             method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
-        self.declare_partials(
-            of="*",
-            wrt="exterior_temperature",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-            val=np.ones(number_of_points),
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
@@ -133,6 +116,7 @@ class PerformancesTemperature(om.ExplicitComponent):
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
         harness_id = self.options["harness_id"]
+        number_of_points = self.options["number_of_points"]
 
         cable_radius = inputs[
             "data:propulsion:he_power_train:DC_cable_harness:" + harness_id + ":cable:radius"
@@ -153,9 +137,10 @@ class PerformancesTemperature(om.ExplicitComponent):
             "cable_temperature",
             "data:propulsion:he_power_train:DC_cable_harness:" + harness_id + ":length",
         ] = -q_c / (2.0 * np.pi * cable_radius * cable_length ** 2.0 * h)
-        partials["cable_temperature", "heat_transfer_coefficient"] = -q_c / (
-            2.0 * np.pi * cable_radius * cable_length * h ** 2.0
+        partials["cable_temperature", "heat_transfer_coefficient"] = np.diag(
+            -q_c / (2.0 * np.pi * cable_radius * cable_length * h ** 2.0)
         )
-        partials["cable_temperature", "conduction_losses"] = 1.0 / (
-            2.0 * np.pi * cable_radius * cable_length * h
+        partials["cable_temperature", "conduction_losses"] = np.diag(
+            1.0 / (2.0 * np.pi * cable_radius * cable_length * h)
         )
+        partials["cable_temperature", "exterior_temperature"] = np.eye(number_of_points)

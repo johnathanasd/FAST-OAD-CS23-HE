@@ -30,13 +30,7 @@ class PerformancesEfficiency(om.ExplicitComponent):
             upper=1.0,
         )
 
-        self.declare_partials(
-            of="*",
-            wrt="*",
-            method="exact",
-            rows=np.arange(number_of_points),
-            cols=np.arange(number_of_points),
-        )
+        self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -61,11 +55,11 @@ class PerformancesEfficiency(om.ExplicitComponent):
             1e-6,
             inputs["power_losses"] / power_shaft_in ** 2.0,
         )
-        partials["efficiency", "shaft_power_in"] = partials_shaft_power
+        partials["efficiency", "shaft_power_in"] = np.diag(partials_shaft_power)
 
         partials_losses = np.where(
             np.clip(efficiency_untouched, 0.75, 1.0) != efficiency_untouched,
             1e-6,
             -1.0 / power_shaft_in,
         )
-        partials["efficiency", "power_losses"] = partials_losses
+        partials["efficiency", "power_losses"] = np.diag(partials_losses)
