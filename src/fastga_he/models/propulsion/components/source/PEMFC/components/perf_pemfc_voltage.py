@@ -50,10 +50,18 @@ class PerformancesPEMFCVoltage(om.ExplicitComponent):
 
         self.declare_partials(
             of=self.output_name,
-            wrt="*",
+            wrt="number_of_layers",
             method="exact",
             rows=np.arange(number_of_points),
             cols=np.arange(number_of_points),
+        )
+
+        self.declare_partials(
+            of=self.output_name,
+            wrt="single_layer_pemfc_voltage",
+            method="exact",
+            rows=np.arange(number_of_points),
+            cols=np.zeros(number_of_points),
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):

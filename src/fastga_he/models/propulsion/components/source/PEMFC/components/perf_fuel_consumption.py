@@ -54,10 +54,18 @@ class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
 
         self.declare_partials(
             of="*",
-            wrt="*",
+            wrt=["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area","number_of_layers"],
             method="exact",
             rows=np.arange(number_of_points),
             cols=np.arange(number_of_points),
+        )
+
+        self.declare_partials(
+            of="*",
+            wrt="fc_current_density",
+            method="exact",
+            rows=np.arange(number_of_points),
+            cols=np.zeros(number_of_points),
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
