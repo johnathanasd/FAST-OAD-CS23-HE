@@ -212,7 +212,7 @@ def test_pemfc_drag():
 
 
 def test_constraints_enforce_effective_area():
-
+    # TODO: modify the following to make it correct
     inputs_list = list_inputs(ConstraintsEffectiveAreaEnforce(pemfc_stack_id="pemfc_stack_1"))
     inputs_list.remove("data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:effective_area")
 
