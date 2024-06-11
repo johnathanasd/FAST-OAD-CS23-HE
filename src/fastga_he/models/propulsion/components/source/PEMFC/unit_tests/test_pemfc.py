@@ -397,7 +397,6 @@ def test_direct_bus_connection():
     ivc.add_output("voltage_out", val=np.linspace(400, 400, NB_POINTS_TEST), units="V")
     ivc.add_output("pemfc_voltage", val=np.linspace(390, 400, NB_POINTS_TEST), units="V")
 
-
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
         PerformancesPEMFCDirectBusConnection(number_of_points=NB_POINTS_TEST),
@@ -416,18 +415,20 @@ def test_single_layer_voltage():
     ivc.add_output(
         "fc_current_density",
         units="A/cm**2",
-        val=np.array([0.1,0.2,0.3,0.4,0.5,0.6,0.7]),
+        val=np.array([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]),
     )
-    ivc.add_output(name="data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:operation_pressure",
-            units="atm",
-            val=1.2,)
+    ivc.add_output(
+        name="data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:operation_pressure",
+        units="atm",
+        val=1.2,
+    )
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
         PerformancesSinglePEMFCVoltage(pemfc_stack_id="pemfc_stack_1", number_of_points=7),
         ivc,
     )
     assert problem.get_val("single_layer_pemfc_voltage", units="V") == pytest.approx(
-        [0.849,0.815,0.786,0.757,0.729,0.699,0.66], rel=1e-2
+        [0.849, 0.815, 0.786, 0.757, 0.729, 0.699, 0.66], rel=1e-2
     )
 
     problem.check_partials(compact_print=True)

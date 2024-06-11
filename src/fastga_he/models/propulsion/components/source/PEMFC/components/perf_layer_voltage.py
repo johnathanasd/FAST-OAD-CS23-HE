@@ -57,10 +57,23 @@ class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
 
         self.declare_partials(
             of="*",
-            wrt="*",
+            wrt="fc_current_density",
             method="exact",
             rows=np.arange(number_of_points),
             cols=np.arange(number_of_points),
+        )
+
+        self.declare_partials(
+            of="*",
+            wrt=[
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
+                + ":operation_pressure",
+                "nominal_pressure",
+            ],
+            method="exact",
+            rows=np.arange(number_of_points),
+            cols=np.zeros(number_of_points),
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
@@ -99,12 +112,13 @@ class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":operation_pressure",
         ] = (
             C
+            * np.ones(number_of_points)
             / inputs[
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id
                 + ":operation_pressure"
-            ]*np.ones((number_of_points, 1))
+            ]
         )
         partials["single_layer_pemfc_voltage", "nominal_pressure"] = (
-            -C / inputs["nominal_pressure"]*np.ones((number_of_points, 1))
+            -C * np.ones(number_of_points) / inputs["nominal_pressure"]
         )
