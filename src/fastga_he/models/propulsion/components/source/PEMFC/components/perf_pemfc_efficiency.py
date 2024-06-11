@@ -28,7 +28,7 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
         self.add_input(
             name="data:propulsion:he_power_train:pemfc_stack:"
             + pemfc_stack_id
-            + "operation_pressure",
+            + ":operation_pressure",
             units="atm",
             val=1.0,
         )
@@ -48,24 +48,30 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         E0 = 1.23  # ideal potential of the pemfc
         C = 0.06
-        Pop = inputs["operation_pressure"]
+        pemfc_stack_id = self.options["pemfc_stack_id"]
+        Pop = inputs["data:propulsion:he_power_train:pemfc_stack:"
+            + pemfc_stack_id
+            + ":operation_pressure"]
         Pnom = inputs["nominal_pressure"]
         E = E0 + C * np.log(Pop / Pnom)
         efficiency = inputs["single_layer_pemfc_voltage"] / E
         outputs["efficiency"] = efficiency
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
+        pemfc_stack_id = self.options["pemfc_stack_id"]
         E0 = 1.23  # ideal potential of the pemfc
         C = 0.06
-        Pop = inputs["operation_pressure"]
+        Pop = inputs["data:propulsion:he_power_train:pemfc_stack:"
+            + pemfc_stack_id
+            + ":operation_pressure"]
         Pnom = inputs["nominal_pressure"]
         E = E0 + C * np.log(Pop / Pnom)
 
         partials["efficiency", "single_layer_pemfc_voltage"] = 1 / E
 
-        partials["efficiency", "operation_pressure"] = -inputs["single_layer_pemfc_voltage"] / (
-            C * Pop * np.log(Pop / Pnom) ** 2
+        partials["efficiency", "data:propulsion:he_power_train:pemfc_stack:"
+            + pemfc_stack_id
+            + ":operation_pressure"] = -C*inputs["single_layer_pemfc_voltage"] / (Pop*
+            E ** 2
         )
-        partials["efficiency", "nominal_pressure"] = inputs["single_layer_pemfc_voltage"] / (
-            C * Pnom * np.log(Pop / Pnom) ** 2
-        )
+        partials["efficiency", "nominal_pressure"] = C*inputs["single_layer_pemfc_voltage"] / (Pnom*E** 2)

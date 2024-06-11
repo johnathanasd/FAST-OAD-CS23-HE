@@ -48,7 +48,7 @@
         <propulsion>
             <he_power_train>
                 <pemfc_stack>
-                    <dc_current_out>1.68</dc_current_out>
+                    <dc_current_out units="A">1.68</dc_current_out>
                     <number_of_layers>35</number_of_layers>
                     <pemfc_stack_1>
                         <effective_area units="cm**2">16.8</effective_area>

@@ -367,32 +367,25 @@ def test_pemfc_stack_sizing():
 def test_pemfc_current_density():
 
     # Research independent input value in .xml file
-    ivc = get_indep_var_comp(
-        list_inputs(
-            PerformancesCurrentDensity(
-                number_of_points=NB_POINTS_TEST, pemfc_stack_id="pemfc_stack_1"
-            )
-        ),
-        __file__,
-        XML_FILE,
-    )
-    dc_current_out = np.linspace(400, 410, NB_POINTS_TEST)
+    ivc = om.IndepVarComp()
+    dc_current_out = np.linspace(1.68, 9.24, NB_POINTS_TEST)
     ivc.add_output("dc_current_out", dc_current_out, units="A")
+    ivc.add_output("data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:effective_area",units="cm**2",val=16.8)
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
         PerformancesCurrentDensity(number_of_points=NB_POINTS_TEST, pemfc_stack_id="pemfc_stack_1"),
         ivc,
     )
-    assert problem.get_val("current_one_module", units="A") == pytest.approx(
-        [2.0, 2.01, 2.01, 2.02, 2.02, 2.03, 2.03, 2.04, 2.04, 2.05], rel=1e-2
+    assert problem.get_val("fc_current_density", units="A/cm**2") == pytest.approx(
+        [0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55], rel=1e-2
     )
 
     problem.check_partials(compact_print=True)
 
 
 def test_direct_bus_connection():
-
+    #TODO: Check how to calculate the residuals
     ivc = om.IndepVarComp()
     ivc.add_output("voltage_out", val=np.linspace(400, 400, NB_POINTS_TEST), units="V")
     ivc.add_output("pemfc_voltage", val=np.linspace(390, 400, NB_POINTS_TEST), units="V")
@@ -402,7 +395,7 @@ def test_direct_bus_connection():
         PerformancesPEMFCDirectBusConnection(number_of_points=NB_POINTS_TEST),
         ivc,
     )
-    assert problem.get_val("open_circuit_voltage", units="V") == pytest.approx(
+    assert problem.get_val("dc_current_out", units="A") == pytest.approx(
         [4.12, 4.07, 4.03, 3.98, 3.92, 3.86, 3.79, 3.72, 3.66, 3.61], rel=1e-2
     )
 
@@ -437,7 +430,6 @@ def test_single_layer_voltage():
 def test_pemfc_voltage():
 
     ivc = om.IndepVarComp()
-    # TODO: Check varaible name
     ivc.add_output(
         "single_layer_pemfc_voltage",
         val=np.array([0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95]),
@@ -473,21 +465,11 @@ def test_maximum():
     # Research independent input value in .xml file
     ivc = om.IndepVarComp()
     ivc.add_output(
-        "terminal_voltage",
-        units="V",
+        "dc_current_out",
+        units="A",
         val=np.array([4.01, 3.93, 3.85, 3.8, 3.75, 3.7, 3.67, 3.63, 3.6, 3.57]),
     )
-    ivc.add_output("state_of_charge", val=np.linspace(100, 40, NB_POINTS_TEST), units="percent")
-    ivc.add_output(
-        "c_rate",
-        units="h**-1",
-        val=np.array([0.5, 0.5015, 0.503, 0.504, 0.5055, 0.507, 0.5085, 0.5095, 0.511, 0.5125]),
-    )
-    ivc.add_output(
-        "losses_cell",
-        units="mW",
-        val=np.array([324.53, 257.92, 478.05, 679.3, 723.7, 596.37, 366.19, 146.23, 56.11, 172.61]),
-    )
+
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
@@ -495,33 +477,15 @@ def test_maximum():
         ivc,
     )
     assert problem.get_val(
-        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:cell:voltage_min", units="V"
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:current_min", units="A"
     ) == pytest.approx(
         3.57,
         rel=1e-2,
     )
     assert problem.get_val(
-        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:cell:voltage_max", units="V"
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:current_max", units="A"
     ) == pytest.approx(
         4.01,
-        rel=1e-2,
-    )
-    assert problem.get_val(
-        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:SOC_min", units="percent"
-    ) == pytest.approx(
-        40.0,
-        rel=1e-2,
-    )
-    assert problem.get_val(
-        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:c_rate_max", units="h**-1"
-    ) == pytest.approx(
-        0.5125,
-        rel=1e-2,
-    )
-    assert problem.get_val(
-        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:cell:losses_max", units="mW"
-    ) == pytest.approx(
-        723.7,
         rel=1e-2,
     )
 
@@ -557,17 +521,12 @@ def test_pemfc_efficiency():
     # Research independent input value in .xml file
     ivc = om.IndepVarComp()
     ivc.add_output(
-        "losses_battery",
-        np.array(
-            [2596.24, 2063.36, 3824.4, 5434.4, 5789.6, 4770.96, 2929.52, 1169.84, 448.88, 1380.88]
-        ),
-        units="W",
+        "single_layer_pemfc_voltage",
+        0.9,
+        units="V",
     )
-    ivc.add_output(
-        "power_out",
-        np.array([320.8, 315.2, 309.7, 306.5, 303.3, 300.1, 298.4, 296.0, 294.4, 292.7]),
-        units="kW",
-    )
+    ivc.add_output("data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:operation_pressure",1.2,units="atm")
+    ivc.add_output("nominal_pressure",1,units="atm")
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
@@ -576,7 +535,7 @@ def test_pemfc_efficiency():
     )
     # Not computed with proper losses, to test only
     assert problem.get_val("efficiency") == pytest.approx(
-        [0.992, 0.993, 0.988, 0.982, 0.981, 0.984, 0.99, 0.996, 0.998, 0.995], rel=1e-2
+        0.7253, rel=1e-2
     )
 
     problem.check_partials(compact_print=True)
@@ -586,12 +545,17 @@ def test_fuel_consumption():
 
     ivc = om.IndepVarComp()
     ivc.add_output(
-        "voltage_out",
-        units="V",
-        val=np.array([802.0, 786.0, 770.0, 760.0, 750.0, 740.0, 734.0, 726.0, 720.0, 714.0]),
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:effective_area",
+        units="cm**2",
+        val=16.8,
     )
-    ivc.add_output("dc_current_out", np.linspace(400, 410, NB_POINTS_TEST), units="A")
-    ivc.add_output("time_step", units="s", val=np.full(NB_POINTS_TEST, 500))
+    ivc.add_output(
+        "fc_current_density",
+        units="A/cm**2",
+        val=np.array([0.006,0.0089,0.0119,0.0149,0.0179,0.0208,0.0238,0.0268,0.0298,0.0327]),
+        shape=NB_POINTS_TEST,
+    )
+    ivc.add_output("number_of_layers",val=35.)
 
     problem = run_system(
         PerformancesPEMFCFuelConsumption(
@@ -599,8 +563,8 @@ def test_fuel_consumption():
         ),
         ivc,
     )
-    assert problem.get_val("non_consumable_energy_t", units="kW*h") == pytest.approx(
-        [44.556, 43.788, 43.015, 42.574, 42.13, 41.682, 41.457, 41.118, 40.889, 40.658], rel=1e-2
+    assert problem.get_val("fuel_consumption", units="kg/h") == pytest.approx(
+        [0.000130569948186529,0.000195854922279793,0.000261139896373057,0.000326424870466321,0.000391709844559586,0.000456994818652850,0.000522279792746114,0.000587564766839378,0.000652849740932643,0.000718134715025907], rel=1e-2
     )
 
     problem.check_partials(compact_print=True)
