@@ -137,5 +137,5 @@ class SizingHydrogenGasTankInnerVolume(om.ExplicitComponent):
             + hydrogen_gas_tank_id
             + ":tank_pressure",
         ] = (
-            -0.99704 * HYDROGEN_GAS_CONSTANT * fuel_mass / tank_pressure ** 2
+            -0.99704 * HYDROGEN_GAS_CONSTANT * fuel_mass * tank_temperature / tank_pressure ** 2
         )

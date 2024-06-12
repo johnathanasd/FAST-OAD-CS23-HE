@@ -50,11 +50,12 @@
                         <unusable_fuel_mission units="kg">0.01</unusable_fuel_mission>
                         <fuel_total_mission units="kg">1.01</fuel_total_mission>
                         <capacity units="kg">1.01</capacity>
-                        <volume units="L">12402.88.0</volume>
-                        <tank_pressure units="Pa">101325</tank_pressure>
+                        <inner_volume units="L">1240.288</inner_volume>
+                        <tank_pressure units="Pa">1013250</tank_pressure>
                         <dimension>
-                            <length units="m">0.467</length>
-                            <diameter units="m">0.127</diameter>
+                            <length units="m">1.</length>
+                            <diameter units="m">1.5</diameter>
+                            <inner_diameter units="m">0.97776</inner_diameter>
                         </dimension>
                     </hydrogen_gas_tank_1>
                 </hydrogen_gas_tank>
