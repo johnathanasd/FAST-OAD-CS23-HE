@@ -51,12 +51,12 @@ class SizingHydrogenGasTankUnusableHydrogen(om.ExplicitComponent):
         outputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":unusable_hydrogen_mission"
+            + ":unusable_fuel_mission"
         ] = (
             0.01
             * inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
-                + ":hydrogen_consumed_mission"
+                + ":fuel_consumed_mission"
             ]
         )

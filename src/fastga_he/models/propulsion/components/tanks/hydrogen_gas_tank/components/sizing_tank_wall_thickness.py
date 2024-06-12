@@ -47,7 +47,9 @@ class SizingHydrogenGasTankWallThickness(om.ExplicitComponent):
         )
 
         self.add_input(
-            "tank_pressure",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":tank_pressure",
             val=np.nan,
             units="Pa",
             desc="Hydrogen gas tank static pressure",
@@ -74,7 +76,11 @@ class SizingHydrogenGasTankWallThickness(om.ExplicitComponent):
             + ":dimension:wall_thickness"
         ] = (
             0.25
-            * inputs["tank_pressure"]
+            * inputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":tank_pressure"
+            ]
             * inputs["Safety_factor"]
             * inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -91,7 +97,9 @@ class SizingHydrogenGasTankWallThickness(om.ExplicitComponent):
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
             + ":dimension:wall_thickness",
-            "tank_pressure",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":tank_pressure",
         ] = (
             0.25
             * inputs["Safety_factor"]
@@ -109,7 +117,11 @@ class SizingHydrogenGasTankWallThickness(om.ExplicitComponent):
             "safety_factor",
         ] = (
             0.25
-            * inputs["tank_pressure"]
+            * inputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":tank_pressure"
+            ]
             * inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
@@ -126,7 +138,11 @@ class SizingHydrogenGasTankWallThickness(om.ExplicitComponent):
             + ":dimension:inner_diameter",
         ] = (
             0.25
-            * inputs["tank_pressure"]
+            * inputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":tank_pressure"
+            ]
             * inputs["Safety_factor"]
             / inputs["material_yield_strength"]
         )
@@ -138,7 +154,11 @@ class SizingHydrogenGasTankWallThickness(om.ExplicitComponent):
             "material_yield_strength",
         ] = (
             -0.25
-            * inputs["tank_pressure"]
+            * inputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":tank_pressure"
+            ]
             * inputs["Safety_factor"]
             * inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"

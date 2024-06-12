@@ -15,6 +15,7 @@ from .sizing_tank_inner_diameter import SizingHydrogenGasTankInnerDiameter
 from .sizing_tank_weight import SizingHydrogenGasTankWeight
 from .sizing_tank_drag import SizingHydrogenGasTankDrag
 from .sizing_tank_outer_diameter import SizingHydrogenGasTankOuterDiameter
+from .sizing_tank_overall_length import SizingHydrogenGasTankOverallLength
 
 from .cstr_hydrogen_gas_tank import ConstraintsHydrogenGasTank
 
@@ -61,6 +62,14 @@ class SizingHydrogenGasTank(om.Group):
         )
 
         self.add_subsystem(
+            name="tank_outer_diameter",
+            subsys=SizingHydrogenGasTankOuterDiameter(
+                hydrogen_gas_tank_id=hydrogen_gas_tank_id, position=position
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
             name="tank wall thickness",
             subsys=SizingHydrogenGasTankWallThickness(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
             promotes=["*"],
@@ -87,6 +96,13 @@ class SizingHydrogenGasTank(om.Group):
             subsys=SizingHydrogenGasTankLength(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
             promotes=["*"],
         )
+
+        self.add_subsystem(
+            name="tank_overall_length",
+            subsys=SizingHydrogenGasTankOverallLength(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
+            promotes=["*"],
+        )
+
         self.add_subsystem(
             name="tank_inner_volume",
             subsys=SizingHydrogenGasTankInnerVolume(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
@@ -95,13 +111,6 @@ class SizingHydrogenGasTank(om.Group):
         self.add_subsystem(
             name="tank_inner_diameter",
             subsys=SizingHydrogenGasTankInnerDiameter(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
-            promotes=["*"],
-        )
-        self.add_subsystem(
-            name="tank_outer_diameter",
-            subsys=SizingHydrogenGasTankOuterDiameter(
-                hydrogen_gas_tank_id=hydrogen_gas_tank_id, position=position
-            ),
             promotes=["*"],
         )
 

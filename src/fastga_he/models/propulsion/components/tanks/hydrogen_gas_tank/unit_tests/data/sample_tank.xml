@@ -40,27 +40,24 @@
         </aerodynamics>
         <propulsion>
             <he_power_train>
-                <fuel_tank>
-                    <fuel_tank_1>
+                <hydrogen_gas_tank>
+                    <hydrogen_gas_tank_1>
                         <CG>
                             <y_ratio>0.4</y_ratio>
                             <y units="m">1.85</y>
                         </CG>
-                        <fuel_consumed_mission units="kg">140.0</fuel_consumed_mission>
-                        <unusable_fuel_mission units="kg">1.4</unusable_fuel_mission>
-                        <fuel_total_mission units="kg">141.4</fuel_total_mission>
-                        <capacity units="kg">282.8</capacity>
-                        <volume units="L">393.0</volume>
-                        <fuel_type>1.0</fuel_type>
+                        <fuel_consumed_mission units="kg">1.0</fuel_consumed_mission>
+                        <unusable_fuel_mission units="kg">0.01</unusable_fuel_mission>
+                        <fuel_total_mission units="kg">1.01</fuel_total_mission>
+                        <capacity units="kg">1.01</capacity>
+                        <volume units="L">12402.88.0</volume>
+                        <tank_pressure units="Pa">101325</tank_pressure>
                         <dimension>
-                            <fineness_ratio>7.0</fineness_ratio>
-                            <ref_chord units="m">0.946</ref_chord>
                             <length units="m">0.467</length>
-                            <height units="m">0.127</height>
-                            <width units="m">3.0</width>
+                            <diameter units="m">0.127</diameter>
                         </dimension>
-                    </fuel_tank_1>
-                </fuel_tank>
+                    </hydrogen_gas_tank_1>
+                </hydrogen_gas_tank>
             </he_power_train>
         </propulsion>
     </data>

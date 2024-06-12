@@ -20,6 +20,7 @@ from ..components.sizing_tank_outer_diameter import SizingHydrogenGasTankOuterDi
 from ..components.sizing_tank_weight import SizingHydrogenGasTankWeight
 from ..components.sizing_tank_drag import SizingHydrogenGasTankDrag
 from ..components.sizing_tank_wall_thickness import SizingHydrogenGasTankWallThickness
+from ..components.sizing_tank_overall_length import SizingHydrogenGasTankOverallLength
 
 from ..components.cstr_enforce import ConstraintsHydrogenGasTankCapacityEnforce
 from ..components.cstr_ensure import ConstraintsHydrogenGasTankCapacityEnsure
@@ -59,7 +60,7 @@ def test_unusable_hydrogen_gas_mission():
             "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:unusable_fuel_mission",
             units="kg",
         )
-        == pytest.approx(1.4, rel=1e-2)
+        == pytest.approx(0.01, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True)
@@ -86,7 +87,7 @@ def test_total_hydrogen_gas_mission():
             "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:fuel_total_mission",
             units="kg",
         )
-        == pytest.approx(141.4, rel=1e-2)
+        == pytest.approx(1.01, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True)
@@ -242,6 +243,49 @@ def test_tank_outer_diameter():
             )
             == pytest.approx(expected_value, rel=1e-2)
         )
+
+        problem.check_partials(compact_print=True, step=1e-7)
+
+
+def test_tank_overall_length():
+
+    expected_values = [0.467, 2.68, 1.477]
+
+    for option, expected_value in zip(POSSIBLE_POSITION, expected_values):
+        # Research independent input value in .xml file
+        ivc = get_indep_var_comp(
+            list_inputs(
+                SizingHydrogenGasTankOverallLength(
+                    hydrogen_gas_tank_id="hydrogen_gas_tank_1", position=option
+                )
+            ),
+            __file__,
+            XML_FILE,
+        )
+
+        # Run problem and check obtained value(s) is/(are) correct
+        problem = run_system(
+            SizingHydrogenGasTankOverallLength(
+                hydrogen_gas_tank_id="hydrogen_gas_tank_1", position=option
+            ),
+            ivc,
+        )
+        assert (
+            problem.get_val(
+                "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:length",
+                units="m",
+            )
+            == pytest.approx(expected_value, rel=1e-2)
+        )
+
+        if option == "inside_the_wing":
+            assert (
+                problem.get_val(
+                    "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:ref_chord",
+                    units="m",
+                )
+                == pytest.approx(0.9346, rel=1e-2)
+            )
 
         problem.check_partials(compact_print=True, step=1e-7)
 
