@@ -56,8 +56,8 @@ def test_pemfc_weight():
         ivc,
     )
     assert problem.get_val(
-        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:module:mass", units="kg"
-    ) == pytest.approx(15.0, rel=1e-2)
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", units="kg"
+    ) == pytest.approx(0.5, rel=1e-2)
 
     problem.check_partials(compact_print=True)
 
@@ -78,16 +78,16 @@ def test_pemfc_volume():
     )
     assert problem.get_val(
         "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:volume", units="L"
-    ) == pytest.approx(660.0, rel=1e-2)
+    ) == pytest.approx(1.62, rel=1e-2)
 
     problem.check_partials(compact_print=True)
 
 
 def test_pemfc_dimensions():
 
-    expected_length = [0.511, 7.03, 0.81, 0.81, 1.48]
-    expected_width = [3.69, 0.47, 1.67, 1.67, 0.95]
-    expected_height = [0.82, 0.47, 1.14, 1.14, 1.09]
+    expected_length = [0.11998, 0.11998, 0.11998, 0.11998]
+    expected_width = [0.1162, 0.1162, 0.95824, 0.1162]
+    expected_height = [0.1162, 0.1162, 0.01409, 0.1162]
 
     for option, length, width, height in zip(
         POSSIBLE_POSITION, expected_length, expected_width, expected_height
@@ -119,7 +119,7 @@ def test_pemfc_dimensions():
 
 def test_pemfc_cg_x():
 
-    expected_values = [2.88, 2.88, 0.095, 2.38, 1.24]
+    expected_values = [0.44, 2.88466, 1.2387, 2.0374]
 
     for option, expected_value in zip(POSSIBLE_POSITION, expected_values):
         # Research independent input value in .xml file
@@ -143,7 +143,7 @@ def test_pemfc_cg_x():
 
 def test_pemfc_cg_y():
 
-    expected_values = [1.57, 1.57, 0.0, 0.0, 0.0]
+    expected_values = [0.0, 1.57, 0.0, 0.0]
 
     for option, expected_value in zip(POSSIBLE_POSITION, expected_values):
         # Research independent input value in .xml file
@@ -167,8 +167,8 @@ def test_pemfc_cg_y():
 
 def test_pemfc_drag():
 
-    expected_ls_drag = [0.0, 0.021, 0.0, 0.0, 3.77e-3]
-    expected_cruise_drag = [0.0, 0.021, 0.0, 0.0, 3.72e-3]
+    expected_ls_drag = [0.0, 0.0002985, 3.493e-5, 0.0]
+    expected_cruise_drag = [0.0, 0.0002985, 3.445e-5, 0.0]
 
     for option, ls_drag, cruise_drag in zip(
         POSSIBLE_POSITION, expected_ls_drag, expected_cruise_drag
@@ -212,9 +212,6 @@ def test_pemfc_drag():
 
 
 def test_constraints_enforce_effective_area():
-    # TODO: modify the following to make it correct
-    inputs_list = list_inputs(ConstraintsEffectiveAreaEnforce(pemfc_stack_id="pemfc_stack_1"))
-    inputs_list.remove("data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:effective_area")
 
     # Research independent input value in .xml file
     ivc= om.IndepVarComp()
@@ -236,56 +233,7 @@ def test_constraints_enforce_effective_area():
         == pytest.approx(10, rel=1e-2)
     )
 
-    # The error on the capacity multiplier not retained is due to the fact that I've had bad
-    # experiences with putting 0 in partials do I take something close enough to 0
     problem.check_partials(compact_print=True)
-
-    # We try with a moderate c_rate to check if it works when remaining in the limiter range
-    ivc_c_rate_con = copy.deepcopy(ivc_base)
-    ivc_c_rate_con.add_output(
-        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:c_rate_max",
-        val=3.0,
-        units="h**-1",
-    )
-
-    # Run problem and check obtained value(s) is/(are) correct
-    problem = run_system(
-        ConstraintsEffectiveAreaEnforce(pemfc_stack_id="pemfc_stack_1"),
-        ivc_c_rate_con,
-    )
-    assert (
-        problem.get_val(
-            "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:number_modules",
-        )
-        == pytest.approx(66.67, rel=1e-2)
-    )
-
-    # Partials will be hard to justify here since there is a rounding inside the module
-    problem.check_partials(compact_print=True)
-
-    # We try with a high c_rate to check limiter range
-    ivc_c_rate_con = copy.deepcopy(ivc_base)
-    ivc_c_rate_con.add_output(
-        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:c_rate_max",
-        val=6.0,
-        units="h**-1",
-    )
-
-    # Run problem and check obtained value(s) is/(are) correct
-    problem = run_system(
-        ConstraintsEffectiveAreaEnforce(pemfc_stack_id="pemfc_stack_1"),
-        ivc_c_rate_con,
-    )
-    assert (
-        problem.get_val(
-            "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:number_modules",
-        )
-        == pytest.approx(80.0, rel=1e-2)
-    )
-
-    # Partials will be hard to justify here since there is a rounding inside the module
-    problem.check_partials(compact_print=True)
-
 
 def test_constraints_ensure_effective_area():
 
@@ -295,6 +243,11 @@ def test_constraints_ensure_effective_area():
         __file__,
         XML_FILE,
     )
+    ivc.add_output(
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:current_max",
+        val=14,
+        units="A",
+    )
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
@@ -303,17 +256,10 @@ def test_constraints_ensure_effective_area():
     )
     assert (
         problem.get_val(
-            "constraints:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:min_safe_SOC",
-            units="percent",
+            "constraints:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:effective_area",
+            units="cm**2",
         )
-        == pytest.approx(-20.0, rel=1e-2)
-    )
-    assert (
-        problem.get_val(
-            "constraints:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:cell:max_c_rate",
-            units="percent",
-        )
-        == pytest.approx(-1.7, rel=1e-2)
+        == pytest.approx(-3.2, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True)

@@ -59,6 +59,12 @@ class SizingPEMFCDrag(om.ExplicitComponent):
                 val=np.nan,
                 desc="Length of the pemfc, as in the size of the pemfc along the X-axis",
             )
+            self.add_input(
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:height",
+                units="m",
+                val=np.nan,
+                desc="height of the pemfc, as in the size of the pemfc along the Z-axis",
+            )
             self.add_input("data:geometry:fuselage:wet_area", val=np.nan, units="m**2")
             self.add_input("data:aerodynamics:fuselage:" + ls_tag + ":CD0", val=np.nan)
 

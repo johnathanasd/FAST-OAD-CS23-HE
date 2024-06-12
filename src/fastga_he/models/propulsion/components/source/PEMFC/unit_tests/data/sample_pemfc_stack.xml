@@ -54,10 +54,13 @@
                         <operation_pressure units="atm">1.2</operation_pressure>
                         <dimension>
                             <length units="m">0.11998</length>
-                            <height units="m">0.1162</height>
                             <width units="m">0.1162</width>
+                            <height units="m">0.1162</height>
                         </dimension>
                         <volume units="L">1.62</volume>
+                        <CG>
+                            <y_ratio>0.34</y_ratio>
+                        </CG>
                     </pemfc_stack_1>
                 </pemfc_stack>
             </he_power_train>

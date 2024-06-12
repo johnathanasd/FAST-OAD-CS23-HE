@@ -4,4 +4,4 @@
 
 SUBMODEL_CONSTRAINTS_PEMFC_EFFECTIVE_AREA = "submodel.propulsion.constraints.pemfc.effective_area"
 
-POSSIBLE_POSITION = ["wing_pod", "in_the_front", "in_the_back", "underbelly"]
+POSSIBLE_POSITION = ["in_the_front", "wing_pod", "underbelly", "in_the_back"]

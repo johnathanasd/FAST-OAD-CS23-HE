@@ -49,7 +49,11 @@ class SizingPEMFCStack(om.Group):
             subsys=ConstraintsPEMFC(pemfc_stack_id=pemfc_stack_id),
             promotes=["*"],
         )
-
+        self.add_subsystem(
+            name="pemfc_dimensions",
+            subsys=SizingPEMFCDimensions(pemfc_stack_id=pemfc_stack_id, position=position),
+            promotes=["*"],
+        )
         self.add_subsystem(
             name="pemfc_weight",
             subsys=SizingPEMFCWeight(pemfc_stack_id=pemfc_stack_id),
@@ -60,11 +64,7 @@ class SizingPEMFCStack(om.Group):
             subsys=SizingPEMFCVolume(pemfc_stack_id=pemfc_stack_id),
             promotes=["*"],
         )
-        self.add_subsystem(
-            name="pemfc_dimensions",
-            subsys=SizingPEMFCDimensions(pemfc_stack_id=pemfc_stack_id, position=position),
-            promotes=["*"],
-        )
+
         self.add_subsystem(
             name="pemfc_CG_x",
             subsys=SizingPEMFCCGX(pemfc_stack_id=pemfc_stack_id, position=position),

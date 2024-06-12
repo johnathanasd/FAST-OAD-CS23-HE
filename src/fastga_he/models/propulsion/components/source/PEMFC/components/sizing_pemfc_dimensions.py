@@ -4,12 +4,13 @@
 
 import openmdao.api as om
 import numpy as np
-
+import logging
 from ..constants import POSSIBLE_POSITION
 
 UNDERBELLY_RATIO = 0.8  # Ratio between underbelly width and fuselage width
 DIMENSION_RATIO = 0.3528  # Ratio between the effective area length size and the actual FC size
 LENGTH_LAYER_RATIO = 3.428e-3  # in meters
+_LOGGER = logging.getLogger(__name__)
 
 
 class SizingPEMFCDimensions(om.ExplicitComponent):
@@ -100,6 +101,9 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
             ]
         )
         if position in "underbelly":
+            _LOGGER.warning(
+                msg="Position Underbelly, Fuel cell height and width adjusted for better fitting !!"
+            )
             outputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width"
             ] = (UNDERBELLY_RATIO * inputs["data:geometry:fuselage:maximum_width"])
@@ -120,10 +124,9 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
         position = self.options["position"]
 
         pemfc_area = (
-            DIMENSION_RATIO ** 2
-            * inputs[
+            inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
-            ]
+            ]/ DIMENSION_RATIO ** 2
         )
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:length",
@@ -134,13 +137,13 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
             partials[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width",
                 "data:geometry:fuselage:maximum_width",
-            ] = LENGTH_LAYER_RATIO
+            ] = UNDERBELLY_RATIO
             partials[
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id
                 + ":dimension:height",
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
-            ] = DIMENSION_RATIO ** 2 / (
+            ] = 1/ ( DIMENSION_RATIO ** 2*
                 UNDERBELLY_RATIO * inputs["data:geometry:fuselage:maximum_width"]
             )
             partials[
@@ -156,14 +159,13 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width",
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
             ] = (
-                DIMENSION_RATIO
-                * 0.5
-                / np.sqrt(
-                    inputs[
+                0.5
+                /
+                np.sqrt(inputs[
                         "data:propulsion:he_power_train:pemfc_stack:"
                         + pemfc_stack_id
                         + ":effective_area"
-                    ]
+                    ]*DIMENSION_RATIO**2
                 )
             )
             partials[
@@ -172,13 +174,12 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
                 + ":dimension:height",
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
             ] = (
-                DIMENSION_RATIO
-                * 0.5
-                / np.sqrt(
-                    inputs[
+                0.5
+                 /
+                    np.sqrt(inputs[
                         "data:propulsion:he_power_train:pemfc_stack:"
                         + pemfc_stack_id
                         + ":effective_area"
-                    ]
-                )
+                    ]*DIMENSION_RATIO**2
+                            )
             )

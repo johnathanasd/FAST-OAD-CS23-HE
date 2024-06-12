@@ -76,13 +76,13 @@ class SizingPEMFCVolume(om.ExplicitComponent):
 
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":volume",
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width",
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:length",
         ] = (
             inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:height"
             ]
             * inputs[
-                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:length"
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width"
             ]
         )
 

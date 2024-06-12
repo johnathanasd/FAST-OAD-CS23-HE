@@ -5,7 +5,7 @@
 import openmdao.api as om
 import numpy as np
 
-FC_WEIGHT_DENSITY = 8.5e-8  # kg/m^2
+FC_WEIGHT_DENSITY = 8.5034  # kg/m^2
 
 
 class SizingPEMFCWeight(om.ExplicitComponent):
