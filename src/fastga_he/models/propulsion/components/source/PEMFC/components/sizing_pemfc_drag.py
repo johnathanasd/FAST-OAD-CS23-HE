@@ -23,7 +23,7 @@ class SizingPEMFCDrag(om.ExplicitComponent):
         )
         self.options.declare(
             name="position",
-            default="in_the_back",
+            default="underbelly",
             values=POSSIBLE_POSITION,
             desc="Option to give the position of the pemfc, possible position include "
             + ", ".join(POSSIBLE_POSITION),
@@ -60,7 +60,9 @@ class SizingPEMFCDrag(om.ExplicitComponent):
                 desc="Length of the pemfc, as in the size of the pemfc along the X-axis",
             )
             self.add_input(
-                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:height",
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
+                + ":dimension:height",
                 units="m",
                 val=np.nan,
                 desc="height of the pemfc, as in the size of the pemfc along the Z-axis",

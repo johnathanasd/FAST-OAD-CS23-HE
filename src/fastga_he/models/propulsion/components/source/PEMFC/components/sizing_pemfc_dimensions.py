@@ -31,7 +31,7 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
         )
         self.options.declare(
             name="position",
-            default="in_the_back",
+            default="underbelly",
             values=POSSIBLE_POSITION,
             desc="Option to give the position of the pemfc, possible position include "
             + ", ".join(POSSIBLE_POSITION),
@@ -126,7 +126,8 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
         pemfc_area = (
             inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
-            ]/ DIMENSION_RATIO ** 2
+            ]
+            / DIMENSION_RATIO ** 2
         )
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:length",
@@ -143,8 +144,10 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
                 + pemfc_stack_id
                 + ":dimension:height",
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
-            ] = 1/ ( DIMENSION_RATIO ** 2*
-                UNDERBELLY_RATIO * inputs["data:geometry:fuselage:maximum_width"]
+            ] = 1 / (
+                DIMENSION_RATIO ** 2
+                * UNDERBELLY_RATIO
+                * inputs["data:geometry:fuselage:maximum_width"]
             )
             partials[
                 "data:propulsion:he_power_train:pemfc_stack:"
@@ -158,28 +161,24 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
             partials[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width",
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
-            ] = (
-                0.5
-                /
-                np.sqrt(inputs[
-                        "data:propulsion:he_power_train:pemfc_stack:"
-                        + pemfc_stack_id
-                        + ":effective_area"
-                    ]*DIMENSION_RATIO**2
-                )
+            ] = 0.5 / np.sqrt(
+                inputs[
+                    "data:propulsion:he_power_train:pemfc_stack:"
+                    + pemfc_stack_id
+                    + ":effective_area"
+                ]
+                * DIMENSION_RATIO ** 2
             )
             partials[
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id
                 + ":dimension:height",
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
-            ] = (
-                0.5
-                 /
-                    np.sqrt(inputs[
-                        "data:propulsion:he_power_train:pemfc_stack:"
-                        + pemfc_stack_id
-                        + ":effective_area"
-                    ]*DIMENSION_RATIO**2
-                            )
+            ] = 0.5 / np.sqrt(
+                inputs[
+                    "data:propulsion:he_power_train:pemfc_stack:"
+                    + pemfc_stack_id
+                    + ":effective_area"
+                ]
+                * DIMENSION_RATIO ** 2
             )

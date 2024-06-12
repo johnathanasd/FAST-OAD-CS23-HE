@@ -23,13 +23,6 @@ class SizingPEMFCWeight(om.ExplicitComponent):
             allow_none=False,
         )
 
-        self.options.declare(
-            name="pemfc_stack_id",
-            default=None,
-            desc="Identifier of the pemfc pack",
-            allow_none=False,
-        )
-
     def setup(self):
 
         pemfc_stack_id = self.options["pemfc_stack_id"]

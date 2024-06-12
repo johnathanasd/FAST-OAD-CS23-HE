@@ -11,7 +11,7 @@ import fastoad.api as oad
 
 oad.RegisterSubmodel.active_models[
     SUBMODEL_CONSTRAINTS_PEMFC_EFFECTIVE_AREA
-] = "submodel.propulsion.constraints.pemfc_stack.effective_area.enforce"
+] = "fastga_he.submodel.propulsion.constraints.pemfc_stack.effective_area.enforce"
 
 MAX_CURRENT_DENSITY = 0.7  # A/cm^2
 

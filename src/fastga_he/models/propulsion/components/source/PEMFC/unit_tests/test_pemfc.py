@@ -211,10 +211,54 @@ def test_pemfc_drag():
             problem.check_partials(compact_print=True)
 
 
+def test_pemfc_stack_sizing():
+
+    # Research independent input value in .xml file
+    ivc = get_indep_var_comp(
+        list_inputs(SizingPEMFCStack(pemfc_stack_id="pemfc_stack_1")),
+        __file__,
+        XML_FILE,
+    )
+    ivc.add_output(
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:current_max",
+        val=11.76,
+        units="A",
+    )
+
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        SizingPEMFCStack(pemfc_stack_id="pemfc_stack_1"),
+        ivc,
+    )
+    assert problem.get_val(
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", units="kg"
+    ) == pytest.approx(0.5, rel=1e-2)
+    assert problem.get_val(
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:CG:x", units="m"
+    ) == pytest.approx(1.2387, rel=1e-2)
+    assert problem.get_val(
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:CG:y", units="m"
+    ) == pytest.approx(0.0, rel=1e-2)
+    assert (
+        problem.get_val(
+            "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:low_speed:CD0",
+        )
+        == pytest.approx(7.377e-5, rel=1e-2)
+    )
+    assert (
+        problem.get_val(
+            "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:cruise:CD0",
+        )
+        == pytest.approx(7.276e-5, rel=1e-2)
+    )
+
+    problem.check_partials(compact_print=True)
+
+
 def test_constraints_enforce_effective_area():
 
     # Research independent input value in .xml file
-    ivc= om.IndepVarComp()
+    ivc = om.IndepVarComp()
     ivc.add_output(
         "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:current_max",
         val=7,
@@ -226,14 +270,12 @@ def test_constraints_enforce_effective_area():
         ConstraintsEffectiveAreaEnforce(pemfc_stack_id="pemfc_stack_1"),
         ivc,
     )
-    assert (
-        problem.get_val(
-            "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:effective_area", units="cm**2"
-        )
-        == pytest.approx(10, rel=1e-2)
-    )
+    assert problem.get_val(
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:effective_area", units="cm**2"
+    ) == pytest.approx(10, rel=1e-2)
 
     problem.check_partials(compact_print=True)
+
 
 def test_constraints_ensure_effective_area():
 
@@ -260,45 +302,6 @@ def test_constraints_ensure_effective_area():
             units="cm**2",
         )
         == pytest.approx(-3.2, rel=1e-2)
-    )
-
-    problem.check_partials(compact_print=True)
-
-
-def test_pemfc_stack_sizing():
-
-    # Research independent input value in .xml file
-    ivc = get_indep_var_comp(
-        list_inputs(SizingPEMFCStack(pemfc_stack_id="pemfc_stack_1")),
-        __file__,
-        XML_FILE,
-    )
-
-    # Run problem and check obtained value(s) is/(are) correct
-    problem = run_system(
-        SizingPEMFCStack(pemfc_stack_id="pemfc_stack_1"),
-        ivc,
-    )
-    assert problem.get_val(
-        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", units="kg"
-    ) == pytest.approx(3000.0, rel=1e-2)
-    assert problem.get_val(
-        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:CG:x", units="m"
-    ) == pytest.approx(2.88, rel=1e-2)
-    assert problem.get_val(
-        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:CG:y", units="m"
-    ) == pytest.approx(1.57, rel=1e-2)
-    assert (
-        problem.get_val(
-            "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:low_speed:CD0",
-        )
-        == pytest.approx(0.0, rel=1e-2)
-    )
-    assert (
-        problem.get_val(
-            "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:cruise:CD0",
-        )
-        == pytest.approx(0.0, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True)
