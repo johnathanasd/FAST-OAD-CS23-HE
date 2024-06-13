@@ -75,7 +75,7 @@ class SizingHydrogenGasTankWallThickness(om.ExplicitComponent):
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
             + ":dimension:wall_thickness"
-        ] = 0.5*(
+        ] = 0.5 * (
             inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id

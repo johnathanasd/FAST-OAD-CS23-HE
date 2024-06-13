@@ -47,7 +47,7 @@ class SizingHydrogenGasTankTotalHydrogenMission(om.ExplicitComponent):
             + hydrogen_gas_tank_id
             + ":fuel_total_mission",
             units="kg",
-            val=50.5,
+            val=1.01,
             desc="Total amount of hydrogen loaded in the tank for the mission",
         )
 

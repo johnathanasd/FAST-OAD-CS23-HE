@@ -152,7 +152,7 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
             + hydrogen_gas_tank_id
             + ":material:density",
         ] = (
-            4/3 * np.pi * r ** 3
+            4 / 3 * np.pi * r ** 3
             + np.pi * r ** 2 * l
             - inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"

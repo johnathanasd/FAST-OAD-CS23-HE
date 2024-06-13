@@ -41,7 +41,7 @@ class ConstraintsHydrogenGasTankCapacityEnforce(om.ExplicitComponent):
         self.add_input(
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":hydrogen_total_mission",
+            + ":fuel_total_mission",
             units="kg",
             val=np.nan,
             desc="Total amount of hydrogen loaded in the tank for the mission",
@@ -67,5 +67,5 @@ class ConstraintsHydrogenGasTankCapacityEnforce(om.ExplicitComponent):
         ] = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":hydrogen_total_mission"
+            + ":fuel_total_mission"
         ]

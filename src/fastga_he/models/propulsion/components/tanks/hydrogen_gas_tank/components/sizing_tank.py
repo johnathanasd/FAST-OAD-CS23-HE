@@ -16,7 +16,9 @@ from .sizing_tank_weight import SizingHydrogenGasTankWeight
 from .sizing_tank_drag import SizingHydrogenGasTankDrag
 from .sizing_tank_outer_diameter import SizingHydrogenGasTankOuterDiameter
 from .sizing_tank_overall_length import SizingHydrogenGasTankOverallLength
-from .sizing_tank_overall_length_fuselage_check import SizingHydrogenGasTankOverallLengthFuselageCheck
+from .sizing_tank_overall_length_fuselage_check import (
+    SizingHydrogenGasTankOverallLengthFuselageCheck,
+)
 
 from .cstr_hydrogen_gas_tank import ConstraintsHydrogenGasTank
 
@@ -50,10 +52,19 @@ class SizingHydrogenGasTank(om.Group):
         position = self.options["position"]
 
         self.add_subsystem(
+            name="tank_outer_diameter",
+            subsys=SizingHydrogenGasTankOuterDiameter(
+                hydrogen_gas_tank_id=hydrogen_gas_tank_id, position=position
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
             name="unusable_hydrogen_gas",
             subsys=SizingHydrogenGasTankUnusableHydrogen(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
             promotes=["*"],
         )
+
         self.add_subsystem(
             name="total_hydrogen_gas",
             subsys=SizingHydrogenGasTankTotalHydrogenMission(
@@ -63,10 +74,8 @@ class SizingHydrogenGasTank(om.Group):
         )
 
         self.add_subsystem(
-            name="tank_outer_diameter",
-            subsys=SizingHydrogenGasTankOuterDiameter(
-                hydrogen_gas_tank_id=hydrogen_gas_tank_id, position=position
-            ),
+            name="tank_constraints",
+            subsys=ConstraintsHydrogenGasTank(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
             promotes=["*"],
         )
 
@@ -77,8 +86,26 @@ class SizingHydrogenGasTank(om.Group):
         )
 
         self.add_subsystem(
-            name="tank wall thickness",
+            name="tank_wall_thickness",
             subsys=SizingHydrogenGasTankWallThickness(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            name="tank_inner_volume",
+            subsys=SizingHydrogenGasTankInnerVolume(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            name="tank_length",
+            subsys=SizingHydrogenGasTankLength(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            name="tank_overall_length",
+            subsys=SizingHydrogenGasTankOverallLength(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
             promotes=["*"],
         )
 
@@ -99,30 +126,13 @@ class SizingHydrogenGasTank(om.Group):
         )
 
         self.add_subsystem(
-            name="tank_length",
-            subsys=SizingHydrogenGasTankLength(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
-            promotes=["*"],
-        )
-
-        self.add_subsystem(
-            name="tank_overall_length",
-            subsys=SizingHydrogenGasTankOverallLength(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
-            promotes=["*"],
-        )
-
-        self.add_subsystem(
             name="tank_overall_length_length_fuselage_check",
-            subsys=SizingHydrogenGasTankOverallLengthFuselageCheck(hydrogen_gas_tank_id=hydrogen_gas_tank_id,position=position,),
+            subsys=SizingHydrogenGasTankOverallLengthFuselageCheck(
+                hydrogen_gas_tank_id=hydrogen_gas_tank_id,
+                position=position,
+            ),
             promotes=["*"],
         )
-
-
-        self.add_subsystem(
-            name="tank_inner_volume",
-            subsys=SizingHydrogenGasTankInnerVolume(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
-            promotes=["*"],
-        )
-
 
         self.add_subsystem(
             name="tank_weight",
@@ -130,11 +140,7 @@ class SizingHydrogenGasTank(om.Group):
             promotes=["*"],
         )
 
-        self.add_subsystem(
-            name="constraints_tank",
-            subsys=ConstraintsHydrogenGasTank(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
-            promotes=["*"],
-        )
+
 
         for low_speed_aero in [True, False]:
             system_name = "tank_drag_ls" if low_speed_aero else "tank_drag_cruise"

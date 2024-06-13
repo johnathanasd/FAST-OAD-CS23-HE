@@ -38,7 +38,7 @@ class SizingHydrogenGasTankUnusableHydrogen(om.ExplicitComponent):
             + hydrogen_gas_tank_id
             + ":unusable_fuel_mission",
             units="kg",
-            val=0.5,
+            val=0.01,
             desc="Amount of trapped hydrogen in the tank",
         )
 
