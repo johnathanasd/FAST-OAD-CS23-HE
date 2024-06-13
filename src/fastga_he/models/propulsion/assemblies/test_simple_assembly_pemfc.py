@@ -35,7 +35,7 @@ from . import outputs
 
 DATA_FOLDER_PATH = pth.join(pth.dirname(__file__), "data")
 
-XML_FILE = "simple_assembly.xml"
+XML_FILE = "test_simple_assembly_pemfc_h2_tank.xml"
 NB_POINTS_TEST = 10
 
 
