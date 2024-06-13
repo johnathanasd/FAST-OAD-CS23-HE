@@ -66,7 +66,7 @@ class SizingHydrogenGasTankDrag(om.ExplicitComponent):
             self.add_input("data:geometry:fuselage:wet_area", val=np.nan, units="m**2")
             self.add_input("data:aerodynamics:fuselage:" + ls_tag + ":CD0", val=np.nan)
 
-        if position == "wing_pod":
+        elif position == "wing_pod":
 
             self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
 
@@ -79,14 +79,6 @@ class SizingHydrogenGasTankDrag(om.ExplicitComponent):
             val=0.0,
         )
 
-        self.add_output(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
-            + ":"
-            + ls_tag
-            + ":CD0",
-            val=0.0,
-        )
 
         # Should not work but actually does. I expected the value to be zero everywhere but it
         # seems like this value is overwritten by the compute_partials function
@@ -112,7 +104,7 @@ class SizingHydrogenGasTankDrag(om.ExplicitComponent):
                 * inputs[
                     "data:propulsion:he_power_train:hydrogen_gas_tank:"
                     + hydrogen_gas_tank_id
-                    + ":dimension:diameter"
+                    + ":dimension:outer_diameter"
                 ]
                 ** 2
                 / 4.0
@@ -173,7 +165,7 @@ class SizingHydrogenGasTankDrag(om.ExplicitComponent):
                 * inputs[
                     "data:propulsion:he_power_train:hydrogen_gas_tank:"
                     + hydrogen_gas_tank_id
-                    + ":dimension:diameter"
+                    + ":dimension:outer_diameter"
                 ]
                 ** 2
                 / 4.0
@@ -186,14 +178,14 @@ class SizingHydrogenGasTankDrag(om.ExplicitComponent):
                 + ":CD0",
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
-                + ":dimension:diameter",
+                + ":dimension:outer_diameter",
             ] = (
                 0.1
                 * np.pi
                 * inputs[
                     "data:propulsion:he_power_train:hydrogen_gas_tank:"
                     + hydrogen_gas_tank_id
-                    + ":dimension:diameter"
+                    + ":dimension:outer_diameter"
                 ]
                 / 2.0
                 / inputs["data:geometry:wing:area"]
@@ -214,7 +206,7 @@ class SizingHydrogenGasTankDrag(om.ExplicitComponent):
             d = inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
-                + ":dimension:diameter"
+                + ":dimension:outer_diameter"
             ]
             l = inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -233,7 +225,7 @@ class SizingHydrogenGasTankDrag(om.ExplicitComponent):
                 + ":CD0",
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
-                + ":dimension:diameter",
+                + ":dimension:outer_diameter",
             ] = (
                 cd0_fus * (3 * l + 4 * d) / wet_area
             )
@@ -278,5 +270,5 @@ class SizingHydrogenGasTankDrag(om.ExplicitComponent):
                 + ":CD0",
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
-                + ":dimension:width",
+                + ":dimension:outer_diameter",
             ] = 0.0

@@ -8,6 +8,7 @@
                 <length units="m" is_input="False">2.477417183742213<!--cabin length--></length>
             </cabin>
             <fuselage>
+                <wet_area units="m**2" is_input="False">40.032<!--fuselage wet area--></wet_area>
                 <maximum_height units="m" is_input="False">1.08669<!--maximum fuselage height--></maximum_height>
                 <front_length units="m" is_input="False">0.5<!--length of the front cone of the aircraft--></front_length>
                 <rear_length units="m" is_input="False">5.6489614700284925<!--length of the rear cone of the aircraft--></rear_length>

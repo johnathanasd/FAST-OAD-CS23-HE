@@ -364,8 +364,8 @@ def test_hydrogen_gas_tank_weight():
 
 def test_hydrogen_gas_tank_drag():
 
-    expected_ls_drag = [0.0, 0.01592, 0.0,1.0]
-    expected_cruise_drag = [0.0, 0.01592, 0.0,1.0]
+    expected_ls_drag = [0.0, 0.01057, 0.0, 1.4668e-3]
+    expected_cruise_drag = [0.0, 0.01057, 0.0, 1.44669e-3]
 
     for option, ls_drag, cruise_drag in zip(
         POSSIBLE_POSITION, expected_ls_drag, expected_cruise_drag
@@ -434,10 +434,10 @@ def test_sizing_tank():
     ) == pytest.approx(0.0, rel=1e-2)
     assert (
         problem.get_val(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:width",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:inner_diameter",
             units="m",
         )
-        == pytest.approx(3.33, rel=1e-2)
+        == pytest.approx(0.97776, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True, step=1e-7)
