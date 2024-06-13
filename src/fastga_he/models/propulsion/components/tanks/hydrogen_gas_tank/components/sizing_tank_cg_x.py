@@ -63,7 +63,7 @@ class SizingHydrogenGasTankCGX(om.ExplicitComponent):
             self.add_input(
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
-                + ":dimension:diameter",
+                + ":dimension:outer_diameter",
                 units="m",
                 val=np.nan,
                 desc="Outer diameter of the hydrogen gas tank",
@@ -82,7 +82,7 @@ class SizingHydrogenGasTankCGX(om.ExplicitComponent):
                 of="*",
                 wrt="data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
-                + ":dimension:diameter",
+                + ":dimension:outer_diameter",
                 val=0.5,
             )
 
@@ -104,7 +104,7 @@ class SizingHydrogenGasTankCGX(om.ExplicitComponent):
         if position == "wing_pod":
 
             outputs[
-                "data:propulsion:he_power_train:fuel_tank:" + hydrogen_gas_tank_id + ":CG:x"
+                "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:x"
             ] = (
                 inputs["data:geometry:wing:MAC:at25percent:x"]
                 + 0.25 * inputs["data:geometry:wing:MAC:length"]
@@ -127,7 +127,7 @@ class SizingHydrogenGasTankCGX(om.ExplicitComponent):
                 * inputs[
                     "data:propulsion:he_power_train:hydrogen_gas_tank:"
                     + hydrogen_gas_tank_id
-                    + ":dimension:diameter"
+                    + ":dimension:outer_diameter"
                 ]
             )
 

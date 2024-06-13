@@ -118,7 +118,7 @@ def test_inner_volume_hydrogen_gas_tank():
 
 def test_tank_cg_x():
 
-    expected_values = [2.88, 2.88, 1.24]
+    expected_values = [1.73871, 2.8847, 3.96643, 1.73871]
 
     for option, expected_value in zip(POSSIBLE_POSITION, expected_values):
         # Research independent input value in .xml file
@@ -146,7 +146,7 @@ def test_tank_cg_x():
 
 def test_tank_cg_y():
 
-    expected_values = [1.85, 1.85, 0.0]
+    expected_values = [0.0, 1.848, 0.0, 0.0]
 
     for option, expected_value in zip(POSSIBLE_POSITION, expected_values):
         # Research independent input value in .xml file
