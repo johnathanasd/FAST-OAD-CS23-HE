@@ -68,7 +68,7 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
         self.add_input(
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":material_density",
+            + ":material:density",
             units="kg/m**3",
             val=7860.0,
             desc="Choice of the tank material,Some reference: Steel(ASTM-A514):7860, "
@@ -93,7 +93,7 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
         wall_density = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":material_density"
+            + ":material:density"
         ]
 
         r = (
@@ -114,7 +114,7 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
         outputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass"
         ] = wall_density * (
-            0.75 * np.pi * r ** 3
+            4 * np.pi * r ** 3 / 3
             + np.pi * r ** 2 * l
             - inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -143,16 +143,16 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
         wall_density = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":material_density"
+            + ":material:density"
         ]
 
         partials[
             "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass",
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":material_density",
+            + ":material:density",
         ] = (
-            0.75 * np.pi * r ** 3
+            4/3 * np.pi * r ** 3
             + np.pi * r ** 2 * l
             - inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -175,11 +175,11 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
             + ":inner_volume",
-        ] = -1.0
+        ] = -wall_density
 
         partials[
             "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass",
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
             + ":dimension:outer_diameter",
-        ] = wall_density * (0.75 * np.pi * d ** 2 * 3 / 8 + np.pi * d * l / 2)
+        ] = wall_density * (np.pi * d ** 2 / 2 + np.pi * d * l / 2)

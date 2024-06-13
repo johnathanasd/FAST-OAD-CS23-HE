@@ -34,25 +34,12 @@ class SizingHydrogenGasTankWallThickness(om.ExplicitComponent):
         )
 
         self.add_input(
-            "material_yield_strength",
-            val=np.nan,
-            units="Pa",
-            desc="Hydrogen gas tank material yield stress",
-        )
-
-        self.add_input(
-            "Safety_factor",
-            val=1.0,
-            desc="Hydrogen gas tank design safety factor",
-        )
-
-        self.add_input(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            name="data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":tank_pressure",
+            + ":dimension:outer_diameter",
+            units="m",
             val=np.nan,
-            units="Pa",
-            desc="Hydrogen gas tank static pressure",
+            desc="Outer diameter of the hydrogen gas tanks",
         )
 
         self.add_output(
@@ -64,7 +51,21 @@ class SizingHydrogenGasTankWallThickness(om.ExplicitComponent):
             desc="Inner diameter of the hydrogen gas tanks",
         )
 
-        self.declare_partials(of="*", wrt="*", method="exact")
+        self.declare_partials(
+            of="*",
+            wrt="data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":dimension:outer_diameter",
+            val=0.5,
+        )
+
+        self.declare_partials(
+            of="*",
+            wrt="data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":dimension:inner_diameter",
+            val=-0.5,
+        )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -74,96 +75,15 @@ class SizingHydrogenGasTankWallThickness(om.ExplicitComponent):
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
             + ":dimension:wall_thickness"
-        ] = (
-            0.25
-            * inputs[
+        ] = 0.5*(
+            inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
-                + ":tank_pressure"
+                + ":dimension:outer_diameter"
             ]
-            * inputs["Safety_factor"]
-            * inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
-                + ":dimension:inner_diameter"
-            ]
-            / inputs["material_yield_strength"]
-        )
-
-    def compute_partials(self, inputs, partials, discrete_inputs=None):
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
-
-        partials[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
-            + ":dimension:wall_thickness",
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
-            + ":tank_pressure",
-        ] = (
-            0.25
-            * inputs["Safety_factor"]
-            * inputs[
+            - inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
                 + ":dimension:inner_diameter"
             ]
-            / inputs["material_yield_strength"]
-        )
-        partials[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
-            + ":dimension:wall_thickness",
-            "safety_factor",
-        ] = (
-            0.25
-            * inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
-                + ":tank_pressure"
-            ]
-            * inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
-                + ":dimension:inner_diameter"
-            ]
-            / inputs["material_yield_strength"]
-        )
-        partials[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
-            + ":dimension:wall_thickness",
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
-            + ":dimension:inner_diameter",
-        ] = (
-            0.25
-            * inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
-                + ":tank_pressure"
-            ]
-            * inputs["Safety_factor"]
-            / inputs["material_yield_strength"]
-        )
-
-        partials[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
-            + ":dimension:wall_thickness",
-            "material_yield_strength",
-        ] = (
-            -0.25
-            * inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
-                + ":tank_pressure"
-            ]
-            * inputs["Safety_factor"]
-            * inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
-                + ":dimension:inner_diameter"
-            ]
-            / inputs["material_yield_strength"] ** 2
         )

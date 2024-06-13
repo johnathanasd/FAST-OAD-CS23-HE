@@ -27,7 +27,7 @@ class SizingHydrogenGasTankOverallLength(om.ExplicitComponent):
         self.add_input(
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":outer_diameter",
+            + ":dimension:outer_diameter",
             units="m",
             val=np.nan,
             desc="Outer diameter of the hydrogen tank",
@@ -56,7 +56,7 @@ class SizingHydrogenGasTankOverallLength(om.ExplicitComponent):
             of="*",
             wrt="data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":outer_diameter",
+            + ":dimension:outer_diameter",
             val=1.0,
         )
 
@@ -64,7 +64,7 @@ class SizingHydrogenGasTankOverallLength(om.ExplicitComponent):
             of="*",
             wrt="data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":length",
+            + ":dimension:length",
             val=1.0,
         )
 
@@ -83,6 +83,6 @@ class SizingHydrogenGasTankOverallLength(om.ExplicitComponent):
             + inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
-                + ":outer_diameter"
+                + ":dimension:outer_diameter"
             ]
         )

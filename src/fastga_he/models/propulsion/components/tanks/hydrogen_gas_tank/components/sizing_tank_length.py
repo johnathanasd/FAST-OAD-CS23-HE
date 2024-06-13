@@ -111,5 +111,5 @@ class SizingHydrogenGasTankLength(om.ExplicitComponent):
             + hydrogen_gas_tank_id
             + ":dimension:inner_diameter",
         ] = (
-            -8*vin/(np.pi*d**3)-2 / 3
+            -8 * vin / (np.pi * d ** 3) - 2 / 3
         )

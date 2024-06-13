@@ -16,6 +16,7 @@ from .sizing_tank_weight import SizingHydrogenGasTankWeight
 from .sizing_tank_drag import SizingHydrogenGasTankDrag
 from .sizing_tank_outer_diameter import SizingHydrogenGasTankOuterDiameter
 from .sizing_tank_overall_length import SizingHydrogenGasTankOverallLength
+from .sizing_tank_overall_length_fuselage_check import SizingHydrogenGasTankOverallLengthFuselageCheck
 
 from .cstr_hydrogen_gas_tank import ConstraintsHydrogenGasTank
 
@@ -70,6 +71,12 @@ class SizingHydrogenGasTank(om.Group):
         )
 
         self.add_subsystem(
+            name="tank_inner_diameter",
+            subsys=SizingHydrogenGasTankInnerDiameter(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
             name="tank wall thickness",
             subsys=SizingHydrogenGasTankWallThickness(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
             promotes=["*"],
@@ -104,15 +111,18 @@ class SizingHydrogenGasTank(om.Group):
         )
 
         self.add_subsystem(
+            name="tank_overall_length_length_fuselage_check",
+            subsys=SizingHydrogenGasTankOverallLengthFuselageCheck(hydrogen_gas_tank_id=hydrogen_gas_tank_id,position=position,),
+            promotes=["*"],
+        )
+
+
+        self.add_subsystem(
             name="tank_inner_volume",
             subsys=SizingHydrogenGasTankInnerVolume(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
             promotes=["*"],
         )
-        self.add_subsystem(
-            name="tank_inner_diameter",
-            subsys=SizingHydrogenGasTankInnerDiameter(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
-            promotes=["*"],
-        )
+
 
         self.add_subsystem(
             name="tank_weight",

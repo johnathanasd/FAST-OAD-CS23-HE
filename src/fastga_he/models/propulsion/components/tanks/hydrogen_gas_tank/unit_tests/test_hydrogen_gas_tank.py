@@ -21,6 +21,7 @@ from ..components.sizing_tank_weight import SizingHydrogenGasTankWeight
 from ..components.sizing_tank_drag import SizingHydrogenGasTankDrag
 from ..components.sizing_tank_wall_thickness import SizingHydrogenGasTankWallThickness
 from ..components.sizing_tank_overall_length import SizingHydrogenGasTankOverallLength
+from ..components.sizing_tank_overall_length_fuselage_check import SizingHydrogenGasTankOverallLengthFuselageCheck
 
 from ..components.cstr_enforce import ConstraintsHydrogenGasTankCapacityEnforce
 from ..components.cstr_ensure import ConstraintsHydrogenGasTankCapacityEnsure
@@ -108,7 +109,8 @@ def test_inner_volume_hydrogen_gas_tank():
         ivc,
     )
     assert problem.get_val(
-        "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:inner_volume", units="L"
+        "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:inner_volume",
+        units="L",
     ) == pytest.approx(1240.288, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -173,18 +175,14 @@ def test_tank_cg_y():
 def test_tank_length():
 
     ivc = get_indep_var_comp(
-        list_inputs(
-            SizingHydrogenGasTankLength(
-                hydrogen_gas_tank_id="hydrogen_gas_tank_1")
-        ),
+        list_inputs(SizingHydrogenGasTankLength(hydrogen_gas_tank_id="hydrogen_gas_tank_1")),
         __file__,
         XML_FILE,
     )
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
-        SizingHydrogenGasTankLength(
-            hydrogen_gas_tank_id="hydrogen_gas_tank_1"),
+        SizingHydrogenGasTankLength(hydrogen_gas_tank_id="hydrogen_gas_tank_1"),
         ivc,
     )
 
@@ -196,14 +194,12 @@ def test_tank_length():
         == pytest.approx(1.0, rel=1e-2)
     )
 
-
-
     problem.check_partials(compact_print=True, step=1e-7)
 
 
 def test_tank_outer_diameter():
 
-    expected_values = [1.20402, 1.5, 1.20402,1.20402]
+    expected_values = [0.97802, 1.2, 0.97802, 0.97802]
 
     for option, expected_value in zip(POSSIBLE_POSITION, expected_values):
         # Research independent input value in .xml file
@@ -236,14 +232,42 @@ def test_tank_outer_diameter():
 
 
 def test_tank_overall_length():
+    # Research independent input value in .xml file
+    ivc = get_indep_var_comp(
+        list_inputs(
+            SizingHydrogenGasTankOverallLength(
+                hydrogen_gas_tank_id="hydrogen_gas_tank_1"
+            )
+        ),
+        __file__,
+        XML_FILE,
+    )
 
-    expected_values = [0.467, 2.68, 1.477]
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        SizingHydrogenGasTankOverallLength(
+            hydrogen_gas_tank_id="hydrogen_gas_tank_1",
+        ),
+        ivc,
+    )
+    assert (
+        problem.get_val(
+            "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:overall_length",
+            units="m",
+        )
+        == pytest.approx(1.97802, rel=1e-2)
+    )
+    problem.check_partials(compact_print=True, step=1e-7)
+
+def test_tank_overall_length_fuselage_check():
+    # Research independent input value in .xml file
+    expected_values = [-0.4994, 0.0, -0.84646, -0.4994]
 
     for option, expected_value in zip(POSSIBLE_POSITION, expected_values):
-        # Research independent input value in .xml file
+
         ivc = get_indep_var_comp(
             list_inputs(
-                SizingHydrogenGasTankOverallLength(
+                SizingHydrogenGasTankOverallLengthFuselageCheck(
                     hydrogen_gas_tank_id="hydrogen_gas_tank_1", position=option
                 )
             ),
@@ -253,27 +277,18 @@ def test_tank_overall_length():
 
         # Run problem and check obtained value(s) is/(are) correct
         problem = run_system(
-            SizingHydrogenGasTankOverallLength(
+            SizingHydrogenGasTankOverallLengthFuselageCheck(
                 hydrogen_gas_tank_id="hydrogen_gas_tank_1", position=option
             ),
             ivc,
         )
         assert (
             problem.get_val(
-                "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:length",
+                "constraints:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:overall_length",
                 units="m",
             )
             == pytest.approx(expected_value, rel=1e-2)
         )
-
-        if option == "inside_the_wing":
-            assert (
-                problem.get_val(
-                    "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:ref_chord",
-                    units="m",
-                )
-                == pytest.approx(0.9346, rel=1e-2)
-            )
 
         problem.check_partials(compact_print=True, step=1e-7)
 
@@ -296,7 +311,7 @@ def test_tank_inner_diameter():
             "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:inner_diameter",
             units="m",
         )
-        == pytest.approx(6.62, rel=1e-2)
+        == pytest.approx(0.97776, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True, step=1e-7)
@@ -320,7 +335,7 @@ def test_tank_wall_thickness():
             "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:wall_thickness",
             units="m",
         )
-        == pytest.approx(6.62, rel=1e-2)
+        == pytest.approx(1.303e-4, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True, step=1e-7)
@@ -342,15 +357,15 @@ def test_hydrogen_gas_tank_weight():
     )
     assert problem.get_val(
         "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:mass", units="kg"
-    ) == pytest.approx(1.4, rel=1e-2)
+    ) == pytest.approx(1.2079, rel=1e-2)
 
     problem.check_partials(compact_print=True)
 
 
 def test_hydrogen_gas_tank_drag():
 
-    expected_ls_drag = [0.0, 0.00421, 0.0]
-    expected_cruise_drag = [0.0, 0.00421, 0.0]
+    expected_ls_drag = [0.0, 0.01592, 0.0,1.0]
+    expected_cruise_drag = [0.0, 0.01592, 0.0,1.0]
 
     for option, ls_drag, cruise_drag in zip(
         POSSIBLE_POSITION, expected_ls_drag, expected_cruise_drag
