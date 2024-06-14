@@ -26,7 +26,7 @@ from ..components.perf_maximum import PerformancesMaximum
 from ..components.perf_pemfc_efficiency import PerformancesPEMFCEfficiency
 from ..components.perf_pemfc_power import PerformancesPEMFCPower
 from ..components.perf_pemfc_voltage import PerformancesPEMFCVoltage
-from ..components.perf_nominal_pressure import PerformancesNominalPressure
+from ..components.perf_operation_pressure import PerformancesOperationPressure
 
 from ..components.cstr_ensure import ConstraintsEffectiveAreaEnsure
 from ..components.cstr_enforce import ConstraintsEffectiveAreaEnforce
@@ -332,7 +332,8 @@ def test_pemfc_current_density():
 
     problem.check_partials(compact_print=True)
 
-def test_nominal_pressure():
+
+def test_operation_pressure():
 
     ivc = om.IndepVarComp()
     ivc.add_output(
@@ -342,11 +343,13 @@ def test_nominal_pressure():
     )
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
-        PerformancesNominalPressure(pemfc_stack_id="pemfc_stack_1", number_of_points=NB_POINTS_TEST),
+        PerformancesOperationPressure(
+            pemfc_stack_id="pemfc_stack_1", number_of_points=NB_POINTS_TEST
+        ),
         ivc,
     )
-    assert problem.get_val("data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:nominal_pressure", units="atm") == pytest.approx(
-        [1.0]*int(NB_POINTS_TEST), rel=1e-2
+    assert problem.get_val("operation_pressure", units="atm") == pytest.approx(
+        [1.0] * int(NB_POINTS_TEST), rel=1e-2
     )
     problem.check_partials(compact_print=True)
 
@@ -360,9 +363,9 @@ def test_single_layer_voltage():
         val=np.array([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]),
     )
     ivc.add_output(
-        name="data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:operation_pressure",
+        name="operation_pressure",
         units="atm",
-        val=1.2,
+        val=np.array([1.2] * 7),
     )
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
@@ -482,8 +485,8 @@ def test_pemfc_efficiency():
         units="V",
     )
     ivc.add_output(
-        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:operation_pressure",
-        1.2,
+        "operation_pressure",
+        np.array([1.2] * int(NB_POINTS_TEST)),
         units="atm",
     )
     ivc.add_output("nominal_pressure", 1, units="atm")
@@ -496,7 +499,9 @@ def test_pemfc_efficiency():
         ivc,
     )
     # Not computed with proper losses, to test only
-    assert problem.get_val("data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:efficiency") == pytest.approx(
+    assert problem.get_val(
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:efficiency"
+    ) == pytest.approx(
         [0.6843, 0.67, 0.6570, 0.6449, 0.6330, 0.6216, 0.6102, 0.5989, 0.5874, 0.5756], rel=1e-2
     )
 
@@ -529,7 +534,7 @@ def test_fuel_consumption():
         ),
         ivc,
     )
-    assert problem.get_val("data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:fuel_consumption", units="kg/h") == pytest.approx(
+    assert problem.get_val("fuel_consumption", units="kg/h") == pytest.approx(
         [
             0.000130569948186529,
             0.000195854922279793,
@@ -552,16 +557,21 @@ def test_fuel_consumed():
 
     ivc = om.IndepVarComp()
     ivc.add_output(
-        name="data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:fuel_consumption",
+        name="fuel_consumption",
         val=np.array([36.9, 39.6, 42.5, 45.6, 49.0, 52.8, 56.8, 60.8, 65.5, 70.0]),
         units="kg/h",
     )
     ivc.add_output("time_step", units="s", val=np.full(NB_POINTS_TEST, 500))
 
     # Run problem and check obtained value(s) is/(are) correct
-    problem = run_system(PerformancesPEMFCFuelConsumed(number_of_points=NB_POINTS_TEST, pemfc_stack_id="pemfc_stack_1"), ivc)
+    problem = run_system(
+        PerformancesPEMFCFuelConsumed(
+            number_of_points=NB_POINTS_TEST, pemfc_stack_id="pemfc_stack_1"
+        ),
+        ivc,
+    )
 
-    assert problem.get_val("data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:fuel_consumed_t", units="kg") == pytest.approx(
+    assert problem.get_val("fuel_consumed_t", units="kg") == pytest.approx(
         np.array([5.12, 5.5, 5.9, 6.33, 6.81, 7.33, 7.89, 8.44, 9.1, 9.72]),
         rel=1e-2,
     )
@@ -589,19 +599,32 @@ def test_performances_pemfc_stack():
     )
 
     assert problem.get_val("single_layer_pemfc_voltage", units="V") == pytest.approx(
-        [0.8492, 0.8315, 0.8154, 0.8002, 0.7856, 0.7713, 0.7572, 0.7431, 0.7289, 0.7143],
+        [
+            0.84175546,
+            0.82406536,
+            0.80801377,
+            0.79284721,
+            0.77821938,
+            0.76392795,
+            0.74982252,
+            0.73575584,
+            0.72154143,
+            0.70689839,
+        ],
         rel=1e-2,
     )
 
     assert problem.get_val("fc_current_density", units="A/cm**2") == pytest.approx(
         [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55], rel=1e-2
     )
-    assert problem.get_val("data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:fuel_consumption", units="kg/h") == pytest.approx(
+    assert problem.get_val("fuel_consumption", units="kg/h") == pytest.approx(
         [0.00219, 0.00329, 0.00439, 0.00548, 0.00658, 0.00768, 0.00877, 0.00987, 0.01097, 0.01207],
         rel=1e-2,
     )
 
-    assert problem.get_val("data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:efficiency") == pytest.approx(
+    assert problem.get_val(
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:efficiency"
+    ) == pytest.approx(
         [0.6843, 0.67, 0.6570, 0.6449, 0.6330, 0.6216, 0.6102, 0.5989, 0.5874, 0.5756], rel=1e-2
     )
 

@@ -31,17 +31,13 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
         number_of_points = self.options["number_of_points"]
 
         self.add_input(
-            name="data:propulsion:he_power_train:pemfc_stack:"
-            + pemfc_stack_id
-            + ":operation_pressure",
+            "nominal_pressure",
             units="atm",
             val=1.0,
         )
 
         self.add_input(
-            name="data:propulsion:he_power_train:pemfc_stack:"
-                 + pemfc_stack_id
-                 + ":nominal_pressure",
+            "operation_pressure",
             units="atm",
             val=np.full(number_of_points, 1.0),
         )
@@ -52,15 +48,14 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
             val=np.full(number_of_points, np.nan),
         )
 
-        self.add_output(name="data:propulsion:he_power_train:pemfc_stack:"
-            + pemfc_stack_id
-            + ":efficiency", val=np.full(number_of_points, 0.4))
+        self.add_output(
+            name="data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":efficiency",
+            val=np.full(number_of_points, 0.4),
+        )
 
         self.declare_partials(
             of="*",
-            wrt=["single_layer_pemfc_voltage","data:propulsion:he_power_train:pemfc_stack:"
-                 + pemfc_stack_id
-                 + ":nominal_pressure"],
+            wrt=["single_layer_pemfc_voltage", "operation_pressure"],
             method="exact",
             rows=np.arange(number_of_points),
             cols=np.arange(number_of_points),
@@ -68,8 +63,7 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
 
         self.declare_partials(
             of="*",
-            wrt= "data:propulsion:he_power_train:pemfc_stack:"+ pemfc_stack_id
-                + ":operation_pressure",
+            wrt="nominal_pressure",
             method="exact",
             rows=np.arange(number_of_points),
             cols=np.zeros(number_of_points),
@@ -79,45 +73,35 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
         E0 = 1.23  # ideal potential of the pemfc
         C = 0.06
         pemfc_stack_id = self.options["pemfc_stack_id"]
-        Pop = inputs[
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":operation_pressure"
-        ]
-        Pnom = inputs["data:propulsion:he_power_train:pemfc_stack:"
-                 + pemfc_stack_id
-                 + ":nominal_pressure"]
-        E = E0 + C * np.log(Pop / Pnom)
+        operation_pressure = inputs["operation_pressure"]
+        nominal_pressure = inputs["nominal_pressure"]
+        E = E0 + C * np.log(operation_pressure / nominal_pressure)
         efficiency = inputs["single_layer_pemfc_voltage"] / E
-        outputs["data:propulsion:he_power_train:pemfc_stack:"
-            + pemfc_stack_id
-            + ":efficiency"] = efficiency
+        outputs[
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":efficiency"
+        ] = efficiency
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
         pemfc_stack_id = self.options["pemfc_stack_id"]
         number_of_points = self.options["number_of_points"]
         E0 = 1.23  # ideal potential of the pemfc
         C = 0.06
-        Pop = inputs[
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":operation_pressure"
-        ]
-        Pnom = inputs["data:propulsion:he_power_train:pemfc_stack:"
-                 + pemfc_stack_id
-                 + ":nominal_pressure"]
-        E = E0 + C * np.log(Pop / Pnom)
-
-        partials["data:propulsion:he_power_train:pemfc_stack:"
-            + pemfc_stack_id
-            + ":efficiency", "single_layer_pemfc_voltage"] = np.ones(number_of_points) / E
+        operation_pressure = inputs["operation_pressure"]
+        nominal_pressure = inputs["nominal_pressure"]
+        E = E0 + C * np.log(operation_pressure / nominal_pressure)
 
         partials[
-            "data:propulsion:he_power_train:pemfc_stack:"
-            + pemfc_stack_id
-            + ":efficiency",
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":operation_pressure",
-        ] = (-C * inputs["single_layer_pemfc_voltage"] / (Pop * E ** 2))
-        partials["data:propulsion:he_power_train:pemfc_stack:"
-            + pemfc_stack_id
-            + ":efficiency","data:propulsion:he_power_train:pemfc_stack:"
-                 + pemfc_stack_id
-                 + ":nominal_pressure"] = (
-            C * inputs["single_layer_pemfc_voltage"] / (Pnom * E ** 2)
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":efficiency",
+            "single_layer_pemfc_voltage",
+        ] = (np.ones(number_of_points) / E)
+
+        partials[
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":efficiency",
+            "operation_pressure",
+        ] = (
+            -C * inputs["single_layer_pemfc_voltage"] / (operation_pressure * E ** 2)
         )
+        partials[
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":efficiency",
+            "nominal_pressure",
+        ] = (C * inputs["single_layer_pemfc_voltage"] / (nominal_pressure * E ** 2))
