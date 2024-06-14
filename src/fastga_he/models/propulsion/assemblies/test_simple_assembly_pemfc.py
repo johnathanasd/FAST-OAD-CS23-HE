@@ -121,7 +121,7 @@ def test_assembly_performances():
     # om.n2(problem)
 
     _, _, residuals = problem.model.performances.get_nonlinear_vectors()
-
+    # Around 200KW
     assert problem.get_val(
         "performances.dc_dc_converter_1.dc_current_in", units="A"
     ) * problem.get_val("performances.dc_dc_converter_1.dc_voltage_in", units="V") == pytest.approx(

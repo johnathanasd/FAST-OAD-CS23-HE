@@ -4,8 +4,8 @@
 
 import openmdao.api as om
 
-from .sizing_simple_assembly import SizingAssembly
-from .performances_simple_assembly import PerformancesAssembly
+from .sizing_simple_assembly_pemfc import SizingAssembly
+from .performances_simple_assembly_pemfc import PerformancesAssembly
 
 
 class FullSimpleAssembly(om.Group):

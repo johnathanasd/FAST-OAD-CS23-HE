@@ -11,7 +11,8 @@ from ...components.connectors.dc_cable import SizingHarness
 from ...components.connectors.dc_bus import SizingDCBus
 from ...components.connectors.dc_dc_converter import SizingDCDCConverter
 from ...components.connectors.dc_sspc import SizingDCSSPC
-from ...components.source.battery import SizingBatteryPack
+from ...components.source.pemfc import SizingPEMFCStack
+from ...components.tanks.hydrogen_gas_tank import SizingHydrogenGasTank
 
 
 class SizingAssembly(om.Group):
@@ -61,12 +62,17 @@ class SizingAssembly(om.Group):
             promotes=["*"],
         )
         self.add_subsystem(
-            "battery_pack_1",
-            SizingBatteryPack(
-                battery_pack_id="battery_pack_1",
+            "pemfc_stack_1",
+            SizingPEMFCStack(
+                pemfc_stack_id="pemfc_stack_1",
             ),
             promotes=["*"],
         )
+        self.add_subsystem("hydrogen_gas_tank_1",
+            SizingHydrogenGasTank(
+                hydrogen_gas_tank_id="hydrogen_gas_tank_1",
+            ),
+            promotes=["*"],)
 
         self.add_subsystem(
             "dc_sspc_1",
@@ -90,3 +96,4 @@ class SizingAssembly(om.Group):
             SizingDCSSPC(dc_sspc_id="dc_sspc_1337"),
             promotes=["*"],
         )
+
