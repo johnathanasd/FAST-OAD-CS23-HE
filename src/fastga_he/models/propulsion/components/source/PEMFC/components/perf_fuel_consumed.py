@@ -29,10 +29,10 @@ class PerformancesPEMFCFuelConsumed(om.ExplicitComponent):
         number_of_points = self.options["number_of_points"]
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
-        self.add_input(name="data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":fuel_consumption", units="kg/h", val=np.full(number_of_points, np.nan))
+        self.add_input(name="fuel_consumption", units="kg/h", val=np.full(number_of_points, np.nan))
         self.add_input("time_step", units="h", val=np.full(number_of_points, np.nan))
 
-        self.add_output(name="data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":fuel_consumed_t", val = np.full(number_of_points, 1.0), units="kg")
+        self.add_output(name="fuel_consumed_t", val=np.full(number_of_points, 1.0), units="kg")
 
         self.declare_partials(
             of="*",
@@ -44,9 +44,9 @@ class PerformancesPEMFCFuelConsumed(om.ExplicitComponent):
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         pemfc_stack_id = self.options["pemfc_stack_id"]
-        outputs["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":fuel_consumed_t"] = inputs["time_step"] * inputs["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":fuel_consumption"]
+        outputs["fuel_consumed_t"] = inputs["time_step"] * inputs["fuel_consumption"]
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
         pemfc_stack_id = self.options["pemfc_stack_id"]
-        partials["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":fuel_consumed_t", "time_step"] = inputs["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":fuel_consumption"]
-        partials["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":fuel_consumed_t", "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":fuel_consumption"] = inputs["time_step"]
+        partials["fuel_consumed_t", "time_step"] = inputs["fuel_consumption"]
+        partials["fuel_consumed_t", "fuel_consumption"] = inputs["time_step"]

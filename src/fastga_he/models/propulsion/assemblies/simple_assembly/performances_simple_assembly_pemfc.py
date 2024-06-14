@@ -13,7 +13,7 @@ from ...components.tanks.hydrogen_gas_tank import PerformancesHydrogenGasTank
 from ...components.connectors.dc_bus import PerformancesDCBus
 from ...components.connectors.dc_dc_converter import PerformancesDCDCConverter
 from ...components.connectors.dc_sspc import PerformancesDCSSPC
-from ...components.source.pemfc import PerformancesPEMFCStack
+from ...components.source.PEMFC import PerformancesPEMFCStack
 
 
 class PerformancesAssembly(om.Group):

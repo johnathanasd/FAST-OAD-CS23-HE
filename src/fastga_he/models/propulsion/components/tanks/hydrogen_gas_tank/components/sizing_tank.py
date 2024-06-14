@@ -140,8 +140,6 @@ class SizingHydrogenGasTank(om.Group):
             promotes=["*"],
         )
 
-
-
         for low_speed_aero in [True, False]:
             system_name = "tank_drag_ls" if low_speed_aero else "tank_drag_cruise"
             self.add_subsystem(
