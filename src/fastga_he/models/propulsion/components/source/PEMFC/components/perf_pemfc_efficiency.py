@@ -5,7 +5,7 @@
 import openmdao.api as om
 import numpy as np
 
-#TODO: nominal pressure shape into array derived from altitiude
+
 class PerformancesPEMFCEfficiency(om.ExplicitComponent):
     """
     Computation of efficiency of the battery based on the losses at battery level and the output
@@ -38,7 +38,13 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
             val=1.0,
         )
 
-        self.add_input("nominal_pressure", units="atm", val=1.0)
+        self.add_input(
+            name="data:propulsion:he_power_train:pemfc_stack:"
+                 + pemfc_stack_id
+                 + ":nominal_pressure",
+            units="atm",
+            val=np.full(number_of_points, 1.0),
+        )
 
         self.add_input(
             "single_layer_pemfc_voltage",
@@ -52,7 +58,9 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
 
         self.declare_partials(
             of="*",
-            wrt="single_layer_pemfc_voltage",
+            wrt=["single_layer_pemfc_voltage","data:propulsion:he_power_train:pemfc_stack:"
+                 + pemfc_stack_id
+                 + ":nominal_pressure"],
             method="exact",
             rows=np.arange(number_of_points),
             cols=np.arange(number_of_points),
@@ -60,12 +68,8 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
 
         self.declare_partials(
             of="*",
-            wrt=[
-                "nominal_pressure",
-                "data:propulsion:he_power_train:pemfc_stack:"
-                + pemfc_stack_id
+            wrt= "data:propulsion:he_power_train:pemfc_stack:"+ pemfc_stack_id
                 + ":operation_pressure",
-            ],
             method="exact",
             rows=np.arange(number_of_points),
             cols=np.zeros(number_of_points),
@@ -78,7 +82,9 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
         Pop = inputs[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":operation_pressure"
         ]
-        Pnom = inputs["nominal_pressure"]
+        Pnom = inputs["data:propulsion:he_power_train:pemfc_stack:"
+                 + pemfc_stack_id
+                 + ":nominal_pressure"]
         E = E0 + C * np.log(Pop / Pnom)
         efficiency = inputs["single_layer_pemfc_voltage"] / E
         outputs["data:propulsion:he_power_train:pemfc_stack:"
@@ -93,7 +99,9 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
         Pop = inputs[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":operation_pressure"
         ]
-        Pnom = inputs["nominal_pressure"]
+        Pnom = inputs["data:propulsion:he_power_train:pemfc_stack:"
+                 + pemfc_stack_id
+                 + ":nominal_pressure"]
         E = E0 + C * np.log(Pop / Pnom)
 
         partials["data:propulsion:he_power_train:pemfc_stack:"
@@ -108,6 +116,8 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
         ] = (-C * inputs["single_layer_pemfc_voltage"] / (Pop * E ** 2))
         partials["data:propulsion:he_power_train:pemfc_stack:"
             + pemfc_stack_id
-            + ":efficiency", "nominal_pressure"] = (
+            + ":efficiency","data:propulsion:he_power_train:pemfc_stack:"
+                 + pemfc_stack_id
+                 + ":nominal_pressure"] = (
             C * inputs["single_layer_pemfc_voltage"] / (Pnom * E ** 2)
         )

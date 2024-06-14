@@ -15,6 +15,7 @@ from ..components.perf_fuel_consumption import PerformancesPEMFCFuelConsumption
 from ..components.perf_fuel_consumed import PerformancesPEMFCFuelConsumed
 from ..components.perf_pemfc_efficiency import PerformancesPEMFCEfficiency
 from ..components.perf_pemfc_voltage import PerformancesPEMFCVoltage
+from ..components.perf_nominal_pressure import PerformancesNominalPressure
 
 
 class PerformancesPEMFCStack(om.Group):
@@ -46,6 +47,14 @@ class PerformancesPEMFCStack(om.Group):
         self.add_subsystem(
             "pemfc_current_density",
             PerformancesCurrentDensity(
+                number_of_points=number_of_points, pemfc_stack_id=pemfc_stack_id
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            "pemfc_ambient_pressure",
+            PerformancesNominalPressure(
                 number_of_points=number_of_points, pemfc_stack_id=pemfc_stack_id
             ),
             promotes=["*"],

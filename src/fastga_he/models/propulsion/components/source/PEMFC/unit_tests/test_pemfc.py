@@ -26,6 +26,7 @@ from ..components.perf_maximum import PerformancesMaximum
 from ..components.perf_pemfc_efficiency import PerformancesPEMFCEfficiency
 from ..components.perf_pemfc_power import PerformancesPEMFCPower
 from ..components.perf_pemfc_voltage import PerformancesPEMFCVoltage
+from ..components.perf_nominal_pressure import PerformancesNominalPressure
 
 from ..components.cstr_ensure import ConstraintsEffectiveAreaEnsure
 from ..components.cstr_enforce import ConstraintsEffectiveAreaEnforce
@@ -329,6 +330,24 @@ def test_pemfc_current_density():
         [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55], rel=1e-2
     )
 
+    problem.check_partials(compact_print=True)
+
+def test_nominal_pressure():
+
+    ivc = om.IndepVarComp()
+    ivc.add_output(
+        "altitude",
+        units="m",
+        val=np.zeros(NB_POINTS_TEST),
+    )
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        PerformancesNominalPressure(pemfc_stack_id="pemfc_stack_1", number_of_points=NB_POINTS_TEST),
+        ivc,
+    )
+    assert problem.get_val("data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:nominal_pressure", units="atm") == pytest.approx(
+        [1.0]*int(NB_POINTS_TEST), rel=1e-2
+    )
     problem.check_partials(compact_print=True)
 
 
