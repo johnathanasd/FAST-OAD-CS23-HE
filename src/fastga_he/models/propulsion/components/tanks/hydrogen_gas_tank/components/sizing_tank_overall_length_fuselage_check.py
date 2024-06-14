@@ -50,6 +50,9 @@ class SizingHydrogenGasTankOverallLengthFuselageCheck(om.ExplicitComponent):
 
         if position == "in_the_back":
             self.add_input("data:geometry:fuselage:rear_length", val=np.nan, units="m")
+            self.add_input("data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":dimension:rear_length_ratio", val=0.5)
 
         self.add_output(
             "constraints:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -87,8 +90,8 @@ class SizingHydrogenGasTankOverallLengthFuselageCheck(om.ExplicitComponent):
         elif position == "in_the_back":
             self.declare_partials(
                 of="*",
-                wrt="data:geometry:fuselage:rear_length",
-                val=-0.5,
+                wrt="*",
+                method="exact",
             )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
@@ -119,7 +122,9 @@ class SizingHydrogenGasTankOverallLengthFuselageCheck(om.ExplicitComponent):
                     + hydrogen_gas_tank_id
                     + ":dimension:overall_length"
                 ]
-                - 0.5 * inputs["data:geometry:fuselage:rear_length"]
+                - inputs["data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":dimension:rear_length_ratio"] * inputs["data:geometry:fuselage:rear_length"]
             )
         else:
             outputs[
@@ -127,3 +132,19 @@ class SizingHydrogenGasTankOverallLengthFuselageCheck(om.ExplicitComponent):
                 + hydrogen_gas_tank_id
                 + ":dimension:overall_length"
             ] = 0.0
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        position = self.options["position"]
+        if position == "in_the_back":
+            partials["constraints:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":dimension:overall_length","data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":dimension:rear_length_ratio"] = - inputs["data:geometry:fuselage:rear_length"]
+
+            partials["constraints:propulsion:he_power_train:hydrogen_gas_tank:"
+                    + hydrogen_gas_tank_id
+                    + ":dimension:overall_length", "data:geometry:fuselage:rear_length"] = -inputs["data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":dimension:rear_length_ratio"]
+

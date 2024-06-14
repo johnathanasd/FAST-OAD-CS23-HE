@@ -6,6 +6,7 @@
 import openmdao.api as om
 import pytest
 import numpy as np
+import os.path as pth
 
 from ..components.sizing_tank_inner_volume import SizingHydrogenGasTankInnerVolume
 from ..components.sizing_tank_total_hydrogen_mission import (
@@ -451,6 +452,7 @@ def test_sizing_tank():
 
 
     problem.check_partials(compact_print=True, step=1e-7)
+    om.n2(problem, show_browser=False, outfile=pth.join(pth.dirname(__file__), "n2.html"))
 
 
 def test_constraints_enforce_tank_capacity():
@@ -569,3 +571,9 @@ def test_performances_hydrogen_gas_tank():
         )
         == pytest.approx(279.62, rel=1e-2)
     )
+    om.n2(problem, show_browser=False, outfile=pth.join(pth.dirname(__file__), "n2.html"))
+
+
+
+
+

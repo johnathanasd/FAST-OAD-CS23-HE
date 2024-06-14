@@ -7,7 +7,7 @@ import numpy as np
 
 MAXIMUM_VOLTAGE_PER_LAYER = 1.2  # voltage
 
-
+#TODO: nominal pressure shape into array derived from altitiude
 class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
     """
     Computation of the voltage of single layer proton exchange membrane fuel cell inside one stack. Assumes it can be

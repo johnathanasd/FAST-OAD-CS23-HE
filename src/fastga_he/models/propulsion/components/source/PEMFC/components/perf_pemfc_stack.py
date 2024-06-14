@@ -85,7 +85,7 @@ class PerformancesPEMFCStack(om.Group):
         )
         self.add_subsystem(
             "fuel_consumed",
-            PerformancesPEMFCFuelConsumed(number_of_points=number_of_points),
+            PerformancesPEMFCFuelConsumed(number_of_points=number_of_points, pemfc_stack_id=pemfc_stack_id),
             promotes=["*"],
         )
         self.add_subsystem(

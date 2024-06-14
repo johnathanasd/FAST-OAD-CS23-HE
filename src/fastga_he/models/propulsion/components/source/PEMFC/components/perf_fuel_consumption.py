@@ -50,7 +50,7 @@ class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
             desc="Total number of layers in the pemfc stacks",
         )
 
-        self.add_output("fuel_consumption", units="kg/h", val=10.0, shape=number_of_points)
+        self.add_output("data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":fuel_consumption", units="kg/h", val=10.0, shape=number_of_points)
 
         self.declare_partials(
             of="*",
@@ -77,7 +77,7 @@ class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
 
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
-        outputs["fuel_consumption"] = (
+        outputs["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":fuel_consumption"] = (
             inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
             ]
@@ -95,7 +95,7 @@ class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
         partials[
-            "fuel_consumption",
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":fuel_consumption",
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers",
         ] = (
             inputs["fc_current_density"]
@@ -105,7 +105,7 @@ class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
             * 3600
             / (2 * 96500 * 500)
         )
-        partials["fuel_consumption", "fc_current_density"] = (
+        partials["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":fuel_consumption", "fc_current_density"] = (
             np.ones(number_of_points)
             * inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
@@ -117,7 +117,7 @@ class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
             / (2 * 96500 * 500)
         )
         partials[
-            "fuel_consumption",
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":fuel_consumption",
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
         ] = (
             inputs[
