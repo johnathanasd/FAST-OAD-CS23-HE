@@ -145,6 +145,7 @@ def test_assembly_performances():
 def test_assembly_sizing():
 
     ivc = get_indep_var_comp(list_inputs(SizingAssembly()), __file__, XML_FILE)
+    ivc.add_output("thrust", val=600., units="A")
 
     problem = oad.FASTOADProblem(reports=False)
     model = problem.model
@@ -178,14 +179,12 @@ def test_assembly_sizing():
     assert problem.get_val(
         "data:propulsion:he_power_train:DC_DC_converter:dc_dc_converter_1:mass", units="kg"
     ) == pytest.approx(266.6, rel=1e-2)
-    """
     assert problem.get_val(
         "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", units="kg"
     ) == pytest.approx(765.306, rel=1e-2)
     assert problem.get_val(
         "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:mass", units="kg"
     ) == pytest.approx(17.246, rel=1e-2)
-    """
     assert problem.get_val(
         "data:propulsion:he_power_train:DC_SSPC:dc_sspc_1:mass", units="kg"
     ) == pytest.approx(6.47, rel=1e-2)

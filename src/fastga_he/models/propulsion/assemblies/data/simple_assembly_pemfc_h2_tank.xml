@@ -68,6 +68,7 @@
             <he_power_train>
                  <pemfc_stack>
                     <pemfc_stack_1>
+                        <current_max units="A">600.</current_max>
                         <number_of_layers>450.0</number_of_layers>
                         <effective_area units="cm**2">2000.</effective_area>
                         <dimension>
