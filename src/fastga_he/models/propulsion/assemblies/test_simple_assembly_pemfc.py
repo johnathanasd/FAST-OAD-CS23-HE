@@ -128,29 +128,16 @@ def test_assembly_performances():
 
     _, _, residuals = problem.model.performances.get_nonlinear_vectors()
     # Around 200KW
-    """
+
     assert problem.get_val(
         "performances.dc_dc_converter_1.dc_current_in", units="A"
     ) * problem.get_val("performances.dc_dc_converter_1.dc_voltage_in", units="V") == pytest.approx(
-        np.array(
-            [
-                197132.0,
-                198194.0,
-                199230.0,
-                200250.0,
-                201257.0,
-                202253.0,
-                203240.0,
-                204212.0,
-                205167.0,
-                206103.0,
-            ]
-        ),
+        np.array([209164.26898] * int(NB_POINTS_TEST)),
         abs=1,
     )
-    """
+
     write_outputs(
-        pth.join(outputs.__path__[0], "simple_assembly_performances.xml"),
+        pth.join(outputs.__path__[0], "simple_assembly_performances_pemfc_h2_gas_tank.xml"),
         problem,
     )
 
@@ -191,9 +178,14 @@ def test_assembly_sizing():
     assert problem.get_val(
         "data:propulsion:he_power_train:DC_DC_converter:dc_dc_converter_1:mass", units="kg"
     ) == pytest.approx(266.6, rel=1e-2)
+    """
     assert problem.get_val(
-        "data:propulsion:he_power_train:battery_pack:battery_pack_1:mass", units="kg"
-    ) == pytest.approx(3000.0, rel=1e-2)
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", units="kg"
+    ) == pytest.approx(765.306, rel=1e-2)
+    assert problem.get_val(
+        "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:mass", units="kg"
+    ) == pytest.approx(17.246, rel=1e-2)
+    """
     assert problem.get_val(
         "data:propulsion:he_power_train:DC_SSPC:dc_sspc_1:mass", units="kg"
     ) == pytest.approx(6.47, rel=1e-2)
@@ -207,13 +199,20 @@ def test_assembly_sizing():
         "data:propulsion:he_power_train:DC_SSPC:dc_sspc_1337:mass", units="kg"
     ) == pytest.approx(6.47, rel=1e-2)
 
+    print("\n=========== PEMFC effective area===========")
+    print(
+        problem.get_val(
+            "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:effective_area", units="cm**2"
+        )
+    )
+
     write_outputs(
-        pth.join(outputs.__path__[0], "simple_assembly_sizing.xml"),
+        pth.join(outputs.__path__[0], "simple_assembly_sizing_pemfc_h2_gas_tank.xml"),
         problem,
     )
 
 
-def test_performances_sizing_assembly_battery_enforce():
+def test_performances_sizing_assembly_pemfc_enforce():
 
     oad.RegisterSubmodel.active_models[
         "submodel.propulsion.constraints.pmsm.rpm"

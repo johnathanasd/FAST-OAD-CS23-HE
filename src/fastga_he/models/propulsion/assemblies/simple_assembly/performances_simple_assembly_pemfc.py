@@ -16,7 +16,6 @@ from ...components.connectors.dc_sspc import PerformancesDCSSPC
 from ...components.source.pemfc import PerformancesPEMFCStack
 
 
-
 class PerformancesAssembly(om.Group):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

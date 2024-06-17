@@ -65,6 +65,7 @@ class SizingAssembly(om.Group):
             "pemfc_stack_1",
             SizingPEMFCStack(
                 pemfc_stack_id="pemfc_stack_1",
+                position="wing_pod",
             ),
             promotes=["*"],
         )
@@ -72,8 +73,10 @@ class SizingAssembly(om.Group):
             "hydrogen_gas_tank_1",
             SizingHydrogenGasTank(
                 hydrogen_gas_tank_id="hydrogen_gas_tank_1",
+                position="wing_pod",
             ),
-            promotes=["*"],)
+            promotes=["*"],
+        )
 
         self.add_subsystem(
             "dc_sspc_1",
@@ -97,4 +100,3 @@ class SizingAssembly(om.Group):
             SizingDCSSPC(dc_sspc_id="dc_sspc_1337"),
             promotes=["*"],
         )
-
