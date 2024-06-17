@@ -131,18 +131,18 @@ class PerformancesAssembly(om.Group):
         self.add_subsystem(
             "pemfc_stack_1",
             PerformancesPEMFCStack(
-                battery_pack_id="pemfc_stack_1",
+                pemfc_stack_id="pemfc_stack_1",
                 number_of_points=number_of_points,
             ),
-            promotes=["data:*", "time_step"],
+            promotes=["data:*"],
         )
         self.add_subsystem(
             "hydrogen_gas_tank_1",
             PerformancesHydrogenGasTank(
-                battery_pack_id="hydrogen_gas_tank_1",
+                hydrogen_gas_tank_id="hydrogen_gas_tank_1",
                 number_of_points=number_of_points,
             ),
-            promotes=["data:*", "time_step"],
+            promotes=["data:*"],
         )
 
         self.connect("propeller_1.rpm", "motor_1.rpm")

@@ -59,6 +59,7 @@
         <propulsion>
             <he_power_train>
                 <hydrogen_gas_tank>
+                    <tank_temperature units="K">300.</tank_temperature>
                     <hydrogen_gas_tank_1>
                         <CG>
                             <y_ratio>0.4</y_ratio>

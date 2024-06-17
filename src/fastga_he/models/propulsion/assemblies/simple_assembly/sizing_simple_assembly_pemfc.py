@@ -68,7 +68,8 @@ class SizingAssembly(om.Group):
             ),
             promotes=["*"],
         )
-        self.add_subsystem("hydrogen_gas_tank_1",
+        self.add_subsystem(
+            "hydrogen_gas_tank_1",
             SizingHydrogenGasTank(
                 hydrogen_gas_tank_id="hydrogen_gas_tank_1",
             ),

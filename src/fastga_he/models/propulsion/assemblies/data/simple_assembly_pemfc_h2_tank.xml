@@ -68,15 +68,14 @@
             <he_power_train>
                  <pemfc_stack>
                     <pemfc_stack_1>
-                        <number_of_layers>35.0</number_of_layers>
-                        <effective_area units="cm**2">16.8</effective_area>
-                        <operation_pressure units="atm">1.2</operation_pressure>
+                        <number_of_layers>500.0</number_of_layers>
+                        <effective_area units="cm**2">60.</effective_area>
                         <dimension>
-                            <length units="m">0.11998</length>
-                            <width units="m">0.1162</width>
-                            <height units="m">0.1162</height>
+                            <length units="m">1.714</length>
+                            <width units="m">0.2196</width>
+                            <height units="m">0.2196</height>
                         </dimension>
-                        <volume units="L">1.62</volume>
+                        <volume units="L">82.656</volume>
                         <CG>
                             <y_ratio>0.34</y_ratio>
                         </CG>
@@ -88,11 +87,11 @@
                             <y_ratio>0.4</y_ratio>
                             <y units="m">1.85</y>
                         </CG>
-                        <fuel_consumed_mission units="kg">1.0</fuel_consumed_mission>
-                        <unusable_fuel_mission units="kg">0.01</unusable_fuel_mission>
-                        <fuel_total_mission units="kg">1.01</fuel_total_mission>
-                        <capacity units="kg">1.01</capacity>
-                        <inner_volume units="L">1240.288</inner_volume>
+                        <fuel_consumed_mission units="kg">0.1554</fuel_consumed_mission>
+                        <unusable_fuel_mission units="kg">0.001554</unusable_fuel_mission>
+                        <fuel_total_mission units="kg">0.156954</fuel_total_mission>
+                        <capacity units="kg">0.203</capacity>
+                        <inner_volume units="L">249.323</inner_volume>
                         <tank_pressure units="Pa">1013250</tank_pressure>
                         <Safety_factor>1.0</Safety_factor>
                         <material>
@@ -101,12 +100,12 @@
                             <density units="kg/m**3">1530</density>
                         </material>
                         <dimension>
-                            <length units="m">1.</length>
-                            <diameter units="m">1.2<!--inital guess for the tank outer diameter --></diameter>
-                            <inner_diameter units="m">0.97776</inner_diameter>
-                            <outer_diameter units="m">0.97802</outer_diameter>
-                            <wall_thickness units="m">1.3034e-4</wall_thickness>
-                            <overall_length units="m">1.97802</overall_length>
+                            <length units="m">0.324</length>
+                            <diameter units="m">0.7<!--inital guess for the tank outer diameter --></diameter>
+                            <inner_diameter units="m">0.648</inner_diameter>
+                            <outer_diameter units="m">0.648173</outer_diameter>
+                            <wall_thickness units="m">8.639e-5</wall_thickness>
+                            <overall_length units="m">0.972173</overall_length>
                         </dimension>
                     </hydrogen_gas_tank_1>
                 </hydrogen_gas_tank>
