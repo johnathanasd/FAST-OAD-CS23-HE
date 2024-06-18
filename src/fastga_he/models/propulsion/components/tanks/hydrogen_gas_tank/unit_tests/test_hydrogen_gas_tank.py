@@ -360,7 +360,7 @@ def test_hydrogen_gas_tank_weight():
     )
     assert problem.get_val(
         "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:mass", units="kg"
-    ) == pytest.approx(1.2079, rel=1e-2)
+    ) == pytest.approx(1.2179, rel=1e-2)
 
     problem.check_partials(compact_print=True)
 

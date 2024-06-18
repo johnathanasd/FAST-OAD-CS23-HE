@@ -1,5 +1,6 @@
 <FASTOAD_model>
   <tank_temperature units="degK" is_input="True">300.0<!--Hydrogen gas tank temperature--></tank_temperature>
+  <thrust units="A" is_input="True">600.0</thrust>
   <data>
     <aerodynamics>
       <cruise>
@@ -490,7 +491,7 @@
             <fuel_consumed_mission units="kg" is_input="True">14.0<!--Amount of hydrogen from that tank which will be consumed during mission--></fuel_consumed_mission>
             <fuel_total_mission units="kg" is_input="False">14.14<!--Total amount of hydrogen loaded in the tank for the mission--></fuel_total_mission>
             <inner_volume units="m**3" is_input="False">17.465845480584296<!--Capacity of the tank in terms of volume--></inner_volume>
-            <mass units="kg" is_input="False">16.208062938958072<!--Weight of the hydrogen gas tanks--></mass>
+            <mass units="kg" is_input="False">16.348062938958073<!--Weight of the hydrogen gas tanks--></mass>
             <tank_pressure units="Pa" is_input="True">1013250.0<!--Hydrogen gas tank static pressure--></tank_pressure>
             <unusable_fuel_mission units="kg" is_input="False">0.14<!--Amount of trapped hydrogen in the tank--></unusable_fuel_mission>
             <CG>
@@ -663,26 +664,26 @@
         </inverter>
         <pemfc_stack>
           <pemfc_stack_1>
-            <current_max units="A" is_input="True">nan<!--Maximum current the PEMFC stack has be given during mission--></current_max>
-            <effective_area units="cm**2" is_input="False">nan<!--Effective area of PEMFC chemical reaction--></effective_area>
-            <mass units="kg" is_input="False">nan<!--Mass of the pemfc stack--></mass>
+            <current_max units="A" is_input="True">600.0<!--Maximum current the PEMFC stack has be given during mission--></current_max>
+            <effective_area units="cm**2" is_input="False">857.1428571428572<!--Effective area of PEMFC chemical reaction--></effective_area>
+            <mass units="kg" is_input="False">327.9882857142857<!--Mass of the pemfc stack--></mass>
             <number_of_layers is_input="True">450.0<!--Number of layer in 1 PEMFC stack--></number_of_layers>
-            <volume units="m**3" is_input="False">nan<!--Volume of the pemfc stack--></volume>
+            <volume units="m**3" is_input="False">1.0623053886277545<!--Volume of the pemfc stack--></volume>
             <CG>
               <x units="m" is_input="False">2.8846643019251306<!--X position of the pemfc center of gravity--></x>
               <y units="m" is_input="False">1.5703687750797755<!--Y position of the pemfc center of gravity--></y>
               <y_ratio is_input="True">0.34<!--X position of the pemfc center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
             <cruise>
-              <CD0 is_input="False">nan</CD0>
+              <CD0 is_input="False">0.015223365729047644</CD0>
             </cruise>
             <dimension>
-              <height units="m" is_input="False">nan<!--Height of the pemfc, as in the size of the pemfc along the Z-axis--></height>
+              <height units="m" is_input="False">0.8298470008065759<!--Height of the pemfc, as in the size of the pemfc along the Z-axis--></height>
               <length units="m" is_input="False">1.5426<!--Length of the pemfc, as in the size of the pemfc along the X-axis--></length>
-              <width units="m" is_input="False">nan<!--Width of the pemfc, as in the size of the pemfc along the Y-axis--></width>
+              <width units="m" is_input="False">0.8298470008065759<!--Width of the pemfc, as in the size of the pemfc along the Y-axis--></width>
             </dimension>
             <low_speed>
-              <CD0 is_input="False">nan</CD0>
+              <CD0 is_input="False">0.015223365729047644</CD0>
             </low_speed>
           </pemfc_stack_1>
         </pemfc_stack>

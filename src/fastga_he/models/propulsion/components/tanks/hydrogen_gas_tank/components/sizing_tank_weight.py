@@ -113,13 +113,21 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
 
         outputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass"
-        ] = wall_density * (
-            4 * np.pi * r ** 3 / 3
-            + np.pi * r ** 2 * l
-            - inputs[
+        ] = (
+            wall_density
+            * (
+                4 * np.pi * r ** 3 / 3
+                + np.pi * r ** 2 * l
+                - inputs[
+                    "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                    + hydrogen_gas_tank_id
+                    + ":inner_volume"
+                ]
+            )
+            + inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
-                + ":inner_volume"
+                + ":unusable_fuel_mission"
             ]
         )
 
@@ -183,3 +191,10 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
             + hydrogen_gas_tank_id
             + ":dimension:outer_diameter",
         ] = wall_density * (np.pi * d ** 2 / 2 + np.pi * d * l / 2)
+
+        partials[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":unusable_fuel_mission",
+        ] = 1
