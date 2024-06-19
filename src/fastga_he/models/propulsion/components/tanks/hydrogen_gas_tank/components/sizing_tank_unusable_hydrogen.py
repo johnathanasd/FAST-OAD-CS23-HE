@@ -4,7 +4,7 @@
 
 import openmdao.api as om
 import numpy as np
-
+from utils.filter_residuals import filter_residuals
 
 class SizingHydrogenGasTankUnusableHydrogen(om.ExplicitComponent):
     """
@@ -29,7 +29,7 @@ class SizingHydrogenGasTankUnusableHydrogen(om.ExplicitComponent):
             + hydrogen_gas_tank_id
             + ":fuel_consumed_mission",
             units="kg",
-            val=np.nan,
+            val=1.0,
             desc="Amount of hydrogen from that tank which will be consumed during mission",
         )
 

@@ -80,7 +80,7 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
             + hydrogen_gas_tank_id
             + ":mass",
             units="kg",
-            val=1.0,
+            val=20.0,
             desc="Weight of the hydrogen gas tanks",
         )
 

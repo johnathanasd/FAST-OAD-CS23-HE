@@ -27,10 +27,11 @@ class FullSimpleAssembly(om.Group):
     def setup(self):
 
         number_of_points = self.options["number_of_points"]
+        self.add_subsystem(name="sizing", subsys=SizingAssembly(), promotes=["*"])
         self.add_subsystem(
             name="performances",
             subsys=PerformancesAssembly(number_of_points=number_of_points),
             promotes=["*"],
         )
-        self.add_subsystem(name="sizing", subsys=SizingAssembly(), promotes=["*"])
+
 

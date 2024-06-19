@@ -47,7 +47,7 @@ class SizingHydrogenGasTankWallThickness(om.ExplicitComponent):
             + hydrogen_gas_tank_id
             + ":dimension:wall_thickness",
             units="m",
-            val=0.01,
+            val=0.001,
             desc="Inner diameter of the hydrogen gas tanks",
         )
 

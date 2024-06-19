@@ -145,7 +145,6 @@ def test_assembly_performances():
 def test_assembly_sizing():
 
     ivc = get_indep_var_comp(list_inputs(SizingAssembly()), __file__, XML_FILE)
-    ivc.add_output("current_max", val=600.0, units="A")
 
     problem = oad.FASTOADProblem(reports=False)
     model = problem.model
@@ -249,7 +248,7 @@ def test_performances_sizing_assembly_pemfc_enforce():
 
     _, _, residuals = problem.model.get_nonlinear_vectors()
     residuals = filter_residuals(residuals)
-
+    print(residuals)
     write_outputs(
         pth.join(outputs.__path__[0], "full_assembly_sizing_pemfc_h2_gas_tank_enforce.xml"),
         problem,
