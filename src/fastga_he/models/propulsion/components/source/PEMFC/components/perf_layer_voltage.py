@@ -82,7 +82,7 @@ class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
         m = 5.63 * 10 ** -6
         n = 11.42
         C = 0.06
-        i = inputs["fc_current_density"]
+        i = np.clip(inputs["fc_current_density"], np.full_like(inputs["fc_current_density"], 1e-2),  np.full_like(inputs["fc_current_density"], 0.7))
         operation_pressure = inputs["operation_pressure"]
         nominal_pressure = inputs["nominal_pressure"]
         outputs["single_layer_pemfc_voltage"] = (
@@ -102,7 +102,7 @@ class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
         m = 5.63 * 10 ** -6
         n = 11.42
         C = 0.06
-        i = inputs["fc_current_density"]
+        i = np.clip(inputs["fc_current_density"], np.full_like(inputs["fc_current_density"], 1e-2),  np.full_like(inputs["fc_current_density"], 0.7))
         partials["single_layer_pemfc_voltage", "fc_current_density"] = (
             -B / i - R - m * n * np.exp(n * i)
         )
