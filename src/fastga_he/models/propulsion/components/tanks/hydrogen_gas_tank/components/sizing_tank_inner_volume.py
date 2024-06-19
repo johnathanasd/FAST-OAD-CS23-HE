@@ -63,7 +63,7 @@ class SizingHydrogenGasTankInnerVolume(om.ExplicitComponent):
             + hydrogen_gas_tank_id
             + ":inner_volume",
             units="m**3",
-            val=0.07,
+            val=15.,
             desc="Capacity of the tank in terms of volume",
         )
 

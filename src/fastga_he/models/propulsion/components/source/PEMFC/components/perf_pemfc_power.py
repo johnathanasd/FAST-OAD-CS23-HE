@@ -25,7 +25,7 @@ class PerformancesPEMFCPower(om.ExplicitComponent):
         self.add_input("voltage_out", units="V", val=np.full(number_of_points, np.nan))
         self.add_input("dc_current_out", units="A", val=np.full(number_of_points, np.nan))
 
-        self.add_output("power_out", units="kW", val=np.full(number_of_points, 20.0))
+        self.add_output("power_out", units="kW", val=np.full(number_of_points, 325.0))
 
         self.declare_partials(
             of="*",

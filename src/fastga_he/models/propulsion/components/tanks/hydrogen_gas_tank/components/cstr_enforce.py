@@ -52,7 +52,7 @@ class ConstraintsHydrogenGasTankCapacityEnforce(om.ExplicitComponent):
             + hydrogen_gas_tank_id
             + ":capacity",
             units="kg",
-            val=50.5,
+            val=15.15,
             desc="Capacity of the tank in terms of weight",
         )
 

@@ -41,7 +41,7 @@ class PerformancesHydrogenGasConsumedMission(om.ExplicitComponent):
             + hydrogen_gas_tank_id
             + ":fuel_consumed_mission",
             units="kg",
-            val=50.0,
+            val=15.0,
             desc="Amount of fuel from that tank which will be consumed during mission",
         )
 

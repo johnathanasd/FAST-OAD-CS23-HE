@@ -43,7 +43,7 @@ class SizingPEMFCWeight(om.ExplicitComponent):
         self.add_output(
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":mass",
             units="kg",
-            val=50.0,
+            val=500.0,
             desc="Mass of the pemfc stack",
         )
 

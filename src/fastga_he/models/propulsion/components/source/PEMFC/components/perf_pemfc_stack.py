@@ -45,6 +45,12 @@ class PerformancesPEMFCStack(om.Group):
         direct_bus_connection = self.options["direct_bus_connection"]
 
         self.add_subsystem(
+            "maximum",
+            PerformancesMaximum(number_of_points=number_of_points, pemfc_stack_id=pemfc_stack_id),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
             "pemfc_current_density",
             PerformancesCurrentDensity(
                 number_of_points=number_of_points, pemfc_stack_id=pemfc_stack_id
@@ -112,11 +118,7 @@ class PerformancesPEMFCStack(om.Group):
             PerformancesPEMFCPower(number_of_points=number_of_points),
             promotes=["*"],
         )
-        self.add_subsystem(
-            "maximum",
-            PerformancesMaximum(number_of_points=number_of_points, pemfc_stack_id=pemfc_stack_id),
-            promotes=["*"],
-        )
+
 
         energy_consumed = om.IndepVarComp()
         energy_consumed.add_output(

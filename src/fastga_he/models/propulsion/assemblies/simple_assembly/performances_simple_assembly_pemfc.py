@@ -133,7 +133,7 @@ class PerformancesAssembly(om.Group):
                 pemfc_stack_id="pemfc_stack_1",
                 number_of_points=number_of_points,
             ),
-            promotes=["data:*"],
+            promotes=["data:*", "time_step"],
         )
         self.add_subsystem(
             "hydrogen_gas_tank_1",

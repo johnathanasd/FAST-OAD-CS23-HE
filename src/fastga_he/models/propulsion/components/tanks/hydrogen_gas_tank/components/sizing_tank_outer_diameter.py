@@ -52,7 +52,7 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
             + hydrogen_gas_tank_id
             + ":dimension:outer_diameter",
             units="m",
-            val=5.0,
+            val=1.06,
             desc="Outer diameter of the hydrogen gas tank",
         )
 

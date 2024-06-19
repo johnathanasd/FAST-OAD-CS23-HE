@@ -36,7 +36,7 @@ class SizingPEMFCCGX(om.ExplicitComponent):
         self.add_output(
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":CG:x",
             units="m",
-            val=2.5,
+            val=2.9,
             desc="X position of the pemfc center of gravity",
         )
 

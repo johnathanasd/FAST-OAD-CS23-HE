@@ -30,7 +30,7 @@ class SizingHydrogenGasTankTotalHydrogenMission(om.ExplicitComponent):
             + hydrogen_gas_tank_id
             + ":fuel_consumed_mission",
             units="kg",
-            val=1.0,
+            val=15.0,
             desc="Amount of hydrogen from that tank which will be consumed during mission",
         )
         self.add_input(
@@ -47,7 +47,7 @@ class SizingHydrogenGasTankTotalHydrogenMission(om.ExplicitComponent):
             + hydrogen_gas_tank_id
             + ":fuel_total_mission",
             units="kg",
-            val=1.01,
+            val=15.15,
             desc="Total amount of hydrogen loaded in the tank for the mission",
         )
 

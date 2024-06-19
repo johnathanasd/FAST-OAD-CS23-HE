@@ -5,7 +5,7 @@
 import openmdao.api as om
 import numpy as np
 
-MAXIMUM_VOLTAGE_PER_LAYER = 1.2  # voltage
+
 
 
 class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
@@ -54,7 +54,7 @@ class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
         self.add_output(
             "single_layer_pemfc_voltage",
             units="V",
-            val=np.full(number_of_points, MAXIMUM_VOLTAGE_PER_LAYER),
+            val=np.full(number_of_points, 0.65),
         )
 
         self.declare_partials(

@@ -48,7 +48,7 @@ class SizingPEMFCVolume(om.ExplicitComponent):
         self.add_output(
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":volume",
             units="m**3",
-            val=125.0,
+            val=5.0,
             desc="Volume of the pemfc stack",
         )
 

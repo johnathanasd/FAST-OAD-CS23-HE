@@ -46,19 +46,19 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
         self.add_output(
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:length",
             units="m",
-            val=0.5,
+            val=2.0,
             desc="Length of the pemfc, as in the size of the pemfc along the X-axis",
         )
         self.add_output(
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width",
             units="m",
-            val=0.5,
+            val=1.8,
             desc="Width of the pemfc, as in the size of the pemfc along the Y-axis",
         )
         self.add_output(
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:height",
             units="m",
-            val=0.5,
+            val=1.5,
             desc="Height of the pemfc, as in the size of the pemfc along the Z-axis",
         )
 

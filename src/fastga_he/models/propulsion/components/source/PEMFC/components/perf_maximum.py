@@ -33,13 +33,13 @@ class PerformancesMaximum(om.ExplicitComponent):
         self.add_output(
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_min",
             units="A",
-            val=1,
+            val=100,
             desc="Minimum current to the pemfc during the mission",
         )
         self.add_output(
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_max",
             units="A",
-            val=10,
+            val=1000,
             desc="Maximum current to the pemfc during the mission",
         )
         self.declare_partials(

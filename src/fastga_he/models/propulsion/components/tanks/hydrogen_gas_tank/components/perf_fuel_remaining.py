@@ -46,7 +46,7 @@ class PerformancesHydrogenGasRemainingMission(om.ExplicitComponent):
         self.add_output(
             "fuel_remaining_t",
             units="kg",
-            val=np.linspace(50.5, 0.5, number_of_points),
+            val=np.linspace(15.15, 0.15, number_of_points),
             desc="Hydrogen remaining inside the tank at each time step",
         )
 

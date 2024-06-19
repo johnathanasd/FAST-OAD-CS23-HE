@@ -50,7 +50,7 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
 
         self.add_output(
             name="data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":efficiency",
-            val=np.full(number_of_points, 0.4),
+            val=np.full(number_of_points, 0.53),
         )
 
         self.declare_partials(

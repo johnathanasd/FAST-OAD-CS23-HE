@@ -41,7 +41,7 @@ class PerformancesCurrentDensity(om.ExplicitComponent):
 
         self.add_output(
             "fc_current_density",
-            val=np.full(number_of_points, 0.1),
+            val=np.full(number_of_points, 0.7),
             units="A/cm**2",
             desc="Current density of the pemfc stack",
         )

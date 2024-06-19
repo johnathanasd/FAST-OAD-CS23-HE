@@ -36,7 +36,7 @@ class SizingHydrogenGasTankCGX(om.ExplicitComponent):
         self.add_output(
             "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:x",
             units="m",
-            val=2.5,
+            val=2.8,
             desc="X position of the tank center of gravity",
         )
 
