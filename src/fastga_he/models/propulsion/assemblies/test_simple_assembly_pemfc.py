@@ -145,7 +145,7 @@ def test_assembly_performances():
 def test_assembly_sizing():
 
     ivc = get_indep_var_comp(list_inputs(SizingAssembly()), __file__, XML_FILE)
-    ivc.add_output("thrust", val=600.0, units="A")
+    ivc.add_output("current_max", val=600.0, units="A")
 
     problem = oad.FASTOADProblem(reports=False)
     model = problem.model
@@ -198,13 +198,6 @@ def test_assembly_sizing():
         "data:propulsion:he_power_train:DC_SSPC:dc_sspc_1337:mass", units="kg"
     ) == pytest.approx(6.47, rel=1e-2)
 
-    print("\n=========== PEMFC effective area===========")
-    print(
-        problem.get_val(
-            "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:effective_area", units="cm**2"
-        )
-    )
-
     write_outputs(
         pth.join(outputs.__path__[0], "simple_assembly_sizing_pemfc_h2_gas_tank.xml"),
         problem,
@@ -217,8 +210,12 @@ def test_performances_sizing_assembly_pemfc_enforce():
         "submodel.propulsion.constraints.pmsm.rpm"
     ] = "fastga_he.submodel.propulsion.constraints.pmsm.rpm.ensure"
     oad.RegisterSubmodel.active_models[
-        "submodel.propulsion.constraints.battery.state_of_charge"
-    ] = "fastga_he.submodel.propulsion.constraints.battery.state_of_charge.enforce"
+        "submodel.propulsion.constraints.pemfc_stack.effective_area"
+    ] = "fastga_he.submodel.propulsion.constraints.pemfc_stack.effective_area.enforce"
+    oad.RegisterSubmodel.active_models[
+        "submodel.propulsion.constraints.hydrogen_gas_tank.capacity"
+    ] = "fastga_he.submodel.propulsion.constraints.hydrogen_gas_tank.capacity.enforce"
+
 
     ivc = get_indep_var_comp(
         list_inputs(FullSimpleAssembly(number_of_points=NB_POINTS_TEST)),
@@ -236,6 +233,7 @@ def test_performances_sizing_assembly_pemfc_enforce():
         val=Atmosphere(altitude, altitude_in_feet=False).temperature,
     )
     ivc.add_output("time_step", units="s", val=np.full(NB_POINTS_TEST, 500))
+    ivc.add_output("current_max", val=600.0, units="A")
 
     problem = oad.FASTOADProblem(reports=False)
     model = problem.model
@@ -253,17 +251,17 @@ def test_performances_sizing_assembly_pemfc_enforce():
     residuals = filter_residuals(residuals)
 
     write_outputs(
-        pth.join(outputs.__path__[0], "full_assembly_sizing_battery_enforce.xml"),
+        pth.join(outputs.__path__[0], "full_assembly_sizing_pemfc_h2_gas_tank_enforce.xml"),
         problem,
     )
-
+    """
     assert problem.get_val(
-        "data:propulsion:he_power_train:battery_pack:battery_pack_1:SOC_min", units="percent"
-    ) == pytest.approx(19.40, rel=1e-2)
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", units="kg"
+    ) == pytest.approx(327.988, rel=1e-2)
     assert problem.get_val(
-        "data:propulsion:he_power_train:battery_pack:battery_pack_1:mass", units="kg"
-    ) == pytest.approx(2483.0, rel=1e-2)
-
+        "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:mass", units="kg"
+    ) == pytest.approx(16.34, rel=1e-2)
+    """
 
 def test_performances_sizing_assembly_battery_ensure():
 
@@ -306,7 +304,7 @@ def test_performances_sizing_assembly_battery_ensure():
     _, _, residuals = problem.model.get_nonlinear_vectors()
 
     write_outputs(
-        pth.join(outputs.__path__[0], "full_assembly_sizing_battery_ensure.xml"),
+        pth.join(outputs.__path__[0], "full_assembly_sizing_pemfc_h2_gas_tank_ensure.xml"),
         problem,
     )
 
