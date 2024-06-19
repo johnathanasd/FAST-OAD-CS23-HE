@@ -82,7 +82,9 @@ def test_assembly_performances():
     assert problem.get_val(
         "performances.dc_dc_converter_1.dc_current_in", units="A"
     ) * problem.get_val("performances.dc_dc_converter_1.dc_voltage_in", units="V") == pytest.approx(
-        np.array([209164.26898] * int(NB_POINTS_TEST)),
+        np.array([198896.69338892, 199938.25766214, 200961.45568779, 201966.23232281,
+       202952.53208264, 203920.29918561, 204869.47759607, 205800.01106618,
+       206711.84317667, 207604.91737652]),
         abs=1,
     )
 
@@ -90,7 +92,7 @@ def test_assembly_performances():
         pth.join(outputs.__path__[0], "simple_assembly_performances_pemfc_h2_gas_tank.xml"),
         problem,
     )
-"""
+
     print("\n=========== Propulsive power ===========")
     print(problem.get_val("true_airspeed", units="m/s") * problem.get_val("thrust", units="N"))
 
@@ -140,7 +142,7 @@ def test_assembly_performances():
 
     print("\n=========== PEMFC power output (kw) ===========")
     print(problem.get_val("performances.pemfc_stack_1.power_out", units="kW"))
-"""
+
     # om.n2(problem)
 
 
@@ -237,7 +239,7 @@ def test_performances_sizing_assembly_pemfc_enforce():
         val=Atmosphere(altitude, altitude_in_feet=False).temperature,
     )
     ivc.add_output("time_step", units="s", val=np.full(NB_POINTS_TEST, 500))
-    ivc.add_output("current_max", val=600.0, units="A")
+
 
     problem = oad.FASTOADProblem(reports=False)
     model = problem.model
@@ -258,16 +260,16 @@ def test_performances_sizing_assembly_pemfc_enforce():
         pth.join(outputs.__path__[0], "full_assembly_sizing_pemfc_h2_gas_tank_enforce.xml"),
         problem,
     )
-    """
+
     assert problem.get_val(
         "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", units="kg"
-    ) == pytest.approx(327.988, rel=1e-2)
+    ) == pytest.approx(371.1034, rel=1e-2)
     assert problem.get_val(
         "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:mass", units="kg"
-    ) == pytest.approx(16.34, rel=1e-2)
-    """
+    ) == pytest.approx(17.682, rel=1e-2)
 
-def test_performances_sizing_assembly_battery_ensure():
+
+def test_performances_sizing_assembly_pemfc_ensure():
 
     oad.RegisterSubmodel.active_models[
         "submodel.propulsion.constraints.pmsm.rpm"
@@ -313,11 +315,11 @@ def test_performances_sizing_assembly_battery_ensure():
     )
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:battery_pack:battery_pack_1:SOC_min", units="percent"
-    ) == pytest.approx(35.11, rel=1e-2)
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", units="kg"
+    ) == pytest.approx(327.988, rel=1e-2)
     assert problem.get_val(
-        "data:propulsion:he_power_train:battery_pack:battery_pack_1:mass", units="kg"
-    ) == pytest.approx(3000.0, rel=1e-2)
+        "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:mass", units="kg"
+    ) == pytest.approx(16.34, rel=1e-2)
 
 
 def test_assembly_sizing_from_pt_file():

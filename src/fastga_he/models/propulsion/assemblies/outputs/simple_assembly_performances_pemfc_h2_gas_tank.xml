@@ -10,19 +10,19 @@
       <he_power_train>
         <DC_DC_converter>
           <dc_dc_converter_1>
-            <current_in_max units="A" is_input="False">600.0</current_in_max>
-            <losses_max units="W" is_input="False">4118.714288646226</losses_max>
+            <current_in_max units="A" is_input="False">594.9689303977258</current_in_max>
+            <losses_max units="W" is_input="False">5018.884891062073</losses_max>
             <switching_frequency_max units="Hz" is_input="False">12000.0</switching_frequency_max>
             <switching_frequency_mission units="Hz" is_input="True">12000.0<!--Switching frequency of the DC/DC converter for the points--></switching_frequency_mission>
-            <voltage_in_max units="V" is_input="False">500.0</voltage_in_max>
-            <voltage_out_max units="V" is_input="False">353.5353535353535</voltage_out_max>
+            <voltage_in_max units="V" is_input="False">350.75546455506185</voltage_in_max>
+            <voltage_out_max units="V" is_input="False">850.0</voltage_out_max>
             <voltage_out_target_mission units="V" is_input="True">850.0<!--Target output voltage of the DC/DC converter for the points--></voltage_out_target_mission>
             <capacitor>
-              <current_max units="A" is_input="False">336.3499860730086</current_max>
+              <current_max units="A" is_input="False">371.9875132350299</current_max>
               <resistance units="ohm" is_input="True">0.0014</resistance>
             </capacitor>
             <diode>
-              <current_max units="A" is_input="False">522.6196639347902</current_max>
+              <current_max units="A" is_input="False">441.79067603677424</current_max>
               <gate_voltage units="V" is_input="True">1.3</gate_voltage>
               <resistance units="ohm" is_input="True">0.002805</resistance>
             </diode>
@@ -42,55 +42,55 @@
               <c is_input="True">-3.005e-08</c>
             </energy_rr>
             <igbt>
-              <current_max units="A" is_input="False">439.4577917148679</current_max>
+              <current_max units="A" is_input="False">689.5318546539162</current_max>
               <resistance units="ohm" is_input="True">0.002265</resistance>
             </igbt>
             <inductor>
-              <current_max units="A" is_input="False">682.8282828282827</current_max>
+              <current_max units="A" is_input="False">818.9219621035325</current_max>
               <resistance units="ohm" is_input="True">0.0014</resistance>
             </inductor>
           </dc_dc_converter_1>
         </DC_DC_converter>
         <DC_SSPC>
           <dc_sspc_1337>
-            <current_max units="A" is_input="False">400.0<!--Maximum current flowing through the SSPC--></current_max>
+            <current_max units="A" is_input="False">238.3365088068727<!--Maximum current flowing through the SSPC--></current_max>
             <efficiency is_input="True">0.99<!--Value of the SSPC efficiency, assumed constant during operations (eases convergence)--></efficiency>
-            <voltage_max units="V" is_input="False">353.5353535353535<!--Maximum voltage at the terminals SSPC--></voltage_max>
+            <voltage_max units="V" is_input="False">850.0<!--Maximum voltage at the terminals SSPC--></voltage_max>
           </dc_sspc_1337>
           <dc_sspc_1>
-            <current_max units="A" is_input="False">400.0<!--Maximum current flowing through the SSPC--></current_max>
+            <current_max units="A" is_input="False">238.3365088068727<!--Maximum current flowing through the SSPC--></current_max>
             <efficiency is_input="True">0.99<!--Value of the SSPC efficiency, assumed constant during operations (eases convergence)--></efficiency>
-            <voltage_max units="V" is_input="False">353.5353535353535<!--Maximum voltage at the terminals SSPC--></voltage_max>
+            <voltage_max units="V" is_input="False">832.3014472590912<!--Maximum voltage at the terminals SSPC--></voltage_max>
           </dc_sspc_1>
           <dc_sspc_2>
-            <current_max units="A" is_input="False">1003.194348966727<!--Maximum current flowing through the SSPC--></current_max>
+            <current_max units="A" is_input="False">238.33650758495713<!--Maximum current flowing through the SSPC--></current_max>
             <efficiency is_input="True">0.99<!--Value of the SSPC efficiency, assumed constant during operations (eases convergence)--></efficiency>
-            <voltage_max units="V" is_input="False">350.0<!--Maximum voltage at the terminals SSPC--></voltage_max>
+            <voltage_max units="V" is_input="False">841.5<!--Maximum voltage at the terminals SSPC--></voltage_max>
           </dc_sspc_2>
           <dc_sspc_412>
-            <current_max units="A" is_input="False">150.0<!--Maximum current flowing through the SSPC--></current_max>
+            <current_max units="A" is_input="False">238.3365088068727<!--Maximum current flowing through the SSPC--></current_max>
             <efficiency is_input="True">0.99<!--Value of the SSPC efficiency, assumed constant during operations (eases convergence)--></efficiency>
-            <voltage_max units="V" is_input="False">350.0<!--Maximum voltage at the terminals SSPC--></voltage_max>
+            <voltage_max units="V" is_input="False">823.9784327865003<!--Maximum voltage at the terminals SSPC--></voltage_max>
           </dc_sspc_412>
         </DC_SSPC>
         <DC_bus>
           <dc_bus_1>
-            <current_max units="A" is_input="False">400.0</current_max>
-            <voltage_max units="V" is_input="False">350.0</voltage_max>
+            <current_max units="A" is_input="False">238.3365088068727</current_max>
+            <voltage_max units="V" is_input="False">823.9784327865003</voltage_max>
           </dc_bus_1>
           <dc_bus_2>
-            <current_max units="A" is_input="False">400.0</current_max>
-            <voltage_max units="V" is_input="False">350.0</voltage_max>
+            <current_max units="A" is_input="False">238.3365088068727</current_max>
+            <voltage_max units="V" is_input="False">841.5</voltage_max>
           </dc_bus_2>
         </DC_bus>
         <DC_cable_harness>
           <harness_1>
-            <current_max units="A" is_input="False">1003.194348966727<!--Maximum current flowing through the harness, all cables included--></current_max>
+            <current_max units="A" is_input="False">238.33650758495713<!--Maximum current flowing through the harness, all cables included--></current_max>
             <length units="m" is_input="True">7.0</length>
-            <losses_max units="W" is_input="False">151040.71054778443<!--Maximum losses in one cable of the harness--></losses_max>
+            <losses_max units="W" is_input="False">195.66430401590037<!--Maximum losses in one cable of the harness--></losses_max>
             <number_cables is_input="True">1.0</number_cables>
-            <temperature_max units="degK" is_input="False">10885.550197208393</temperature_max>
-            <voltage_max units="V" is_input="False">500.0</voltage_max>
+            <temperature_max units="degK" is_input="False">301.90179561526423</temperature_max>
+            <voltage_max units="V" is_input="False">833.085</voltage_max>
             <cable>
               <radius units="mm" is_input="True">6.47</radius>
               <resistance units="ohm" is_input="True">0.00333</resistance>
@@ -118,29 +118,29 @@
         </PMSM>
         <hydrogen_gas_tank>
           <hydrogen_gas_tank_1>
-            <fuel_consumed_mission units="kg" is_input="False">nan<!--Amount of fuel from that tank which will be consumed during mission--></fuel_consumed_mission>
+            <fuel_consumed_mission units="kg" is_input="False">13.554682657822255<!--Amount of fuel from that tank which will be consumed during mission--></fuel_consumed_mission>
           </hydrogen_gas_tank_1>
         </hydrogen_gas_tank>
         <inverter>
           <inverter_1>
             <current_ac_max units="A" is_input="False">186.98174220313672<!--Maximum RMS current flowing through one arm of the inverter--></current_ac_max>
-            <current_dc_max units="A" is_input="False">150.0<!--Maximum value of the current at the input of the inverter--></current_dc_max>
+            <current_dc_max units="A" is_input="False">238.3365088068727<!--Maximum value of the current at the input of the inverter--></current_dc_max>
             <heat_sink_temperature_mission units="degK" is_input="True">288.15<!--Heat sink temperature of the inverter for the points--></heat_sink_temperature_mission>
-            <losses_max units="W" is_input="False">5022.886409613711</losses_max>
-            <modulation_idx_max is_input="False">0.95<!--Maximum modulation index during the mission--></modulation_idx_max>
+            <losses_max units="W" is_input="False">5046.78903275565</losses_max>
+            <modulation_idx_max is_input="False">0.5068656359036223<!--Maximum modulation index during the mission--></modulation_idx_max>
             <power_factor is_input="True">1.0</power_factor>
             <switching_frequency_max units="Hz" is_input="False">12000.0</switching_frequency_max>
             <switching_frequency_mission units="Hz" is_input="True">12000.0<!--Switching frequency of the inverter for the points--></switching_frequency_mission>
             <voltage_ac_max units="V" is_input="False">413.4513065482845<!--Maximum value of the peak voltage at the output of the inverter (AC side)--></voltage_ac_max>
-            <voltage_dc_max units="V" is_input="False">500.0<!--Maximum value of the voltage at the input of the inverter (DC side)--></voltage_dc_max>
+            <voltage_dc_max units="V" is_input="False">815.7386484586353<!--Maximum value of the voltage at the input of the inverter (DC side)--></voltage_dc_max>
             <casing>
-              <temperature_max units="degK" is_input="False">304.89295469871234</temperature_max>
+              <temperature_max units="degK" is_input="False">304.9726301091855</temperature_max>
               <thermal_resistance units="degK/W" is_input="True">0.01<!--Thermal resistance between the casing and the heat sink--></thermal_resistance>
             </casing>
             <diode>
               <gate_voltage units="V" is_input="True">1.3</gate_voltage>
               <resistance units="ohm" is_input="True">0.00258995</resistance>
-              <temperature_max units="degK" is_input="False">347.2700587200132</temperature_max>
+              <temperature_max units="degK" is_input="False">349.83973787822964</temperature_max>
               <thermal_resistance units="degK/W" is_input="True">0.148195<!--Thermal resistance between the casing and the heat sink--></thermal_resistance>
             </diode>
             <energy_off>
@@ -161,7 +161,7 @@
             <igbt>
               <gate_voltage units="V" is_input="True">0.87</gate_voltage>
               <resistance units="ohm" is_input="True">0.00209135</resistance>
-              <temperature_max units="degK" is_input="False">368.2553133741432</temperature_max>
+              <temperature_max units="degK" is_input="False">366.8614448909325</temperature_max>
               <thermal_resistance units="degK/W" is_input="True">0.114955<!--Thermal resistance between the casing and the IGBT--></thermal_resistance>
             </igbt>
             <properties>
@@ -178,10 +178,10 @@
         </inverter>
         <pemfc_stack>
           <pemfc_stack_1>
-            <current_max units="A" is_input="False">600.0<!--Maximum current to the pemfc during the mission--></current_max>
-            <current_min units="A" is_input="False">600.0<!--Minimum current to the pemfc during the mission--></current_min>
+            <current_max units="A" is_input="False">594.9689303977258<!--Maximum current to the pemfc during the mission--></current_max>
+            <current_min units="A" is_input="False">567.0523013552091<!--Minimum current to the pemfc during the mission--></current_min>
             <effective_area units="cm**2" is_input="True">2000.0<!--Effective fuel cell area in the stack--></effective_area>
-            <efficiency is_input="False">[0.6298231526138582, 0.6298231526138582, 0.6298231526138582, 0.6298231526138582, 0.6298231526138582, 0.6298231526138582, 0.6298231526138582, 0.6298231526138582, 0.6298231526138582, 0.6298231526138582]</efficiency>
+            <efficiency is_input="False">[0.6337045430084237, 0.6333115873060411, 0.6329254040352896, 0.6325460169799297, 0.6321734505284257, 0.6318077296291366, 0.6314488797466716, 0.6310969268193155, 0.6307518972174427, 0.6304138177028362]</efficiency>
             <number_of_layers is_input="True">450.0<!--Total number of layers in the pemfc stacks--></number_of_layers>
           </pemfc_stack_1>
         </pemfc_stack>
