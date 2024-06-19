@@ -500,13 +500,13 @@
         <hydrogen_gas_tank>
           <hydrogen_gas_tank_1>
             <Safety_factor is_input="True">1.0<!--Hydrogen gas tank design safety factor--></Safety_factor>
-            <capacity units="kg" is_input="False">50.5<!--Capacity of the tank in terms of weight--></capacity>
+            <capacity units="kg" is_input="False">15.15<!--Capacity of the tank in terms of weight--></capacity>
             <fuel_consumed_mission units="kg" is_input="False">nan<!--Amount of fuel from that tank which will be consumed during mission--></fuel_consumed_mission>
-            <fuel_total_mission units="kg" is_input="False">50.5<!--Total amount of hydrogen loaded in the tank for the mission--></fuel_total_mission>
-            <inner_volume units="m**3" is_input="False">62.378019573515346<!--Capacity of the tank in terms of volume--></inner_volume>
-            <mass units="kg" is_input="False">53.358268796403536<!--Weight of the hydrogen gas tanks--></mass>
+            <fuel_total_mission units="kg" is_input="False">15.15<!--Total amount of hydrogen loaded in the tank for the mission--></fuel_total_mission>
+            <inner_volume units="m**3" is_input="False">18.713405872054604<!--Capacity of the tank in terms of volume--></inner_volume>
+            <mass units="kg" is_input="False">17.376124212775245<!--Weight of the hydrogen gas tanks--></mass>
             <tank_pressure units="Pa" is_input="True">1013250.0<!--Hydrogen gas tank static pressure--></tank_pressure>
-            <unusable_fuel_mission units="kg" is_input="False">0.5<!--Amount of trapped hydrogen in the tank--></unusable_fuel_mission>
+            <unusable_fuel_mission units="kg" is_input="False">0.15<!--Amount of trapped hydrogen in the tank--></unusable_fuel_mission>
             <CG>
               <x units="m" is_input="False">2.8846643019251306<!--X position of the tank center of gravity--></x>
               <y units="m" is_input="False">1.8474926765644417<!--Y position of the pemfc center of gravity--></y>
@@ -518,9 +518,9 @@
             <dimension>
               <diameter units="m" is_input="True">2.092<!--Initial Outer diameter of the hydrogen gas tank input--></diameter>
               <inner_diameter units="m" is_input="False">2.091442327910854<!--Inner diameter of the hydrogen gas tanks--></inner_diameter>
-              <length units="m" is_input="False">16.762948472080637<!--Value of the cylindrical length of the tank in the x-direction, computed differently based on the location of the tank--></length>
+              <length units="m" is_input="False">4.05287812193246<!--Value of the cylindrical length of the tank in the x-direction, computed differently based on the location of the tank--></length>
               <outer_diameter units="m" is_input="False">2.092<!--Outer diameter of the hydrogen gas tank--></outer_diameter>
-              <overall_length units="m" is_input="False">18.854948472080636<!--Value of the length of the tank in the x-direction, computed differently based on the location of the tank--></overall_length>
+              <overall_length units="m" is_input="False">6.144878121932461<!--Value of the length of the tank in the x-direction, computed differently based on the location of the tank--></overall_length>
               <wall_thickness units="m" is_input="False">0.0002788360445731275<!--Inner diameter of the hydrogen gas tanks--></wall_thickness>
             </dimension>
             <low_speed>

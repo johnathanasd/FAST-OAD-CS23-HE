@@ -74,6 +74,23 @@ def test_assembly_performances():
     # Run problem and check obtained value(s) is/(are) correct
     problem.run_model()
 
+    _, _, residuals = problem.model.performances.get_nonlinear_vectors()
+    print("\n=========== Check variable ===========")
+    print(problem.get_val("performances.dc_dc_converter_1.dc_current_in", units="A"))
+    print(problem.get_val("performances.dc_dc_converter_1.dc_current_out",units="A"))
+
+    assert problem.get_val(
+        "performances.dc_dc_converter_1.dc_current_in", units="A"
+    ) * problem.get_val("performances.dc_dc_converter_1.dc_voltage_in", units="V") == pytest.approx(
+        np.array([209164.26898] * int(NB_POINTS_TEST)),
+        abs=1,
+    )
+
+    write_outputs(
+        pth.join(outputs.__path__[0], "simple_assembly_performances_pemfc_h2_gas_tank.xml"),
+        problem,
+    )
+"""
     print("\n=========== Propulsive power ===========")
     print(problem.get_val("true_airspeed", units="m/s") * problem.get_val("thrust", units="N"))
 
@@ -123,23 +140,11 @@ def test_assembly_performances():
 
     print("\n=========== PEMFC power output (kw) ===========")
     print(problem.get_val("performances.pemfc_stack_1.power_out", units="kW"))
-
+"""
     # om.n2(problem)
 
-    _, _, residuals = problem.model.performances.get_nonlinear_vectors()
-    # Around 200KW
 
-    assert problem.get_val(
-        "performances.dc_dc_converter_1.dc_current_in", units="A"
-    ) * problem.get_val("performances.dc_dc_converter_1.dc_voltage_in", units="V") == pytest.approx(
-        np.array([209164.26898] * int(NB_POINTS_TEST)),
-        abs=1,
-    )
 
-    write_outputs(
-        pth.join(outputs.__path__[0], "simple_assembly_performances_pemfc_h2_gas_tank.xml"),
-        problem,
-    )
 
 
 def test_assembly_sizing():
