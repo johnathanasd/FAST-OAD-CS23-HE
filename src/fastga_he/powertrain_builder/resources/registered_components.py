@@ -884,14 +884,14 @@ HYDROGEN_GAS_TANK = {
     OUT: [("fuel_consumed_t", None)],
     CTC: "tank",
     MP: [
-        {"hydrogen_remaining_t": "kg"},
+        {"fuel_remaining_t": "kg"},
     ],
     SMP: [
         {"delta_Cd": None},
     ],
     ICON: "fuel_tank",
     ICON_SIZE: 30,
-    RSD: ["hydrogen_remaining_t"],
+    RSD: ["fuel_remaining_t"],
     SETS_V: False,
     IO_INDEP_V: False,
     V_TO_SET: [],
@@ -902,29 +902,27 @@ HYDROGEN_GAS_TANK = {
     DST_W: [],
     PCT_W: [],
     DST_W_F: [],
-    PCT_W_F: [],
+    PCT_W_F: ["wing_pod"],
     VARIES_MASS: False,  # Seems weird but the ICE already does the job so we won't double up
     VARIESN_T_MASS: True,
     ETA: 1.0,
 }
 # TODO: Modify based on the change done for PEMFC modeling
 PEMFC_STACK = {
-    ID: "fastga_he.pt_component.PEMFC_stack",
+    ID: "fastga_he.pt_component.pemfc_stack",
     CN: "PEMFCStack",
-    CN_ID: "PEMFC_stack_id",
-    CT: "PEMFC_stack",
+    CN_ID: "pemfc_stack_id",
+    CT: "pemfc_stack",
     ATT: None,
-    PT: ["time_step"],
+    PT: ["time_step", "altitude"],
     SPT: [],
     PTS: [],
-    IN: None,
+    IN: [(None, "fuel_consumed_t")],
     OUT: [(None, "voltage_out"), ("dc_current_out", None)],
     CTC: "source",
     MP: [
-        {"open_circuit_voltage": "V"},
+        {"current_density": "A/cm**2"},
         {"voltage_out": "V"},
-        {"efficiency": None},
-        {"power_out": "kW"},
     ],
     SMP: [
         {"delta_Cd": None},
@@ -939,12 +937,12 @@ PEMFC_STACK = {
     I_TO_SET: [],
     SFR: False,
     SWL: False,
-    DST_W: ["inside_the_wing"],
-    PCT_W: [],
+    DST_W: [],
+    PCT_W: ["wing_pod"],
     DST_W_F: [],
     PCT_W_F: [],
-    VARIES_MASS: False,
-    VARIESN_T_MASS: True,
+    VARIES_MASS: True,
+    VARIESN_T_MASS: False,
     ETA: 0.5,
 }
 
@@ -968,6 +966,7 @@ KNOWN_COMPONENTS = [
     PLANETARY_GEAR,
     TURBO_GENERATOR,
     GEARBOX,
+    PEMFC_STACK,
     HYDROGEN_GAS_TANK,
 ]
 

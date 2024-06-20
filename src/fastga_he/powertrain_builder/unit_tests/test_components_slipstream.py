@@ -32,6 +32,8 @@ from fastga_he.models.propulsion.components import (
     SlipstreamPlanetaryGear,
     SlipstreamTurboGenerator,
     SlipstreamGearbox,
+    SlipstreamPEMFCStack,
+    SlipstreamHydrogenGasTank,
 )
 
 from tests.testing_utilities import VariableListLocal

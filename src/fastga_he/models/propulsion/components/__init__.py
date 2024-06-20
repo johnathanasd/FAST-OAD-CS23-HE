@@ -39,5 +39,11 @@ from .source.simple_turbo_generator import (
     PerformancesTurboGenerator,
     SlipstreamTurboGenerator,
 )
+from .source.pemfc import SizingPEMFCStack, PerformancesPEMFCStack, SlipstreamPEMFCStack
 
 from .tanks.fuel_tanks import SizingFuelTank, PerformancesFuelTank, SlipstreamFuelTank
+from .tanks.hydrogen_gas_tank import (
+    SizingHydrogenGasTank,
+    PerformancesHydrogenGasTank,
+    SlipstreamHydrogenGasTank,
+)

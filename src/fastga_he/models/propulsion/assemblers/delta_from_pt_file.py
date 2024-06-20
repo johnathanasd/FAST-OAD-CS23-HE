@@ -30,6 +30,8 @@ from fastga_he.models.propulsion.components import (
     SlipstreamPlanetaryGear,
     SlipstreamTurboGenerator,
     SlipstreamGearbox,
+    SlipstreamPEMFCStack,
+    SlipstreamHydrogenGasTank,
 )
 
 from .constants import (

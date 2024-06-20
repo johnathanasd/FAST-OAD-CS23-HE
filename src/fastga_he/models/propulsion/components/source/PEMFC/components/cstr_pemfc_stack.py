@@ -9,7 +9,7 @@ import fastoad.api as oad
 from ..constants import SUBMODEL_CONSTRAINTS_PEMFC_EFFECTIVE_AREA
 
 
-class ConstraintsPEMFC(om.Group):
+class ConstraintsPEMFCStack(om.Group):
     """
     Class that gather the different constraints for the pemfc, be they ensure or enforce.
     """

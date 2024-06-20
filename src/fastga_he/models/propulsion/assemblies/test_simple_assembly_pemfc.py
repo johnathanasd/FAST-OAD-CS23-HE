@@ -411,7 +411,7 @@ def test_assembly_sizing_from_pt_file():
 
 
 def test_performances_from_pt_file():
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly.yml")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
 
     ivc = get_indep_var_comp(
         list_inputs(
@@ -450,29 +450,28 @@ def test_performances_from_pt_file():
 
     _, _, residuals = problem.model.component.get_nonlinear_vectors()
 
-    current_in = problem.get_val("component.dc_dc_converter_1.dc_current_in", units="A")
-    voltage_in = problem.get_val("component.dc_dc_converter_1.dc_voltage_in", units="V")
-
-    assert current_in * voltage_in == pytest.approx(
+    assert problem.get_val(
+        "component.dc_dc_converter_1.dc_current_in", units="A"
+    ) * problem.get_val("component.dc_dc_converter_1.dc_voltage_in", units="V") == pytest.approx(
         np.array(
             [
-                197132.0,
-                198193.0,
-                199229.0,
-                200247.0,
-                201251.0,
-                202246.0,
-                203236.0,
-                204218.0,
-                205181.0,
-                206076.0,
+                198896.69338892,
+                199938.25766214,
+                200961.45568779,
+                201966.23232281,
+                202952.53208264,
+                203920.29918561,
+                204869.47759607,
+                205800.01106618,
+                206711.84317667,
+                207604.91737652,
             ]
         ),
-        abs=1,
+        rel=1e-4,
     )
 
     write_outputs(
-        pth.join(outputs.__path__[0], "assembly_performances_from_pt_file.xml"),
+        pth.join(outputs.__path__[0], "assembly_performances_from_pt_file_pemfc_h2_tank.xml"),
         problem,
     )
 

@@ -78,5 +78,5 @@ component_connections:
 
   - source: pemfc_stack_1
     target: hydrogen_gas_tank_1
-# TODO: Modify the csv file with proper pemfc and hydrogen gas tank value
+
 watcher_file_path: ./simple_assembly_performances_pemfc_h2_tank.csv

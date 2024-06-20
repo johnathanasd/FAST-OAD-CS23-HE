@@ -11,7 +11,7 @@ from .sizing_pemfc_dimensions import SizingPEMFCDimensions
 from .sizing_pemfc_cg_x import SizingPEMFCCGX
 from .sizing_pemfc_cg_y import SizingPEMFCCGY
 from .sizing_pemfc_drag import SizingPEMFCDrag
-from .cstr_pemfc_stack import ConstraintsPEMFC
+from .cstr_pemfc_stack import ConstraintsPEMFCStack
 
 from ..constants import POSSIBLE_POSITION
 
@@ -46,7 +46,7 @@ class SizingPEMFCStack(om.Group):
         # configuration file.
         self.add_subsystem(
             name="constraints_pemfc",
-            subsys=ConstraintsPEMFC(pemfc_stack_id=pemfc_stack_id),
+            subsys=ConstraintsPEMFCStack(pemfc_stack_id=pemfc_stack_id),
             promotes=["*"],
         )
         self.add_subsystem(
