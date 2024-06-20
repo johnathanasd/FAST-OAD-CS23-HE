@@ -235,7 +235,9 @@ def test_performances_sizing_assembly_pemfc_enforce():
         __file__,
         XML_FILE,
     )
+
     altitude = np.full(NB_POINTS_TEST, 0.0)
+
     ivc.add_output("altitude", val=altitude, units="m")
     ivc.add_output("density", val=Atmosphere(altitude).density, units="kg/m**3")
     ivc.add_output("true_airspeed", val=np.linspace(81.8, 90.5, NB_POINTS_TEST), units="m/s")
@@ -260,33 +262,19 @@ def test_performances_sizing_assembly_pemfc_enforce():
     problem.run_model()
 
     _, _, residuals = problem.model.get_nonlinear_vectors()
-    residuals = filter_residuals(residuals)
-    print(residuals)
+
     write_outputs(
         pth.join(outputs.__path__[0], "full_assembly_sizing_pemfc_h2_gas_tank_enforce.xml"),
         problem,
     )
-    """
 
     assert problem.get_val(
         "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", units="kg"
-    ) == pytest.approx(371.1034, rel=1e-2)
+    ) == pytest.approx(371.103, rel=1e-2)
+
     assert problem.get_val(
         "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:mass", units="kg"
     ) == pytest.approx(17.682, rel=1e-2)
-    """
-
-    print("\n=========== PEMFC current===========")
-    print(problem.get_val("full.pemfc_stack_1.dc_current_out", units="A"))
-
-    print("\n=========== PEMFC voltage===========")
-    print(problem.get_val("full.pemfc_stack_1.voltage_out", units="V"))
-
-    print("\n=========== PEMFC current density===========")
-    print(problem.get_val("full.pemfc_stack_1.fc_current_density", units="A/cm**2"))
-
-    print("\n=========== H2 remain for each timestep===========")
-    print(problem.get_val("full.hydrogen_gas_tank_1.fuel_remaining_t", units="kg"))
 
 
 def test_performances_sizing_assembly_pemfc_ensure():
@@ -306,7 +294,9 @@ def test_performances_sizing_assembly_pemfc_ensure():
         __file__,
         XML_FILE,
     )
+
     altitude = np.full(NB_POINTS_TEST, 0.0)
+
     ivc.add_output("altitude", val=altitude, units="m")
     ivc.add_output("density", val=Atmosphere(altitude).density, units="kg/m**3")
     ivc.add_output("true_airspeed", val=np.linspace(81.8, 90.5, NB_POINTS_TEST), units="m/s")
@@ -336,25 +326,14 @@ def test_performances_sizing_assembly_pemfc_ensure():
         pth.join(outputs.__path__[0], "full_assembly_sizing_pemfc_h2_gas_tank_ensure.xml"),
         problem,
     )
-    """
+
     assert problem.get_val(
         "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", units="kg"
-    ) == pytest.approx(371.1034, rel=1e-2)
+    ) == pytest.approx(765.306, rel=1e-2)
+
     assert problem.get_val(
         "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:mass", units="kg"
-    ) == pytest.approx(17.682, rel=1e-2)
-    """
-    print("\n=========== PEMFC current===========")
-    print(problem.get_val("full.pemfc_stack_1.dc_current_out", units="A"))
-
-    print("\n=========== PEMFC voltage===========")
-    print(problem.get_val("full.pemfc_stack_1.voltage_out", units="V"))
-
-    print("\n=========== PEMFC current density===========")
-    print(problem.get_val("full.pemfc_stack_1.fc_current_density", units="A/cm**2"))
-
-    print("\n=========== H2 remain for each timestep===========")
-    print(problem.get_val("full.hydrogen_gas_tank_1.fuel_remaining_t", units="kg"))
+    ) == pytest.approx(17.292, rel=1e-2)
 
 
 def test_assembly_sizing_from_pt_file():

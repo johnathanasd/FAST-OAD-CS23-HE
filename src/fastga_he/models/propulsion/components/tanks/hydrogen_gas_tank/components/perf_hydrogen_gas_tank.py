@@ -41,6 +41,7 @@ class PerformancesHydrogenGasTank(om.Group):
             ),
             promotes=["*"],
         )
+
         self.add_subsystem(
             "hydrogen_gas_remaining_mission",
             PerformancesHydrogenGasRemainingMission(

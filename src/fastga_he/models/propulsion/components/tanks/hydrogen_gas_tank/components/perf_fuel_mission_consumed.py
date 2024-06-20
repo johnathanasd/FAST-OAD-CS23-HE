@@ -17,6 +17,7 @@ class PerformancesHydrogenGasConsumedMission(om.ExplicitComponent):
         self.options.declare(
             "number_of_points", default=1, desc="number of equilibrium to be treated"
         )
+
         self.options.declare(
             name="hydrogen_gas_tank_id",
             default=None,

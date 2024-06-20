@@ -43,6 +43,7 @@ class SizingHydrogenGasTankInnerVolume(om.ExplicitComponent):
             val=np.nan,
             desc="Capacity of the tank in terms of weight",
         )
+
         self.add_input(
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
@@ -51,6 +52,7 @@ class SizingHydrogenGasTankInnerVolume(om.ExplicitComponent):
             units="Pa",
             desc="Hydrogen gas tank static pressure",
         )
+
         self.add_input(
             "tank_temperature",
             val=300.0,
@@ -80,12 +82,15 @@ class SizingHydrogenGasTankInnerVolume(om.ExplicitComponent):
         fuel_mass = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":capacity"
         ]
+
         tank_pressure = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
             + ":tank_pressure"
         ]
+
         z = 0.99704 + 6.4149e-9 * tank_pressure  # compressibility correction
+
         tank_temperature = inputs["tank_temperature"]
 
         outputs[
@@ -101,12 +106,15 @@ class SizingHydrogenGasTankInnerVolume(om.ExplicitComponent):
         fuel_mass = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":capacity"
         ]
+
         tank_pressure = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
             + ":tank_pressure"
         ]
+
         z = 0.99704 + 6.4149e-9 * tank_pressure  # compressibility correction
+
         tank_temperature = inputs["tank_temperature"]
 
         partials[

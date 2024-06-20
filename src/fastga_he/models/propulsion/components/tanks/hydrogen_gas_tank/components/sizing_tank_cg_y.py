@@ -21,6 +21,7 @@ class SizingHydrogenGasTankCGY(om.ExplicitComponent):
             desc="Identifier of the hydrogen gas tank",
             allow_none=False,
         )
+
         self.options.declare(
             name="position",
             default="in_the_fuselage",

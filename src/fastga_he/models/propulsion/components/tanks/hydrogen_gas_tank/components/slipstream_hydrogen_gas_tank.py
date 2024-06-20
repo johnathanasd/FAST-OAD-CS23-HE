@@ -21,6 +21,7 @@ class SlipstreamHydrogenGasTank(om.Group):
             desc="Identifier of the hydrogen gas tank",
             allow_none=False,
         )
+
         self.options.declare(
             "number_of_points", default=1, desc="number of equilibrium to be treated"
         )

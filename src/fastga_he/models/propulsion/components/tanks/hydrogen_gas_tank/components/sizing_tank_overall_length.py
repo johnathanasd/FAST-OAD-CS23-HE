@@ -69,7 +69,9 @@ class SizingHydrogenGasTankOverallLength(om.ExplicitComponent):
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
+
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+
         outputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id

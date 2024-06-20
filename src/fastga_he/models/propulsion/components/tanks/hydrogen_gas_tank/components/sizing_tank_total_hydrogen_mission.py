@@ -33,6 +33,7 @@ class SizingHydrogenGasTankTotalHydrogenMission(om.ExplicitComponent):
             val=15.0,
             desc="Amount of hydrogen from that tank which will be consumed during mission",
         )
+
         self.add_input(
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id

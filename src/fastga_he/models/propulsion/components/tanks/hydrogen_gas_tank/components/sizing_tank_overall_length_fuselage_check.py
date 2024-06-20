@@ -67,6 +67,7 @@ class SizingHydrogenGasTankOverallLengthFuselageCheck(om.ExplicitComponent):
         )
 
         if position != "wing_pod":
+
             self.declare_partials(
                 of="*",
                 wrt="data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -74,7 +75,9 @@ class SizingHydrogenGasTankOverallLengthFuselageCheck(om.ExplicitComponent):
                 + ":dimension:overall_length",
                 val=1.0,
             )
+
         else:
+
             self.declare_partials(
                 of="*",
                 wrt="data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -84,6 +87,7 @@ class SizingHydrogenGasTankOverallLengthFuselageCheck(om.ExplicitComponent):
             )
 
         if position == "in_the_fuselage" or position == "underbelly":
+
             self.declare_partials(
                 of="*",
                 wrt="data:geometry:cabin:length",
@@ -91,6 +95,7 @@ class SizingHydrogenGasTankOverallLengthFuselageCheck(om.ExplicitComponent):
             )
 
         elif position == "in_the_back":
+
             self.declare_partials(
                 of="*",
                 wrt="*",
@@ -98,8 +103,10 @@ class SizingHydrogenGasTankOverallLengthFuselageCheck(om.ExplicitComponent):
             )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
+
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
         position = self.options["position"]
+
         if position == "in_the_fuselage" or position == "underbelly":
             outputs[
                 "constraints:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -115,6 +122,7 @@ class SizingHydrogenGasTankOverallLengthFuselageCheck(om.ExplicitComponent):
             )
 
         elif position == "in_the_back":
+
             outputs[
                 "constraints:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
@@ -133,6 +141,7 @@ class SizingHydrogenGasTankOverallLengthFuselageCheck(om.ExplicitComponent):
                 * inputs["data:geometry:fuselage:rear_length"]
             )
         else:
+
             outputs[
                 "constraints:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
@@ -140,9 +149,12 @@ class SizingHydrogenGasTankOverallLengthFuselageCheck(om.ExplicitComponent):
             ] = 0.0
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
+
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
         position = self.options["position"]
+
         if position == "in_the_back":
+
             partials[
                 "constraints:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id

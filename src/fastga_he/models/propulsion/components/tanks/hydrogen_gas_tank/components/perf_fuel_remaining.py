@@ -36,6 +36,7 @@ class PerformancesHydrogenGasRemainingMission(om.ExplicitComponent):
             val=np.nan,
             desc="Total amount of hydrogen loaded in the tank",
         )
+
         self.add_input(
             "fuel_consumed_t",
             units="kg",
@@ -78,6 +79,7 @@ class PerformancesHydrogenGasRemainingMission(om.ExplicitComponent):
             + hydrogen_gas_tank_id
             + ":fuel_consumed_mission",
         ] = np.ones(number_of_points)
+
         partials["fuel_remaining_t", "fuel_consumed_t"] = -(
             np.tri(number_of_points, number_of_points) - np.eye(number_of_points)
         )

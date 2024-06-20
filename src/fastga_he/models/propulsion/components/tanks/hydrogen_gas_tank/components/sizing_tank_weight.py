@@ -133,6 +133,7 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+
         r = (
             inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -141,7 +142,9 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
             ]
             / 2
         )
+
         d = 2 * r
+
         l = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id

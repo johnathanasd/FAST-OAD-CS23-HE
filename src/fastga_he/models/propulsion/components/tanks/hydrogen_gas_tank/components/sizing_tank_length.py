@@ -58,19 +58,20 @@ class SizingHydrogenGasTankLength(om.ExplicitComponent):
 
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
 
-        d = inputs[
+        d_inner = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
             + ":dimension:inner_diameter"
         ]
+
         length = (
             inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
                 + ":inner_volume"
             ]
-            - np.pi * d ** 3 / 6
-        ) / (np.pi * d ** 2 / 4)
+            - np.pi * d_inner ** 3 / 6
+        ) / (np.pi * d_inner ** 2 / 4)
 
         outputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -82,13 +83,13 @@ class SizingHydrogenGasTankLength(om.ExplicitComponent):
 
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
 
-        d = inputs[
+        d_inner = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
             + ":dimension:inner_diameter"
         ]
 
-        vin = inputs[
+        inner_volume = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
             + ":inner_volume"
@@ -101,7 +102,7 @@ class SizingHydrogenGasTankLength(om.ExplicitComponent):
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
             + ":inner_volume",
-        ] = 1 / (d ** 2 * np.pi / 4)
+        ] = 1 / (d_inner ** 2 * np.pi / 4)
 
         partials[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -111,5 +112,5 @@ class SizingHydrogenGasTankLength(om.ExplicitComponent):
             + hydrogen_gas_tank_id
             + ":dimension:inner_diameter",
         ] = (
-            -8 * vin / (np.pi * d ** 3) - 2 / 3
+            -8 * inner_volume / (np.pi * d_inner ** 3) - 2 / 3
         )
