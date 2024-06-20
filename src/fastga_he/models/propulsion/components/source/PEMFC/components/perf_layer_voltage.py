@@ -6,6 +6,7 @@ import openmdao.api as om
 import numpy as np
 
 
+DEFAULT_MAX_CURRENT_DENSITY = 0.7
 
 
 class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
@@ -24,13 +25,51 @@ class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
             desc="Identifier of the PEMFC stack",
             allow_none=False,
         )
+
         self.options.declare(
             "number_of_points", default=1, desc="number of equilibrium to be treated"
         )
 
+        self.options.declare(
+            "open_circuit_voltage",
+            default=0.83,
+            desc="open_circuit_voltage of one layer of pemfc [V]",
+        )
+
+        self.options.declare(
+            "activation_loss_coefficient",
+            default=0.014,
+            desc="activation loss coefficient of one layer of pemfc (V/ln(A/cm**2))",
+        )
+
+        self.options.declare(
+            "ohmic_resistance",
+            default=0.24,
+            desc="ohmic resistance of one layer of pemfc [V/ln(A/cm**2)]",
+        )
+
+        self.options.declare(
+            "coefficient_in_concentration_loss",
+            default=5.63 * 10 ** -6,
+            desc="coefficient in concentration loss of one layer of pemfc [V]",
+        )
+
+        self.options.declare(
+            "exponential_coefficient_in_concentration_loss",
+            default=11.42,
+            desc="exponential coefficient in concentration loss of one layer of pemfc [cm**2/A]",
+        )
+
+        self.options.declare(
+            "pressure_coefficient", default=0.06, desc="pressure coefficient of one layer of pemfc"
+        )
+
+        self.options.declare(
+            "max_current_density", default=0.7, desc="maximum current density  of pemfc"
+        )
+
     def setup(self):
 
-        pemfc_stack_id = self.options["pemfc_stack_id"]
         number_of_points = self.options["number_of_points"]
 
         self.add_input(
@@ -54,7 +93,7 @@ class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
         self.add_output(
             "single_layer_pemfc_voltage",
             units="V",
-            val=np.full(number_of_points, 0.65),
+            val=np.full(number_of_points, DEFAULT_MAX_CURRENT_DENSITY),
         )
 
         self.declare_partials(
@@ -74,41 +113,59 @@ class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
-        pemfc_stack_id = self.options["pemfc_stack_id"]
 
-        V0 = 0.83
-        B = 0.014
-        R = 0.24
-        m = 5.63 * 10 ** -6
-        n = 11.42
-        C = 0.06
-        i = np.clip(inputs["fc_current_density"], np.full_like(inputs["fc_current_density"], 1e-2),  np.full_like(inputs["fc_current_density"], 0.7))
+        voc = self.options["open_circuit_voltage"]
+        active_loss_coeff = self.options["activation_loss_coefficient"]
+        r = self.options["ohmic_resistance"]
+        m = self.options["coefficient_in_concentration_loss"]
+        n = self.options["exponential_coefficient_in_concentration_loss"]
+        pressure_coeff = self.options["pressure_coefficient"]
+
+        i = np.clip(
+            inputs["fc_current_density"],
+            np.full_like(inputs["fc_current_density"], 1e-2),
+            np.full_like(inputs["fc_current_density"], self.options["max_current_density"]),
+        )
+
         operation_pressure = inputs["operation_pressure"]
+
         nominal_pressure = inputs["nominal_pressure"]
+
         outputs["single_layer_pemfc_voltage"] = (
-            V0
-            - B * np.log(i)
-            - R * i
+            voc
+            - active_loss_coeff * np.log(i)
+            - r * i
             - m * np.exp(n * i)
-            + C * np.log(operation_pressure / nominal_pressure)
+            + pressure_coeff * np.log(operation_pressure / nominal_pressure)
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
-        pemfc_stack_id = self.options["pemfc_stack_id"]
 
         number_of_points = self.options["number_of_points"]
-        B = 0.014
-        R = 0.24
-        m = 5.63 * 10 ** -6
-        n = 11.42
-        C = 0.06
-        i = np.clip(inputs["fc_current_density"], np.full_like(inputs["fc_current_density"], 1e-2),  np.full_like(inputs["fc_current_density"], 0.7))
-        partials["single_layer_pemfc_voltage", "fc_current_density"] = (
-            -B / i - R - m * n * np.exp(n * i)
+        active_loss_coeff = self.options["activation_loss_coefficient"]
+        r = self.options["ohmic_resistance"]
+        m = self.options["coefficient_in_concentration_loss"]
+        n = self.options["exponential_coefficient_in_concentration_loss"]
+        pressure_coeff = self.options["pressure_coefficient"]
+
+        i = np.clip(
+            inputs["fc_current_density"],
+            np.full_like(inputs["fc_current_density"], 1e-2),
+            np.full_like(inputs["fc_current_density"], self.options["max_current_density"]),
         )
+
+        partials_j = np.where(
+            inputs["fc_current_density"] == i,
+            -active_loss_coeff / i - r - m * n * np.exp(n * i),
+            1e-6,
+        )
+
+        partials["single_layer_pemfc_voltage", "fc_current_density"] = partials_j
+
         partials["single_layer_pemfc_voltage", "operation_pressure"] = (
-            C / inputs["operation_pressure"]
+            pressure_coeff / inputs["operation_pressure"]
         )
+
         partials["single_layer_pemfc_voltage", "nominal_pressure"] = (
-            -C * np.ones(number_of_points) / inputs["nominal_pressure"]
+            -pressure_coeff * np.ones(number_of_points) / inputs["nominal_pressure"]
         )

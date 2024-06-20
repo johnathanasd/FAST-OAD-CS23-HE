@@ -33,5 +33,3 @@ class FullSimpleAssembly(om.Group):
             subsys=PerformancesAssembly(number_of_points=number_of_points),
             promotes=["*"],
         )
-
-
