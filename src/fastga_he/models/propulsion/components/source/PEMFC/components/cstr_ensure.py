@@ -64,14 +64,14 @@ class ConstraintsEffectiveAreaEnsure(om.ExplicitComponent):
             + pemfc_stack_id
             + ":effective_area",
             wrt="data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
-            val=1.0,
+            val=-1.0,
         )
         self.declare_partials(
             of="constraints:propulsion:he_power_train:pemfc_stack:"
             + pemfc_stack_id
             + ":effective_area",
             wrt="data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_max",
-            val=-1 / MAX_CURRENT_DENSITY,
+            val=1 / MAX_CURRENT_DENSITY,
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
@@ -83,10 +83,10 @@ class ConstraintsEffectiveAreaEnsure(om.ExplicitComponent):
             + pemfc_stack_id
             + ":effective_area"
         ] = (
-            inputs[
+            -inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
             ]
-            - inputs[
+            + inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_max"
             ]
             / MAX_CURRENT_DENSITY

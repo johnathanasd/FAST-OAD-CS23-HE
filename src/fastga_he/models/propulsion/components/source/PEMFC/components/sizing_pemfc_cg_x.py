@@ -19,6 +19,7 @@ class SizingPEMFCCGX(om.ExplicitComponent):
             desc="Identifier of the pemfc pack",
             allow_none=False,
         )
+
         self.options.declare(
             name="position",
             default="underbelly",
@@ -43,14 +44,17 @@ class SizingPEMFCCGX(om.ExplicitComponent):
         if position == "wing_pod":
 
             self.add_input("data:geometry:wing:MAC:at25percent:x", val=np.nan, units="m")
+
             self.add_input("data:geometry:wing:MAC:length", val=np.nan, units="m")
 
             self.declare_partials(of="*", wrt="data:geometry:wing:MAC:at25percent:x", val=1)
+
             self.declare_partials(of="*", wrt="data:geometry:wing:MAC:length", val=0.25)
 
         elif position == "in_the_front":
 
             self.add_input("data:geometry:fuselage:front_length", val=np.nan, units="m")
+
             self.add_input(
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id
@@ -61,6 +65,7 @@ class SizingPEMFCCGX(om.ExplicitComponent):
             )
 
             self.declare_partials(of="*", wrt="data:geometry:fuselage:front_length", val=0.9)
+
             self.declare_partials(
                 of="*",
                 wrt="data:propulsion:he_power_train:pemfc_stack:"
@@ -72,7 +77,9 @@ class SizingPEMFCCGX(om.ExplicitComponent):
         elif position == "in_the_back":
 
             self.add_input("data:geometry:fuselage:front_length", val=np.nan, units="m")
+
             self.add_input("data:geometry:cabin:length", val=np.nan, units="m")
+
             self.add_input(
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id
@@ -83,7 +90,9 @@ class SizingPEMFCCGX(om.ExplicitComponent):
             )
 
             self.declare_partials(of="*", wrt="data:geometry:fuselage:front_length", val=1.0)
+
             self.declare_partials(of="*", wrt="data:geometry:cabin:length", val=1.0)
+
             self.declare_partials(
                 of="*",
                 wrt="data:propulsion:he_power_train:pemfc_stack:"
@@ -97,9 +106,11 @@ class SizingPEMFCCGX(om.ExplicitComponent):
         else:
 
             self.add_input("data:geometry:fuselage:front_length", val=np.nan, units="m")
+
             self.add_input("data:geometry:cabin:length", val=np.nan, units="m")
 
             self.declare_partials(of="*", wrt="data:geometry:fuselage:front_length", val=1.0)
+
             self.declare_partials(of="*", wrt="data:geometry:cabin:length", val=0.5)
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):

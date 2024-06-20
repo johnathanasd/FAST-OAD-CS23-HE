@@ -5,6 +5,8 @@
 import openmdao.api as om
 import numpy as np
 
+DEFAULT_STACK_VOLTAGE = 325.0
+
 
 class PerformancesPEMFCVoltage(om.ExplicitComponent):
     """
@@ -57,7 +59,9 @@ class PerformancesPEMFCVoltage(om.ExplicitComponent):
             desc="Total number of layers in the pemfc stacks",
         )
 
-        self.add_output(self.output_name, units="V", val=np.full(number_of_points, 325.0))
+        self.add_output(
+            self.output_name, units="V", val=np.full(number_of_points, DEFAULT_STACK_VOLTAGE)
+        )
 
         self.declare_partials(
             of=self.output_name,

@@ -61,7 +61,7 @@ class SizingHydrogenGasTankOverallLengthFuselageCheck(om.ExplicitComponent):
             "constraints:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
             + ":dimension:overall_length",
-            val=3.,
+            val=3.0,
             units="m",
             desc="Constraints on the tank length w.r.t the cabin/rear_fuselage length,  respected if <0",
         )

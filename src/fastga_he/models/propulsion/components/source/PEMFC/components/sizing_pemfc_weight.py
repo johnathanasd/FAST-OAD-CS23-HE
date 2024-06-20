@@ -76,6 +76,7 @@ class SizingPEMFCWeight(om.ExplicitComponent):
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
             ]
         )
+
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":mass",
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",

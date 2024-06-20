@@ -21,6 +21,7 @@ class SizingPEMFCDrag(om.ExplicitComponent):
             desc="Identifier of the PEMFC stack",
             allow_none=False,
         )
+
         self.options.declare(
             name="position",
             default="underbelly",
@@ -29,16 +30,14 @@ class SizingPEMFCDrag(om.ExplicitComponent):
             + ", ".join(POSSIBLE_POSITION),
             allow_none=False,
         )
-        # Not as useful as the ones in aerodynamics, here it will just be run twice in the sizing
-        # group
+
         self.options.declare("low_speed_aero", default=False, types=bool)
 
     def setup(self):
 
         pemfc_stack_id = self.options["pemfc_stack_id"]
         position = self.options["position"]
-        # For refractoring purpose we just match the option to the tag in the variable name and
-        # use it
+
         ls_tag = "low_speed" if self.options["low_speed_aero"] else "cruise"
 
         # At least one input is needed regardless of the case
@@ -59,6 +58,7 @@ class SizingPEMFCDrag(om.ExplicitComponent):
                 val=np.nan,
                 desc="Length of the pemfc, as in the size of the pemfc along the X-axis",
             )
+
             self.add_input(
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id
@@ -67,10 +67,12 @@ class SizingPEMFCDrag(om.ExplicitComponent):
                 val=np.nan,
                 desc="height of the pemfc, as in the size of the pemfc along the Z-axis",
             )
+
             self.add_input("data:geometry:fuselage:wet_area", val=np.nan, units="m**2")
+
             self.add_input("data:aerodynamics:fuselage:" + ls_tag + ":CD0", val=np.nan)
 
-        if position == "wing_pod":
+        elif position == "wing_pod":
 
             self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
 
@@ -113,26 +115,28 @@ class SizingPEMFCDrag(om.ExplicitComponent):
 
         elif position == "underbelly":
 
-            # For now we will just consider the addition of wetted area and not the change in
-            # form factor, ...
-
             cd0_fus = inputs["data:aerodynamics:fuselage:" + ls_tag + ":CD0"]
 
             wet_area = inputs["data:geometry:fuselage:wet_area"]
+
             belly_width = inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width"
             ]
+
             belly_length = inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:length"
             ]
+
             belly_height = inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:height"
             ]
+
             added_wet_area = (
                 belly_length * belly_width
                 + 2.0 * belly_length * belly_height
                 + 2.0 * belly_height * belly_width
             )
+
             cd0 = added_wet_area / wet_area * cd0_fus
 
         else:
@@ -173,6 +177,7 @@ class SizingPEMFCDrag(om.ExplicitComponent):
             ] = (
                 -0.10 * frontal_area / inputs["data:geometry:wing:area"] ** 2.0
             )
+
             partials[
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id
@@ -193,18 +198,17 @@ class SizingPEMFCDrag(om.ExplicitComponent):
 
         elif position == "underbelly":
 
-            # For now we will just consider the addition of wetted area and not the change in
-            # form factor, ...
-
             cd0_fus = inputs["data:aerodynamics:fuselage:" + ls_tag + ":CD0"]
             wet_area = inputs["data:geometry:fuselage:wet_area"]
 
             belly_width = inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width"
             ]
+
             belly_length = inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:length"
             ]
+
             belly_height = inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:height"
             ]
@@ -214,6 +218,7 @@ class SizingPEMFCDrag(om.ExplicitComponent):
                 + 2.0 * belly_length * belly_height
                 + 2.0 * belly_height * belly_width
             )
+
             partials[
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id
@@ -224,6 +229,7 @@ class SizingPEMFCDrag(om.ExplicitComponent):
             ] = (
                 (belly_length + 2.0 * belly_height) / wet_area * cd0_fus
             )
+
             partials[
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id
@@ -236,6 +242,7 @@ class SizingPEMFCDrag(om.ExplicitComponent):
             ] = (
                 (2.0 * belly_width + 2.0 * belly_length) / wet_area * cd0_fus
             )
+
             partials[
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id
@@ -248,6 +255,7 @@ class SizingPEMFCDrag(om.ExplicitComponent):
             ] = (
                 (belly_width + 2.0 * belly_height) / wet_area * cd0_fus
             )
+
             partials[
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id
@@ -258,6 +266,7 @@ class SizingPEMFCDrag(om.ExplicitComponent):
             ] = (
                 -added_wet_area / wet_area ** 2.0 * cd0_fus
             )
+
             partials[
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id

@@ -7,6 +7,7 @@ import numpy as np
 
 
 DEFAULT_MAX_CURRENT_DENSITY = 0.7
+DEFAULT_PRESSURE_ATM = 1.0
 
 
 class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
@@ -81,13 +82,13 @@ class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
         self.add_input(
             name="nominal_pressure",
             units="atm",
-            val=1.0,
+            val=DEFAULT_PRESSURE_ATM,
         )
 
         self.add_input(
             "operation_pressure",
             units="atm",
-            val=np.full(number_of_points, 1.0),
+            val=np.full(number_of_points, DEFAULT_PRESSURE_ATM),
         )
 
         self.add_output(

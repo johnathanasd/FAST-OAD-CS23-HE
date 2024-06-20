@@ -9,6 +9,8 @@ import logging
 
 _LOGGER = logging.getLogger(__name__)
 
+DEFAULT_MAX_CURRENT_DENSITY = 0.7
+
 
 class PerformancesCurrentDensity(om.ExplicitComponent):
     """
@@ -35,13 +37,13 @@ class PerformancesCurrentDensity(om.ExplicitComponent):
         self.add_input(
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
             units="cm**2",
-            val=16.8,
+            val=np.nan,
             desc="Effective fuel cell area in the stack",
         )
 
         self.add_output(
             "fc_current_density",
-            val=np.full(number_of_points, 0.7),
+            val=np.full(number_of_points, DEFAULT_MAX_CURRENT_DENSITY),
             units="A/cm**2",
             desc="Current density of the pemfc stack",
         )
@@ -63,7 +65,9 @@ class PerformancesCurrentDensity(om.ExplicitComponent):
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
+
         pemfc_stack_id = self.options["pemfc_stack_id"]
+
         outputs["fc_current_density"] = (
             inputs["dc_current_out"]
             / inputs[

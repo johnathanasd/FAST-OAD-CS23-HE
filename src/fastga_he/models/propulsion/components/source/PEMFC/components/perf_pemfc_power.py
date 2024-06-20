@@ -5,6 +5,8 @@
 import openmdao.api as om
 import numpy as np
 
+DEFAULT_STACK_POWER = 216.0
+
 
 class PerformancesPEMFCPower(om.ExplicitComponent):
     """
@@ -25,7 +27,7 @@ class PerformancesPEMFCPower(om.ExplicitComponent):
         self.add_input("voltage_out", units="V", val=np.full(number_of_points, np.nan))
         self.add_input("dc_current_out", units="A", val=np.full(number_of_points, np.nan))
 
-        self.add_output("power_out", units="kW", val=np.full(number_of_points, 216.0))
+        self.add_output("power_out", units="kW", val=np.full(number_of_points, DEFAULT_STACK_POWER))
 
         self.declare_partials(
             of="*",

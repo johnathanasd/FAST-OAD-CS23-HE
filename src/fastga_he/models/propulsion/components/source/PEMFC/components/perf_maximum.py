@@ -5,6 +5,9 @@
 import numpy as np
 import openmdao.api as om
 
+MAX_DEFAULT_STACK_CURRENT = 1000.0
+MIN_DEFAULT_STACK_CURRENT = 100.0
+
 
 class PerformancesMaximum(om.ExplicitComponent):
     """
@@ -33,13 +36,13 @@ class PerformancesMaximum(om.ExplicitComponent):
         self.add_output(
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_min",
             units="A",
-            val=100,
+            val=MIN_DEFAULT_STACK_CURRENT,
             desc="Minimum current to the pemfc during the mission",
         )
         self.add_output(
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_max",
             units="A",
-            val=1000,
+            val=MAX_DEFAULT_STACK_CURRENT,
             desc="Maximum current to the pemfc during the mission",
         )
         self.declare_partials(
@@ -55,6 +58,7 @@ class PerformancesMaximum(om.ExplicitComponent):
         outputs[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_max"
         ] = np.max(inputs["dc_current_out"])
+
         outputs[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_min"
         ] = np.min(inputs["dc_current_out"])
@@ -67,6 +71,7 @@ class PerformancesMaximum(om.ExplicitComponent):
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_max",
             "dc_current_out",
         ] = np.where(inputs["dc_current_out"] == np.max(inputs["dc_current_out"]), 1.0, 0.0)
+
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_min",
             "dc_current_out",

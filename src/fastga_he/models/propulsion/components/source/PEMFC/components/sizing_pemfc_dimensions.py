@@ -29,6 +29,7 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
             desc="Identifier of the pemfc pack",
             allow_none=False,
         )
+
         self.options.declare(
             name="position",
             default="underbelly",
@@ -49,12 +50,14 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
             val=2.0,
             desc="Length of the pemfc, as in the size of the pemfc along the X-axis",
         )
+
         self.add_output(
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width",
             units="m",
             val=1.8,
             desc="Width of the pemfc, as in the size of the pemfc along the Y-axis",
         )
+
         self.add_output(
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:height",
             units="m",
@@ -92,6 +95,7 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
             ]
             / DIMENSION_RATIO ** 2
         )
+
         outputs[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:length"
         ] = (
@@ -100,20 +104,27 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers"
             ]
         )
+
         if position in "underbelly":
+
             _LOGGER.warning(
                 msg="Position Underbelly, Fuel cell height and width adjusted for better fitting !!"
             )
+
             outputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width"
             ] = (UNDERBELLY_RATIO * inputs["data:geometry:fuselage:maximum_width"])
+
             outputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:height"
             ] = pemfc_area / (UNDERBELLY_RATIO * inputs["data:geometry:fuselage:maximum_width"])
+
         else:
+
             outputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:height"
             ] = np.sqrt(pemfc_area)
+
             outputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width"
             ] = np.sqrt(pemfc_area)
@@ -129,16 +140,19 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
             ]
             / DIMENSION_RATIO ** 2
         )
+
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:length",
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers",
         ] = LENGTH_LAYER_RATIO
 
         if position in "underbelly":
+
             partials[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width",
                 "data:geometry:fuselage:maximum_width",
             ] = UNDERBELLY_RATIO
+
             partials[
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id
@@ -149,6 +163,7 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
                 * UNDERBELLY_RATIO
                 * inputs["data:geometry:fuselage:maximum_width"]
             )
+
             partials[
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id
@@ -157,7 +172,9 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
             ] = -pemfc_area / (
                 UNDERBELLY_RATIO * inputs["data:geometry:fuselage:maximum_width"] ** 2
             )
+
         else:
+
             partials[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width",
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
@@ -169,6 +186,7 @@ class SizingPEMFCDimensions(om.ExplicitComponent):
                 ]
                 * DIMENSION_RATIO ** 2
             )
+
             partials[
                 "data:propulsion:he_power_train:pemfc_stack:"
                 + pemfc_stack_id

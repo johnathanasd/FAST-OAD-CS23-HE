@@ -60,17 +60,13 @@ class PerformancesPEMFCStack(om.Group):
 
         self.add_subsystem(
             "pemfc_ambient_pressure",
-            PerformancesOperationPressure(
-                number_of_points=number_of_points, pemfc_stack_id=pemfc_stack_id
-            ),
+            PerformancesOperationPressure(number_of_points=number_of_points),
             promotes=["*"],
         )
 
         self.add_subsystem(
             "single_layer_voltage",
-            PerformancesSinglePEMFCVoltage(
-                pemfc_stack_id=pemfc_stack_id, number_of_points=number_of_points
-            ),
+            PerformancesSinglePEMFCVoltage(number_of_points=number_of_points),
             promotes=["*"],
         )
 
@@ -118,7 +114,6 @@ class PerformancesPEMFCStack(om.Group):
             PerformancesPEMFCPower(number_of_points=number_of_points),
             promotes=["*"],
         )
-
 
         energy_consumed = om.IndepVarComp()
         energy_consumed.add_output(

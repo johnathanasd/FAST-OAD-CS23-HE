@@ -6,6 +6,8 @@ import openmdao.api as om
 import numpy as np
 from stdatm import AtmosphereWithPartials
 
+DEFAULT_PRESSURE = 101325.0
+
 
 class PerformancesOperationPressure(om.ExplicitComponent):
     """
@@ -27,7 +29,6 @@ class PerformancesOperationPressure(om.ExplicitComponent):
 
     def setup(self):
 
-        pemfc_stack_id = self.options["pemfc_stack_id"]
         number_of_points = self.options["number_of_points"]
 
         self.add_input("altitude", units="m", val=np.zeros(number_of_points))
@@ -35,7 +36,7 @@ class PerformancesOperationPressure(om.ExplicitComponent):
         self.add_output(
             name="operation_pressure",
             units="Pa",
-            val=np.full(number_of_points, 101325.0),
+            val=np.full(number_of_points, DEFAULT_PRESSURE),
         )
 
         self.declare_partials(
@@ -47,14 +48,12 @@ class PerformancesOperationPressure(om.ExplicitComponent):
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
-        pemfc_stack_id = self.options["pemfc_stack_id"]
 
         outputs["operation_pressure"] = AtmosphereWithPartials(
             inputs["altitude"], altitude_in_feet=False
         ).pressure
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
-        pemfc_stack_id = self.options["pemfc_stack_id"]
 
         partials["operation_pressure", "altitude"] = AtmosphereWithPartials(
             inputs["altitude"], altitude_in_feet=False

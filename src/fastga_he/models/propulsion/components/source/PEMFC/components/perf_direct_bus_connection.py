@@ -5,7 +5,8 @@
 import openmdao.api as om
 import numpy as np
 
-# TODO: Check how to calculate the residuals
+
+DEFAULT_DC_CURRENT = 400.0
 
 
 class PerformancesPEMFCDirectBusConnection(om.ImplicitComponent):
@@ -31,7 +32,7 @@ class PerformancesPEMFCDirectBusConnection(om.ImplicitComponent):
 
         self.add_output(
             "dc_current_out",
-            val=np.full(number_of_points, 400.0),
+            val=np.full(number_of_points, DEFAULT_DC_CURRENT),
             units="A",
             desc="Current at the output side of the battery",
             lower=-1000.0,

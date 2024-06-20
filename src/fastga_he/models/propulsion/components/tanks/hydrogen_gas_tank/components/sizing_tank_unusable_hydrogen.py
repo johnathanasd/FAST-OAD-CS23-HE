@@ -6,6 +6,7 @@ import openmdao.api as om
 import numpy as np
 from utils.filter_residuals import filter_residuals
 
+
 class SizingHydrogenGasTankUnusableHydrogen(om.ExplicitComponent):
     """
     Computation of the amount of trapped fuel in that particular tank.

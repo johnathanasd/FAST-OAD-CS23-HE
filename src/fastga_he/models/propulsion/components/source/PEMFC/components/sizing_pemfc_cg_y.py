@@ -90,6 +90,7 @@ class SizingPEMFCCGY(om.ExplicitComponent):
                 ]
                 / 2.0
             )
+
             partials[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":CG:y",
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":CG:y_ratio",

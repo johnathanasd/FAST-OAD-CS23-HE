@@ -303,7 +303,7 @@ def test_constraints_ensure_effective_area():
             "constraints:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:effective_area",
             units="cm**2",
         )
-        == pytest.approx(-3.2, rel=1e-2)
+        == pytest.approx(3.2, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True)

@@ -5,6 +5,8 @@
 import openmdao.api as om
 import numpy as np
 
+DEFAULT_HYDROGEN_CONSUMPTION = 10.0
+
 
 class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
     """
@@ -32,7 +34,7 @@ class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
         self.add_input(
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
             units="cm**2",
-            val=16.8,
+            val=np.nan,
             desc="Effective fuel cell area in the stack",
         )
 
@@ -50,7 +52,12 @@ class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
             desc="Total number of layers in the pemfc stacks",
         )
 
-        self.add_output("fuel_consumption", units="kg/h", val=10.0, shape=number_of_points)
+        self.add_output(
+            "fuel_consumption",
+            units="kg/h",
+            val=DEFAULT_HYDROGEN_CONSUMPTION,
+            shape=number_of_points,
+        )
 
         self.declare_partials(
             of="*",

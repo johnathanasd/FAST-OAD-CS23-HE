@@ -32,12 +32,14 @@ class SizingPEMFCVolume(om.ExplicitComponent):
             val=np.nan,
             desc="Length of the pemfc, as in the size of the pemfc along the X-axis",
         )
+
         self.add_input(
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:width",
             units="m",
             val=np.nan,
             desc="Width of the pemfc, as in the size of the pemfc along the Y-axis",
         )
+
         self.add_input(
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":dimension:height",
             units="m",

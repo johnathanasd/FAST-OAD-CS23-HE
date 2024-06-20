@@ -5,6 +5,9 @@
 import openmdao.api as om
 import numpy as np
 
+DEFAULT_PEMFC_EFFICIENCY = 0.53
+DEFAULT_PRESSURE_ATM = 1.0
+
 
 class PerformancesPEMFCEfficiency(om.ExplicitComponent):
     """
@@ -25,6 +28,16 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
             "number_of_points", default=1, desc="number of equilibrium to be treated"
         )
 
+        self.options.declare(
+            "pressure coefficient", default=0.06, desc="pressure coefficient of one layer of pemfc"
+        )
+
+        self.options.declare(
+            "pemfc_theoretical_electric_potential",
+            default=1.23,
+            desc="pemfc_theoretical_electric_potential of one layer of pemfc [V]",
+        )
+
     def setup(self):
 
         pemfc_stack_id = self.options["pemfc_stack_id"]
@@ -33,13 +46,13 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
         self.add_input(
             "nominal_pressure",
             units="atm",
-            val=1.0,
+            val=DEFAULT_PRESSURE_ATM,
         )
 
         self.add_input(
             "operation_pressure",
             units="atm",
-            val=np.full(number_of_points, 1.0),
+            val=np.full(number_of_points, DEFAULT_PRESSURE_ATM),
         )
 
         self.add_input(
@@ -50,7 +63,7 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
 
         self.add_output(
             name="data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":efficiency",
-            val=np.full(number_of_points, 0.53),
+            val=np.full(number_of_points, DEFAULT_PEMFC_EFFICIENCY),
         )
 
         self.declare_partials(
@@ -70,13 +83,17 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
-        E0 = 1.23  # ideal potential of the pemfc
-        C = 0.06
+
+        e0 = self.options["pemfc_theoretical_electric_potential"]
+        pressure_coeff = self.options["pressure coefficient"]
         pemfc_stack_id = self.options["pemfc_stack_id"]
         operation_pressure = inputs["operation_pressure"]
         nominal_pressure = inputs["nominal_pressure"]
-        E = E0 + C * np.log(operation_pressure / nominal_pressure)
-        efficiency = inputs["single_layer_pemfc_voltage"] / E
+
+        e = e0 + pressure_coeff * np.log(operation_pressure / nominal_pressure)
+
+        efficiency = inputs["single_layer_pemfc_voltage"] / e
+
         outputs[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":efficiency"
         ] = efficiency
@@ -84,24 +101,30 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
     def compute_partials(self, inputs, partials, discrete_inputs=None):
         pemfc_stack_id = self.options["pemfc_stack_id"]
         number_of_points = self.options["number_of_points"]
-        E0 = 1.23  # ideal potential of the pemfc
-        C = 0.06
+
+        e0 = self.options["pemfc_theoretical_electric_potential"]
+        pressure_coeff = self.options["pressure coefficient"]
         operation_pressure = inputs["operation_pressure"]
         nominal_pressure = inputs["nominal_pressure"]
-        E = E0 + C * np.log(operation_pressure / nominal_pressure)
+        e = e0 + pressure_coeff * np.log(operation_pressure / nominal_pressure)
 
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":efficiency",
             "single_layer_pemfc_voltage",
-        ] = (np.ones(number_of_points) / E)
+        ] = (
+            np.ones(number_of_points) / e
+        )
 
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":efficiency",
             "operation_pressure",
         ] = (
-            -C * inputs["single_layer_pemfc_voltage"] / (operation_pressure * E ** 2)
+            -pressure_coeff * inputs["single_layer_pemfc_voltage"] / (operation_pressure * e ** 2)
         )
+
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":efficiency",
             "nominal_pressure",
-        ] = (C * inputs["single_layer_pemfc_voltage"] / (nominal_pressure * E ** 2))
+        ] = (
+            pressure_coeff * inputs["single_layer_pemfc_voltage"] / (nominal_pressure * e ** 2)
+        )
