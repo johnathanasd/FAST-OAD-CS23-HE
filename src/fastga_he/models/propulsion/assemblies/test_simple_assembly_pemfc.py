@@ -342,7 +342,7 @@ def test_assembly_sizing_from_pt_file():
         "submodel.propulsion.constraints.pmsm.rpm"
     ] = "fastga_he.submodel.propulsion.constraints.pmsm.rpm.enforce"
 
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly.yml")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
 
     ivc = get_indep_var_comp(
         list_inputs(PowerTrainSizingFromFile(power_train_file_path=pt_file_path)),
@@ -367,6 +367,9 @@ def test_assembly_sizing_from_pt_file():
         "data:propulsion:he_power_train:DC_bus:dc_bus_1:mass", units="kg"
     ) == pytest.approx(0.96, rel=1e-2)
     assert problem.get_val(
+        "data:propulsion:he_power_train:DC_bus:dc_bus_1:mass", units="kg"
+    ) == pytest.approx(0.96, rel=1e-2)
+    assert problem.get_val(
         "data:propulsion:he_power_train:DC_cable_harness:harness_1:mass", units="kg"
     ) == pytest.approx(22.31, rel=1e-2)
     assert problem.get_val(
@@ -376,36 +379,39 @@ def test_assembly_sizing_from_pt_file():
         "data:propulsion:he_power_train:DC_DC_converter:dc_dc_converter_1:mass", units="kg"
     ) == pytest.approx(266.6, rel=1e-2)
     assert problem.get_val(
-        "data:propulsion:he_power_train:battery_pack:battery_pack_1:mass", units="kg"
-    ) == pytest.approx(3000.0, rel=1e-2)
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", units="kg"
+    ) == pytest.approx(327.988, rel=1e-2)
+    assert problem.get_val(
+        "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:mass", units="kg"
+    ) == pytest.approx(16.34, rel=1e-2)
     assert problem.get_val(
         "data:propulsion:he_power_train:DC_SSPC:dc_sspc_1:mass", units="kg"
-    ) == pytest.approx(6.40, rel=1e-2)
+    ) == pytest.approx(6.47, rel=1e-2)
     assert problem.get_val(
         "data:propulsion:he_power_train:DC_SSPC:dc_sspc_2:mass", units="kg"
-    ) == pytest.approx(6.40, rel=1e-2)
+    ) == pytest.approx(6.47, rel=1e-2)
     assert problem.get_val(
         "data:propulsion:he_power_train:DC_SSPC:dc_sspc_412:mass", units="kg"
-    ) == pytest.approx(6.40, rel=1e-2)
+    ) == pytest.approx(6.47, rel=1e-2)
     assert problem.get_val(
         "data:propulsion:he_power_train:DC_SSPC:dc_sspc_1337:mass", units="kg"
-    ) == pytest.approx(6.40, rel=1e-2)
+    ) == pytest.approx(6.47, rel=1e-2)
 
     assert problem.get_val("data:propulsion:he_power_train:mass", units="kg") == pytest.approx(
-        3389.0, rel=1e-2
+        733.3, rel=1e-2
     )
     assert problem.get_val("data:propulsion:he_power_train:CG:x", units="m") == pytest.approx(
-        2.867, rel=1e-2
+        1.936, rel=1e-2
     )
     assert problem.get_val("data:propulsion:he_power_train:low_speed:CD0") == pytest.approx(
-        0.000357, rel=1e-2
+        0.00293129, rel=1e-2
     )
     assert problem.get_val("data:propulsion:he_power_train:cruise:CD0") == pytest.approx(
-        0.000352, rel=1e-2
+        0.002891, rel=1e-2
     )
 
     write_outputs(
-        pth.join(outputs.__path__[0], "assembly_sizing_from_pt_file.xml"),
+        pth.join(outputs.__path__[0], "assembly_performances_from_pt_file_pemfc_h2_tank.xml"),
         problem,
     )
 
@@ -477,7 +483,7 @@ def test_performances_from_pt_file():
 
 
 def test_mass_from_pt_file():
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly.yml")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
 
     ivc = get_indep_var_comp(
         list_inputs(PowerTrainMassFromFile(power_train_file_path=pt_file_path)),
@@ -491,13 +497,13 @@ def test_mass_from_pt_file():
     )
 
     assert problem.get_val("data:propulsion:he_power_train:mass", units="kg") == pytest.approx(
-        5150.0, rel=1e-2
+        574.38, rel=1e-2
     )
     problem.check_partials(compact_print=True)
 
 
 def test_cg_from_pt_file():
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly.yml")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
 
     ivc = get_indep_var_comp(
         list_inputs(PowerTrainCGFromFile(power_train_file_path=pt_file_path)),
@@ -511,13 +517,13 @@ def test_cg_from_pt_file():
     )
 
     assert problem.get_val("data:propulsion:he_power_train:CG:x", units="m") == pytest.approx(
-        2.868, rel=1e-2
+        1.78, rel=1e-2
     )
     problem.check_partials(compact_print=True)
 
 
 def test_drag_from_pt_file():
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly.yml")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
 
     ivc = get_indep_var_comp(
         list_inputs(PowerTrainDragFromFile(power_train_file_path=pt_file_path)),
@@ -541,7 +547,7 @@ def test_drag_from_pt_file():
 
 def test_delta_cls_summer():
 
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly.yml")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
 
     ivc = om.IndepVarComp()
     configurator = FASTGAHEPowerTrainConfigurator()
@@ -573,7 +579,7 @@ def test_delta_cls_summer():
 
 def test_delta_cds_summer():
 
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly.yml")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
 
     ivc = om.IndepVarComp()
     configurator = FASTGAHEPowerTrainConfigurator()
@@ -607,7 +613,7 @@ def test_delta_cds_summer():
 
 def test_delta_cms_summer():
 
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly.yml")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
 
     ivc = om.IndepVarComp()
     configurator = FASTGAHEPowerTrainConfigurator()
@@ -639,7 +645,7 @@ def test_delta_cms_summer():
 
 def test_slipstream_from_pt_file():
 
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly.yml")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
 
     ivc = get_indep_var_comp(
         list_inputs(

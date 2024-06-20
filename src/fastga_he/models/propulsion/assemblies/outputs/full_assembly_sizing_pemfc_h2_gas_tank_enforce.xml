@@ -33,7 +33,7 @@
       </flap>
       <fuselage>
         <front_length units="m" is_input="True">0.5<!--length of front non-cylindrical part of the fuselage--></front_length>
-        <maximum_height units="m" is_input="True">nan<!--maximum fuselage height--></maximum_height>
+        <maximum_height units="m" is_input="True">2.3245<!--maximum fuselage height--></maximum_height>
       </fuselage>
       <wing>
         <area units="m**2" is_input="True">7.105673586278243<!--wing reference area--></area>

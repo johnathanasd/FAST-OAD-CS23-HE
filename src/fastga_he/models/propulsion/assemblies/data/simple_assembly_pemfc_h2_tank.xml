@@ -42,6 +42,7 @@
             </flap>
             <fuselage>
                 <wet_area units="m**2" is_input="False">23.873036515818036<!--fuselage wet area--></wet_area>
+                <maximum_height units="m" is_input="False">2.3245<!--maximum fuselage height--></maximum_height>
                 <maximum_width units="m" is_input="False">1.1978<!--maximum width of the fuselage--></maximum_width>
                 <front_length units="m" is_input="False">0.5<!--length of the front cone of the aircraft--></front_length>
                 <rear_length units="m" is_input="False">5.6489614700284925<!--length of the rear cone of the aircraft--></rear_length>
@@ -68,6 +69,13 @@
             <he_power_train>
                  <pemfc_stack>
                     <pemfc_stack_1>
+                        <mass units="kg">327.988</mass>
+                        <low_speed>
+                            <CD0>0.0</CD0>
+                        </low_speed>
+                        <cruise>
+                            <CD0>0.0</CD0>
+                        </cruise>
                         <current_max units="A">600.</current_max>
                         <number_of_layers>450.0</number_of_layers>
                         <effective_area units="cm**2">2000.</effective_area>
@@ -79,14 +87,23 @@
                         <volume units="L">2478.665</volume>
                         <CG>
                             <y_ratio>0.34</y_ratio>
+                            <x units="m">1.238</x>
                         </CG>
                     </pemfc_stack_1>
                 </pemfc_stack>
                 <hydrogen_gas_tank>
                     <hydrogen_gas_tank_1>
+                        <mass units="kg">16.34</mass>
+                        <low_speed>
+                            <CD0>0.0</CD0>
+                        </low_speed>
+                        <cruise>
+                            <CD0>0.0</CD0>
+                        </cruise>
                         <CG>
                             <y_ratio>0.4</y_ratio>
                             <y units="m">1.85</y>
+                            <x units="m">1.238</x>
                         </CG>
                         <fuel_consumed_mission units="kg">14</fuel_consumed_mission>
                         <unusable_fuel_mission units="kg">0.14</unusable_fuel_mission>
