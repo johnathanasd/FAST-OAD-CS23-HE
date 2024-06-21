@@ -62,10 +62,10 @@ def test_sizing_dhc6_twin_otter():
     problem.write_outputs()
 
     assert problem.get_val("data:weight:aircraft:MTOW", units="kg") == pytest.approx(
-        5604., rel=1e-2
+        5604.0, rel=1e-2
     )
     assert problem.get_val("data:weight:aircraft:OWE", units="kg") == pytest.approx(
-        3063., rel=1e-2
+        3063.0, rel=1e-2
     )
     assert problem.get_val("data:mission:sizing:fuel", units="kg") == pytest.approx(
         1100.00, rel=1e-2
@@ -214,7 +214,7 @@ def test_ecopulse_new_wing_pt_mass_breakdown():
     path_to_pt_file = pth.join(DATA_FOLDER_PATH, "ecopulse_powertrain_new_wing.yml")
 
     fig = power_train_mass_breakdown(path_to_result_file, path_to_pt_file)
-    fig.update_layout(uniformtext=dict(minsize=17, mode='hide'))
+    fig.update_layout(uniformtext=dict(minsize=17, mode="hide"))
     fig.show()
 
 
@@ -250,3 +250,4 @@ def test_ecopulse_new_wing_mission_analysis():
     problem.write_outputs()
 
     assert problem.get_val("data:mission:sizing:fuel", units="kg") == pytest.approx(321.0, abs=1.0)
+
