@@ -6,7 +6,9 @@ import openmdao.api as om
 import numpy as np
 
 DEFAULT_HYDROGEN_CONSUMPTION = 10.0
-
+FARADAYS_CONSTANT = 96485. # [C/mol]
+H2_MOL_PER_KG = 500.
+NUMBER_OF_ELETRONS_FROM_H2 = 2.
 
 class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
     """
@@ -93,7 +95,7 @@ class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers"
             ]
             * 3600
-            / (2 * 96500 * 500)
+            / (NUMBER_OF_ELETRONS_FROM_H2 * FARADAYS_CONSTANT * H2_MOL_PER_KG)
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
@@ -110,7 +112,7 @@ class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
             ]
             * 3600
-            / (2 * 96500 * 500)
+            / (NUMBER_OF_ELETRONS_FROM_H2 * FARADAYS_CONSTANT * H2_MOL_PER_KG)
         )
         partials["fuel_consumption", "fc_current_density"] = (
             np.ones(number_of_points)
@@ -121,7 +123,7 @@ class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers"
             ]
             * 3600
-            / (2 * 96500 * 500)
+            / (NUMBER_OF_ELETRONS_FROM_H2 * FARADAYS_CONSTANT * H2_MOL_PER_KG)
         )
         partials[
             "fuel_consumption",
@@ -132,5 +134,5 @@ class PerformancesPEMFCFuelConsumption(om.ExplicitComponent):
             ]
             * inputs["fc_current_density"]
             * 3600
-            / (2 * 96500 * 500)
+            / (NUMBER_OF_ELETRONS_FROM_H2 * FARADAYS_CONSTANT * H2_MOL_PER_KG)
         )
