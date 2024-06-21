@@ -6,7 +6,7 @@ import openmdao.api as om
 import numpy as np
 
 DEFAULT_HYDROGEN_CONSUMPTION = 10.0
-FARADAYS_CONSTANT = 96485. # [C/mol]
+FARADAYS_CONSTANT = 96485.3321 # [C/mol]
 H2_MOL_PER_KG = 500.
 NUMBER_OF_ELETRONS_FROM_H2 = 2.
 
