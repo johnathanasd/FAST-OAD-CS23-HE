@@ -27,7 +27,7 @@ def cleanup():
     rmtree("D:/tmp", ignore_errors=True)
 
 
-def test_sizing_tbm900():
+def test_sizing_dhc6_twin_otter():
 
     """Test the overall aircraft design process with wing positioning."""
     logging.basicConfig(level=logging.WARNING)
@@ -35,15 +35,15 @@ def test_sizing_tbm900():
     logging.getLogger("fastoad.openmdao.variables.variable").disabled = True
 
     # Define used files depending on options
-    xml_file_name = "input_tbm900.xml"
-    process_file_name = "full_sizing_tbm900.yml"
+    xml_file_name = "input_dhc6_twin_otter.xml"
+    process_file_name = "full_sizing_dhc6_twin_otter.yml"
 
     configurator = oad.FASTOADProblemConfigurator(pth.join(DATA_FOLDER_PATH, process_file_name))
     problem = configurator.get_problem()
 
     # Create inputs
     ref_inputs = pth.join(DATA_FOLDER_PATH, xml_file_name)
-    n2_path = pth.join(RESULTS_FOLDER_PATH, "n2_tbm900.html")
+    n2_path = pth.join(RESULTS_FOLDER_PATH, "n2_dhc6_twin_otter.html")
     # api.list_modules(pth.join(DATA_FOLDER_PATH, process_file_name), force_text_output=True)
 
     problem.model_options["*propeller_1*"] = {"mass_as_input": True}
@@ -62,13 +62,13 @@ def test_sizing_tbm900():
     problem.write_outputs()
 
     assert problem.get_val("data:weight:aircraft:MTOW", units="kg") == pytest.approx(
-        3378.0, rel=1e-2
+        5604., rel=1e-2
     )
     assert problem.get_val("data:weight:aircraft:OWE", units="kg") == pytest.approx(
-        2089.0, rel=1e-2
+        3063., rel=1e-2
     )
     assert problem.get_val("data:mission:sizing:fuel", units="kg") == pytest.approx(
-        802.00, rel=1e-2
+        1100.00, rel=1e-2
     )
 
 
