@@ -89,3 +89,5 @@ submodels:
     submodel.weight.mass_breakdown: fastga_he.submodel.weight.mass_breakdown.modular
     submodel.aerodynamics.wing.extreme_lift_coefficient.clean: null
     submodel.weight.mass.furniture.seats: null
+
+

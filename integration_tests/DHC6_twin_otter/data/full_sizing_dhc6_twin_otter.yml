@@ -95,3 +95,5 @@ submodels:
     submodel.geometry.nacelle.dimension: null
     submodel.aerodynamics.nacelle.cd0: fastga_he.submodel.aerodynamics.powertrain.cd0.from_pt_file
     submodel.weight.cg.loadcase.flight: fastga_he.submodel.weight.cg.loadcase.flight.simple
+
+
