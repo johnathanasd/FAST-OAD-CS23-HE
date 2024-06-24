@@ -31,6 +31,13 @@ class SizingTurboshaftWeight(om.ExplicitComponent):
             desc="Uninstalled weight of the turboshaft",
         )
 
+        self.add_input(
+            "data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":mass_ratio",
+            val=1.2,
+            desc="Ratio between the uninstall mass and installed mass",
+        )
+
+
         self.add_output(
             "data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":mass",
             units="kg",
@@ -39,9 +46,9 @@ class SizingTurboshaftWeight(om.ExplicitComponent):
         )
 
         self.declare_partials(
-            of="data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":mass",
-            wrt="data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":uninstalled_mass",
-            val=1.2,
+            of="*",
+            wrt="*",
+            method="exact",
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
@@ -51,8 +58,19 @@ class SizingTurboshaftWeight(om.ExplicitComponent):
         # We take 1.2 for the installed mass as now, the propeller weight is properly computed as
         # are the fuel lines
         outputs["data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":mass"] = (
-            1.2
+            inputs["data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":mass_ratio"]
             * inputs[
                 "data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":uninstalled_mass"
             ]
         )
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+
+        turboshaft_id = self.options["turboshaft_id"]
+
+        partials["data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":mass"
+        ,"data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":mass_ratio"] = inputs["data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":uninstalled_mass"]
+
+        partials["data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":mass"
+        , "data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":uninstalled_mass"] = inputs[
+            "data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":mass_ratio"]

@@ -148,8 +148,8 @@
         <tank>
           <LE_chord_percentage is_input="True">0.05<!--0.05 distance between the leading edge and the start of the wing tank as a percentage of the wing chord--></LE_chord_percentage>
           <TE_chord_percentage is_input="True">0.05<!--0.05 distance between the trailing edge device and the start of the wing tank as a percentage of the wing chord--></TE_chord_percentage>
-          <y_ratio_tank_beginning is_input="True">0.09<!--0.11 start of the tank as a percentage of the wing span--></y_ratio_tank_beginning>
-          <y_ratio_tank_end is_input="True">0.99<!--0.99 0.9 end of the tank as a percentage of the wing span--></y_ratio_tank_end>
+          <y_ratio_tank_beginning is_input="True">0.11<!--0.11 start of the tank as a percentage of the wing span--></y_ratio_tank_beginning>
+          <y_ratio_tank_end is_input="True">0.9<!--0.99 0.9 end of the tank as a percentage of the wing span--></y_ratio_tank_end>
         </tank>
       </propulsion>
     </geometry>
@@ -217,6 +217,7 @@
         </propeller>
         <turboshaft>
           <turboshaft_1>
+            <mass_ratio>1.8</mass_ratio>
             <power_offtake units="kW" is_input="True">10.<!--Mechanical offtake on the turboshaft, is added to shaft power out--></power_offtake>
             <power_rating units="kW" is_input="True">462.33<!--Flat rating of the turboshaft--></power_rating>
             <from_LE units="m" is_input="False">1.52534</from_LE>
@@ -234,6 +235,7 @@
             </limit>
           </turboshaft_1>
           <turboshaft_2>
+            <mass_ratio>1.8</mass_ratio>
             <power_offtake units="kW" is_input="True">10.<!--Mechanical offtake on the turboshaft, is added to shaft power out--></power_offtake>
             <power_rating units="kW" is_input="True">462.33<!--Flat rating of the turboshaft--></power_rating>
             <from_LE units="m" is_input="False">1.52534</from_LE>
@@ -498,6 +500,24 @@
       </fuselage>
     </materials>
     <propulsion>
+      <he_power_train>
+        <propeller>
+          <propeller_1>
+            <effective_advance_ratio>0.9838543920441022</effective_advance_ratio>
+          </propeller_1>
+          <propeller_2>
+            <effective_advance_ratio>0.9838543920441022</effective_advance_ratio>
+          </propeller_2>
+        </propeller>
+        <turboshaft>
+          <turboshaft_1>
+            <k_sfc>1.469</k_sfc>
+          </turboshaft_1>
+          <turboshaft_2>
+            <k_sfc>1.469</k_sfc>
+          </turboshaft_2>
+        </turboshaft>
+      </he_power_train>
       <turboprop>
         <k_factor_sfc>1.469</k_factor_sfc>
         <electric_power_offtake units="kW" is_input="True">10.0<!--power used for electrical generation obtained from the HP shaft--></electric_power_offtake>

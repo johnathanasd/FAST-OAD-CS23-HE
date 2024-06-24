@@ -46,7 +46,7 @@ def test_sizing_dhc6_twin_otter():
     n2_path = pth.join(RESULTS_FOLDER_PATH, "n2_dhc6_twin_otter.html")
     # api.list_modules(pth.join(DATA_FOLDER_PATH, process_file_name), force_text_output=True)
 
-    problem.model_options["*propeller_1*"] = {"mass_as_input": True}
+    problem.model_options["*propeller_*"] = {"mass_as_input": True}
 
     problem.write_needed_inputs(ref_inputs)
     problem.read_inputs()
