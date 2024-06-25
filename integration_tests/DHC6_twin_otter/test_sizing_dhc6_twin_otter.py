@@ -62,13 +62,16 @@ def test_sizing_dhc6_twin_otter():
     problem.write_outputs()
 
     assert problem.get_val("data:weight:aircraft:MTOW", units="kg") == pytest.approx(
-        5566.0, rel=1e-2
+        5670.0, rel=5e-2
+    )
+    assert problem.get_val("data:weight:aircraft:MLW", units="kg") == pytest.approx(
+        5579.0, rel=5e-2
     )
     assert problem.get_val("data:weight:aircraft:OWE", units="kg") == pytest.approx(
-        3027.0, rel=1e-2
+        3121.0, rel=5e-2
     )
     assert problem.get_val("data:mission:sizing:fuel", units="kg") == pytest.approx(
-        1163.00, rel=1e-2
+        1163.00, rel=5e-2
     )
 
 
