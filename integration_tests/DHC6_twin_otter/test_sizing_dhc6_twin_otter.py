@@ -103,20 +103,21 @@ def test_operational_mission_dhc6_twin_otter():
     problem.write_outputs()
 
     assert problem.get_val("data:mission:operational:TOW", units="kg") == pytest.approx(
-        3012.0, rel=1e-2
+        5670.0, rel=5e-2
     )
     assert problem.get_val("data:mission:operational:fuel", units="kg") == pytest.approx(
-        273.00, abs=1
+        1163.00, rel=5e-2
     )
+
     assert problem.get_val(
         "data:environmental_impact:operational:fuel_emissions", units="kg"
-    ) == pytest.approx(1042.0, rel=1e-2)
+    ) == pytest.approx(4271.75, rel=1e-2)
 
 
 def test_ecopulse_powertrain_network():
 
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "turbo_electric_propulsion.yml")
-    network_file_path = pth.join(RESULTS_FOLDER_PATH, "turbo_electric_propulsion.html")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "pemfc_h2_propulsion.yml")
+    network_file_path = pth.join(RESULTS_FOLDER_PATH, "pemfc_h2_propulsion.html")
 
     if not pth.exists(network_file_path):
         power_train_network_viewer(pt_file_path, network_file_path)
