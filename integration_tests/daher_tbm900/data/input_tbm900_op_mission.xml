@@ -111,7 +111,7 @@
     </mission>
     <propulsion>
       <he_power_train>
-        <thrust_distribution is_input="True">1.0</thrust_distribution>
+        <thrust_distribution is_input="True">[1.0, 1.0]</thrust_distribution>
         <fuel_system>
           <fuel_system_1>
             <fuel_distribution is_input="True">[1.0, 1.0]</fuel_distribution>

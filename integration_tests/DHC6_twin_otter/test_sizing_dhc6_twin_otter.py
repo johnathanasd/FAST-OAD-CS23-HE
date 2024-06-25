@@ -75,15 +75,15 @@ def test_sizing_dhc6_twin_otter():
     )
 
 
-def test_operational_mission_tbm_900():
+def test_operational_mission_dhc6_twin_otter():
     """Test the overall aircraft design process with wing positioning."""
     logging.basicConfig(level=logging.WARNING)
     logging.getLogger("fastoad.module_management._bundle_loader").disabled = True
     logging.getLogger("fastoad.openmdao.variables.variable").disabled = True
 
     # Define used files depending on options
-    xml_file_name = "input_tbm900_op_mission.xml"
-    process_file_name = "operational_mission_tbm900.yml"
+    xml_file_name = "input_dhc6_twin_otter_op_mission.xml"
+    process_file_name = "operational_mission_dhc6_twin_otter.yml"
 
     configurator = oad.FASTOADProblemConfigurator(pth.join(DATA_FOLDER_PATH, process_file_name))
     problem = configurator.get_problem()

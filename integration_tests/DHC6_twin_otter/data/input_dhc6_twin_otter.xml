@@ -4,7 +4,7 @@
       <NPAX_design is_input="True">19.0<!--(POH) top-level requirement: number of passengers for the design mission, assuming a classic eco/business class repartition--></NPAX_design>
       <luggage_mass_design units="kg" is_input="True">8.00<!--(for 19pax and 1375kg payload) top-level requirement: luggage mass per passenger for the design mission--></luggage_mass_design>
       <range units="NM" is_input="True">400.0<!--(POH, for 1375kg payload) top-level requirement: design range--></range>
-      <v_approach units="kn" is_input="True">78<!--(Jane, 1.3x63mph stall speed) top-level requirement: approach speed--></v_approach>
+      <v_approach units="kn" is_input="True">77.5<!--(Jane, 1.3x63mph stall speed) top-level requirement: approach speed--></v_approach>
       <v_cruise units="kn" is_input="True">182<!--(POH, 10000ft) top-level requirement: cruise speed--></v_cruise>
       <v_max_sl units="kn" is_input="True">170</v_max_sl>
     </TLAR>
@@ -53,14 +53,14 @@
       </fuselage>
       <horizontal_tail>
         <aspect_ratio is_input="True">4.35<!--horizontal tail aspect ratio--></aspect_ratio>
-        <elevator_chord_ratio is_input="True">0.6<!--(0.8) elevator chord ratio--></elevator_chord_ratio>
+        <elevator_chord_ratio is_input="True">0.55<!--(0.8) elevator chord ratio--></elevator_chord_ratio>
         <sweep_25 units="deg" is_input="True">0.0<!--sweep angle at 25% chord of horizontal tail--></sweep_25>
         <taper_ratio is_input="True">1.0<!--taper ratio of horizontal tail--></taper_ratio>
         <thickness_ratio is_input="True">0.12<!--thickness ratio of horizontal tail--></thickness_ratio>
         <MAC>
           <at25percent>
             <x>
-              <from_wingMAC25 units="m" is_input="True">7.33<!--(prev 5.97) distance along X between 25% MAC of wing and 25% MAC of horizontal tail--></from_wingMAC25>
+              <from_wingMAC25 units="m" is_input="True">7.63<!--(prev 5.97) distance along X between 25% MAC of wing and 25% MAC of horizontal tail--></from_wingMAC25>
             </x>
           </at25percent>
         </MAC>
@@ -217,7 +217,7 @@
         </propeller>
         <turboshaft>
           <turboshaft_1>
-            <mass_ratio>1.95</mass_ratio>
+            <mass_ratio>2.0</mass_ratio>
             <power_offtake units="kW" is_input="True">10.<!--Mechanical offtake on the turboshaft, is added to shaft power out--></power_offtake>
             <power_rating units="kW" is_input="True">462.33<!--Flat rating of the turboshaft--></power_rating>
             <from_LE units="m" is_input="False">1.52534</from_LE>
@@ -235,7 +235,7 @@
             </limit>
           </turboshaft_1>
           <turboshaft_2>
-            <mass_ratio>1.95</mass_ratio>
+            <mass_ratio>2.0</mass_ratio>
             <power_offtake units="kW" is_input="True">10.<!--Mechanical offtake on the turboshaft, is added to shaft power out--></power_offtake>
             <power_rating units="kW" is_input="True">462.33<!--Flat rating of the turboshaft--></power_rating>
             <from_LE units="m" is_input="False">1.52534</from_LE>
