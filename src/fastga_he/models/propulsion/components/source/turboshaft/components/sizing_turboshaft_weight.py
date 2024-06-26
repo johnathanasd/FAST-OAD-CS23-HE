@@ -37,7 +37,6 @@ class SizingTurboshaftWeight(om.ExplicitComponent):
             desc="Ratio between the uninstall mass and installed mass",
         )
 
-
         self.add_output(
             "data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":mass",
             units="kg",
@@ -68,9 +67,14 @@ class SizingTurboshaftWeight(om.ExplicitComponent):
 
         turboshaft_id = self.options["turboshaft_id"]
 
-        partials["data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":mass"
-        ,"data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":mass_ratio"] = inputs["data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":uninstalled_mass"]
+        partials[
+            "data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":mass",
+            "data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":mass_ratio",
+        ] = inputs[
+            "data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":uninstalled_mass"
+        ]
 
-        partials["data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":mass"
-        , "data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":uninstalled_mass"] = inputs[
-            "data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":mass_ratio"]
+        partials[
+            "data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":mass",
+            "data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":uninstalled_mass",
+        ] = inputs["data:propulsion:he_power_train:turboshaft:" + turboshaft_id + ":mass_ratio"]
