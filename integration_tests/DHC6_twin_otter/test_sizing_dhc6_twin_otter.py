@@ -114,7 +114,7 @@ def test_operational_mission_dhc6_twin_otter():
     ) == pytest.approx(4271.75, rel=1e-2)
 
 
-def test_ecopulse_powertrain_network():
+def test_pemfc_h2_gas_tank_powertrain_network():
 
     pt_file_path = pth.join(DATA_FOLDER_PATH, "pemfc_h2_propulsion.yml")
     network_file_path = pth.join(RESULTS_FOLDER_PATH, "pemfc_h2_propulsion.html")
@@ -139,7 +139,7 @@ def test_retrofit_ecopulse():
     # Create inputs
     ref_inputs = pth.join(DATA_FOLDER_PATH, xml_file_name)
 
-    problem.model_options["*propeller_1*"] = {"mass_as_input": True}
+    problem.model_options["*propeller_*"] = {"mass_as_input": True}
 
     problem.write_needed_inputs(ref_inputs)
     problem.read_inputs()
