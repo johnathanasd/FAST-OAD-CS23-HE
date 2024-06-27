@@ -60,12 +60,12 @@ submodels:
   submodel.weight.mass.airframe.fuselage: fastga.submodel.weight.mass.airframe.fuselage.analytical
   submodel.weight.mass.airframe.paint: fastga.submodel.weight.mass.airframe.paint.by_wet_area
   submodel.performances_he.energy_consumption: fastga_he.submodel.performances.energy_consumption.from_pt_file
-  submodel.propulsion.constraints.pmsm.rpm: fastga_he.submodel.propulsion.constraints.pmsm.rpm.ensure
+  submodel.propulsion.constraints.simple_pmsm.rpm: fastga_he.submodel.propulsion.constraints.simple_pmsm.rpm.ensure
   submodel.propulsion.constraints.pemfc_stack.effective_area: fastga_he.submodel.propulsion.constraints.pemfc_stack.effective_area.enforce
   submodel.propulsion.constraints.hydrogen_gas_tank.capacity: fastga_he.submodel.propulsion.constraints.hydrogen_gas_tank.capacity.enforce
   submodel.propulsion.performances.dc_line.temperature_profile: fastga_he.submodel.propulsion.performances.dc_line.temperature_profile.with_dynamics
   submodel.propulsion.constraints.inverter.current: fastga_he.submodel.propulsion.constraints.inverter.current.enforce
-  submodel.propulsion.constraints.pmsm.torque: fastga_he.submodel.propulsion.constraints.pmsm.torque.enforce
+  submodel.propulsion.constraints.simple_pmsm.torque: fastga_he.submodel.propulsion.constraints.simple_pmsm.torque.enforce
   submodel.performances_he.dep_effect: fastga_he.submodel.performances.dep_effect.from_pt_file
   submodel.weight.mass.propulsion: fastga_he.submodel.weight.mass.propulsion.power_train
   submodel.weight.cg.propulsion: fastga_he.submodel.weight.cg.propulsion.power_train
