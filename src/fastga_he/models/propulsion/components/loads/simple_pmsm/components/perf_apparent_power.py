@@ -25,7 +25,7 @@ class PerformancesApparentPower(om.ExplicitComponent):
 
         self.add_input("active_power", units="W", val=np.nan, shape=number_of_points)
         self.add_input(
-            "settings:propulsion:he_power_train:PMSM:" + motor_id + ":power_factor", val=1.0
+            "settings:propulsion:he_power_train:simple_PMSM:" + motor_id + ":power_factor", val=1.0
         )
 
         self.add_output(
@@ -40,7 +40,7 @@ class PerformancesApparentPower(om.ExplicitComponent):
 
         outputs["apparent_power"] = (
             inputs["active_power"]
-            / inputs["settings:propulsion:he_power_train:PMSM:" + motor_id + ":power_factor"]
+            / inputs["settings:propulsion:he_power_train:simple_PMSM:" + motor_id + ":power_factor"]
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
@@ -50,12 +50,12 @@ class PerformancesApparentPower(om.ExplicitComponent):
 
         partials["apparent_power", "active_power"] = (
             np.eye(number_of_points)
-            / inputs["settings:propulsion:he_power_train:PMSM:" + motor_id + ":power_factor"]
+            / inputs["settings:propulsion:he_power_train:simple_PMSM:" + motor_id + ":power_factor"]
         )
         partials[
             "apparent_power",
-            "settings:propulsion:he_power_train:PMSM:" + motor_id + ":power_factor",
+            "settings:propulsion:he_power_train:simple_PMSM:" + motor_id + ":power_factor",
         ] = -(
             inputs["active_power"]
-            / inputs["settings:propulsion:he_power_train:PMSM:" + motor_id + ":power_factor"] ** 2.0
+            / inputs["settings:propulsion:he_power_train:simple_PMSM:" + motor_id + ":power_factor"] ** 2.0
         )

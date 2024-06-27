@@ -24,19 +24,19 @@ class SizingMotorPhaseResistance(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         self.add_input(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:phase_resistance",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:phase_resistance",
             val=np.nan,
         )
 
         self.add_output(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":phase_resistance",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":phase_resistance",
             val=self.options["resistance_ref"],
             units="ohm",
         )
 
         self.declare_partials(
-            of="data:propulsion:he_power_train:PMSM:" + motor_id + ":phase_resistance",
-            wrt="data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:phase_resistance",
+            of="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":phase_resistance",
+            wrt="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:phase_resistance",
             method="exact",
         )
 
@@ -45,12 +45,12 @@ class SizingMotorPhaseResistance(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         resistance_scaling = inputs[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:phase_resistance"
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:phase_resistance"
         ]
 
         resistance_ref = self.options["resistance_ref"]
 
-        outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":phase_resistance"] = (
+        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":phase_resistance"] = (
             resistance_ref * 1e-3 * resistance_scaling
         )
 
@@ -61,8 +61,8 @@ class SizingMotorPhaseResistance(om.ExplicitComponent):
         resistance_ref = self.options["resistance_ref"]
 
         partials[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":phase_resistance",
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:phase_resistance",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":phase_resistance",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:phase_resistance",
         ] = (
             resistance_ref * 1e-3
         )

@@ -37,7 +37,7 @@ class SizingSimplePMSMCGX(om.ExplicitComponent):
         if position == "on_the_wing":
 
             self.add_input(
-                name="data:propulsion:he_power_train:PMSM:" + motor_id + ":from_LE",
+                name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":from_LE",
                 val=np.nan,
                 units="m",
                 desc="Distance between the PMSM front face and the leading edge",
@@ -46,7 +46,7 @@ class SizingSimplePMSMCGX(om.ExplicitComponent):
             self.add_input("data:geometry:wing:MAC:length", val=np.nan, units="m")
 
             self.add_input(
-                name="data:propulsion:he_power_train:PMSM:" + motor_id + ":length",
+                name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":length",
                 val=np.nan,
                 units="m",
             )
@@ -54,14 +54,14 @@ class SizingSimplePMSMCGX(om.ExplicitComponent):
         else:
 
             self.add_input(
-                name="data:propulsion:he_power_train:PMSM:" + motor_id + ":front_length_ratio",
+                name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":front_length_ratio",
                 val=np.nan,
                 desc="Location of the PMSM CG as a ratio of the aircraft front length",
             )
             self.add_input("data:geometry:fuselage:front_length", val=np.nan, units="m")
 
         self.add_output(
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":CG:x",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:x",
             units="m",
             val=2.5,
             desc="X position of the PMSM center of gravity",
@@ -77,13 +77,13 @@ class SizingSimplePMSMCGX(om.ExplicitComponent):
         if position == "on_the_wing":
 
             distance_from_le = inputs[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":from_LE"
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":from_LE"
             ]
-            motor_length = inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":length"]
+            motor_length = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":length"]
             l0_wing = inputs["data:geometry:wing:MAC:length"]
             fa_length = inputs["data:geometry:wing:MAC:at25percent:x"]
 
-            outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":CG:x"] = (
+            outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:x"] = (
                 fa_length - 0.25 * l0_wing - distance_from_le + 0.5 * motor_length
             )
 
@@ -91,10 +91,10 @@ class SizingSimplePMSMCGX(om.ExplicitComponent):
 
             lav = inputs["data:geometry:fuselage:front_length"]
             lav_ratio = inputs[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":front_length_ratio"
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":front_length_ratio"
             ]
 
-            outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":CG:x"] = lav * lav_ratio
+            outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:x"] = lav * lav_ratio
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
@@ -104,29 +104,29 @@ class SizingSimplePMSMCGX(om.ExplicitComponent):
         if position == "on_the_wing":
 
             partials[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":CG:x",
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":from_LE",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:x",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":from_LE",
             ] = -1
             partials[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":CG:x",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:x",
                 "data:geometry:wing:MAC:length",
             ] = -0.25
             partials[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":CG:x",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:x",
                 "data:geometry:wing:MAC:at25percent:x",
             ] = 1.0
             partials[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":CG:x",
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":length",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:x",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":length",
             ] = 0.5
 
         else:
 
             partials[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":CG:x",
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":front_length_ratio",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:x",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":front_length_ratio",
             ] = inputs["data:geometry:fuselage:front_length"]
             partials[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":CG:x",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:x",
                 "data:geometry:fuselage:front_length",
-            ] = inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":front_length_ratio"]
+            ] = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":front_length_ratio"]

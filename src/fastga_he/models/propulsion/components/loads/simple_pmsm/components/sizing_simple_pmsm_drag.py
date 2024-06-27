@@ -46,7 +46,7 @@ class SizingSimplePMSMDrag(om.ExplicitComponent):
         ls_tag = "low_speed" if self.options["low_speed_aero"] else "cruise"
 
         self.add_input(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":diameter",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":diameter",
             val=np.nan,
             units="m",
         )
@@ -54,12 +54,12 @@ class SizingSimplePMSMDrag(om.ExplicitComponent):
         if position == "on_the_wing":
 
             self.add_input(
-                name="data:propulsion:he_power_train:PMSM:" + motor_id + ":length",
+                name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":length",
                 val=np.nan,
                 units="m",
             )
             self.add_input(
-                name="data:propulsion:he_power_train:PMSM:" + motor_id + ":fairing:fineness",
+                name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":fairing:fineness",
                 val=1.75,
                 desc="Ratio between the fairing length and the motor diameter",
             )
@@ -72,8 +72,8 @@ class SizingSimplePMSMDrag(om.ExplicitComponent):
             self.declare_partials(
                 of="*",
                 wrt=[
-                    "data:propulsion:he_power_train:PMSM:" + motor_id + ":diameter",
-                    "data:propulsion:he_power_train:PMSM:" + motor_id + ":fairing:fineness",
+                    "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":diameter",
+                    "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":fairing:fineness",
                     "data:geometry:wing:area",
                     "data:aerodynamics:" + ls_tag + ":mach",
                     "data:aerodynamics:" + ls_tag + ":unit_reynolds",
@@ -82,7 +82,7 @@ class SizingSimplePMSMDrag(om.ExplicitComponent):
             )
 
         self.add_output(
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":" + ls_tag + ":CD0",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":" + ls_tag + ":CD0",
             val=0.0,
         )
 
@@ -92,13 +92,13 @@ class SizingSimplePMSMDrag(om.ExplicitComponent):
         position = self.options["position"]
         ls_tag = "low_speed" if self.options["low_speed_aero"] else "cruise"
 
-        motor_diameter = inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":diameter"]
+        motor_diameter = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":diameter"]
 
         if position == "on_the_wing":
 
-            motor_length = inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":length"]
+            motor_length = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":length"]
             fineness = inputs[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":fairing:fineness"
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":fairing:fineness"
             ]
 
             if motor_length > fineness * motor_diameter:
@@ -127,11 +127,11 @@ class SizingSimplePMSMDrag(om.ExplicitComponent):
             #  wing it should take into account a delta (See Roskam part VI section 4.5.2.1),
             #  which depends on the installation angle which we do not yet consider.
 
-            outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":" + ls_tag + ":CD0"] = cd0
+            outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":" + ls_tag + ":CD0"] = cd0
 
         else:
 
-            outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":" + ls_tag + ":CD0"] = 0.0
+            outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":" + ls_tag + ":CD0"] = 0.0
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
@@ -139,12 +139,12 @@ class SizingSimplePMSMDrag(om.ExplicitComponent):
         position = self.options["position"]
         ls_tag = "low_speed" if self.options["low_speed_aero"] else "cruise"
 
-        motor_diameter = inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":diameter"]
+        motor_diameter = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":diameter"]
 
         if position == "on_the_wing":
 
             fineness = inputs[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":fairing:fineness"
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":fairing:fineness"
             ]
             wing_area = inputs["data:geometry:wing:area"]
             mach = inputs["data:aerodynamics:" + ls_tag + ":mach"]
@@ -168,8 +168,8 @@ class SizingSimplePMSMDrag(om.ExplicitComponent):
             fairing_wet_area = np.pi * motor_diameter ** 2.0 * (1.0 / 4.0 + fineness)
 
             partials[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":" + ls_tag + ":CD0",
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":diameter",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":" + ls_tag + ":CD0",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":diameter",
             ] = (
                 interference_factor
                 * form_factor
@@ -180,8 +180,8 @@ class SizingSimplePMSMDrag(om.ExplicitComponent):
                 )
             )
             partials[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":" + ls_tag + ":CD0",
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":fairing:fineness",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":" + ls_tag + ":CD0",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":fairing:fineness",
             ] = (
                 interference_factor
                 / wing_area
@@ -196,13 +196,13 @@ class SizingSimplePMSMDrag(om.ExplicitComponent):
                 )
             )
             partials[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":" + ls_tag + ":CD0",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":" + ls_tag + ":CD0",
                 "data:geometry:wing:area",
             ] = (
                 -interference_factor * cf * form_factor * fairing_wet_area / wing_area ** 2.0
             )
             partials[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":" + ls_tag + ":CD0",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":" + ls_tag + ":CD0",
                 "data:aerodynamics:" + ls_tag + ":mach",
             ] = (
                 -0.65
@@ -218,7 +218,7 @@ class SizingSimplePMSMDrag(om.ExplicitComponent):
                 * mach
             )
             partials[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":" + ls_tag + ":CD0",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":" + ls_tag + ":CD0",
                 "data:aerodynamics:" + ls_tag + ":unit_reynolds",
             ] = (
                 interference_factor

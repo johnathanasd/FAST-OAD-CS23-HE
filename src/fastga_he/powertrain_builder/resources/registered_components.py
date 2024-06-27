@@ -186,9 +186,9 @@ PMSM = {
 }
 SIMPLE_PMSM = {
     ID: "fastga_he.pt_component.simple_pmsm",
-    CN: "PMSM",
+    CN: "SimplePMSM",
     CN_ID: "motor_id",
-    CT: "PMSM",
+    CT: "simple_PMSM",
     ATT: None,
     PT: ["settings:*"],
     SPT: [],

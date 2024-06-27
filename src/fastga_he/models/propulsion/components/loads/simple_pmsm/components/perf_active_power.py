@@ -25,7 +25,7 @@ class PerformancesActivePower(om.ExplicitComponent):
 
         self.add_input("shaft_power_out", units="W", val=np.nan, shape=number_of_points)
         self.add_input(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":efficiency", val=np.nan
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":efficiency", val=np.nan
         )
 
         self.add_output(
@@ -42,7 +42,7 @@ class PerformancesActivePower(om.ExplicitComponent):
 
         self.declare_partials(
             of="*",
-            wrt="data:propulsion:he_power_train:PMSM:" + motor_id + ":efficiency",
+            wrt="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":efficiency",
             method="exact",
             rows=np.arange(number_of_points),
             cols=np.zeros(number_of_points),
@@ -54,7 +54,7 @@ class PerformancesActivePower(om.ExplicitComponent):
 
         outputs["active_power"] = (
             inputs["shaft_power_out"]
-            / inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":efficiency"]
+            / inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":efficiency"]
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
@@ -64,11 +64,11 @@ class PerformancesActivePower(om.ExplicitComponent):
 
         partials["active_power", "shaft_power_out"] = (
             np.ones(number_of_points)
-            / inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":efficiency"]
+            / inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":efficiency"]
         )
         partials[
-            "active_power", "data:propulsion:he_power_train:PMSM:" + motor_id + ":efficiency"
+            "active_power", "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":efficiency"
         ] = (
             -inputs["shaft_power_out"]
-            / inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":efficiency"] ** 2.0
+            / inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":efficiency"] ** 2.0
         )

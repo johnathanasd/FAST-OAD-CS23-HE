@@ -3,9 +3,9 @@
 # Copyright (C) 2022 ISAE-SUPAERO
 
 from ..constants import (
-    SUBMODEL_CONSTRAINTS_PMSM_TORQUE,
-    SUBMODEL_CONSTRAINTS_PMSM_RPM,
-    SUBMODEL_CONSTRAINTS_PMSM_VOLTAGE,
+    SUBMODEL_CONSTRAINTS_SIMPLE_PMSM_TORQUE,
+    SUBMODEL_CONSTRAINTS_SIMPLE_PMSM_RPM,
+    SUBMODEL_CONSTRAINTS_SIMPLE_PMSM_VOLTAGE,
 )
 
 import openmdao.api as om
@@ -14,12 +14,12 @@ import numpy as np
 import fastoad.api as oad
 
 oad.RegisterSubmodel.active_models[
-    SUBMODEL_CONSTRAINTS_PMSM_VOLTAGE
-] = "fastga_he.submodel.propulsion.constraints.pmsm.voltage.ensure"
+    SUBMODEL_CONSTRAINTS_SIMPLE_PMSM_VOLTAGE
+] = "fastga_he.submodel.propulsion.constraints.simple_pmsm.voltage.ensure"
 
 
 @oad.RegisterSubmodel(
-    SUBMODEL_CONSTRAINTS_PMSM_TORQUE, "fastga_he.submodel.propulsion.constraints.pmsm.torque.ensure"
+    SUBMODEL_CONSTRAINTS_SIMPLE_PMSM_TORQUE, "fastga_he.submodel.propulsion.constraints.simple_pmsm.torque.ensure"
 )
 class ConstraintsTorqueEnsure(om.ExplicitComponent):
     """
@@ -38,28 +38,28 @@ class ConstraintsTorqueEnsure(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         self.add_input(
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_max",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_max",
             units="N*m",
             val=np.nan,
             desc="Maximum value of the torque the motor has to provide",
         )
         self.add_input(
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_rating",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating",
             units="N*m",
             val=np.nan,
             desc="Max continuous torque of the motor",
         )
         self.add_output(
-            "constraints:propulsion:he_power_train:PMSM:" + motor_id + ":torque_rating",
+            "constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating",
             units="N*m",
             val=0.0,
             desc="Respected if <0",
         )
         self.declare_partials(
-            of="constraints:propulsion:he_power_train:PMSM:" + motor_id + ":torque_rating",
+            of="constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating",
             wrt=[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_max",
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_rating",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_max",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating",
             ],
             method="exact",
         )
@@ -68,9 +68,9 @@ class ConstraintsTorqueEnsure(om.ExplicitComponent):
 
         motor_id = self.options["motor_id"]
 
-        outputs["constraints:propulsion:he_power_train:PMSM:" + motor_id + ":torque_rating"] = (
-            inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_max"]
-            - inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_rating"]
+        outputs["constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating"] = (
+            inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_max"]
+            - inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating"]
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
@@ -78,17 +78,17 @@ class ConstraintsTorqueEnsure(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         partials[
-            "constraints:propulsion:he_power_train:PMSM:" + motor_id + ":torque_rating",
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_max",
+            "constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_max",
         ] = 1.0
         partials[
-            "constraints:propulsion:he_power_train:PMSM:" + motor_id + ":torque_rating",
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_rating",
+            "constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating",
         ] = -1.0
 
 
 @oad.RegisterSubmodel(
-    SUBMODEL_CONSTRAINTS_PMSM_RPM, "fastga_he.submodel.propulsion.constraints.pmsm.rpm.ensure"
+    SUBMODEL_CONSTRAINTS_SIMPLE_PMSM_RPM, "fastga_he.submodel.propulsion.constraints.simple_pmsm.rpm.ensure"
 )
 class ConstraintsRPMEnsure(om.ExplicitComponent):
     """
@@ -107,28 +107,28 @@ class ConstraintsRPMEnsure(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         self.add_input(
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_max",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_max",
             units="min**-1",
             val=np.nan,
             desc="Maximum value of the motor rpm during the mission",
         )
         self.add_input(
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_rating",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_rating",
             units="min**-1",
             val=np.nan,
             desc="Max continuous rpm of the motor",
         )
         self.add_output(
-            "constraints:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_rating",
+            "constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_rating",
             units="min**-1",
             val=0.0,
             desc="Respected if <0",
         )
         self.declare_partials(
-            of="constraints:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_rating",
+            of="constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_rating",
             wrt=[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_max",
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_rating",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_max",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_rating",
             ],
             method="exact",
         )
@@ -137,9 +137,9 @@ class ConstraintsRPMEnsure(om.ExplicitComponent):
 
         motor_id = self.options["motor_id"]
 
-        outputs["constraints:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_rating"] = (
-            inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_max"]
-            - inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_rating"]
+        outputs["constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_rating"] = (
+            inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_max"]
+            - inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_rating"]
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
@@ -147,18 +147,18 @@ class ConstraintsRPMEnsure(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         partials[
-            "constraints:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_rating",
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_max",
+            "constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_rating",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_max",
         ] = 1.0
         partials[
-            "constraints:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_rating",
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_rating",
+            "constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_rating",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_rating",
         ] = -1.0
 
 
 @oad.RegisterSubmodel(
-    SUBMODEL_CONSTRAINTS_PMSM_VOLTAGE,
-    "fastga_he.submodel.propulsion.constraints.pmsm.voltage.ensure",
+    SUBMODEL_CONSTRAINTS_SIMPLE_PMSM_VOLTAGE,
+    "fastga_he.submodel.propulsion.constraints.simple_pmsm.voltage.ensure",
 )
 class ConstraintsVoltageEnsure(om.ExplicitComponent):
     """
@@ -177,30 +177,30 @@ class ConstraintsVoltageEnsure(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         self.add_input(
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":voltage_ac_max",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_ac_max",
             units="V",
             val=np.nan,
             desc="Maximum value of the peak voltage at the input of the motor",
         )
         self.add_input(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":voltage_caliber",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_caliber",
             val=np.nan,
             units="V",
             desc="Max voltage of the motor",
         )
 
         self.add_output(
-            name="constraints:propulsion:he_power_train:PMSM:" + motor_id + ":voltage_caliber",
+            name="constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_caliber",
             val=-0.0,
             units="V",
             desc="Respected if <0",
         )
 
         self.declare_partials(
-            of="constraints:propulsion:he_power_train:PMSM:" + motor_id + ":voltage_caliber",
+            of="constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_caliber",
             wrt=[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":voltage_ac_max",
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":voltage_caliber",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_ac_max",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_caliber",
             ],
             method="exact",
         )
@@ -209,9 +209,9 @@ class ConstraintsVoltageEnsure(om.ExplicitComponent):
 
         motor_id = self.options["motor_id"]
 
-        outputs["constraints:propulsion:he_power_train:PMSM:" + motor_id + ":voltage_caliber"] = (
-            inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":voltage_ac_max"]
-            - inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":voltage_caliber"]
+        outputs["constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_caliber"] = (
+            inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_ac_max"]
+            - inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_caliber"]
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
@@ -219,10 +219,10 @@ class ConstraintsVoltageEnsure(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         partials[
-            "constraints:propulsion:he_power_train:PMSM:" + motor_id + ":voltage_caliber",
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":voltage_ac_max",
+            "constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_caliber",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_ac_max",
         ] = 1.0
         partials[
-            "constraints:propulsion:he_power_train:PMSM:" + motor_id + ":voltage_caliber",
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":voltage_caliber",
+            "constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_caliber",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_caliber",
         ] = -1.0

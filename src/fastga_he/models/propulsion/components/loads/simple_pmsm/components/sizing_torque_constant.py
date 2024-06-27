@@ -26,19 +26,19 @@ class SizingMotorTorqueConstant(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         self.add_input(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:torque_constant",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:torque_constant",
             val=np.nan,
         )
 
         self.add_output(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_constant",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_constant",
             val=self.options["torque_constant_ref"],
             units="N*m/A",
         )
 
         self.declare_partials(
-            of="data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_constant",
-            wrt="data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:torque_constant",
+            of="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_constant",
+            wrt="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:torque_constant",
             method="exact",
         )
 
@@ -47,12 +47,12 @@ class SizingMotorTorqueConstant(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         k_t_scaling = inputs[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:torque_constant"
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:torque_constant"
         ]
 
         torque_constant_ref = self.options["torque_constant_ref"]
 
-        outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_constant"] = (
+        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_constant"] = (
             torque_constant_ref * k_t_scaling
         )
 
@@ -63,6 +63,6 @@ class SizingMotorTorqueConstant(om.ExplicitComponent):
         torque_constant_ref = self.options["torque_constant_ref"]
 
         partials[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_constant",
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:torque_constant",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_constant",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:torque_constant",
         ] = torque_constant_ref

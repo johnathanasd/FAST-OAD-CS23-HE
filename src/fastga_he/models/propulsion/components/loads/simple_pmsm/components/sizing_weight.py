@@ -27,21 +27,21 @@ class SizingMotorWeight(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         self.add_input(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_rating",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating",
             val=np.nan,
             units="N*m",
             desc="Max continuous torque of the motor",
         )
 
         self.add_output(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":mass",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":mass",
             val=20.0,
             units="kg",
         )
 
         self.declare_partials(
-            of="data:propulsion:he_power_train:PMSM:" + motor_id + ":mass",
-            wrt="data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_rating",
+            of="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":mass",
+            wrt="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating",
             method="exact",
         )
 
@@ -49,19 +49,19 @@ class SizingMotorWeight(om.ExplicitComponent):
 
         motor_id = self.options["motor_id"]
 
-        torque_cont = inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_rating"]
+        torque_cont = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating"]
 
         mass = 2.8 + 9.54e-3 * torque_cont + 0.1632 * torque_cont ** (3.0 / 3.5)
 
-        outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":mass"] = mass
+        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":mass"] = mass
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
         motor_id = self.options["motor_id"]
 
-        torque_cont = inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_rating"]
+        torque_cont = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating"]
 
         partials[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":mass",
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_rating",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":mass",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating",
         ] = 9.54e-3 + 0.1632 * 3.0 / 3.5 * torque_cont ** (3.0 / 3.5 - 1.0)

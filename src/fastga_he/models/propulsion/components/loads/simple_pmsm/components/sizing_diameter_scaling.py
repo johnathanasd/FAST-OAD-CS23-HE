@@ -30,18 +30,18 @@ class SizingMotorDiameterScaling(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         self.add_input(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_rating",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_rating",
             val=np.nan,
             units="min**-1",
         )
 
         self.add_output(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:diameter",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter",
             val=1.0,
         )
         self.declare_partials(
-            of="data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:diameter",
-            wrt="data:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_rating",
+            of="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter",
+            wrt="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_rating",
             method="exact",
         )
 
@@ -51,14 +51,14 @@ class SizingMotorDiameterScaling(om.ExplicitComponent):
 
         rpm_max_ref = self.options["rpm_max_ref"]
 
-        rpm_max = inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_rating"]
+        rpm_max = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_rating"]
 
         rpm_peak_scaling = rpm_max / rpm_max_ref
 
         # Mechanical limit
         d_scaling = 1.0 / rpm_peak_scaling
 
-        outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:diameter"] = d_scaling
+        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter"] = d_scaling
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
@@ -66,11 +66,11 @@ class SizingMotorDiameterScaling(om.ExplicitComponent):
 
         rpm_max_ref = self.options["rpm_max_ref"]
 
-        rpm_max = inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_rating"]
+        rpm_max = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_rating"]
 
         partials[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:diameter",
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_rating",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_rating",
         ] = (
             -1.0 * rpm_max_ref / rpm_max ** 2.0
         )

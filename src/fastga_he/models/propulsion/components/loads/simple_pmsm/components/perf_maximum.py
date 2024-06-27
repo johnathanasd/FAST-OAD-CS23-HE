@@ -43,71 +43,71 @@ class PerformancesMaximum(om.ExplicitComponent):
         self.add_input("shaft_power_out", units="W", val=np.nan, shape=number_of_points)
 
         self.add_output(
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":current_ac_max",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":current_ac_max",
             units="A",
             val=500.0,
             desc="Maximum value of the RMS current flowing through one phase of the motor",
         )
         self.declare_partials(
-            of="data:propulsion:he_power_train:PMSM:" + motor_id + ":current_ac_max",
+            of="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":current_ac_max",
             wrt="ac_current_rms_in_one_phase",
             method="exact",
         )
 
         self.add_output(
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":voltage_ac_max",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_ac_max",
             units="V",
             val=800.0,
             desc="Maximum value of the peak voltage at the input of the motor",
         )
         self.declare_partials(
-            of="data:propulsion:he_power_train:PMSM:" + motor_id + ":voltage_ac_max",
+            of="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_ac_max",
             wrt="ac_voltage_peak_in",
             method="exact",
         )
 
         self.add_output(
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_max",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_max",
             units="N*m",
             val=500.0,
             desc="Maximum value of the torque the motor has to provide",
         )
         self.declare_partials(
-            of="data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_max",
+            of="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_max",
             wrt="torque_out",
             method="exact",
         )
 
         self.add_output(
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_max",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_max",
             units="min**-1",
             val=5000.0,
             desc="Maximum value of the motor rpm",
         )
         self.declare_partials(
-            of="data:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_max",
+            of="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_max",
             wrt="rpm",
             method="exact",
         )
 
         self.add_output(
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":losses_max",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":losses_max",
             units="W",
             val=4200.0,
         )
         self.declare_partials(
-            of="data:propulsion:he_power_train:PMSM:" + motor_id + ":losses_max",
+            of="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":losses_max",
             wrt="power_losses",
             method="exact",
         )
 
         self.add_output(
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":shaft_power_max",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":shaft_power_max",
             units="W",
             val=42000.0,
         )
         self.declare_partials(
-            of="data:propulsion:he_power_train:PMSM:" + motor_id + ":shaft_power_max",
+            of="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":shaft_power_max",
             wrt="shaft_power_out",
             method="exact",
         )
@@ -116,22 +116,22 @@ class PerformancesMaximum(om.ExplicitComponent):
 
         motor_id = self.options["motor_id"]
 
-        outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":current_ac_max"] = np.max(
+        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":current_ac_max"] = np.max(
             inputs["ac_current_rms_in_one_phase"]
         )
-        outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":voltage_ac_max"] = np.max(
+        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_ac_max"] = np.max(
             inputs["ac_voltage_peak_in"]
         )
-        outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_max"] = np.max(
+        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_max"] = np.max(
             inputs["torque_out"]
         )
-        outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_max"] = np.max(
+        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_max"] = np.max(
             inputs["rpm"]
         )
-        outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":losses_max"] = np.max(
+        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":losses_max"] = np.max(
             inputs["power_losses"]
         )
-        outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":shaft_power_max"] = np.max(
+        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":shaft_power_max"] = np.max(
             inputs["shaft_power_out"]
         )
 
@@ -140,7 +140,7 @@ class PerformancesMaximum(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         partials[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":current_ac_max",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":current_ac_max",
             "ac_current_rms_in_one_phase",
         ] = np.where(
             inputs["ac_current_rms_in_one_phase"] == np.max(inputs["ac_current_rms_in_one_phase"]),
@@ -148,19 +148,19 @@ class PerformancesMaximum(om.ExplicitComponent):
             0.0,
         )
         partials[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":voltage_ac_max",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_ac_max",
             "ac_voltage_peak_in",
         ] = np.where(inputs["ac_voltage_peak_in"] == np.max(inputs["ac_voltage_peak_in"]), 1.0, 0.0)
         partials[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":torque_max", "torque_out"
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_max", "torque_out"
         ] = np.where(inputs["torque_out"] == np.max(inputs["torque_out"]), 1.0, 0.0)
-        partials["data:propulsion:he_power_train:PMSM:" + motor_id + ":rpm_max", "rpm"] = np.where(
+        partials["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":rpm_max", "rpm"] = np.where(
             inputs["rpm"] == np.max(inputs["rpm"]), 1.0, 0.0
         )
         partials[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":losses_max", "power_losses"
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":losses_max", "power_losses"
         ] = np.where(inputs["power_losses"] == np.max(inputs["power_losses"]), 1.0, 0.0)
         partials[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":shaft_power_max",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":shaft_power_max",
             "shaft_power_out",
         ] = np.where(inputs["shaft_power_out"] == np.max(inputs["shaft_power_out"]), 1.0, 0.0)

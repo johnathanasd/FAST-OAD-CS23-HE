@@ -26,19 +26,19 @@ class SizingMotorDiameter(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         self.add_input(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:diameter",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter",
             val=np.nan,
         )
 
         self.add_output(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":diameter",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":diameter",
             val=self.options["diameter_ref"],
             units="m",
         )
 
         self.declare_partials(
-            of="data:propulsion:he_power_train:PMSM:" + motor_id + ":diameter",
-            wrt="data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:diameter",
+            of="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":diameter",
+            wrt="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter",
             method="exact",
         )
 
@@ -47,9 +47,9 @@ class SizingMotorDiameter(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
         d_ref = self.options["diameter_ref"]
 
-        d_scaling = inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:diameter"]
+        d_scaling = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter"]
 
-        outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":diameter"] = d_ref * d_scaling
+        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":diameter"] = d_ref * d_scaling
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
@@ -57,6 +57,6 @@ class SizingMotorDiameter(om.ExplicitComponent):
         d_ref = self.options["diameter_ref"]
 
         partials[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":diameter",
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:diameter",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":diameter",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter",
         ] = d_ref

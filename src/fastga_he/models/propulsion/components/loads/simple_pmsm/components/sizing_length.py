@@ -24,19 +24,19 @@ class SizingMotorLength(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         self.add_input(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:length",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:length",
             val=np.nan,
         )
 
         self.add_output(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":length",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":length",
             val=self.options["length_ref"],
             units="m",
         )
 
         self.declare_partials(
-            of="data:propulsion:he_power_train:PMSM:" + motor_id + ":length",
-            wrt="data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:length",
+            of="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":length",
+            wrt="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:length",
             method="exact",
         )
 
@@ -44,11 +44,11 @@ class SizingMotorLength(om.ExplicitComponent):
 
         motor_id = self.options["motor_id"]
 
-        l_scaling = inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:length"]
+        l_scaling = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:length"]
 
         l_ref = self.options["length_ref"]
 
-        outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":length"] = l_ref * l_scaling
+        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":length"] = l_ref * l_scaling
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
@@ -57,6 +57,6 @@ class SizingMotorLength(om.ExplicitComponent):
         l_ref = self.options["length_ref"]
 
         partials[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":length",
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:length",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":length",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:length",
         ] = l_ref

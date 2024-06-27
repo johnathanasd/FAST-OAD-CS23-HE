@@ -63,7 +63,7 @@ def test_diameter_scaling():
     problem = run_system(SizingMotorDiameterScaling(motor_id="motor_1"), ivc)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:scaling:diameter"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:scaling:diameter"
     ) == pytest.approx(0.9, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -78,7 +78,7 @@ def test_diameter():
     problem = run_system(SizingMotorDiameter(motor_id="motor_1"), ivc)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:diameter", units="m"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:diameter", units="m"
     ) == pytest.approx(0.241, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -93,7 +93,7 @@ def test_length_scaling():
     problem = run_system(SizingMotorLengthScaling(motor_id="motor_1"), ivc)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:scaling:length"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:scaling:length"
     ) == pytest.approx(0.97, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -106,7 +106,7 @@ def test_length():
     problem = run_system(SizingMotorLength(motor_id="motor_1"), ivc)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:length", units="m"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:length", units="m"
     ) == pytest.approx(0.088, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -119,7 +119,7 @@ def test_weight():
     problem = run_system(SizingMotorWeight(motor_id="motor_1"), ivc)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:mass", units="kg"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:mass", units="kg"
     ) == pytest.approx(16.19, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -134,7 +134,7 @@ def test_resistance_scaling():
     problem = run_system(SizingMotorPhaseResistanceScaling(motor_id="motor_1"), ivc)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:scaling:phase_resistance"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:scaling:phase_resistance"
     ) == pytest.approx(0.93, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -149,7 +149,7 @@ def test_resistance():
     problem = run_system(SizingMotorPhaseResistance(motor_id="motor_1"), ivc)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:phase_resistance", units="ohm"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:phase_resistance", units="ohm"
     ) == pytest.approx(21.36e-3, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -164,7 +164,7 @@ def test_torque_constant_scaling():
     problem = run_system(SizingMotorTorqueConstantScaling(motor_id="motor_1"), ivc)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:scaling:torque_constant"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:scaling:torque_constant"
     ) == pytest.approx(0.77, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -179,7 +179,7 @@ def test_torque_constant():
     problem = run_system(SizingMotorTorqueConstant(motor_id="motor_1"), ivc)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:torque_constant", units="N*m/A"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:torque_constant", units="N*m/A"
     ) == pytest.approx(1.46, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -194,13 +194,13 @@ def test_loss_coefficient_scaling():
     problem = run_system(SizingMotorLossCoefficientScaling(motor_id="motor_1"), ivc)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:scaling:alpha"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:scaling:alpha"
     ) == pytest.approx(1.57, rel=1e-2)
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:scaling:beta"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:scaling:beta"
     ) == pytest.approx(0.51, rel=1e-2)
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:scaling:gamma"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:scaling:gamma"
     ) == pytest.approx(0.55, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -215,13 +215,13 @@ def test_loss_coefficient():
     problem = run_system(SizingMotorLossCoefficient(motor_id="motor_1"), ivc)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:loss_coefficient:alpha", units="W/N**2/m**2"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:loss_coefficient:alpha", units="W/N**2/m**2"
     ) == pytest.approx(0.025, rel=1e-2)
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:loss_coefficient:beta", units="W*s/rad"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:loss_coefficient:beta", units="W*s/rad"
     ) == pytest.approx(3.38, rel=1e-2)
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:loss_coefficient:gamma", units="W*s**2/rad**2"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:loss_coefficient:gamma", units="W*s**2/rad**2"
     ) == pytest.approx(0.00825, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -242,7 +242,7 @@ def test_motor_cg_x():
         problem = run_system(SizingSimplePMSMCGX(motor_id="motor_1", position=option), ivc)
 
         assert problem.get_val(
-            "data:propulsion:he_power_train:PMSM:motor_1:CG:x", units="m"
+            "data:propulsion:he_power_train:simple_PMSM:motor_1:CG:x", units="m"
         ) == pytest.approx(expected_value, rel=1e-2)
 
         problem.check_partials(compact_print=True)
@@ -263,7 +263,7 @@ def test_motor_cg_y():
         problem = run_system(SizingSimplePMSMCGY(motor_id="motor_1", position=option), ivc)
 
         assert problem.get_val(
-            "data:propulsion:he_power_train:PMSM:motor_1:CG:y", units="m"
+            "data:propulsion:he_power_train:simple_PMSM:motor_1:CG:y", units="m"
         ) == pytest.approx(expected_value, rel=1e-2)
 
         problem.check_partials(compact_print=True)
@@ -293,7 +293,7 @@ def test_motor_drag():
             if ls_option:
                 assert (
                     problem.get_val(
-                        "data:propulsion:he_power_train:PMSM:motor_1:low_speed:CD0",
+                        "data:propulsion:he_power_train:simple_PMSM:motor_1:low_speed:CD0",
                     )
                     * 1e3
                     == pytest.approx(ls_drag, rel=1e-2)
@@ -301,7 +301,7 @@ def test_motor_drag():
             else:
                 assert (
                     problem.get_val(
-                        "data:propulsion:he_power_train:PMSM:motor_1:cruise:CD0",
+                        "data:propulsion:he_power_train:simple_PMSM:motor_1:cruise:CD0",
                     )
                     * 1e3
                     == pytest.approx(cruise_drag, rel=1e-2)
@@ -320,7 +320,7 @@ def test_constraints_torque_enforce():
     problem = run_system(ConstraintsTorqueEnforce(motor_id="motor_1"), ivc)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:torque_rating", units="N*m"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:torque_rating", units="N*m"
     ) == pytest.approx(150.0, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -335,7 +335,7 @@ def test_constraints_rpm_enforce():
     problem = run_system(ConstraintsRPMEnforce(motor_id="motor_1"), ivc)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:rpm_rating", units="min**-1"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:rpm_rating", units="min**-1"
     ) == pytest.approx(4500.0, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -350,7 +350,7 @@ def test_constraints_voltage_enforce():
     problem = run_system(ConstraintsVoltageEnforce(motor_id="motor_1"), ivc)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:voltage_caliber", units="V"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:voltage_caliber", units="V"
     ) == pytest.approx(156.2, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -365,7 +365,7 @@ def test_constraints_torque_ensure():
     problem = run_system(ConstraintsTorqueEnsure(motor_id="motor_1"), ivc)
 
     assert problem.get_val(
-        "constraints:propulsion:he_power_train:PMSM:motor_1:torque_rating", units="N*m"
+        "constraints:propulsion:he_power_train:simple_PMSM:motor_1:torque_rating", units="N*m"
     ) == pytest.approx(0.0, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -379,7 +379,7 @@ def test_constraints_rpm_ensure():
     problem = run_system(ConstraintsRPMEnsure(motor_id="motor_1"), ivc)
 
     assert problem.get_val(
-        "constraints:propulsion:he_power_train:PMSM:motor_1:rpm_rating", units="min**-1"
+        "constraints:propulsion:he_power_train:simple_PMSM:motor_1:rpm_rating", units="min**-1"
     ) == pytest.approx(-500.0, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -393,7 +393,7 @@ def test_constraints_voltage_ensure():
     problem = run_system(ConstraintsVoltageEnsure(motor_id="motor_1"), ivc)
 
     assert problem.get_val(
-        "constraints:propulsion:he_power_train:PMSM:motor_1:voltage_caliber", units="V"
+        "constraints:propulsion:he_power_train:simple_PMSM:motor_1:voltage_caliber", units="V"
     ) == pytest.approx(-543.8, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -409,7 +409,7 @@ def test_constraint_power_for_power_rate():
     problem = run_system(ConstraintPMSMPowerRateMission(motor_id="motor_1"), ivc)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:shaft_power_rating", units="kW"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:shaft_power_rating", units="kW"
     ) == pytest.approx(70.0, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -644,22 +644,22 @@ def test_maximum():
     )
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:current_ac_max", units="A"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:current_ac_max", units="A"
     ) == pytest.approx(102.0, rel=1e-2)
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:voltage_ac_max", units="V"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:voltage_ac_max", units="V"
     ) == pytest.approx(156.2, rel=1e-2)
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:torque_max", units="N*m"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:torque_max", units="N*m"
     ) == pytest.approx(149.0, rel=1e-2)
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:rpm_max", units="min**-1"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:rpm_max", units="min**-1"
     ) == pytest.approx(4500.0, rel=1e-2)
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:losses_max", units="kW"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:losses_max", units="kW"
     ) == pytest.approx(3.98, rel=1e-2)
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:shaft_power_max", units="kW"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:shaft_power_max", units="kW"
     ) == pytest.approx(70.0, rel=1e-2)
 
     problem.check_partials(compact_print=True)
@@ -673,36 +673,36 @@ def test_sizing_pmsm():
 
     # om.n2(problem)
 
-    assert problem.get_val("data:propulsion:he_power_train:PMSM:motor_1:diameter") == pytest.approx(
+    assert problem.get_val("data:propulsion:he_power_train:simple_PMSM:motor_1:diameter") == pytest.approx(
         0.268, rel=1e-2
     )
-    assert problem.get_val("data:propulsion:he_power_train:PMSM:motor_1:length") == pytest.approx(
+    assert problem.get_val("data:propulsion:he_power_train:simple_PMSM:motor_1:length") == pytest.approx(
         0.06825, rel=1e-2
     )
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:torque_constant"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:torque_constant"
     ) == pytest.approx(2.09, rel=1e-2)
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:loss_coefficient:alpha", units="W/N**2/m**2"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:loss_coefficient:alpha", units="W/N**2/m**2"
     ) == pytest.approx(0.0213, rel=1e-2)
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:loss_coefficient:beta", units="W*s/rad"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:loss_coefficient:beta", units="W*s/rad"
     ) == pytest.approx(11.69, rel=1e-2)
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:loss_coefficient:gamma", units="W*s**2/rad**2"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:loss_coefficient:gamma", units="W*s**2/rad**2"
     ) == pytest.approx(0.0237, rel=1e-2)
     assert (
         problem.get_val(
-            "data:propulsion:he_power_train:PMSM:motor_1:low_speed:CD0",
+            "data:propulsion:he_power_train:simple_PMSM:motor_1:low_speed:CD0",
         )
         * 1e3
         == pytest.approx(0.357, rel=1e-2)
     )
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:CG:x", units="m"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:CG:x", units="m"
     ) == pytest.approx(2.39, rel=1e-2)
     assert problem.get_val(
-        "data:propulsion:he_power_train:PMSM:motor_1:CG:y", units="m"
+        "data:propulsion:he_power_train:simple_PMSM:motor_1:CG:y", units="m"
     ) == pytest.approx(1.5, rel=1e-2)
 
     problem.check_partials(compact_print=True)

@@ -27,7 +27,7 @@
         </geometry>
         <propulsion>
             <he_power_train>
-                <PMSM>
+                <simple_PMSM>
                     <motor_1>
                         <from_LE units="m">0.15</from_LE>
                         <length units="m">0.088</length>
@@ -60,7 +60,7 @@
                             <y_ratio>0.333</y_ratio>
                         </CG>
                     </motor_1>
-                </PMSM>
+                </simple_PMSM>
             </he_power_train>
         </propulsion>
     </data>

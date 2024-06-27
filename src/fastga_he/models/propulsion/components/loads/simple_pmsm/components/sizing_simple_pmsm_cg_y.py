@@ -38,7 +38,7 @@ class SizingSimplePMSMCGY(om.ExplicitComponent):
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
 
         self.add_output(
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":CG:y",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:y",
             units="m",
             val=0.0,
             desc="Y position of the DC bus center of gravity",
@@ -47,7 +47,7 @@ class SizingSimplePMSMCGY(om.ExplicitComponent):
         if position == "on_the_wing":
 
             self.add_input(
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":CG:y_ratio",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:y_ratio",
                 val=np.nan,
                 desc="Y position of the PMSM center of gravity as a ratio of the wing half-span",
             )
@@ -61,15 +61,15 @@ class SizingSimplePMSMCGY(om.ExplicitComponent):
 
         if position == "on_the_wing":
 
-            outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":CG:y"] = (
+            outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:y"] = (
                 inputs["data:geometry:wing:span"]
-                * inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":CG:y_ratio"]
+                * inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:y_ratio"]
                 / 2.0
             )
 
         else:
 
-            outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":CG:y"] = 0.0
+            outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:y"] = 0.0
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
@@ -79,14 +79,14 @@ class SizingSimplePMSMCGY(om.ExplicitComponent):
         if position == "on_the_wing":
 
             partials[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":CG:y",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:y",
                 "data:geometry:wing:span",
             ] = (
-                inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":CG:y_ratio"] / 2.0
+                inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:y_ratio"] / 2.0
             )
             partials[
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":CG:y",
-                "data:propulsion:he_power_train:PMSM:" + motor_id + ":CG:y_ratio",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:y",
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:y_ratio",
             ] = (
                 inputs["data:geometry:wing:span"] / 2.0
             )

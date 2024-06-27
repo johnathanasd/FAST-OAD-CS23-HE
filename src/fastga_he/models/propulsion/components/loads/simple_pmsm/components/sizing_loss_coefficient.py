@@ -39,47 +39,47 @@ class SizingMotorLossCoefficient(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         self.add_input(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:alpha",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:alpha",
             val=np.nan,
         )
         self.add_input(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:beta",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:beta",
             val=np.nan,
         )
         self.add_input(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:gamma",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:gamma",
             val=np.nan,
         )
 
         self.add_output(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":loss_coefficient:alpha",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":loss_coefficient:alpha",
             val=self.options["alpha_ref"],
             units="W/N**2/m**2",
         )
         self.add_output(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":loss_coefficient:beta",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":loss_coefficient:beta",
             val=self.options["beta_ref"],
             units="W*s/rad",
         )
         self.add_output(
-            name="data:propulsion:he_power_train:PMSM:" + motor_id + ":loss_coefficient:gamma",
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":loss_coefficient:gamma",
             val=self.options["gamma_ref"],
             units="W*s**2/rad**2",
         )
 
         self.declare_partials(
-            of="data:propulsion:he_power_train:PMSM:" + motor_id + ":loss_coefficient:alpha",
-            wrt="data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:alpha",
+            of="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":loss_coefficient:alpha",
+            wrt="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:alpha",
             method="exact",
         )
         self.declare_partials(
-            of="data:propulsion:he_power_train:PMSM:" + motor_id + ":loss_coefficient:beta",
-            wrt="data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:beta",
+            of="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":loss_coefficient:beta",
+            wrt="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:beta",
             method="exact",
         )
         self.declare_partials(
-            of="data:propulsion:he_power_train:PMSM:" + motor_id + ":loss_coefficient:gamma",
-            wrt="data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:gamma",
+            of="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":loss_coefficient:gamma",
+            wrt="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:gamma",
             method="exact",
         )
 
@@ -91,20 +91,20 @@ class SizingMotorLossCoefficient(om.ExplicitComponent):
         beta_ref = self.options["beta_ref"]
         gamma_ref = self.options["gamma_ref"]
 
-        alpha_scaling = inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:alpha"]
-        beta_scaling = inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:beta"]
-        gamma_scaling = inputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:gamma"]
+        alpha_scaling = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:alpha"]
+        beta_scaling = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:beta"]
+        gamma_scaling = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:gamma"]
 
         alpha = alpha_ref * alpha_scaling
         beta = beta_ref * beta_scaling
         gamma = gamma_ref * gamma_scaling
 
         outputs[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":loss_coefficient:alpha"
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":loss_coefficient:alpha"
         ] = alpha
-        outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":loss_coefficient:beta"] = beta
+        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":loss_coefficient:beta"] = beta
         outputs[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":loss_coefficient:gamma"
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":loss_coefficient:gamma"
         ] = gamma
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
@@ -116,15 +116,15 @@ class SizingMotorLossCoefficient(om.ExplicitComponent):
         gamma_ref = self.options["gamma_ref"]
 
         partials[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":loss_coefficient:alpha",
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:alpha",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":loss_coefficient:alpha",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:alpha",
         ] = alpha_ref
 
         partials[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":loss_coefficient:beta",
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:beta",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":loss_coefficient:beta",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:beta",
         ] = beta_ref
         partials[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":loss_coefficient:gamma",
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":scaling:gamma",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":loss_coefficient:gamma",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:gamma",
         ] = gamma_ref

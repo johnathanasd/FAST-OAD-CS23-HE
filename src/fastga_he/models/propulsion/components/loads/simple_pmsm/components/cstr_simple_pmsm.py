@@ -8,9 +8,9 @@ import openmdao.api as om
 import fastoad.api as oad
 
 from ..constants import (
-    SUBMODEL_CONSTRAINTS_PMSM_TORQUE,
-    SUBMODEL_CONSTRAINTS_PMSM_RPM,
-    SUBMODEL_CONSTRAINTS_PMSM_VOLTAGE,
+    SUBMODEL_CONSTRAINTS_SIMPLE_PMSM_TORQUE,
+    SUBMODEL_CONSTRAINTS_SIMPLE_PMSM_RPM,
+    SUBMODEL_CONSTRAINTS_SIMPLE_PMSM_VOLTAGE,
 )
 
 
@@ -34,21 +34,21 @@ class ConstraintsSimplePMSM(om.Group):
         self.add_subsystem(
             name="constraints_torque_pmsm",
             subsys=oad.RegisterSubmodel.get_submodel(
-                SUBMODEL_CONSTRAINTS_PMSM_TORQUE, options=option_motor_id
+                SUBMODEL_CONSTRAINTS_SIMPLE_PMSM_TORQUE, options=option_motor_id
             ),
             promotes=["*"],
         )
         self.add_subsystem(
             name="constraints_rpm_pmsm",
             subsys=oad.RegisterSubmodel.get_submodel(
-                SUBMODEL_CONSTRAINTS_PMSM_RPM, options=option_motor_id
+                SUBMODEL_CONSTRAINTS_SIMPLE_PMSM_RPM, options=option_motor_id
             ),
             promotes=["*"],
         )
         self.add_subsystem(
             name="constraints_voltage_pmsm",
             subsys=oad.RegisterSubmodel.get_submodel(
-                SUBMODEL_CONSTRAINTS_PMSM_VOLTAGE, options=option_motor_id
+                SUBMODEL_CONSTRAINTS_SIMPLE_PMSM_VOLTAGE, options=option_motor_id
             ),
             promotes=["*"],
         )
@@ -77,13 +77,13 @@ class ConstraintPMSMPowerRateMission(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         self.add_input(
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":shaft_power_max",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":shaft_power_max",
             units="kW",
             val=np.nan,
         )
 
         self.add_output(
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":shaft_power_rating",
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":shaft_power_rating",
             units="kW",
             val=42000.0,
             desc="Value of the maximum power the PMSM can provide, used for sizing",
@@ -95,6 +95,6 @@ class ConstraintPMSMPowerRateMission(om.ExplicitComponent):
 
         motor_id = self.options["motor_id"]
 
-        outputs["data:propulsion:he_power_train:PMSM:" + motor_id + ":shaft_power_rating"] = inputs[
-            "data:propulsion:he_power_train:PMSM:" + motor_id + ":shaft_power_max"
+        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":shaft_power_rating"] = inputs[
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":shaft_power_max"
         ]
