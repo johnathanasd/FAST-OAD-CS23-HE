@@ -15,6 +15,7 @@ from fastga_he.models.propulsion.assemblers import delta_from_pt_file
 from fastga_he.models.propulsion.components import (
     SlipstreamPropeller,
     SlipstreamPMSM,
+    SlipstreamSimplePMSM,
     SlipstreamInverter,
     SlipstreamDCBus,
     SlipstreamHarness,

@@ -16,6 +16,7 @@ from fastga_he.models.propulsion.assemblers.energy_consumption_from_pt_file impo
 from fastga_he.models.propulsion.components import (
     PerformancesPropeller,
     PerformancesPMSM,
+    PerformancesSimplePMSM,
     PerformancesInverter,
     PerformancesDCBus,
     PerformancesHarness,

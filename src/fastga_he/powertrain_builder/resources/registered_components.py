@@ -184,6 +184,48 @@ PMSM = {
     VARIESN_T_MASS: False,
     ETA: 0.95,
 }
+SIMPLE_PMSM = {
+    ID: "fastga_he.pt_component.simple_pmsm",
+    CN: "PMSM",
+    CN_ID: "motor_id",
+    CT: "PMSM",
+    ATT: None,
+    PT: ["settings:*"],
+    SPT: [],
+    PTS: [],
+    IN: [
+        (None, "ac_current_rms_in_one_phase"),
+        (None, "ac_voltage_peak_in"),
+        (None, "ac_voltage_rms_in"),
+    ],
+    OUT: [("rpm", None), ("shaft_power_out", None)],
+    CTC: "propulsive_load",
+    MP: [
+        {"torque_out": "N*m"},
+        {"ac_current_rms_in": "A"},
+        {"ac_voltage_rms_in": "V"},
+    ],
+    SMP: [
+        {"delta_Cd": None},
+    ],
+    ICON: "e_motor",
+    ICON_SIZE: 40,
+    RSD: ["ac_current_rms_in", "ac_voltage_rms_in"],
+    SETS_V: False,
+    IO_INDEP_V: False,
+    V_TO_SET: ["ac_voltage_rms_in", "ac_voltage_peak_in"],
+    P_TO_SET: [("active_power", "in")],
+    I_TO_SET: [("ac_current_rms_in", "in"), ("ac_current_rms_in_one_phase", "in")],
+    SFR: False,
+    SWL: False,
+    DST_W: [],
+    PCT_W: ["on_the_wing"],
+    DST_W_F: [],
+    PCT_W_F: [],
+    VARIES_MASS: False,
+    VARIESN_T_MASS: False,
+    ETA: 0.95,
+}
 INVERTER = {
     ID: "fastga_he.pt_component.inverter",
     CN: "Inverter",
@@ -870,7 +912,6 @@ GEARBOX = {
     VARIESN_T_MASS: False,
     ETA: 0.98,
 }
-# TODO: Modify based on the change done for hydrogen gas tank modeling
 HYDROGEN_GAS_TANK = {
     ID: "fastga_he.pt_component.hydrogen_gas_tank",
     CN: "HydrogenGasTank",
@@ -907,7 +948,6 @@ HYDROGEN_GAS_TANK = {
     VARIESN_T_MASS: True,
     ETA: 1.0,
 }
-# TODO: Modify based on the change done for PEMFC modeling
 PEMFC_STACK = {
     ID: "fastga_he.pt_component.pemfc_stack",
     CN: "PEMFCStack",
@@ -949,6 +989,7 @@ PEMFC_STACK = {
 KNOWN_COMPONENTS = [
     PROPELLER,
     PMSM,
+    SIMPLE_PMSM,
     INVERTER,
     DC_BUS,
     DC_LINE,

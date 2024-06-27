@@ -29,8 +29,18 @@ model:
   weight:
     id: fastga.weight.legacy
     propulsion_id: fastga.wrapper.propulsion.basicTurboprop
-  payload_update:
-    id: fastga_he.weight.payload_for_retrofit
+  mtow:
+    id: fastga.loop.mtow
+  hq:
+    tail_sizing:
+      id: fastga.handling_qualities.tail_sizing
+      propulsion_id: fastga.wrapper.propulsion.basicTurboprop
+    static_margin:
+      id: fastga.handling_qualities.static_margin
+  wing_position:
+    id: fastga.loop.wing_position
+  wing_area:
+    id: fastga.loop.wing_area
   environmental_impact:
     id: fastga_he.environmental.energy_simple
     mission: design

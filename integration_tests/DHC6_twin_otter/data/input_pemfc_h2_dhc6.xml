@@ -160,7 +160,7 @@
         </engine>
         <nacelle>
           <height units="m" is_input="True">0.61468<!--height of the nacelle--></height>
-          <width units="m" is_input="True">0.54483<!--width of the nacelle--></width>
+          <length units="m" is_input="True">3.4905<!--length of the nacelle--></length>
         </nacelle>
       </propulsion>
     </geometry>
@@ -265,56 +265,6 @@
               <w_t_ratio is_input="True">20.0</w_t_ratio>
             </cross_section>
           </dc_bus_1>
-          <dc_bus_2>
-            <CG>
-              <y_ratio is_input="True">0.64<!--X position of the DC bus center of gravity as a ratio of the wing half-span--></y_ratio>
-            </CG>
-            <cross_section>
-              <density units="kg/m**3" is_input="True">8960.0<!--Density of the conductor, copper is assumed--></density>
-              <length units="m" is_input="True">0.3<!--Length of the bus bar conductor--></length>
-              <w_t_ratio is_input="True">20.0</w_t_ratio>
-            </cross_section>
-          </dc_bus_2>
-          <dc_bus_3>
-            <CG>
-              <y_ratio is_input="True">0.36<!--X position of the DC bus center of gravity as a ratio of the wing half-span--></y_ratio>
-            </CG>
-            <cross_section>
-              <density units="kg/m**3" is_input="True">8960.0<!--Density of the conductor, copper is assumed--></density>
-              <length units="m" is_input="True">0.3<!--Length of the bus bar conductor--></length>
-              <w_t_ratio is_input="True">20.0</w_t_ratio>
-            </cross_section>
-          </dc_bus_3>
-          <dc_bus_4>
-            <CG>
-              <y_ratio is_input="True">0.36<!--X position of the DC bus center of gravity as a ratio of the wing half-span--></y_ratio>
-            </CG>
-            <cross_section>
-              <density units="kg/m**3" is_input="True">8960.0<!--Density of the conductor, copper is assumed--></density>
-              <length units="m" is_input="True">0.3<!--Length of the bus bar conductor--></length>
-              <w_t_ratio is_input="True">20.0</w_t_ratio>
-            </cross_section>
-          </dc_bus_4>
-          <dc_bus_5>
-            <CG>
-              <y_ratio is_input="True">0.64<!--X position of the DC bus center of gravity as a ratio of the wing half-span--></y_ratio>
-            </CG>
-            <cross_section>
-              <density units="kg/m**3" is_input="True">8960.0<!--Density of the conductor, copper is assumed--></density>
-              <length units="m" is_input="True">0.3<!--Length of the bus bar conductor--></length>
-              <w_t_ratio is_input="True">20.0</w_t_ratio>
-            </cross_section>
-          </dc_bus_5>
-          <dc_bus_6>
-            <CG>
-              <y_ratio is_input="True">0.925<!--X position of the DC bus center of gravity as a ratio of the wing half-span--></y_ratio>
-            </CG>
-            <cross_section>
-              <density units="kg/m**3" is_input="True">8960.0<!--Density of the conductor, copper is assumed--></density>
-              <length units="m" is_input="True">0.3<!--Length of the bus bar conductor--></length>
-              <w_t_ratio is_input="True">20.0</w_t_ratio>
-            </cross_section>
-          </dc_bus_6>
         </DC_bus>
         <PMSM>
           <motor_1>
@@ -342,20 +292,6 @@
             </fairing>
           </motor_2>
         </PMSM>
-        <fuel_tank>
-          <fuel_tank_1>
-            <fuel_type is_input="True">3.0<!--Type of fuel stored in the tank, 1.0 - gasoline, 2.0 - Diesel, 3.0 - Jet A1--></fuel_type>
-            <CG>
-              <y_ratio is_input="True">0.55<!--Y position of the fuel tank center of gravity as a ratio of the wing half-span--></y_ratio>
-            </CG>
-          </fuel_tank_1>
-          <fuel_tank_2>
-            <fuel_type is_input="True">3.0<!--Type of fuel stored in the tank, 1.0 - gasoline, 2.0 - Diesel, 3.0 - Jet A1--></fuel_type>
-            <CG>
-              <y_ratio is_input="True">0.55<!--Y position of the fuel tank center of gravity as a ratio of the wing half-span--></y_ratio>
-            </CG>
-          </fuel_tank_2>
-        </fuel_tank>
         <gearbox>
           <gearbox_1>
             <efficiency is_input="True">0.98<!--Efficiency of the planetary gear--></efficiency>
@@ -630,8 +566,6 @@
     </propulsion>
     <weight>
       <aircraft>
-        <MTOW units="kg" is_input="True">5498.228238260886<!--maximum takeoff weight of the aircraft--></MTOW>
-        <target_MTOW units="kg" is_input="True">5498.228238260886<!--maximum takeoff weight of the aircraft--></target_MTOW>
         <max_payload units="kg" is_input="True">1375.0<!--max payload weight--></max_payload>
         <CG>
           <aft>
@@ -676,7 +610,7 @@
         <recording>
           <mass units="kg" is_input="True">40.0<!--Mass of aircraft systems_inp_data:weight:systems:recording:mass--></mass>
         </recording>
-        # To be varify
+        # To be varify from dhc6 output
         <power>
           <electric_systems>
             <mass units="lbm" is_input="True">224.27611606284972<!--Mass of aircraft systems_inp_data:weight:systems:power:electric_systems:mass--></mass>
@@ -711,14 +645,14 @@
         # check the amount of fuel for each phase
         <initial_climb>
           <energy units="W*h" is_input="True">0.0</energy>
-          <fuel units="kg" is_input="True">0.8800567758561681</fuel>
+          <fuel units="kg" is_input="True">0.0</fuel>
         </initial_climb>
         <landing>
           <elevator_angle units="deg" is_input="True">-30.0<!--position of the elevator during landing--></elevator_angle>
         </landing>
         <takeoff>
           <energy units="W*h" is_input="True">0.0</energy>
-          <fuel units="kg" is_input="True">3.2695594760123754</fuel>
+          <fuel units="kg" is_input="True">0.0</fuel>
         </takeoff>
         <taxi_in>
           <duration units="s" is_input="True">300.0<!--duration of taxi in phase--></duration>

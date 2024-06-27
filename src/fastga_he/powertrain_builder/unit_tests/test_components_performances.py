@@ -17,6 +17,7 @@ from fastga_he.models.propulsion.assemblers import performances_from_pt_file
 from fastga_he.models.propulsion.components import (
     PerformancesPropeller,
     PerformancesPMSM,
+    PerformancesSimplePMSM,
     PerformancesInverter,
     PerformancesDCBus,
     PerformancesHarness,

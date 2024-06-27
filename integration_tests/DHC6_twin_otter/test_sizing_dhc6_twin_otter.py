@@ -123,7 +123,7 @@ def test_pemfc_h2_gas_tank_powertrain_network():
         power_train_network_viewer(pt_file_path, network_file_path)
 
 
-def test_prmfc_h2_gas_retrofit():
+def test_prmfc_h2_gas_resize():
 
     logging.basicConfig(level=logging.WARNING)
     logging.getLogger("fastoad.module_management._bundle_loader").disabled = True
@@ -131,7 +131,7 @@ def test_prmfc_h2_gas_retrofit():
 
     # Define used files depending on options
     xml_file_name = "input_pemfc_h2_dhc6.xml"
-    process_file_name = "pemfc_h2_gas_retrofit.yml"
+    process_file_name = "pemfc_h2_gas_resize.yml"
 
     configurator = oad.FASTOADProblemConfigurator(pth.join(DATA_FOLDER_PATH, process_file_name))
     problem = configurator.get_problem()
