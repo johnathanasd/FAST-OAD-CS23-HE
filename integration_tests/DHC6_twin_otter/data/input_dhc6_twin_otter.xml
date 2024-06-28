@@ -377,6 +377,11 @@
         </recording>
       </systems>
     </weight>
+    <handling_qualities>
+      <static_margin>
+        <target is_input="True">0.05<!--(0.23 between 5 and 40 percent) aircraft static margin--></target>
+      </static_margin>
+    </handling_qualities>
     <mission>
       <sizing>
         <cs23>

@@ -961,7 +961,7 @@ PEMFC_STACK = {
     OUT: [(None, "voltage_out"), ("dc_current_out", None)],
     CTC: "source",
     MP: [
-        {"current_density": "A/cm**2"},
+        {"fc_current_density": "A/cm**2"},
         {"voltage_out": "V"},
     ],
     SMP: [
