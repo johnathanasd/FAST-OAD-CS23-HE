@@ -146,14 +146,14 @@ def test_prmfc_h2_gas_resize():
     problem.setup()
 
     # om.n2(problem)
-    """
+
     problem.run_model()
 
     _, _, residuals = problem.model.get_nonlinear_vectors()
     residuals = filter_residuals(residuals)
 
     problem.write_outputs()
-
+    """
     assert problem.get_val("data:mission:sizing:fuel", units="kg") == pytest.approx(334.0, abs=1.0)
     assert problem.get_val("data:propulsion:he_power_train:mass", units="kg") == pytest.approx(
         829.0, abs=1.0

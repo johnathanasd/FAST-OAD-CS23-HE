@@ -356,7 +356,6 @@
             <from_LE units="m" is_input="True">0.05<!--Distance between the PMSM front face and the leading edge--></from_LE>
             <rpm_rating units="1/min" is_input="True">4500.0<!--Max continuous rpm of the motor--></rpm_rating>
             <efficiency>0.94</efficiency>
-            <torque_rating units="N*m">300.</torque_rating>
             <voltage_caliber units="V" is_input="True">800.0<!--Max voltage of the motor--></voltage_caliber>
             <CG>
               <y_ratio is_input="True">0.56<!--Y position of the PMSM center of gravity as a ratio of the wing half-span--></y_ratio>
@@ -366,18 +365,6 @@
             </fairing>
           </simple_motor_2>
         </simple_PMSM>
-        <DC_SSPC>
-          <dc_sspc_1>
-            <CG>
-              <y_ratio is_input="True">0.56<!--Y position of the PMSM center of gravity as a ratio of the wing half-span--></y_ratio>
-            </CG>
-          </dc_sspc_1>
-          <dc_sspc_2>
-            <CG>
-              <y_ratio is_input="True">0.56<!--Y position of the PMSM center of gravity as a ratio of the wing half-span--></y_ratio>
-            </CG>
-          </dc_sspc_2>
-        </DC_SSPC>
         <speed_reducer>
           <gearbox_1>
             <efficiency is_input="True">0.98<!--Efficiency of the planetary gear--></efficiency>
@@ -520,6 +507,7 @@
           <propeller_1>
             <input_mass units="kg" is_input="False">61.2</input_mass>
             <from_LE units="m" is_input="False">2.0146</from_LE>
+            <torque_max units="N*m">1783.</torque_max>
             <CG>
               <y_ratio is_input="True">0.28<!--Y position of the propeller center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
@@ -536,6 +524,7 @@
           <propeller_2>
             <input_mass units="kg" is_input="False">61.2</input_mass>
             <from_LE units="m" is_input="False">2.0146</from_LE>
+            <torque_max units="N*m">1783.</torque_max>
             <CG>
               <y_ratio is_input="True">0.28<!--Y position of the propeller center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
@@ -552,31 +541,13 @@
         </propeller>
         <pemfc_stack>
           <pemfc_stack_1>
-            <mass units="kg">327.988</mass>
-            <low_speed>
-              <CD0>0.0</CD0>
-            </low_speed>
-            <cruise>
-              <CD0>0.0</CD0>
-            </cruise>
             <current_max units="A">600.</current_max>
-            <number_of_layers>450.0</number_of_layers>
+            <number_of_layers>3000.0</number_of_layers>
             <effective_area units="cm**2">2000.</effective_area>
-            <dimension>
-              <length units="m">1.714</length>
-              <width units="m">1.2676</width>
-              <height units="m">1.5426</height>
-            </dimension>
-            <volume units="L">2478.665</volume>
-            <CG>
-              <y_ratio>0.34</y_ratio>
-              <x units="m">1.238</x>
-            </CG>
           </pemfc_stack_1>
       </pemfc_stack>
         <hydrogen_gas_tank>
           <hydrogen_gas_tank_1>
-            <mass units="kg">16.34</mass>
             <low_speed>
               <CD0>0.0</CD0>
             </low_speed>
@@ -584,16 +555,9 @@
               <CD0>0.0</CD0>
             </cruise>
             <CG>
-              <y_ratio>0.4</y_ratio>
-              <y units="m">1.85</y>
               <x units="m">1.238</x>
             </CG>
-            <fuel_consumed_mission units="kg">14</fuel_consumed_mission>
-            <unusable_fuel_mission units="kg">0.14</unusable_fuel_mission>
-            <fuel_total_mission units="kg">14.14</fuel_total_mission>
-            <capacity units="kg">15.087</capacity>
-            <inner_volume units="L">18528.125</inner_volume>
-            <tank_pressure units="Pa">1013250</tank_pressure>
+            <tank_pressure units="Pa">35000000</tank_pressure>
             <Safety_factor>1.0</Safety_factor>
             <material>
               <type>"carbon_composite"</type>
@@ -601,12 +565,7 @@
               <density units="kg/m**3">1530</density>
             </material>
             <dimension>
-              <length units="m">4.</length>
-              <diameter units="m">2.092<!--inital guess for the tank outer diameter --></diameter>
-              <inner_diameter units="m">2.09126</inner_diameter>
-              <outer_diameter units="m">2.09182</outer_diameter>
-              <wall_thickness units="m">2.794e-4</wall_thickness>
-              <overall_length units="m">6.09182</overall_length>
+              <diameter units="m">1.85<!--inital guess for the tank outer diameter --></diameter>
             </dimension>
           </hydrogen_gas_tank_1>
         </hydrogen_gas_tank>

@@ -36,16 +36,6 @@ power_train_components:
   dc_dc_converter_1:
     id: fastga_he.pt_component.dc_dc_converter
     position: in_the_back  # "inside_the_wing", "in_the_front", "in_the_back"
-  dc_sspc_1:
-    id: fastga_he.pt_component.dc_sspc
-    options:
-      closed_by_default: False
-    position: inside_the_wing # "inside_the_wing", "in_the_front", "in_the_back"
-  dc_sspc_2:
-    id: fastga_he.pt_component.dc_sspc
-    options:
-      closed_by_default: False
-    position: inside_the_wing # "inside_the_wing", "in_the_front", "in_the_back"
 
   pemfc_stack_1:
     id: fastga_he.pt_component.pemfc_stack
@@ -74,15 +64,9 @@ component_connections:
     target: inverter_2
 
   - source: inverter_1
-    target: dc_sspc_1
-
-  - source: inverter_2
-    target: dc_sspc_2
-
-  - source: dc_sspc_1
     target: [dc_bus_1, 1]
 
-  - source: dc_sspc_2
+  - source: inverter_2
     target: [ dc_bus_1, 2]
 
   - source: [dc_bus_1, 1]
