@@ -8,10 +8,10 @@ power_train_components:
     id: fastga_he.pt_component.propeller
     position: on_the_wing  # "on_the_wing", "in_the_nose"
 
-  gearbox_1:
+  speed_reducer_1:
     id: fastga_he.pt_component.speed_reducer
     position: inside_the_wing  # "inside_the_wing", "in_the_back"
-  gearbox_2:
+  speed_reducer_2:
     id: fastga_he.pt_component.speed_reducer
     position: inside_the_wing  # "inside_the_wing", "in_the_back"
 
@@ -46,15 +46,15 @@ power_train_components:
 
 component_connections:
   - source: propeller_1
-    target: gearbox_1
+    target: speed_reducer_1
 
   - source: propeller_2
-    target: gearbox_2
+    target: speed_reducer_2
 
-  - source: gearbox_1
+  - source: speed_reducer_1
     target: simple_motor_1
 
-  - source: gearbox_2
+  - source: speed_reducer_2
     target: simple_motor_2
 
   - source: simple_motor_1

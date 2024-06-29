@@ -343,7 +343,7 @@
             <from_LE units="m" is_input="True">0.05<!--Distance between the PMSM front face and the leading edge--></from_LE>
             <efficiency>0.94</efficiency>
             <rpm_rating units="1/min" is_input="True">4500.0<!--Max continuous rpm of the motor--></rpm_rating>
-            <torque_rating units="N*m">300.</torque_rating>
+            <torque_rating units="N*m">1783.</torque_rating>
             <voltage_caliber units="V" is_input="True">800.0<!--Max voltage of the motor--></voltage_caliber>
             <CG>
               <y_ratio is_input="True">0.56<!--Y position of the PMSM center of gravity as a ratio of the wing half-span--></y_ratio>
@@ -355,6 +355,7 @@
           <simple_motor_2>
             <from_LE units="m" is_input="True">0.05<!--Distance between the PMSM front face and the leading edge--></from_LE>
             <rpm_rating units="1/min" is_input="True">4500.0<!--Max continuous rpm of the motor--></rpm_rating>
+            <torque_rating units="N*m">1783.</torque_rating>
             <efficiency>0.94</efficiency>
             <voltage_caliber units="V" is_input="True">800.0<!--Max voltage of the motor--></voltage_caliber>
             <CG>
@@ -366,24 +367,24 @@
           </simple_motor_2>
         </simple_PMSM>
         <speed_reducer>
-          <gearbox_1>
+          <speed_reducer_1>
             <efficiency is_input="True">0.98<!--Efficiency of the planetary gear--></efficiency>
-            <front_length_ratio is_input="True">0.9<!--Location of the gearbox CG as a ratio of the aircraft front length--></front_length_ratio>
-            <gear_ratio is_input="True">0.49<!--Gear ratio of the gearboxr--></gear_ratio>
-            <tech_level_constant is_input="True">6.157<!--Technology level constant for the gearbox, default value computed with the results from the source paper--></tech_level_constant>
+            <front_length_ratio is_input="True">0.9<!--Location of the speed reducer CG as a ratio of the aircraft front length--></front_length_ratio>
+            <gear_ratio is_input="True">0.49<!--Gear ratio of the speed reducer r--></gear_ratio>
+            <tech_level_constant is_input="True">6.157<!--Technology level constant for the speed reducer, default value computed with the results from the source paper--></tech_level_constant>
             <CG>
               <y_ratio is_input="True">0.56<!--Y position of the PMSM center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
-          </gearbox_1>
-          <gearbox_2>
+          </speed_reducer_1>
+          <speed_reducer_2>
             <efficiency is_input="True">0.98<!--Efficiency of the planetary gear--></efficiency>
-            <front_length_ratio is_input="True">0.9<!--Location of the gearbox CG as a ratio of the aircraft front length--></front_length_ratio>
-            <gear_ratio is_input="True">0.49<!--Gear ratio of the gearboxr--></gear_ratio>
-            <tech_level_constant is_input="True">6.157<!--Technology level constant for the gearbox, default value computed with the results from the source paper--></tech_level_constant>
+            <front_length_ratio is_input="True">0.9<!--Location of the speed reducer CG as a ratio of the aircraft front length--></front_length_ratio>
+            <gear_ratio is_input="True">0.49<!--Gear ratio of the speed reducer r--></gear_ratio>
+            <tech_level_constant is_input="True">6.157<!--Technology level constant for the speed reducer, default value computed with the results from the source paper--></tech_level_constant>
             <CG>
               <y_ratio is_input="True">0.56<!--Y position of the PMSM center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
-          </gearbox_2>
+          </speed_reducer_2>
         </speed_reducer>
         <inverter>
           <inverter_1>
@@ -507,7 +508,6 @@
           <propeller_1>
             <input_mass units="kg" is_input="False">61.2</input_mass>
             <from_LE units="m" is_input="False">2.0146</from_LE>
-            <torque_max units="N*m">1783.</torque_max>
             <CG>
               <y_ratio is_input="True">0.28<!--Y position of the propeller center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
@@ -524,7 +524,6 @@
           <propeller_2>
             <input_mass units="kg" is_input="False">61.2</input_mass>
             <from_LE units="m" is_input="False">2.0146</from_LE>
-            <torque_max units="N*m">1783.</torque_max>
             <CG>
               <y_ratio is_input="True">0.28<!--Y position of the propeller center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
