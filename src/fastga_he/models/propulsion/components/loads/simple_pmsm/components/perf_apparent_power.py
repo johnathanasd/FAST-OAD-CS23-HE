@@ -57,5 +57,6 @@ class PerformancesApparentPower(om.ExplicitComponent):
             "settings:propulsion:he_power_train:simple_PMSM:" + motor_id + ":power_factor",
         ] = -(
             inputs["active_power"]
-            / inputs["settings:propulsion:he_power_train:simple_PMSM:" + motor_id + ":power_factor"] ** 2.0
+            / inputs["settings:propulsion:he_power_train:simple_PMSM:" + motor_id + ":power_factor"]
+            ** 2.0
         )

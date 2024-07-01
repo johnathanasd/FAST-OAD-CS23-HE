@@ -73,8 +73,12 @@ class SizingMotorLossCoefficientScaling(om.ExplicitComponent):
 
         motor_id = self.options["motor_id"]
 
-        d_scaling = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter"]
-        l_scaling = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:length"]
+        d_scaling = inputs[
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter"
+        ]
+        l_scaling = inputs[
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:length"
+        ]
 
         alpha_scaling = d_scaling ** -4 * l_scaling ** -1
         beta_scaling = d_scaling ** 6.89 * l_scaling ** -1.96
@@ -83,7 +87,9 @@ class SizingMotorLossCoefficientScaling(om.ExplicitComponent):
         outputs[
             "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:alpha"
         ] = alpha_scaling
-        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:beta"] = beta_scaling
+        outputs[
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:beta"
+        ] = beta_scaling
         outputs[
             "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:gamma"
         ] = gamma_scaling
@@ -92,8 +98,12 @@ class SizingMotorLossCoefficientScaling(om.ExplicitComponent):
 
         motor_id = self.options["motor_id"]
 
-        d_scaling = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter"]
-        l_scaling = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:length"]
+        d_scaling = inputs[
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter"
+        ]
+        l_scaling = inputs[
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:length"
+        ]
 
         # Partials of alpha
         partials[

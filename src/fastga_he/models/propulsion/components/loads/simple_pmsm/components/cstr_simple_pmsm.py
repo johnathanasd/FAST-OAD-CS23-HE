@@ -95,6 +95,6 @@ class ConstraintPMSMPowerRateMission(om.ExplicitComponent):
 
         motor_id = self.options["motor_id"]
 
-        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":shaft_power_rating"] = inputs[
-            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":shaft_power_max"
-        ]
+        outputs[
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":shaft_power_rating"
+        ] = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":shaft_power_max"]

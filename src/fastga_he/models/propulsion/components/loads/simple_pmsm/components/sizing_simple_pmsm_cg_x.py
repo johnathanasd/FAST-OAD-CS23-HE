@@ -54,7 +54,9 @@ class SizingSimplePMSMCGX(om.ExplicitComponent):
         else:
 
             self.add_input(
-                name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":front_length_ratio",
+                name="data:propulsion:he_power_train:simple_PMSM:"
+                + motor_id
+                + ":front_length_ratio",
                 val=np.nan,
                 desc="Location of the PMSM CG as a ratio of the aircraft front length",
             )
@@ -79,7 +81,9 @@ class SizingSimplePMSMCGX(om.ExplicitComponent):
             distance_from_le = inputs[
                 "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":from_LE"
             ]
-            motor_length = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":length"]
+            motor_length = inputs[
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":length"
+            ]
             l0_wing = inputs["data:geometry:wing:MAC:length"]
             fa_length = inputs["data:geometry:wing:MAC:at25percent:x"]
 
@@ -94,7 +98,9 @@ class SizingSimplePMSMCGX(om.ExplicitComponent):
                 "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":front_length_ratio"
             ]
 
-            outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:x"] = lav * lav_ratio
+            outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:x"] = (
+                lav * lav_ratio
+            )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
@@ -129,4 +135,6 @@ class SizingSimplePMSMCGX(om.ExplicitComponent):
             partials[
                 "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:x",
                 "data:geometry:fuselage:front_length",
-            ] = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":front_length_ratio"]
+            ] = inputs[
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":front_length_ratio"
+            ]

@@ -26,7 +26,9 @@ class SizingMotorTorqueConstantScaling(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         self.add_input(
-            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:phase_resistance",
+            name="data:propulsion:he_power_train:simple_PMSM:"
+            + motor_id
+            + ":scaling:phase_resistance",
             val=np.nan,
         )
         self.add_input(
@@ -39,14 +41,20 @@ class SizingMotorTorqueConstantScaling(om.ExplicitComponent):
         )
 
         self.add_output(
-            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:torque_constant",
+            name="data:propulsion:he_power_train:simple_PMSM:"
+            + motor_id
+            + ":scaling:torque_constant",
             val=1.0,
         )
 
         self.declare_partials(
-            of="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:torque_constant",
+            of="data:propulsion:he_power_train:simple_PMSM:"
+            + motor_id
+            + ":scaling:torque_constant",
             wrt=[
-                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:phase_resistance",
+                "data:propulsion:he_power_train:simple_PMSM:"
+                + motor_id
+                + ":scaling:phase_resistance",
                 "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:length",
                 "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter",
             ],
@@ -60,8 +68,12 @@ class SizingMotorTorqueConstantScaling(om.ExplicitComponent):
         resistance_scaling = inputs[
             "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:phase_resistance"
         ]
-        l_scaling = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:length"]
-        d_scaling = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter"]
+        l_scaling = inputs[
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:length"
+        ]
+        d_scaling = inputs[
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter"
+        ]
 
         k_t_scaling = resistance_scaling ** 0.5 * d_scaling ** 2.0 * l_scaling ** 0.5
 
@@ -76,8 +88,12 @@ class SizingMotorTorqueConstantScaling(om.ExplicitComponent):
         resistance_scaling = inputs[
             "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:phase_resistance"
         ]
-        l_scaling = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:length"]
-        d_scaling = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter"]
+        l_scaling = inputs[
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:length"
+        ]
+        d_scaling = inputs[
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter"
+        ]
 
         partials[
             "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:torque_constant",

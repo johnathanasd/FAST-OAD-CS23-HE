@@ -92,11 +92,15 @@ class SizingSimplePMSMDrag(om.ExplicitComponent):
         position = self.options["position"]
         ls_tag = "low_speed" if self.options["low_speed_aero"] else "cruise"
 
-        motor_diameter = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":diameter"]
+        motor_diameter = inputs[
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":diameter"
+        ]
 
         if position == "on_the_wing":
 
-            motor_length = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":length"]
+            motor_length = inputs[
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":length"
+            ]
             fineness = inputs[
                 "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":fairing:fineness"
             ]
@@ -127,11 +131,15 @@ class SizingSimplePMSMDrag(om.ExplicitComponent):
             #  wing it should take into account a delta (See Roskam part VI section 4.5.2.1),
             #  which depends on the installation angle which we do not yet consider.
 
-            outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":" + ls_tag + ":CD0"] = cd0
+            outputs[
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":" + ls_tag + ":CD0"
+            ] = cd0
 
         else:
 
-            outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":" + ls_tag + ":CD0"] = 0.0
+            outputs[
+                "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":" + ls_tag + ":CD0"
+            ] = 0.0
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
@@ -139,7 +147,9 @@ class SizingSimplePMSMDrag(om.ExplicitComponent):
         position = self.options["position"]
         ls_tag = "low_speed" if self.options["low_speed_aero"] else "cruise"
 
-        motor_diameter = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":diameter"]
+        motor_diameter = inputs[
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":diameter"
+        ]
 
         if position == "on_the_wing":
 

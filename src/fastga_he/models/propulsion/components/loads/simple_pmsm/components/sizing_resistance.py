@@ -24,7 +24,9 @@ class SizingMotorPhaseResistance(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         self.add_input(
-            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:phase_resistance",
+            name="data:propulsion:he_power_train:simple_PMSM:"
+            + motor_id
+            + ":scaling:phase_resistance",
             val=np.nan,
         )
 
@@ -36,7 +38,9 @@ class SizingMotorPhaseResistance(om.ExplicitComponent):
 
         self.declare_partials(
             of="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":phase_resistance",
-            wrt="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:phase_resistance",
+            wrt="data:propulsion:he_power_train:simple_PMSM:"
+            + motor_id
+            + ":scaling:phase_resistance",
             method="exact",
         )
 

@@ -25,7 +25,8 @@ class PerformancesActivePower(om.ExplicitComponent):
 
         self.add_input("shaft_power_out", units="W", val=np.nan, shape=number_of_points)
         self.add_input(
-            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":efficiency", val=np.nan
+            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":efficiency",
+            val=np.nan,
         )
 
         self.add_output(
@@ -70,5 +71,6 @@ class PerformancesActivePower(om.ExplicitComponent):
             "active_power", "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":efficiency"
         ] = (
             -inputs["shaft_power_out"]
-            / inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":efficiency"] ** 2.0
+            / inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":efficiency"]
+            ** 2.0
         )

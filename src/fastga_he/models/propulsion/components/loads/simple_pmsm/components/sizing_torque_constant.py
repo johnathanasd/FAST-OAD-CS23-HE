@@ -26,7 +26,9 @@ class SizingMotorTorqueConstant(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
 
         self.add_input(
-            name="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:torque_constant",
+            name="data:propulsion:he_power_train:simple_PMSM:"
+            + motor_id
+            + ":scaling:torque_constant",
             val=np.nan,
         )
 
@@ -38,7 +40,9 @@ class SizingMotorTorqueConstant(om.ExplicitComponent):
 
         self.declare_partials(
             of="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_constant",
-            wrt="data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:torque_constant",
+            wrt="data:propulsion:he_power_train:simple_PMSM:"
+            + motor_id
+            + ":scaling:torque_constant",
             method="exact",
         )
 

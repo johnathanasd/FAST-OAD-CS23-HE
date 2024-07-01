@@ -82,7 +82,8 @@ class SizingSimplePMSMCGY(om.ExplicitComponent):
                 "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:y",
                 "data:geometry:wing:span",
             ] = (
-                inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:y_ratio"] / 2.0
+                inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:y_ratio"]
+                / 2.0
             )
             partials[
                 "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":CG:y",

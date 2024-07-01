@@ -49,7 +49,9 @@ class SizingMotorWeight(om.ExplicitComponent):
 
         motor_id = self.options["motor_id"]
 
-        torque_cont = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating"]
+        torque_cont = inputs[
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating"
+        ]
 
         mass = 2.8 + 9.54e-3 * torque_cont + 0.1632 * torque_cont ** (3.0 / 3.5)
 
@@ -59,7 +61,9 @@ class SizingMotorWeight(om.ExplicitComponent):
 
         motor_id = self.options["motor_id"]
 
-        torque_cont = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating"]
+        torque_cont = inputs[
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating"
+        ]
 
         partials[
             "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":mass",

@@ -19,7 +19,8 @@ oad.RegisterSubmodel.active_models[
 
 
 @oad.RegisterSubmodel(
-    SUBMODEL_CONSTRAINTS_SIMPLE_PMSM_TORQUE, "fastga_he.submodel.propulsion.constraints.simple_pmsm.torque.ensure"
+    SUBMODEL_CONSTRAINTS_SIMPLE_PMSM_TORQUE,
+    "fastga_he.submodel.propulsion.constraints.simple_pmsm.torque.ensure",
 )
 class ConstraintsTorqueEnsure(om.ExplicitComponent):
     """
@@ -68,7 +69,9 @@ class ConstraintsTorqueEnsure(om.ExplicitComponent):
 
         motor_id = self.options["motor_id"]
 
-        outputs["constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating"] = (
+        outputs[
+            "constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating"
+        ] = (
             inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_max"]
             - inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating"]
         )
@@ -88,7 +91,8 @@ class ConstraintsTorqueEnsure(om.ExplicitComponent):
 
 
 @oad.RegisterSubmodel(
-    SUBMODEL_CONSTRAINTS_SIMPLE_PMSM_RPM, "fastga_he.submodel.propulsion.constraints.simple_pmsm.rpm.ensure"
+    SUBMODEL_CONSTRAINTS_SIMPLE_PMSM_RPM,
+    "fastga_he.submodel.propulsion.constraints.simple_pmsm.rpm.ensure",
 )
 class ConstraintsRPMEnsure(om.ExplicitComponent):
     """
@@ -190,7 +194,9 @@ class ConstraintsVoltageEnsure(om.ExplicitComponent):
         )
 
         self.add_output(
-            name="constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_caliber",
+            name="constraints:propulsion:he_power_train:simple_PMSM:"
+            + motor_id
+            + ":voltage_caliber",
             val=-0.0,
             units="V",
             desc="Respected if <0",
@@ -209,7 +215,9 @@ class ConstraintsVoltageEnsure(om.ExplicitComponent):
 
         motor_id = self.options["motor_id"]
 
-        outputs["constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_caliber"] = (
+        outputs[
+            "constraints:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_caliber"
+        ] = (
             inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_ac_max"]
             - inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_caliber"]
         )

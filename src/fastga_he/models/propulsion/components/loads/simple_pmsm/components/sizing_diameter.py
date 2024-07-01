@@ -47,9 +47,13 @@ class SizingMotorDiameter(om.ExplicitComponent):
         motor_id = self.options["motor_id"]
         d_ref = self.options["diameter_ref"]
 
-        d_scaling = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter"]
+        d_scaling = inputs[
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":scaling:diameter"
+        ]
 
-        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":diameter"] = d_ref * d_scaling
+        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":diameter"] = (
+            d_ref * d_scaling
+        )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 

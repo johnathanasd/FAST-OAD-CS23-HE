@@ -64,9 +64,9 @@ class ConstraintsTorqueEnforce(om.ExplicitComponent):
 
         motor_id = self.options["motor_id"]
 
-        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating"] = inputs[
-            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_max"
-        ]
+        outputs[
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_rating"
+        ] = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":torque_max"]
 
 
 @oad.RegisterSubmodel(
@@ -158,6 +158,6 @@ class ConstraintsVoltageEnforce(om.ExplicitComponent):
 
         motor_id = self.options["motor_id"]
 
-        outputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_caliber"] = inputs[
-            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_ac_max"
-        ]
+        outputs[
+            "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_caliber"
+        ] = inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":voltage_ac_max"]

@@ -18,6 +18,7 @@ from .sizing_loss_coefficient import SizingMotorLossCoefficient
 from .sizing_simple_pmsm_cg_x import SizingSimplePMSMCGX
 from .sizing_simple_pmsm_cg_y import SizingSimplePMSMCGY
 from .sizing_simple_pmsm_drag import SizingSimplePMSMDrag
+from .sizing_power_density import SizingPowerDensity
 from .cstr_simple_pmsm import ConstraintsSimplePMSM
 
 from ..constants import POSSIBLE_POSITION
@@ -88,10 +89,17 @@ class SizingSimplePMSM(om.Group):
             "loss_coefficients", SizingMotorLossCoefficient(motor_id=motor_id), promotes=["data:*"]
         )
         self.add_subsystem(
-            "pmsm_cg_x", SizingSimplePMSMCGX(motor_id=motor_id, position=position), promotes=["data:*"]
+            "pmsm_cg_x",
+            SizingSimplePMSMCGX(motor_id=motor_id, position=position),
+            promotes=["data:*"],
         )
         self.add_subsystem(
-            "pmsm_cg_y", SizingSimplePMSMCGY(motor_id=motor_id, position=position), promotes=["data:*"]
+            "pmsm_cg_y",
+            SizingSimplePMSMCGY(motor_id=motor_id, position=position),
+            promotes=["data:*"],
+        )
+        self.add_subsystem(
+            "power_density", SizingPowerDensity(motor_id=motor_id), promotes=["data:*"]
         )
         for low_speed_aero in [True, False]:
             system_name = "pmsm_drag_ls" if low_speed_aero else "pmsm_drag_cruise"
