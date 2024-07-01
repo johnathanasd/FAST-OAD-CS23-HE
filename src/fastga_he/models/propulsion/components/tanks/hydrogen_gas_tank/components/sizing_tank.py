@@ -13,6 +13,7 @@ from .sizing_tank_length import SizingHydrogenGasTankLength
 from .sizing_tank_inner_volume import SizingHydrogenGasTankInnerVolume
 from .sizing_tank_inner_diameter import SizingHydrogenGasTankInnerDiameter
 from .sizing_tank_weight import SizingHydrogenGasTankWeight
+from .sizing_specific_weight import SizingHydrogenGasTankSpecificWeight
 from .sizing_tank_drag import SizingHydrogenGasTankDrag
 from .sizing_tank_outer_diameter import SizingHydrogenGasTankOuterDiameter
 from .sizing_tank_overall_length import SizingHydrogenGasTankOverallLength
@@ -138,6 +139,12 @@ class SizingHydrogenGasTank(om.Group):
         self.add_subsystem(
             name="tank_weight",
             subsys=SizingHydrogenGasTankWeight(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            name="tank_specific_weight",
+            subsys=SizingHydrogenGasTankSpecificWeight(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
             promotes=["*"],
         )
 
