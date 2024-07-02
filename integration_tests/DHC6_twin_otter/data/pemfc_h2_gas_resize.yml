@@ -49,7 +49,7 @@ submodels:
   submodel.weight.mass.airframe.wing: fastga_he.submodel.weight.mass.airframe.wing.analytical_he
   submodel.geometry.wing.thickness_ratio: null
   submodel.aerodynamics.high_lift.delta: null
-  submodel.geometry.mfw: fastga.submodel.geometry.mfw.advanced
+  submodel.geometry.mfw: fastga.submodel.geometry.mfw.advance
   submodel.geometry.vertical_tail.position.fd: null
   submodel.performances.mission_vector.descent_speed: null
   submodel.performances.mission_vector.climb_speed: null
@@ -57,7 +57,7 @@ submodels:
   submodel.weight.mass.airframe.paint: fastga.submodel.weight.mass.airframe.paint.by_wet_area
   submodel.performances_he.energy_consumption: fastga_he.submodel.performances.energy_consumption.from_pt_file
   submodel.propulsion.constraints.simple_pmsm.rpm: fastga_he.submodel.propulsion.constraints.simple_pmsm.rpm.ensure
-  submodel.propulsion.constraints.pemfc_stack.effective_area: fastga_he.submodel.propulsion.constraints.pemfc_stack.effective_area.ensure
+  submodel.propulsion.constraints.pemfc_stack.effective_area: fastga_he.submodel.propulsion.constraints.pemfc_stack.effective_area.enforce
   submodel.propulsion.constraints.hydrogen_gas_tank.capacity: fastga_he.submodel.propulsion.constraints.hydrogen_gas_tank.capacity.enforce
   submodel.propulsion.performances.dc_line.temperature_profile: fastga_he.submodel.propulsion.performances.dc_line.temperature_profile.with_dynamics
   submodel.propulsion.constraints.inverter.current: fastga_he.submodel.propulsion.constraints.inverter.current.enforce

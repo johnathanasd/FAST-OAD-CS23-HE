@@ -45,7 +45,7 @@ class SizingFuelSystemCapacityVolume(om.ExplicitComponent):
         self.add_input(
             "data:propulsion:he_power_train:fuel_system:" + fuel_system_id + ":fuel_type",
             val=1.0,
-            desc="Type of fuel flowing in the system, 1.0 - gasoline, 2.0 - Diesel, 3.0 - Jet A1",
+            desc="Type of fuel flowing in the system, 1.0 - gasoline, 2.0 - Diesel, 3.0 - Jet A1, 4.0 - hydrogen gas",
         )
 
         self.add_output(
@@ -80,6 +80,8 @@ class SizingFuelSystemCapacityVolume(om.ExplicitComponent):
             self.rho_fuel = 860.0  # Diesel volume-mass [kg/m**3], cold worst case
         elif fuel_type == 3.0:
             self.rho_fuel = 804.0  # Jet-A1 volume mass [kg/m**3], cold worst case
+        elif fuel_type == 4.0:
+            self.rho_fuel = 0.8822  # H2 gas volume mass [kg/m**3], at 1Mpa, 0 degC
         else:
             self.rho_fuel = 718.9
             _LOGGER.warning("Fuel type %f does not exist, replaced by type 1!", fuel_type)
