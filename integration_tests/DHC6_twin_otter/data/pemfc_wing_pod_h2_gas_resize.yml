@@ -19,13 +19,13 @@ model:
     number_of_points_cruise: 30
     number_of_points_descent: 20
     number_of_points_reserve: 10
-    power_train_file_path: pemfc_h2_propulsion.yml
-    out_file: ../results/pemfc_h2_gas_propulsion.csv
+    power_train_file_path: pemfc_wing_pod_h2_propulsion.yml
+    out_file: ../results/pemfc_wing_pod_h2_gas_propulsion.csv
     use_linesearch: False
     pre_condition_pt: False
   power_train_sizing:
     id: fastga_he.power_train.sizing
-    power_train_file_path: pemfc_h2_propulsion.yml
+    power_train_file_path: pemfc_wing_pod_h2_propulsion.yml
   weight:
     id: fastga.weight.legacy
     propulsion_id: fastga.wrapper.propulsion.basicTurboprop
