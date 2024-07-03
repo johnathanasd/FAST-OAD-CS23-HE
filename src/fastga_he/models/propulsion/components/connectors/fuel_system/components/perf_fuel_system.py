@@ -37,7 +37,7 @@ class PerformancesFuelSystem(om.Group):
             name="number_of_engines",
             default=1,
             types=int,
-            desc="Number of connections at the output of the fuel system, should always be engine",
+            desc="Number of connections at the output of the fuel system, should always be engine or fuel cell",
             allow_none=False,
         )
 

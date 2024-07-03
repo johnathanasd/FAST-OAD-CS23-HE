@@ -154,6 +154,14 @@ def test_prmfc_h2_gas_resize():
 
     problem.write_outputs()
 
+def test_pemfc_wing_pod_h2_gas_tank_powertrain_network():
+
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "pemfc_wing_pod_h2_propulsion.yml")
+    network_file_path = pth.join(RESULTS_FOLDER_PATH, "pemfc_wing_pod_h2_propulsion.html")
+
+    if not pth.exists(network_file_path):
+        power_train_network_viewer(pt_file_path, network_file_path)
+
 def test_prmfc_wing_pod_h2_gas_resize():
 
     logging.basicConfig(level=logging.WARNING)
@@ -161,8 +169,8 @@ def test_prmfc_wing_pod_h2_gas_resize():
     logging.getLogger("fastoad.openmdao.variables.variable").disabled = True
 
     # Define used files depending on options
-    xml_file_name = "input_pemfc_h2_dhc6.xml"
-    process_file_name = "pemfc-wing_pod_h2_gas_resize.yml"
+    xml_file_name = "input_pemfc_wing_pod_h2_dhc6.xml"
+    process_file_name = "pemfc_wing_pod_h2_gas_resize.yml"
 
     configurator = oad.FASTOADProblemConfigurator(pth.join(DATA_FOLDER_PATH, process_file_name))
     problem = configurator.get_problem()

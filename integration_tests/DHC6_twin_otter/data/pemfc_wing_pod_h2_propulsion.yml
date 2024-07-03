@@ -27,7 +27,12 @@ power_train_components:
   inverter_2:
     id: fastga_he.pt_component.inverter
     position: inside_the_wing #"inside_the_wing", "in_the_front", "in_the_back"
-
+  dc_bus_1:
+    id: fastga_he.pt_component.dc_bus
+    options:
+      number_of_inputs: 2
+      number_of_outputs: 2
+    position: inside_the_wing  # "inside_the_wing", "in_the_front", "in_the_back"
   dc_dc_converter_1:
     id: fastga_he.pt_component.dc_dc_converter
     position: inside_the_wing  # "inside_the_wing", "in_the_front", "in_the_back"
@@ -47,7 +52,7 @@ power_train_components:
     options:
       number_of_engines: 2
       number_of_tanks: 1
-    position: in_the_front  # "in_the_wing", "in_the_front", "in_the_back"
+    position: in_the_wing  # "in_the_wing", "in_the_front", "in_the_back"
 
   hydrogen_gas_tank_1:
     id: fastga_he.pt_component.hydrogen_gas_tank
@@ -73,9 +78,15 @@ component_connections:
     target: inverter_2
 
   - source: inverter_1
-    target: dc_dc_converter_1
+    target: [dc_bus_1, 1]
 
   - source: inverter_2
+    target: [ dc_bus_1, 2]
+
+  - source: [ dc_bus_1, 1]
+    target: dc_dc_converter_1
+
+  - source: [ dc_bus_1, 2]
     target: dc_dc_converter_2
 
   - source: dc_dc_converter_1
