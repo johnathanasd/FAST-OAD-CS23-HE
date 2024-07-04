@@ -36,7 +36,7 @@ model:
   wing_position:
     id: fastga.loop.wing_position
   wing_area:
-    id: fastga.loop.wing_area # TODO: change model
+    id: fastga.performance.approach_speed.retrofit #fastga.performance.approach_speed.retrofit , fastga.loop.wing_area
   environmental_impact:
     id: fastga_he.environmental.energy_simple
     mission: design
@@ -59,7 +59,7 @@ submodels:
   submodel.propulsion.constraints.simple_pmsm.rpm: fastga_he.submodel.propulsion.constraints.simple_pmsm.rpm.ensure
   submodel.propulsion.constraints.pemfc_stack.effective_area: fastga_he.submodel.propulsion.constraints.pemfc_stack.effective_area.enforce
   submodel.propulsion.constraints.hydrogen_gas_tank.capacity: fastga_he.submodel.propulsion.constraints.hydrogen_gas_tank.capacity.enforce
-  submodel.propulsion.performances.dc_line.temperature_profile: fastga_he.submodel.propulsion.performances.dc_line.temperature_profile.with_dynamics
+  submodel.propulsion.performances.dc_line.temperature_profile: fastga_he.submodel.propulsion.performances.dc_line.temperature_profile.constant
   submodel.propulsion.constraints.inverter.current: fastga_he.submodel.propulsion.constraints.inverter.current.enforce
   submodel.propulsion.constraints.simple_pmsm.torque: fastga_he.submodel.propulsion.constraints.simple_pmsm.torque.ensure
   submodel.performances_he.dep_effect: fastga_he.submodel.performances.dep_effect.from_pt_file
@@ -79,4 +79,4 @@ submodels:
   submodel.weight.mass.airframe.flight_controls: fastga.submodel.weight.mass.airframe.flight_controls.flops
   submodel.weight.mass_breakdown: fastga_he.submodel.weight.mass_breakdown.modular
   submodel.performances.cg_variation: fastga_he.submodel.performances.cg_variation.simple
-  #submodel.propulsion.inverter.junction_temperature: fastga_he.submodel.propulsion.inverter.junction_temperature.fixed
+  submodel.propulsion.inverter.junction_temperature: fastga_he.submodel.propulsion.inverter.junction_temperature.fixed

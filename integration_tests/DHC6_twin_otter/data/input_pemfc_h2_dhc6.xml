@@ -551,7 +551,7 @@
           <pemfc_stack_1>
             <current_max units="A">600.</current_max>
             <number_of_layers>1800.0<!--length: 3.428e-3 m per layer --></number_of_layers>
-            <effective_area units="cm**2">2000.</effective_area>
+            <effective_area units="cm**2">1600.</effective_area>
           </pemfc_stack_1>
       </pemfc_stack>
         <hydrogen_gas_tank>
@@ -686,7 +686,6 @@
         <recording>
           <mass units="kg" is_input="True">40.0<!--Mass of aircraft systems_inp_data:weight:systems:recording:mass--></mass>
         </recording>
-        # To be varify from dhc6 output
         <power>
           <electric_systems>
             <mass units="lbm" is_input="True">224.27611606284972<!--Mass of aircraft systems_inp_data:weight:systems:power:electric_systems:mass--></mass>

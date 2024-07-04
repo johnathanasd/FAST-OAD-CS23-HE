@@ -27,7 +27,7 @@ import fastoad.api as oad
 
 
 # give to huang
-@oad.RegisterOpenMDAOSystem("fastga.performance.approach_speed", domain=ModelDomain.OTHER)
+@oad.RegisterOpenMDAOSystem("fastga.performance.approach_speed.retrofit", domain=ModelDomain.OTHER)
 class UpdateWingAreaLiftSimple(om.ExplicitComponent):
     """
     Computes needed wing area to have enough lift at required approach speed.
