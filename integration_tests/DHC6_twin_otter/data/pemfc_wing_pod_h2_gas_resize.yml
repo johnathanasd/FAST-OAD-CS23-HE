@@ -36,7 +36,7 @@ model:
   wing_position:
     id: fastga.loop.wing_position
   wing_area:
-    id: fastga.loop.wing_area
+    id: # To fill up
   environmental_impact:
     id: fastga_he.environmental.energy_simple
     mission: design
