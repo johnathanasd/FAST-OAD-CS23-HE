@@ -22,7 +22,7 @@
           <width units="m" is_input="True">0.76</width>
         </doors>
         <luggage>
-          <mass_max units="kg" is_input="True">357.0<!--maximum luggage mass--></mass_max>
+          <mass_max units="kg" is_input="True">10.0<!--maximum luggage mass--></mass_max>
         </luggage>
         <windows>
           <height units="m" is_input="True">0.30</height>
@@ -640,9 +640,9 @@
     </propulsion>
     <weight>
       <aircraft>
-        <max_payload units="kg" is_input="True">1941.0<!--max payload weight--></max_payload>
-        <MFW units="kg" is_input="False">5105.938341389432<!--maximum fuel weight--></MFW>
-        <payload units="kg" is_input="True">1375.0<!--design payload weight--></payload>
+        <max_payload units="kg" is_input="True">679.35<!--max payload weight--></max_payload>
+        <MFW units="kg" is_input="False">4469.8<!--maximum fuel weight--></MFW>
+        <payload units="kg" is_input="True">481.25<!--design payload weight--></payload>
         <CG>
           <aft>
             <MAC_limit is_input="True">0.6324157179518661<!--position of the aft limit of the Weight and balance envelop as a percent of MAC--></MAC_limit>
@@ -665,7 +665,7 @@
       </airframe>
       <furniture>
         <passenger_seats>
-          <mass units="kg" is_input="True">178.5<!--Mass of aircraft furniture_inp_data:weight:furniture:passenger_seats:mass--></mass>
+          <mass units="kg" is_input="True">178.5<!-- original:178.5,  Mass of aircraft furniture_inp_data:weight:furniture:passenger_seats:mass--></mass>
         </passenger_seats>
       </furniture>
       <propulsion>
