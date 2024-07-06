@@ -79,4 +79,4 @@ submodels:
   submodel.weight.mass.airframe.flight_controls: fastga.submodel.weight.mass.airframe.flight_controls.flops
   submodel.weight.mass.mzfw_and_mlw: null
   submodel.performances.cg_variation: fastga_he.submodel.performances.cg_variation.simple
-  submodel.propulsion.inverter.junction_temperature: fastga_he.submodel.propulsion.inverter.junction_temperature.fixed
+  #submodel.propulsion.inverter.junction_temperature: fastga_he.submodel.propulsion.inverter.junction_temperature.fixed
