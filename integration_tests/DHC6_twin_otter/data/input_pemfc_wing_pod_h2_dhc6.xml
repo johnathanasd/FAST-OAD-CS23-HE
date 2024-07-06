@@ -717,9 +717,9 @@
     </propulsion>
     <weight>
       <aircraft>
-        <max_payload units="kg" is_input="True">1400.0<!--max payload weight--></max_payload>
-        <MFW units="kg" is_input="False">4564.938341389432<!--maximum fuel weight--></MFW>
-        <payload units="kg" is_input="True">992.0<!--design payload weight--></payload>
+        <max_payload units="kg" is_input="True">388.2<!--max payload weight--></max_payload>
+        <MFW units="kg" is_input="False">4323.1<!--maximum fuel weight--></MFW>
+        <payload units="kg" is_input="True">275.<!--design payload weight--></payload>
         <CG>
           <aft>
             <MAC_limit is_input="True">0.6324157179518661<!--position of the aft limit of the Weight and balance envelop as a percent of MAC--></MAC_limit>
