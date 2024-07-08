@@ -4,20 +4,24 @@
 
 import openmdao.api as om
 import numpy as np
-
+from ..constants import SUBMODEL_PERFORMANCES_PEMFC_LAYER_VOLTAGE
+import fastoad.api as oad
 
 DEFAULT_MAX_CURRENT_DENSITY = 0.7
 DEFAULT_PRESSURE_ATM = 1.0
 
 
-class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
+@oad.RegisterSubmodel(
+    SUBMODEL_PERFORMANCES_PEMFC_LAYER_VOLTAGE,
+    "fastga_he.submodel.propulsion.performances.pemfc.layer_voltage.statistical",
+)
+class PerformancesSinglePEMFCVoltageStatistical(om.ExplicitComponent):
     """
     Computation of the voltage of single layer proton exchange membrane fuel cell inside one stack. Assumes it can be
     estimated with the i-v curve relation. Model based on existing pemfc, Aerostack Ultralight 200, details can be found in:
     cite:`Fuel Cell and Battery Hybrid System Optimization by J. Hoogendoorn:2018`.
     """
 
-    # TODO: Integrate model based on Thermodynamic calculation from D.Juschus
     def initialize(self):
 
         self.options.declare(
@@ -88,6 +92,199 @@ class PerformancesSinglePEMFCVoltage(om.ExplicitComponent):
         self.add_input(
             "operation_pressure",
             units="atm",
+            val=np.full(number_of_points, DEFAULT_PRESSURE_ATM),
+        )
+
+        self.add_output(
+            "single_layer_pemfc_voltage",
+            units="V",
+            val=np.full(number_of_points, DEFAULT_MAX_CURRENT_DENSITY),
+        )
+
+        self.declare_partials(
+            of="*",
+            wrt=["fc_current_density", "operation_pressure"],
+            method="exact",
+            rows=np.arange(number_of_points),
+            cols=np.arange(number_of_points),
+        )
+
+        self.declare_partials(
+            of="*",
+            wrt="nominal_pressure",
+            method="exact",
+            rows=np.arange(number_of_points),
+            cols=np.zeros(number_of_points),
+        )
+
+    def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
+
+        voc = self.options["open_circuit_voltage"]
+        active_loss_coeff = self.options["activation_loss_coefficient"]
+        r = self.options["ohmic_resistance"]
+        m = self.options["coefficient_in_concentration_loss"]
+        n = self.options["exponential_coefficient_in_concentration_loss"]
+        pressure_coeff = self.options["pressure_coefficient"]
+
+        i = np.clip(
+            inputs["fc_current_density"],
+            np.full_like(inputs["fc_current_density"], 1e-2),
+            np.full_like(inputs["fc_current_density"], self.options["max_current_density"]),
+        )
+
+        operation_pressure = inputs["operation_pressure"]
+
+        nominal_pressure = inputs["nominal_pressure"]
+
+        outputs["single_layer_pemfc_voltage"] = (
+            voc
+            - active_loss_coeff * np.log(i)
+            - r * i
+            - m * np.exp(n * i)
+            + pressure_coeff * np.log(operation_pressure / nominal_pressure)
+        )
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+
+        number_of_points = self.options["number_of_points"]
+        active_loss_coeff = self.options["activation_loss_coefficient"]
+        r = self.options["ohmic_resistance"]
+        m = self.options["coefficient_in_concentration_loss"]
+        n = self.options["exponential_coefficient_in_concentration_loss"]
+        pressure_coeff = self.options["pressure_coefficient"]
+
+        i = np.clip(
+            inputs["fc_current_density"],
+            np.full_like(inputs["fc_current_density"], 1e-2),
+            np.full_like(inputs["fc_current_density"], self.options["max_current_density"]),
+        )
+
+        partials_j = np.where(
+            inputs["fc_current_density"] == i,
+            -active_loss_coeff / i - r - m * n * np.exp(n * i),
+            1e-6,
+        )
+
+        partials["single_layer_pemfc_voltage", "fc_current_density"] = partials_j
+
+        partials["single_layer_pemfc_voltage", "operation_pressure"] = (
+            pressure_coeff / inputs["operation_pressure"]
+        )
+
+        partials["single_layer_pemfc_voltage", "nominal_pressure"] = (
+            -pressure_coeff * np.ones(number_of_points) / inputs["nominal_pressure"]
+        )
+
+
+@oad.RegisterSubmodel(
+    SUBMODEL_PERFORMANCES_PEMFC_LAYER_VOLTAGE,
+    "fastga_he.submodel.propulsion.performances.pemfc.layer_voltage.analytical",
+)
+class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
+    """
+    Computation of the voltage of single layer proton exchange membrane fuel cell inside one stack. Assumes it can be
+    estimated with the i-v curve relation. Model based on analytical i-v curve equation, details can be found in:
+    cite:`Preliminary Propulsion System Sizing Methods for PEM Fuel Cell Aircraft by D.Juschus:2021`.
+    """
+
+    def initialize(self):
+
+        self.options.declare(
+            name="pemfc_stack_id",
+            default=None,
+            desc="Identifier of the PEMFC stack",
+            allow_none=False,
+        )
+
+        self.options.declare(
+            "number_of_points", default=1, desc="number of equilibrium to be treated"
+        )
+
+        self.options.declare(
+            "reversible_electric_potential",
+            default=1.229,
+            desc="reversible electric potential of one layer of pemfc [V]",
+        )
+
+        self.options.declare(
+            "gas_constant",
+            default=8.314,
+            desc="gas constant in [J/(mol*K)]",
+        )
+
+        self.options.declare(
+            "faraday_constant",
+            default=96485.3321,
+            desc="faraday constant in [sec*A/mol]",
+        )
+
+        self.options.declare(
+            "entropy_difference",
+            default=163.0,
+            desc="entropy difference from reation in [J/(mol*K)]",
+        )
+
+        self.options.declare(
+            "standard_temperature",
+            default=273.15,
+            desc="standard temperature in [K]",
+        )
+
+        self.options.declare(
+            "cathode_transfer_coefficient",
+            default=0.3,
+            desc="transfer_coefficient at the cathode side of fuel cell",
+        )
+
+        self.options.declare(
+            "mass_transport_loss_constant",
+            default=0.5,
+            desc="the constant result from mass transport in pemfc [V]",
+        )
+
+        self.options.declare(
+            "area_specific_resistance",
+            default=1.0 * 10 ** -6,
+            desc="Combined ohmic resistance that leads to losses in pemfc [Ωm**2]",
+        )
+
+        self.options.declare(
+            "limiting_current_density",
+            default=20000.0,
+            desc="low limit for current density of pemfc [A/m**2]",
+        )
+
+        self.options.declare(
+            "leakage_current_density",
+            default=100.0,
+            desc="leak loss of  current density from pemfc [A/m**2]",
+        )
+
+    def setup(self):
+
+        number_of_points = self.options["number_of_points"]
+
+        self.add_input(
+            "fc_current_density",
+            units="A/m**2",
+            val=np.full(number_of_points, np.nan),
+        )
+
+        self.add_input(
+            name="hydrogen_reactant_pressure",
+            units="Pa",
+            val=DEFAULT_PRESSURE_ATM,
+        )
+
+        self.add_input(
+            "operation_pressure",
+            units="Pa",
+            val=np.full(number_of_points, DEFAULT_PRESSURE_ATM),
+        )
+
+        self.add_input(
+            "operation_temperature",
+            units="K",
             val=np.full(number_of_points, DEFAULT_PRESSURE_ATM),
         )
 

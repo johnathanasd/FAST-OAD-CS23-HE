@@ -44,7 +44,6 @@ class UpdateWingAreaLiftSimple(om.ExplicitComponent):
 
         self.add_output("data:TLAR:v_approach", val=30.0, units="m/s")
 
-
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
         # inputs for approach speed computation
@@ -53,7 +52,7 @@ class UpdateWingAreaLiftSimple(om.ExplicitComponent):
         max_cl = inputs["data:aerodynamics:aircraft:landing:CL_max"]
 
         # output computation for stalling speed and approach speed
-        stall_speed = np.sqrt((2 * mlw * g)/(wing_area_approach * 1.225 * max_cl))
+        stall_speed = np.sqrt((2 * mlw * g) / (wing_area_approach * 1.225 * max_cl))
         approach_speed = stall_speed * 1.3
 
         outputs["data:TLAR:v_approach"] = approach_speed
