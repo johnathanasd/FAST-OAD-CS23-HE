@@ -118,7 +118,7 @@
         </PMSM>
         <hydrogen_gas_tank>
           <hydrogen_gas_tank_1>
-            <fuel_consumed_mission units="kg" is_input="False">13.554682657822255<!--Amount of fuel from that tank which will be consumed during mission--></fuel_consumed_mission>
+            <fuel_consumed_mission units="kg" is_input="False">13.55674326875067<!--Amount of fuel from that tank which will be consumed during mission--></fuel_consumed_mission>
           </hydrogen_gas_tank_1>
         </hydrogen_gas_tank>
         <inverter>

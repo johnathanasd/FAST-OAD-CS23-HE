@@ -7,7 +7,7 @@ import numpy as np
 from ..constants import SUBMODEL_PERFORMANCES_PEMFC_LAYER_VOLTAGE
 import fastoad.api as oad
 
-DEFAULT_MAX_CURRENT_DENSITY = 0.7
+DEFAULT_LAYER_VOLTAGE = 0.7
 DEFAULT_PRESSURE_ATM = 1.0
 
 
@@ -98,7 +98,7 @@ class PerformancesSinglePEMFCVoltageStatistical(om.ExplicitComponent):
         self.add_output(
             "single_layer_pemfc_voltage",
             units="V",
-            val=np.full(number_of_points, DEFAULT_MAX_CURRENT_DENSITY),
+            val=np.full(number_of_points, DEFAULT_LAYER_VOLTAGE),
         )
 
         self.declare_partials(
@@ -260,6 +260,17 @@ class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
             desc="leak loss of  current density from pemfc [A/m**2]",
         )
 
+        self.options.declare(
+            "exchange_current_density",
+            default=6 * 10 ** -5,
+            desc="exchange current density from pemfc [A/m**2]",
+        )
+
+        self.options.declare(
+            "max_current_density", default=7*10**3,
+            desc="maximum current density  of pemfc",
+        )
+
     def setup(self):
 
         number_of_points = self.options["number_of_points"]
@@ -291,12 +302,12 @@ class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
         self.add_output(
             "single_layer_pemfc_voltage",
             units="V",
-            val=np.full(number_of_points, DEFAULT_MAX_CURRENT_DENSITY),
+            val=np.full(number_of_points, DEFAULT_LAYER_VOLTAGE),
         )
 
         self.declare_partials(
             of="*",
-            wrt=["fc_current_density", "operation_pressure"],
+            wrt=["fc_current_density", "operation_pressure", "operation_temperature"],
             method="exact",
             rows=np.arange(number_of_points),
             cols=np.arange(number_of_points),
@@ -304,66 +315,92 @@ class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
 
         self.declare_partials(
             of="*",
-            wrt="nominal_pressure",
+            wrt="hydrogen_reactant_pressure",
             method="exact",
             rows=np.arange(number_of_points),
             cols=np.zeros(number_of_points),
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
+        number_of_points = self.options["number_of_points"]
+        e0 = self.options["reversible_electric_potential"]
+        ds = self.options["entropy_difference"]
+        gas_const = self.options["gas_constant"]
+        faraday_const = self.options["faraday_constant"]
+        t0 = self.options["standard_temperature"] * np.ones(number_of_points)
+        a = self.options["cathode_transfer_coefficient"]
+        r = self.options["area_specific_resistance"]
+        c = self.options["mass_transport_loss_constant"]
+        jlim = self.options["limiting_current_density"] * np.ones(number_of_points)
+        jleak = self.options["leakage_current_density"] * np.ones(number_of_points)
+        j0 = self.options["exchange_current_density"]
+        J = inputs["fc_current_density"]
 
-        voc = self.options["open_circuit_voltage"]
-        active_loss_coeff = self.options["activation_loss_coefficient"]
-        r = self.options["ohmic_resistance"]
-        m = self.options["coefficient_in_concentration_loss"]
-        n = self.options["exponential_coefficient_in_concentration_loss"]
-        pressure_coeff = self.options["pressure_coefficient"]
-
-        i = np.clip(
+        j = np.clip(
             inputs["fc_current_density"],
-            np.full_like(inputs["fc_current_density"], 1e-2),
+            np.full_like(inputs["fc_current_density"], 100.),
             np.full_like(inputs["fc_current_density"], self.options["max_current_density"]),
         )
 
-        operation_pressure = inputs["operation_pressure"]
+        p_o2 = inputs["operation_pressure"]
 
-        nominal_pressure = inputs["nominal_pressure"]
+        p_h2 = inputs["hydrogen_reactant_pressure"]
+
+        t = inputs["operation_temperature"]
 
         outputs["single_layer_pemfc_voltage"] = (
-            voc
-            - active_loss_coeff * np.log(i)
-            - r * i
-            - m * np.exp(n * i)
-            + pressure_coeff * np.log(operation_pressure / nominal_pressure)
+            e0
+            - ds / (2 * faraday_const) * (t - t0)
+            + gas_const * t / (2 * faraday_const) * np.log(p_h2 * np.sqrt(p_o2))
+            - gas_const * t / (2 * a * faraday_const) * np.log((j + jleak) / j0)
+            - r * j
+            - c * np.log(jlim / (jlim - j - jleak))
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
         number_of_points = self.options["number_of_points"]
-        active_loss_coeff = self.options["activation_loss_coefficient"]
-        r = self.options["ohmic_resistance"]
-        m = self.options["coefficient_in_concentration_loss"]
-        n = self.options["exponential_coefficient_in_concentration_loss"]
-        pressure_coeff = self.options["pressure_coefficient"]
+        ds = self.options["entropy_difference"]
+        gas_const = self.options["gas_constant"]
+        faraday_const = self.options["faraday_constant"]
+        t0 = self.options["standard_temperature"] * np.ones(number_of_points)
+        t = inputs["operation_temperature"]
+        a = self.options["cathode_transfer_coefficient"]
+        r = self.options["area_specific_resistance"]
+        c = self.options["mass_transport_loss_constant"]
+        jlim = self.options["limiting_current_density"] * np.ones(number_of_points)
+        jleak = self.options["leakage_current_density"] * np.ones(number_of_points)
+        j0 = self.options["exchange_current_density"]
+        p_o2 = inputs["operation_pressure"]
 
-        i = np.clip(
+        p_h2 = inputs["hydrogen_reactant_pressure"]
+
+        j = np.clip(
             inputs["fc_current_density"],
-            np.full_like(inputs["fc_current_density"], 1e-2),
+            np.full_like(inputs["fc_current_density"], 100.),
             np.full_like(inputs["fc_current_density"], self.options["max_current_density"]),
         )
 
         partials_j = np.where(
-            inputs["fc_current_density"] == i,
-            -active_loss_coeff / i - r - m * n * np.exp(n * i),
+            inputs["fc_current_density"] == j,
+            -gas_const * t / (2 * faraday_const * a * (j + jleak))
+            - c / (-j + jlim - jleak)
+            - r * np.ones(number_of_points),
             1e-6,
         )
 
         partials["single_layer_pemfc_voltage", "fc_current_density"] = partials_j
 
-        partials["single_layer_pemfc_voltage", "operation_pressure"] = (
-            pressure_coeff / inputs["operation_pressure"]
+        partials["single_layer_pemfc_voltage", "operation_temperature"] = (
+            -ds / (2 * faraday_const) * np.ones(number_of_points)
+            + gas_const / (2 * faraday_const) * np.log(p_h2 * np.sqrt(p_o2))
+            - gas_const / (2 * a * faraday_const) * np.log((j + jleak) / j0)
         )
 
-        partials["single_layer_pemfc_voltage", "nominal_pressure"] = (
-            -pressure_coeff * np.ones(number_of_points) / inputs["nominal_pressure"]
+        partials["single_layer_pemfc_voltage", "operation_pressure"] = (
+            gas_const * t / (4 * faraday_const * p_o2)
+        )
+
+        partials["single_layer_pemfc_voltage", "hydrogen_reactant_pressure"] = (
+            gas_const * t / (2 * faraday_const * p_h2)
         )

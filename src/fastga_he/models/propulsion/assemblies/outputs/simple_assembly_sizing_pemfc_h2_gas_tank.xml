@@ -491,6 +491,7 @@
             <fuel_total_mission units="kg" is_input="False">14.14<!--Total amount of hydrogen loaded in the tank for the mission--></fuel_total_mission>
             <inner_volume units="m**3" is_input="False">17.465845480584296<!--Capacity of the tank in terms of volume--></inner_volume>
             <mass units="kg" is_input="False">16.348062938958073<!--Weight of the hydrogen gas tanks--></mass>
+            <specific_weight is_input="False">1.1561572092615326<!--The amount of tank weight to keep 1 kg of hydrogen gas--></specific_weight>
             <tank_pressure units="Pa" is_input="True">1013250.0<!--Hydrogen gas tank static pressure--></tank_pressure>
             <unusable_fuel_mission units="kg" is_input="False">0.14<!--Amount of trapped hydrogen in the tank--></unusable_fuel_mission>
             <CG>

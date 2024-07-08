@@ -2,7 +2,7 @@
   <altitude units="m" is_input="True">[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]</altitude>
   <density units="kg/m**3" is_input="True">[1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587]</density>
   <exterior_temperature units="degK" is_input="True">[288.15, 288.15, 288.15, 288.15, 288.15, 288.15, 288.15, 288.15, 288.15, 288.15]<!--temperature outside of the cable--></exterior_temperature>
-  <fuel_consumed_t_econ units="kg" is_input="False">[1.3221300398051905, 1.3298780178178893, 1.3374990685098522, 1.3449922969263621, 1.3523568094901135, 1.3595917145078238, 1.3666961226723793, 1.3736691475610294, 1.3805099061301742, 1.3872175192072909]<!--fuel consumed at each time step--></fuel_consumed_t_econ>
+  <fuel_consumed_t_econ units="kg" is_input="False">[1.3223310327518776, 1.3300801886282394, 1.337702397888111, 1.345196765440723, 1.3525623975729255, 1.3597984024558798, 1.366903890647277, 1.3738779755896116, 1.3807197741050405, 1.387428406887388]<!--fuel consumed at each time step--></fuel_consumed_t_econ>
   <non_consumable_energy_t_econ units="W*h" is_input="False">[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]<!--Non consumable energy at each time step--></non_consumable_energy_t_econ>
   <thrust units="N" is_input="True">[1550.0, 1538.888888888889, 1527.7777777777778, 1516.6666666666667, 1505.5555555555557, 1494.4444444444443, 1483.3333333333333, 1472.2222222222222, 1461.111111111111, 1450.0]</thrust>
   <time_step units="s" is_input="True">[500.0, 500.0, 500.0, 500.0, 500.0, 500.0, 500.0, 500.0, 500.0, 500.0]</time_step>
@@ -121,7 +121,7 @@
         </PMSM>
         <hydrogen_gas_tank>
           <hydrogen_gas_tank_1>
-            <fuel_consumed_mission units="kg" is_input="False">13.554540642628105<!--Amount of fuel from that tank which will be consumed during mission--></fuel_consumed_mission>
+            <fuel_consumed_mission units="kg" is_input="False">13.556601231967072<!--Amount of fuel from that tank which will be consumed during mission--></fuel_consumed_mission>
           </hydrogen_gas_tank_1>
         </hydrogen_gas_tank>
         <inverter>

@@ -500,12 +500,13 @@
           <hydrogen_gas_tank_1>
             <Safety_factor is_input="True">1.0<!--Hydrogen gas tank design safety factor--></Safety_factor>
             <capacity units="kg" is_input="True">15.087<!--Capacity of the tank in terms of weight--></capacity>
-            <fuel_consumed_mission units="kg" is_input="False">12.946240197059977<!--Amount of fuel from that tank which will be consumed during mission--></fuel_consumed_mission>
-            <fuel_total_mission units="kg" is_input="False">13.075178337641884<!--Total amount of hydrogen loaded in the tank for the mission--></fuel_total_mission>
+            <fuel_consumed_mission units="kg" is_input="False">12.948208311305464<!--Amount of fuel from that tank which will be consumed during mission--></fuel_consumed_mission>
+            <fuel_total_mission units="kg" is_input="False">13.077166053330528<!--Total amount of hydrogen loaded in the tank for the mission--></fuel_total_mission>
             <inner_volume units="m**3" is_input="False">18.63558774862626<!--Capacity of the tank in terms of volume--></inner_volume>
-            <mass units="kg" is_input="False">17.2920785921098<!--Weight of the hydrogen gas tanks--></mass>
+            <mass units="kg" is_input="False">17.292098272463154<!--Weight of the hydrogen gas tanks--></mass>
+            <specific_weight is_input="False">1.3223123574284779<!--The amount of tank weight to keep 1 kg of hydrogen gas--></specific_weight>
             <tank_pressure units="Pa" is_input="True">1013250.0<!--Hydrogen gas tank static pressure--></tank_pressure>
-            <unusable_fuel_mission units="kg" is_input="False">0.12945721126378104<!--Amount of trapped hydrogen in the tank--></unusable_fuel_mission>
+            <unusable_fuel_mission units="kg" is_input="False">0.12947689161713394<!--Amount of trapped hydrogen in the tank--></unusable_fuel_mission>
             <CG>
               <x units="m" is_input="False">2.8846643019251306<!--X position of the tank center of gravity--></x>
               <y units="m" is_input="False">1.8474926765644417<!--Y position of the pemfc center of gravity--></y>
@@ -773,7 +774,7 @@
         </PMSM>
         <hydrogen_gas_tank>
           <hydrogen_gas_tank_1>
-            <capacity units="kg" is_input="False">-2.011821662358116<!--Constraints on the tank capacity in kg, respected if <0--></capacity>
+            <capacity units="kg" is_input="False">-2.009833946669472<!--Constraints on the tank capacity in kg, respected if <0--></capacity>
             <dimension>
               <overall_length units="m" is_input="False">0.0<!--Constraints on the tank length w.r.t the cabin/rear_fuselage length,  respected if <0--></overall_length>
             </dimension>

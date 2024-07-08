@@ -4,18 +4,19 @@
 
 import numpy as np
 import openmdao.api as om
-
+import fastoad.api as oad
 
 from ..components.perf_direct_bus_connection import PerformancesPEMFCDirectBusConnection
 from ..components.perf_pemfc_power import PerformancesPEMFCPower
 from ..components.perf_maximum import PerformancesMaximum
 from ..components.perf_pemfc_current_density import PerformancesCurrentDensity
-from ..components.perf_layer_voltage import PerformancesSinglePEMFCVoltage
+from ..constants import SUBMODEL_PERFORMANCES_PEMFC_LAYER_VOLTAGE
 from ..components.perf_fuel_consumption import PerformancesPEMFCFuelConsumption
 from ..components.perf_fuel_consumed import PerformancesPEMFCFuelConsumed
 from ..components.perf_pemfc_efficiency import PerformancesPEMFCEfficiency
 from ..components.perf_pemfc_voltage import PerformancesPEMFCVoltage
 from ..components.perf_operation_pressure import PerformancesOperationPressure
+from ..components.perf_operation_temperature import PerformancesOperationTemperature
 
 
 class PerformancesPEMFCStack(om.Group):
@@ -43,6 +44,7 @@ class PerformancesPEMFCStack(om.Group):
         number_of_points = self.options["number_of_points"]
         pemfc_stack_id = self.options["pemfc_stack_id"]
         direct_bus_connection = self.options["direct_bus_connection"]
+        option_layer_voltage = {"number_of_points":number_of_points,"pemfc_stack_id":pemfc_stack_id}
 
         self.add_subsystem(
             "maximum",
@@ -65,8 +67,16 @@ class PerformancesPEMFCStack(om.Group):
         )
 
         self.add_subsystem(
-            "single_layer_voltage",
-            PerformancesSinglePEMFCVoltage(number_of_points=number_of_points),
+            "pemfc_ambient_temperature",
+            PerformancesOperationTemperature(number_of_points=number_of_points),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            name="constraints_pemfc_effective_area",
+            subsys=oad.RegisterSubmodel.get_submodel(
+                SUBMODEL_PERFORMANCES_PEMFC_LAYER_VOLTAGE, options= option_layer_voltage
+            ),
             promotes=["*"],
         )
 

@@ -40,7 +40,9 @@ NB_POINTS_TEST = 10
 
 
 def test_assembly_performances():
-
+    oad.RegisterSubmodel.active_models[
+        "submodel.propulsion.performances.pemfc.layer_voltage"
+    ] = "fastga_he.submodel.propulsion.performances.pemfc.layer_voltage.statistical"
     ivc = get_indep_var_comp(
         list_inputs(PerformancesAssembly(number_of_points=NB_POINTS_TEST)),
         __file__,
@@ -229,6 +231,9 @@ def test_performances_sizing_assembly_pemfc_enforce():
     oad.RegisterSubmodel.active_models[
         "submodel.propulsion.constraints.hydrogen_gas_tank.capacity"
     ] = "fastga_he.submodel.propulsion.constraints.hydrogen_gas_tank.capacity.enforce"
+    oad.RegisterSubmodel.active_models[
+        "submodel.propulsion.performances.pemfc.layer_voltage"
+    ] = "fastga_he.submodel.propulsion.performances.pemfc.layer_voltage.statistical"
 
     ivc = get_indep_var_comp(
         list_inputs(FullSimpleAssembly(number_of_points=NB_POINTS_TEST)),
@@ -417,6 +422,9 @@ def test_performances_sizing_assembly_pemfc_ensure():
 
 
 def test_performances_from_pt_file():
+    oad.RegisterSubmodel.active_models[
+        "submodel.propulsion.performances.pemfc.layer_voltage"
+    ] = "fastga_he.submodel.propulsion.performances.pemfc.layer_voltage.statistical"
     pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
 
     ivc = get_indep_var_comp(
