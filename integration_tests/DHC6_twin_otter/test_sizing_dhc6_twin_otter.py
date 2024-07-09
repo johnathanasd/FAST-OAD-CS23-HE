@@ -193,6 +193,14 @@ def test_prmfc_wing_pod_h2_gas_resize():
 
     problem.write_outputs()
 
+def test_turboshaft_pemfc_hybrid_powertrain_network():
+
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "turboshaft_pemfc_hybrid_propulsion.yml")
+    network_file_path = pth.join(RESULTS_FOLDER_PATH, "turboshaft_pemfc_hybrid_propulsion.html")
+
+    if not pth.exists(network_file_path):
+        power_train_network_viewer(pt_file_path, network_file_path)
+
 
 def test_ecopulse_new_wing():
 
