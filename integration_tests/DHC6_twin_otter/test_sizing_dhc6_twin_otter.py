@@ -210,7 +210,7 @@ def test_ecopulse_new_wing():
     # Create inputs
     ref_inputs = pth.join(DATA_FOLDER_PATH, xml_file_name)
 
-    problem.model_options["*propeller_1*"] = {"mass_as_input": True}
+    problem.model_options["*propeller_*"] = {"mass_as_input": True}
 
     problem.write_needed_inputs(ref_inputs)
     problem.read_inputs()
@@ -266,7 +266,7 @@ def test_ecopulse_new_wing_mission_analysis():
     # Create inputs
     ref_inputs = pth.join(DATA_FOLDER_PATH, xml_file_name)
 
-    problem.model_options["*propeller_1*"] = {"mass_as_input": True}
+    problem.model_options["*propeller_*"] = {"mass_as_input": True}
 
     problem.write_needed_inputs(ref_inputs)
     problem.read_inputs()
