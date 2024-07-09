@@ -223,6 +223,9 @@ def test_turboshaft_pemfc_hybrid_retrofit():
     problem.read_inputs()
     problem.setup()
 
+    problem.set_val(name="data:weight:aircraft:MTOW", units="kg", val=5000.0)
+    problem.set_val(name="data:geometry:wing:area", units="m**2", val=40.0)
+
     # om.n2(problem)
 
     problem.run_model()
