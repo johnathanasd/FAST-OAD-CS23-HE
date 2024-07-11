@@ -24,7 +24,7 @@ model:
     number_of_points_reserve: 10
     power_train_file_path: turboshaft_pemfc_hybrid_propulsion.yml
     out_file: ../results/turboshaft_pemfc_hybrid_propulsion.csv
-    use_linesearch: False
+    use_linesearch: True
     pre_condition_pt: True
   weight:
     id: fastga.weight.legacy
@@ -37,8 +37,8 @@ model:
     id: fastga.loop.wing_position
   wing_area:
     id: fastga.performance.approach_speed.retrofit
-  #payload_update:
-  #  id: fastga_he.weight.payload_for_retrofit
+  payload_update:
+    id: fastga_he.weight.payload_for_retrofit
   environmental_impact:
     id: fastga_he.environmental.energy_simple
     mission: design

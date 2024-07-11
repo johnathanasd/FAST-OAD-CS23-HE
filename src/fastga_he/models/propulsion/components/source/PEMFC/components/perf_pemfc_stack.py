@@ -44,7 +44,10 @@ class PerformancesPEMFCStack(om.Group):
         number_of_points = self.options["number_of_points"]
         pemfc_stack_id = self.options["pemfc_stack_id"]
         direct_bus_connection = self.options["direct_bus_connection"]
-        option_layer_voltage = {"number_of_points":number_of_points,"pemfc_stack_id":pemfc_stack_id}
+        option_layer_voltage = {
+            "number_of_points": number_of_points,
+            "pemfc_stack_id": pemfc_stack_id,
+        }
 
         self.add_subsystem(
             "maximum",
@@ -75,7 +78,7 @@ class PerformancesPEMFCStack(om.Group):
         self.add_subsystem(
             name="constraints_pemfc_effective_area",
             subsys=oad.RegisterSubmodel.get_submodel(
-                SUBMODEL_PERFORMANCES_PEMFC_LAYER_VOLTAGE, options= option_layer_voltage
+                SUBMODEL_PERFORMANCES_PEMFC_LAYER_VOLTAGE, options=option_layer_voltage
             ),
             promotes=["*"],
         )

@@ -262,12 +262,13 @@ class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
 
         self.options.declare(
             "exchange_current_density",
-            default=6 * 10 ** -5,
+            default=9 * 10 ** -5,
             desc="exchange current density from pemfc [A/m**2]",
         )
 
         self.options.declare(
-            "max_current_density", default=7*10**3,
+            "max_current_density",
+            default=7 * 10 ** 3,
             desc="maximum current density  of pemfc",
         )
 
@@ -338,7 +339,7 @@ class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
 
         j = np.clip(
             inputs["fc_current_density"],
-            np.full_like(inputs["fc_current_density"], 100.),
+            np.full_like(inputs["fc_current_density"], 100.0),
             np.full_like(inputs["fc_current_density"], self.options["max_current_density"]),
         )
 
@@ -377,7 +378,7 @@ class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
 
         j = np.clip(
             inputs["fc_current_density"],
-            np.full_like(inputs["fc_current_density"], 100.),
+            np.full_like(inputs["fc_current_density"], 100.0),
             np.full_like(inputs["fc_current_density"], self.options["max_current_density"]),
         )
 

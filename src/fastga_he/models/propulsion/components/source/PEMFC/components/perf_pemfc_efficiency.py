@@ -34,7 +34,7 @@ class PerformancesPEMFCEfficiency(om.ExplicitComponent):
 
         self.options.declare(
             "pemfc_theoretical_electric_potential",
-            default=1.23,
+            default=1.229,
             desc="pemfc_theoretical_electric_potential of one layer of pemfc [V]",
         )
 

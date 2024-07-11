@@ -345,8 +345,8 @@
             </cross_section>
           </dc_bus_1>
         </DC_bus>
-        <simple_PMSM>
-          <simple_motor_1>
+        <PMSM>
+          <motor_1>
             <from_LE units="m" is_input="True">0.05<!--Distance between the PMSM front face and the leading edge--></from_LE>
             <efficiency>0.94</efficiency>
             <rpm_rating units="1/min" is_input="True">4500.0<!--Max continuous rpm of the motor--></rpm_rating>
@@ -358,8 +358,8 @@
             <fairing>
               <fineness is_input="True">1.75<!--Ratio between the fairing length and the motor diameter--></fineness>
             </fairing>
-          </simple_motor_1>
-          <simple_motor_2>
+          </motor_1>
+          <motor_2>
             <from_LE units="m" is_input="True">0.05<!--Distance between the PMSM front face and the leading edge--></from_LE>
             <rpm_rating units="1/min" is_input="True">4500.0<!--Max continuous rpm of the motor--></rpm_rating>
             <torque_rating units="N*m">1783.</torque_rating>
@@ -371,8 +371,8 @@
             <fairing>
               <fineness is_input="True">1.75<!--Ratio between the fairing length and the motor diameter--></fineness>
             </fairing>
-          </simple_motor_2>
-        </simple_PMSM>
+          </motor_2>
+        </PMSM>
         <speed_reducer>
           <speed_reducer_1>
             <efficiency is_input="True">0.98<!--Efficiency of the planetary gear--></efficiency>
@@ -746,7 +746,7 @@
         </taxi_out>
         <main_route>
           <climb>
-            <v_eas units="knot" is_input="True">85.0</v_eas>
+            <v_eas units="knot" is_input="True">130.0</v_eas>
             <climb_rate>
               <cruise_level units="ft/min" is_input="True">1600.0<!--target climb rate at the end of climb--></cruise_level>
               <sea_level units="ft/min" is_input="True">1650.0<!--target climb rate at sea level--></sea_level>
@@ -757,7 +757,7 @@
           </cruise>
           <descent>
             <descent_rate units="ft/min" is_input="True">-1500.0<!--target descent rate for the aircraft--></descent_rate>
-            <v_eas units="knot" is_input="True">80.0</v_eas>
+            <v_eas units="knot" is_input="True">160.0</v_eas>
           </descent>
           <reserve>
             <altitude units="ft" is_input="True">10000.0</altitude>
@@ -886,7 +886,7 @@
             <void_thickness units="m" is_input="True">5e-05</void_thickness>
           </insulation>
         </DC_bus>
-        <simple_PMSM>
+        <PMSM>
           <motor_1>
             <k_efficiency is_input="True">1.0<!--K factor for the PMSM efficiency--></k_efficiency>
             <power_factor is_input="True">1.0</power_factor>
@@ -895,7 +895,7 @@
             <k_efficiency is_input="True">1.0<!--K factor for the PMSM efficiency--></k_efficiency>
             <power_factor is_input="True">1.0</power_factor>
           </motor_2>
-        </simple_PMSM>
+        </PMSM>
         <inverter>
           <inverter_1>
             <reference_temperature units="degK" is_input="True">293.15</reference_temperature>

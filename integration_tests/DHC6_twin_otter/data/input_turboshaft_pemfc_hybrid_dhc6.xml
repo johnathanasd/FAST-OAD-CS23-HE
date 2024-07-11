@@ -568,7 +568,7 @@
         <turboshaft>
           <turboshaft_1>
             <power_offtake units="kW" is_input="True">30.0<!--Mechanical offtake on the turboshaft, is added to shaft power out--></power_offtake>
-            <power_rating units="kW" is_input="True">237.0<!--Flat rating of the turboshaft--></power_rating>
+            <power_rating units="kW" is_input="True">231.0<!--Flat rating of the turboshaft--></power_rating>
             <design_point>
               <OPR is_input="True">8.0<!--OPR of the turboshaft at the design point--></OPR>
               <T41t units="degK" is_input="True">1400.0<!--Total temperature at the output of the combustion chamber of the turboshaft at the design point--></T41t>
@@ -585,7 +585,7 @@
           </turboshaft_1>
           <turboshaft_2>
             <power_offtake units="kW" is_input="True">30.0<!--Mechanical offtake on the turboshaft, is added to shaft power out--></power_offtake>
-            <power_rating units="kW" is_input="True">237.0<!--Flat rating of the turboshaft--></power_rating>
+            <power_rating units="kW" is_input="True">231.0<!--Flat rating of the turboshaft--></power_rating>
             <design_point>
               <OPR is_input="True">8.0<!--OPR of the turboshaft at the design point--></OPR>
               <T41t units="degK" is_input="True">1400.0<!--Total temperature at the output of the combustion chamber of the turboshaft at the design point--></T41t>
@@ -719,9 +719,10 @@
     </propulsion>
     <weight>
       <aircraft>
-        <max_payload units="kg" is_input="True">388.2<!--max payload weight--></max_payload>
-        <MFW units="kg" is_input="False">4323.1<!--maximum fuel weight--></MFW>
-        <payload units="kg" is_input="True">275.<!--design payload weight--></payload>
+        <max_payload units="kg" is_input="True">970.5<!--max payload weight--></max_payload>
+        <MFW units="kg" is_input="False">4616.938341389432<!--maximum fuel weight--></MFW>
+        <payload units="kg" is_input="True">687.5<!--design payload weight--></payload>
+        <target_MTOW units="kg" is_input="False">5498.228238260886<!--maximum takeoff weight of the aircraft--></target_MTOW>
         <CG>
           <aft>
             <MAC_limit is_input="True">0.6324157179518661<!--position of the aft limit of the Weight and balance envelop as a percent of MAC--></MAC_limit>

@@ -55,7 +55,9 @@ class SizingPowerDensity(om.ExplicitComponent):
         partials[
             "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":power_density",
             "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":shaft_power_rating",
-        ] = (1 / inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":mass"])
+        ] = (
+            1 / inputs["data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":mass"]
+        )
         partials[
             "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":power_density",
             "data:propulsion:he_power_train:simple_PMSM:" + motor_id + ":mass",
