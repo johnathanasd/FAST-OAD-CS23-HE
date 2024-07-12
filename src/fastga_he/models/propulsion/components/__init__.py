@@ -27,7 +27,7 @@ from .connectors.planetary_gear import (
 from .connectors.gearbox import SizingGearbox, PerformancesGearbox, SlipstreamGearbox
 
 from .loads.pmsm import SizingPMSM, PerformancesPMSM, SlipstreamPMSM
-from .loads.simple_pmsm import SizingSimplePMSM, PerformancesSimplePMSM, SlipstreamSimplePMSM
+from .loads.dc_load import SizingDCAuxLoad, PerformancesDCAuxLoad, SlipstreamDCAuxLoad
 
 from .propulsor.propeller import SizingPropeller, PerformancesPropeller, SlipstreamPropeller
 
@@ -40,11 +40,5 @@ from .source.simple_turbo_generator import (
     PerformancesTurboGenerator,
     SlipstreamTurboGenerator,
 )
-from .source.pemfc import SizingPEMFCStack, PerformancesPEMFCStack, SlipstreamPEMFCStack
 
 from .tanks.fuel_tanks import SizingFuelTank, PerformancesFuelTank, SlipstreamFuelTank
-from .tanks.hydrogen_gas_tank import (
-    SizingHydrogenGasTank,
-    PerformancesHydrogenGasTank,
-    SlipstreamHydrogenGasTank,
-)

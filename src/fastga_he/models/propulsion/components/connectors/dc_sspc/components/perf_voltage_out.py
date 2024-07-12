@@ -46,7 +46,13 @@ class PerformancesDCSSPCVoltageOut(om.ExplicitComponent):
             units="V",
         )
 
-        self.declare_partials(of="*", wrt="*", method="exact")
+        self.declare_partials(
+            of="*",
+            wrt="*",
+            method="exact",
+            rows=np.arange(number_of_points),
+            cols=np.arange(number_of_points),
+        )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -82,7 +88,7 @@ class PerformancesDCSSPCVoltageOut(om.ExplicitComponent):
             # was to fail or if the cable was to fail, to ensure that no current flows through
             # the cable we must put the same value at each side of said cable (so it also assume
             # that there is a SSPC at both side of the cable)
-            outputs["dc_voltage_out"] = np.zeros_like(inputs["dc_voltage_in"])
+            outputs["dc_voltage_out"] = inputs["dc_voltage_in"]
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
@@ -90,15 +96,13 @@ class PerformancesDCSSPCVoltageOut(om.ExplicitComponent):
 
         if self.options["closed"]:
             if self.options["at_bus_output"]:
-                partials["dc_voltage_out", "dc_voltage_in"] = np.diag(inputs["efficiency"])
-                partials["dc_voltage_out", "efficiency"] = np.diag(inputs["dc_voltage_in"])
+                partials["dc_voltage_out", "dc_voltage_in"] = inputs["efficiency"]
+                partials["dc_voltage_out", "efficiency"] = inputs["dc_voltage_in"]
             else:
-                partials["dc_voltage_out", "dc_voltage_in"] = np.diag(1.0 / inputs["efficiency"])
-                partials["dc_voltage_out", "efficiency"] = np.diag(
+                partials["dc_voltage_out", "dc_voltage_in"] = 1.0 / inputs["efficiency"]
+                partials["dc_voltage_out", "efficiency"] = (
                     -inputs["dc_voltage_in"] / inputs["efficiency"] ** 2.0
                 )
 
         else:
-            partials["dc_voltage_out", "dc_voltage_in"] = np.zeros(
-                (number_of_points, number_of_points)
-            )
+            partials["dc_voltage_out", "dc_voltage_in"] = np.ones(number_of_points)

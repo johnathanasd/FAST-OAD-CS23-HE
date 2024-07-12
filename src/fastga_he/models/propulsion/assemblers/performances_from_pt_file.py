@@ -16,7 +16,6 @@ from fastga_he.models.propulsion.assemblers.energy_consumption_from_pt_file impo
 from fastga_he.models.propulsion.components import (
     PerformancesPropeller,
     PerformancesPMSM,
-    PerformancesSimplePMSM,
     PerformancesInverter,
     PerformancesDCBus,
     PerformancesHarness,
@@ -34,8 +33,7 @@ from fastga_he.models.propulsion.components import (
     PerformancesPlanetaryGear,
     PerformancesTurboGenerator,
     PerformancesGearbox,
-    PerformancesPEMFCStack,
-    PerformancesHydrogenGasTank,
+    PerformancesDCAuxLoad,
 )
 
 from .constants import SUBMODEL_POWER_TRAIN_PERF, SUBMODEL_THRUST_DISTRIBUTOR

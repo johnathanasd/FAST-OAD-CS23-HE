@@ -94,6 +94,10 @@ VARIESN_T_MASS = "unconsumable_source"
 # ETA contains an assumed efficiency for the initial guess of the power and current all along the
 # power train
 ETA = "efficiency"
+# CTRL_PARAM contains a list of the input name of a component that correspond to control
+# parameters. It is important to identify them if we want to give them a different value between
+# landing and the mission
+CTRL_PARAM = "control_parameter"
 
 PROPELLER = {
     ID: "fastga_he.pt_component.propeller",
@@ -140,6 +144,7 @@ PROPELLER = {
     VARIES_MASS: False,
     VARIESN_T_MASS: False,
     ETA: 0.8,
+    CTRL_PARAM: ["rpm_mission"],
 }
 PMSM = {
     ID: "fastga_he.pt_component.pmsm",
@@ -183,48 +188,7 @@ PMSM = {
     VARIES_MASS: False,
     VARIESN_T_MASS: False,
     ETA: 0.95,
-}
-SIMPLE_PMSM = {
-    ID: "fastga_he.pt_component.simple_pmsm",
-    CN: "SimplePMSM",
-    CN_ID: "motor_id",
-    CT: "simple_PMSM",
-    ATT: None,
-    PT: ["settings:*"],
-    SPT: [],
-    PTS: [],
-    IN: [
-        (None, "ac_current_rms_in_one_phase"),
-        (None, "ac_voltage_peak_in"),
-        (None, "ac_voltage_rms_in"),
-    ],
-    OUT: [("rpm", None), ("shaft_power_out", None)],
-    CTC: "propulsive_load",
-    MP: [
-        {"torque_out": "N*m"},
-        {"ac_current_rms_in": "A"},
-        {"ac_voltage_rms_in": "V"},
-    ],
-    SMP: [
-        {"delta_Cd": None},
-    ],
-    ICON: "e_motor",
-    ICON_SIZE: 40,
-    RSD: ["ac_current_rms_in", "ac_voltage_rms_in"],
-    SETS_V: False,
-    IO_INDEP_V: False,
-    V_TO_SET: ["ac_voltage_rms_in", "ac_voltage_peak_in"],
-    P_TO_SET: [("active_power", "in")],
-    I_TO_SET: [("ac_current_rms_in", "in"), ("ac_current_rms_in_one_phase", "in")],
-    SFR: False,
-    SWL: False,
-    DST_W: [],
-    PCT_W: ["on_the_wing"],
-    DST_W_F: [],
-    PCT_W_F: [],
-    VARIES_MASS: False,
-    VARIESN_T_MASS: False,
-    ETA: 0.95,
+    CTRL_PARAM: [],
 }
 INVERTER = {
     ID: "fastga_he.pt_component.inverter",
@@ -275,6 +239,12 @@ INVERTER = {
     VARIES_MASS: False,
     VARIESN_T_MASS: False,
     ETA: 0.98,
+    CTRL_PARAM: [
+        "heat_sink_temperature_mission",
+        "efficiency_mission",
+        "junction_temperature_mission",
+        "switching_frequency_mission",
+    ],
 }
 DC_BUS = {
     ID: "fastga_he.pt_component.dc_bus",
@@ -309,6 +279,7 @@ DC_BUS = {
     VARIES_MASS: False,
     VARIESN_T_MASS: False,
     ETA: 1.0,
+    CTRL_PARAM: [],
 }
 DC_LINE = {
     ID: "fastga_he.pt_component.dc_line",
@@ -343,6 +314,7 @@ DC_LINE = {
     VARIES_MASS: False,
     VARIESN_T_MASS: False,
     ETA: 0.98,
+    CTRL_PARAM: ["cable_temperature_mission"],
 }
 DC_DC_CONVERTER = {
     ID: "fastga_he.pt_component.dc_dc_converter",
@@ -382,6 +354,7 @@ DC_DC_CONVERTER = {
     VARIES_MASS: False,
     VARIESN_T_MASS: False,
     ETA: 0.98,
+    CTRL_PARAM: ["switching_frequency_mission", "efficiency_mission", "voltage_out_target_mission"],
 }
 BATTERY_PACK = {
     ID: "fastga_he.pt_component.battery_pack",
@@ -425,6 +398,7 @@ BATTERY_PACK = {
     VARIES_MASS: False,
     VARIESN_T_MASS: True,
     ETA: 0.95,
+    CTRL_PARAM: ["cell_temperature_mission"],
 }
 DC_SSPC = {
     ID: "fastga_he.pt_component.dc_sspc",
@@ -464,6 +438,7 @@ DC_SSPC = {
     VARIES_MASS: False,
     VARIESN_T_MASS: False,
     ETA: 0.99,
+    CTRL_PARAM: [],
 }
 DC_SPLITTER = {
     ID: "fastga_he.pt_component.dc_splitter",
@@ -498,6 +473,7 @@ DC_SPLITTER = {
     VARIES_MASS: False,
     VARIESN_T_MASS: False,
     ETA: 1.0,
+    CTRL_PARAM: ["power_share", "power_split"],
 }
 RECTIFIER = {
     ID: "fastga_he.pt_component.rectifier",
@@ -541,6 +517,13 @@ RECTIFIER = {
     VARIES_MASS: False,
     VARIESN_T_MASS: False,
     ETA: 0.98,
+    CTRL_PARAM: [
+        "heat_sink_temperature_mission",
+        "efficiency_mission",
+        "junction_temperature_mission",
+        "switching_frequency_mission",
+        "voltage_out_target_mission",
+    ],
 }
 GENERATOR = {
     ID: "fastga_he.pt_component.generator",
@@ -587,6 +570,7 @@ GENERATOR = {
     VARIES_MASS: False,
     VARIESN_T_MASS: False,
     ETA: 0.95,
+    CTRL_PARAM: ["voltage_out_target_mission", "rpm_mission"],
 }
 ICE = {
     ID: "fastga_he.pt_component.internal_combustion_engine",
@@ -627,6 +611,7 @@ ICE = {
     VARIES_MASS: True,
     VARIESN_T_MASS: False,
     ETA: 0.4,
+    CTRL_PARAM: [],
 }
 FUEL_TANK = {
     ID: "fastga_he.pt_component.fuel_tank",
@@ -663,6 +648,7 @@ FUEL_TANK = {
     VARIES_MASS: False,  # Seems weird but the ICE already does the job so we won't double up
     VARIESN_T_MASS: True,
     ETA: 1.0,
+    CTRL_PARAM: [],
 }
 FUEL_SYSTEM = {
     ID: "fastga_he.pt_component.fuel_system",
@@ -699,6 +685,7 @@ FUEL_SYSTEM = {
     VARIES_MASS: False,  # Seems weird but the ICE already does the job so we won't double up
     VARIESN_T_MASS: True,
     ETA: 1.0,
+    CTRL_PARAM: [],
 }
 TURBOSHAFT = {
     ID: "fastga_he.pt_component.turboshaft",
@@ -745,6 +732,7 @@ TURBOSHAFT = {
     VARIES_MASS: True,
     VARIESN_T_MASS: False,
     ETA: 0.35,
+    CTRL_PARAM: [],
 }
 SPEED_REDUCER = {
     ID: "fastga_he.pt_component.speed_reducer",
@@ -784,6 +772,7 @@ SPEED_REDUCER = {
     VARIES_MASS: False,
     VARIESN_T_MASS: False,
     ETA: 0.98,
+    CTRL_PARAM: [],
 }
 PLANETARY_GEAR = {
     ID: "fastga_he.pt_component.planetary_gear",
@@ -827,6 +816,7 @@ PLANETARY_GEAR = {
     VARIES_MASS: False,
     VARIESN_T_MASS: False,
     ETA: 0.98,
+    CTRL_PARAM: ["power_split", "power_share"],
 }
 TURBO_GENERATOR = {
     ID: "fastga_he.pt_component.turbo_generator_simple",
@@ -871,6 +861,7 @@ TURBO_GENERATOR = {
     VARIES_MASS: False,
     VARIESN_T_MASS: False,
     ETA: 0.95,
+    CTRL_PARAM: ["rpm_mission", "voltage_out_target_mission"],
 }
 GEARBOX = {
     ID: "fastga_he.pt_component.gearbox",
@@ -911,28 +902,30 @@ GEARBOX = {
     VARIES_MASS: False,
     VARIESN_T_MASS: False,
     ETA: 0.98,
+    CTRL_PARAM: [],
 }
-HYDROGEN_GAS_TANK = {
-    ID: "fastga_he.pt_component.hydrogen_gas_tank",
-    CN: "HydrogenGasTank",
-    CN_ID: "hydrogen_gas_tank_id",
-    CT: "hydrogen_gas_tank",
+DC_AUX_LOAD = {
+    ID: "fastga_he.pt_component.dc_load",
+    CN: "DCAuxLoad",
+    CN_ID: "aux_load_id",
+    CT: "aux_load",
     ATT: None,
     PT: [],
     SPT: [],
     PTS: [],
-    IN: None,
-    OUT: [("fuel_consumed_t", None)],
-    CTC: "tank",
+    IN: [("dc_voltage_in", None), (None, "dc_current_in")],
+    OUT: [],
+    CTC: "load",
     MP: [
-        {"fuel_remaining_t": "kg"},
+        {"power_in": "kW"},
+        {"dc_current_in": "A"},
     ],
     SMP: [
         {"delta_Cd": None},
     ],
-    ICON: "fuel_tank",
-    ICON_SIZE: 30,
-    RSD: ["fuel_remaining_t"],
+    ICON: "gears",
+    ICON_SIZE: 20,
+    RSD: [],
     SETS_V: False,
     IO_INDEP_V: False,
     V_TO_SET: [],
@@ -941,55 +934,18 @@ HYDROGEN_GAS_TANK = {
     SFR: False,
     SWL: False,
     DST_W: [],
-    PCT_W: [],
-    DST_W_F: [],
-    PCT_W_F: ["wing_pod"],
-    VARIES_MASS: False,  # Seems weird but the ICE already does the job so we won't double up
-    VARIESN_T_MASS: True,
-    ETA: 1.0,
-}
-PEMFC_STACK = {
-    ID: "fastga_he.pt_component.pemfc_stack",
-    CN: "PEMFCStack",
-    CN_ID: "pemfc_stack_id",
-    CT: "pemfc_stack",
-    ATT: None,
-    PT: ["time_step", "altitude"],
-    SPT: [],
-    PTS: [],
-    IN: [(None, "fuel_consumed_t")],
-    OUT: [(None, "voltage_out"), ("dc_current_out", None)],
-    CTC: "source",
-    MP: [
-        {"fc_current_density": "A/cm**2"},
-        {"voltage_out": "V"},
-    ],
-    SMP: [
-        {"delta_Cd": None},
-    ],
-    ICON: "battery",
-    ICON_SIZE: 40,
-    RSD: ["voltage_out"],
-    SETS_V: False,
-    IO_INDEP_V: False,
-    V_TO_SET: [],
-    P_TO_SET: [("power_out", "out")],
-    I_TO_SET: [],
-    SFR: False,
-    SWL: False,
-    DST_W: [],
-    PCT_W: ["wing_pod"],
+    PCT_W: ["inside_the_wing"],
     DST_W_F: [],
     PCT_W_F: [],
-    VARIES_MASS: True,
+    VARIES_MASS: False,
     VARIESN_T_MASS: False,
-    ETA: 0.5,
+    ETA: 0.95,
+    CTRL_PARAM: ["power_in_mission"],
 }
 
 KNOWN_COMPONENTS = [
     PROPELLER,
     PMSM,
-    SIMPLE_PMSM,
     INVERTER,
     DC_BUS,
     DC_LINE,
@@ -1007,8 +963,7 @@ KNOWN_COMPONENTS = [
     PLANETARY_GEAR,
     TURBO_GENERATOR,
     GEARBOX,
-    PEMFC_STACK,
-    HYDROGEN_GAS_TANK,
+    DC_AUX_LOAD,
 ]
 
 KNOWN_ID = []
@@ -1042,6 +997,7 @@ DICTIONARY_PCT_W_F = {}
 DICTIONARY_VARIES_MASS = {}
 DICTIONARY_VARIESN_T_MASS = {}
 DICTIONARY_ETA = {}
+DICTIONARY_CTRL_PARAM = {}
 
 for known_component in KNOWN_COMPONENTS:
     KNOWN_ID.append(known_component[ID])
@@ -1074,3 +1030,4 @@ for known_component in KNOWN_COMPONENTS:
     DICTIONARY_VARIES_MASS[known_component[ID]] = known_component[VARIES_MASS]
     DICTIONARY_VARIESN_T_MASS[known_component[ID]] = known_component[VARIESN_T_MASS]
     DICTIONARY_ETA[known_component[ID]] = known_component[ETA]
+    DICTIONARY_CTRL_PARAM[known_component[ID]] = known_component[CTRL_PARAM]

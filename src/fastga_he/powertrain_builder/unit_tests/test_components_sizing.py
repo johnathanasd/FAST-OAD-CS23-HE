@@ -15,7 +15,6 @@ from fastga_he.models.propulsion.assemblers import sizing_from_pt_file
 from fastga_he.models.propulsion.components import (
     SizingPropeller,
     SizingPMSM,
-    SizingSimplePMSM,
     SizingInverter,
     SizingDCBus,
     SizingHarness,
@@ -33,8 +32,7 @@ from fastga_he.models.propulsion.components import (
     SizingPlanetaryGear,
     SizingTurboGenerator,
     SizingGearbox,
-    SizingPEMFCStack,
-    SizingHydrogenGasTank,
+    SizingDCAuxLoad,
 )
 
 from tests.testing_utilities import VariableListLocal

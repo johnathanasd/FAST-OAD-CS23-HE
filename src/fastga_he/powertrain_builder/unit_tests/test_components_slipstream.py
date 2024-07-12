@@ -15,7 +15,6 @@ from fastga_he.models.propulsion.assemblers import delta_from_pt_file
 from fastga_he.models.propulsion.components import (
     SlipstreamPropeller,
     SlipstreamPMSM,
-    SlipstreamSimplePMSM,
     SlipstreamInverter,
     SlipstreamDCBus,
     SlipstreamHarness,
@@ -33,8 +32,7 @@ from fastga_he.models.propulsion.components import (
     SlipstreamPlanetaryGear,
     SlipstreamTurboGenerator,
     SlipstreamGearbox,
-    SlipstreamPEMFCStack,
-    SlipstreamHydrogenGasTank,
+    SlipstreamDCAuxLoad,
 )
 
 from tests.testing_utilities import VariableListLocal

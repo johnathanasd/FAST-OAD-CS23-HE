@@ -13,7 +13,6 @@ from fastga_he.powertrain_builder.powertrain import FASTGAHEPowerTrainConfigurat
 from fastga_he.models.propulsion.components import (
     SizingPropeller,
     SizingPMSM,
-    SizingSimplePMSM,
     SizingInverter,
     SizingDCBus,
     SizingHarness,
@@ -31,8 +30,7 @@ from fastga_he.models.propulsion.components import (
     SizingPlanetaryGear,
     SizingTurboGenerator,
     SizingGearbox,
-    SizingPEMFCStack,
-    SizingHydrogenGasTank,
+    SizingDCAuxLoad,
 )
 
 from .constants import (
