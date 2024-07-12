@@ -157,6 +157,7 @@ def test_prmfc_h2_gas_retrofit():
 
     problem.write_outputs()
 
+
 def test_pemfc_wing_pod_h2_gas_tank_powertrain_network():
 
     pt_file_path = pth.join(DATA_FOLDER_PATH, "pemfc_wing_pod_h2_propulsion.yml")
@@ -164,6 +165,7 @@ def test_pemfc_wing_pod_h2_gas_tank_powertrain_network():
 
     if not pth.exists(network_file_path):
         power_train_network_viewer(pt_file_path, network_file_path)
+
 
 def test_prmfc_wing_pod_h2_gas_retrofit():
 
@@ -199,6 +201,7 @@ def test_prmfc_wing_pod_h2_gas_retrofit():
 
     problem.write_outputs()
 
+
 def test_turboshaft_pemfc_hybrid_powertrain_network():
 
     pt_file_path = pth.join(DATA_FOLDER_PATH, "turboshaft_pemfc_hybrid_propulsion.yml")
@@ -206,6 +209,7 @@ def test_turboshaft_pemfc_hybrid_powertrain_network():
 
     if not pth.exists(network_file_path):
         power_train_network_viewer(pt_file_path, network_file_path)
+
 
 def test_turboshaft_pemfc_hybrid_retrofit():
 
@@ -330,4 +334,3 @@ def test_ecopulse_new_wing_mission_analysis():
     problem.write_outputs()
 
     assert problem.get_val("data:mission:sizing:fuel", units="kg") == pytest.approx(321.0, abs=1.0)
-

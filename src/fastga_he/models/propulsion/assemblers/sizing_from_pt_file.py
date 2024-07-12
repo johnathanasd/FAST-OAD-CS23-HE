@@ -31,6 +31,9 @@ from fastga_he.models.propulsion.components import (
     SizingTurboGenerator,
     SizingGearbox,
     SizingDCAuxLoad,
+    SizingSimplePMSM,
+    SizingPEMFCStack,
+    SizingHydrogenGasTank,
 )
 
 from .constants import (

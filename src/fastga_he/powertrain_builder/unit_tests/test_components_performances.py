@@ -35,6 +35,9 @@ from fastga_he.models.propulsion.components import (
     PerformancesTurboGenerator,
     PerformancesGearbox,
     PerformancesDCAuxLoad,
+    PerformancesPEMFCStack,
+    PerformancesSimplePMSM,
+    PerformancesHydrogenGasTank,
 )
 
 from tests.testing_utilities import VariableListLocal

@@ -370,7 +370,9 @@ def test_single_layer_voltage_statistical():
     )
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
-        PerformancesSinglePEMFCVoltageStatistical(pemfc_stack_id="pemfc_stack_1", number_of_points=7),
+        PerformancesSinglePEMFCVoltageStatistical(
+            pemfc_stack_id="pemfc_stack_1", number_of_points=7
+        ),
         ivc,
     )
     assert problem.get_val("single_layer_pemfc_voltage", units="V") == pytest.approx(
@@ -378,6 +380,7 @@ def test_single_layer_voltage_statistical():
     )
 
     problem.check_partials(compact_print=True)
+
 
 def test_single_layer_voltage_analytical():
 
@@ -395,22 +398,24 @@ def test_single_layer_voltage_analytical():
     ivc.add_output(
         name="hydrogen_reactant_pressure",
         units="atm",
-        val=1.,
+        val=1.0,
     )
     ivc.add_output(
         name="operation_temperature",
         units="degC",
-        val=np.array([50.] * 7),
+        val=np.array([50.0] * 7),
     )
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
-        PerformancesSinglePEMFCVoltageAnalytical(pemfc_stack_id="pemfc_stack_1", number_of_points=7),
+        PerformancesSinglePEMFCVoltageAnalytical(
+            pemfc_stack_id="pemfc_stack_1", number_of_points=7
+        ),
         ivc,
     )
 
     assert problem.get_val("single_layer_pemfc_voltage", units="V") == pytest.approx(
-        [0.62330689, 0.565117 , 0.51729881, 0.47282632, 0.42921845, 0.38517283, 0.33979691], rel=1e-2
+        [0.62330689, 0.565117, 0.51729881, 0.47282632, 0.42921845, 0.38517283, 0.33979691], rel=1e-2
     )
 
     problem.check_partials(compact_print=True)
@@ -631,7 +636,6 @@ def test_performances_pemfc_stack():
     dc_current_out = np.linspace(1.68, 9.24, NB_POINTS_TEST)
     ivc.add_output("dc_current_out", dc_current_out, units="A")
     ivc.add_output("time_step", units="h", val=np.full(NB_POINTS_TEST, 1))
-
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(

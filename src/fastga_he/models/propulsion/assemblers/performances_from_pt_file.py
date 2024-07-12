@@ -34,6 +34,9 @@ from fastga_he.models.propulsion.components import (
     PerformancesTurboGenerator,
     PerformancesGearbox,
     PerformancesDCAuxLoad,
+    PerformancesSimplePMSM,
+    PerformancesPEMFCStack,
+    PerformancesHydrogenGasTank,
 )
 
 from .constants import SUBMODEL_POWER_TRAIN_PERF, SUBMODEL_THRUST_DISTRIBUTOR
