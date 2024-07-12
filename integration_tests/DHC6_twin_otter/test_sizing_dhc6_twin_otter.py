@@ -145,6 +145,9 @@ def test_prmfc_h2_gas_retrofit():
     problem.read_inputs()
     problem.setup()
 
+    problem.set_val(name="data:weight:aircraft:MTOW", units="kg", val=5000.0)
+    problem.set_val(name="data:geometry:wing:area", units="m**2", val=40.0)
+
     # om.n2(problem)
 
     problem.run_model()
@@ -183,6 +186,9 @@ def test_prmfc_wing_pod_h2_gas_retrofit():
     problem.write_needed_inputs(ref_inputs)
     problem.read_inputs()
     problem.setup()
+
+    problem.set_val(name="data:weight:aircraft:MTOW", units="kg", val=5000.0)
+    problem.set_val(name="data:geometry:wing:area", units="m**2", val=40.0)
 
     # om.n2(problem)
 

@@ -35,6 +35,8 @@ model:
     id: fastga.handling_qualities.static_margin
   wing_position:
     id: fastga.loop.wing_position
+  payload_update:
+    id: fastga_he.weight.payload_for_retrofit
   wing_area:
     id: fastga.performance.approach_speed.retrofit #fastga.performance.approach_speed.retrofit , fastga.loop.wing_area
   environmental_impact:
@@ -53,7 +55,7 @@ submodels:
   submodel.geometry.vertical_tail.position.fd: null
   submodel.performances.mission_vector.descent_speed: null
   submodel.performances.mission_vector.climb_speed: null
-  submodel.weight.mass.airframe.fuselage: fastga.submodel.weight.mass.airframe.fuselage.legacy
+  submodel.weight.mass.airframe.fuselage: fastga.submodel.weight.mass.airframe.fuselage.roskam
   submodel.weight.mass.airframe.paint: fastga.submodel.weight.mass.airframe.paint.by_wet_area
   submodel.performances_he.energy_consumption: fastga_he.submodel.performances.energy_consumption.from_pt_file
   submodel.propulsion.constraints.pmsm.rpm: fastga_he.submodel.propulsion.constraints.pmsm.rpm.ensure
