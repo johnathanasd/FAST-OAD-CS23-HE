@@ -994,6 +994,7 @@ PEMFC_STACK = {
     MP: [
         {"fc_current_density": "A/cm**2"},
         {"voltage_out": "V"},
+        {"fuel_consumption": "kg/h"},
     ],
     SMP: [
         {"delta_Cd": None},

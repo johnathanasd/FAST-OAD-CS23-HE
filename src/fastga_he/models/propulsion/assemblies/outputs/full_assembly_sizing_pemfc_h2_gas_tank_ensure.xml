@@ -29,14 +29,14 @@
         <length units="m" is_input="True">1.477417183742213<!--cabin length--></length>
       </cabin>
       <flap>
-        <span_ratio is_input="True">0.45<!--ratio (width of flaps)/(total span)--></span_ratio>
+        <span_ratio is_input="True">0.45<!--flap span as a percentage of the wing span--></span_ratio>
       </flap>
       <fuselage>
-        <front_length units="m" is_input="True">0.5<!--length of front non-cylindrical part of the fuselage--></front_length>
-        <maximum_height units="m" is_input="True">2.3245<!--maximum fuselage height--></maximum_height>
+        <front_length units="m" is_input="True">0.5<!--length of the front cone of the aircraft--></front_length>
+        <maximum_height units="m" is_input="True">2.3245<!--maximum height of the fuselage--></maximum_height>
       </fuselage>
       <wing>
-        <area units="m**2" is_input="True">7.105673586278243<!--wing reference area--></area>
+        <area units="m**2" is_input="True">7.105673586278243<!--wing area--></area>
         <span units="m" is_input="True">9.237463382822208<!--wing span--></span>
         <MAC>
           <length units="m" is_input="True">0.7672311779752662<!--length of mean aerodynamic chord of wing--></length>
@@ -182,7 +182,6 @@
               <height units="m" is_input="False">0.021<!--Height of one module--></height>
               <length units="m" is_input="False">0.19532332236661284<!--Length of one module--></length>
               <mass units="kg" is_input="False">0.4393313811944806<!--Weight of the diode and IGBT module--></mass>
-              <number is_input="True">1.0<!--Number of module to cool down, will depend on the component (3 for inverter/rectifiers, 1 for DC/DC)--></number>
               <width units="m" is_input="False">0.065<!--Width of one module--></width>
             </module>
             <scaling>
@@ -672,7 +671,6 @@
             <module>
               <height units="m" is_input="False">0.021<!--Height of one module--></height>
               <length units="m" is_input="False">0.20920450859555523<!--Length of one module--></length>
-              <number is_input="True">3.0<!--Number of module to cool down, will depend on the component (3 for inverter/rectifiers, 1 for DC/DC)--></number>
               <width units="m" is_input="False">0.065<!--Width of one module--></width>
             </module>
             <scaling>
@@ -700,7 +698,7 @@
             <current_max units="A" is_input="False">567.5237908094008<!--Maximum current to the pemfc during the mission--></current_max>
             <current_min units="A" is_input="False">542.3524127528204<!--Minimum current to the pemfc during the mission--></current_min>
             <effective_area units="cm**2" is_input="True">2000.0<!--Effective fuel cell area in the stack--></effective_area>
-            <efficiency is_input="False">[0.6366365379847196, 0.6362789043189158, 0.6359276598222898, 0.6355828145239135, 0.6352443791439799, 0.6349123650534564, 0.6345867842350831, 0.6342676492456241, 0.6339549731792865, 0.6336487696322222]</efficiency>
+            <efficiency is_input="False">[0.6371545498138366, 0.6367966251523729, 0.6364450948587603, 0.6360999689702307, 0.6357612582157, 0.6354289739753876, 0.6351031282417836, 0.6347837335818695, 0.6344708031005063, 0.634164350404909]</efficiency>
             <mass units="kg" is_input="False">765.306<!--Mass of the pemfc stack--></mass>
             <number_of_layers is_input="True">450.0<!--Total number of layers in the pemfc stacks--></number_of_layers>
             <volume units="m**3" is_input="False">2.478712573464761<!--Volume of the pemfc stack--></volume>

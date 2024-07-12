@@ -10,7 +10,7 @@
       <he_power_train>
         <DC_DC_converter>
           <dc_dc_converter_1>
-            <current_in_max units="A" is_input="False">594.9689303977258</current_in_max>
+            <current_in_max units="A" is_input="False">594.9689303977257</current_in_max>
             <losses_max units="W" is_input="False">5018.884891062073</losses_max>
             <switching_frequency_max units="Hz" is_input="False">12000.0</switching_frequency_max>
             <switching_frequency_mission units="Hz" is_input="True">12000.0<!--Switching frequency of the DC/DC converter for the points--></switching_frequency_mission>
@@ -178,10 +178,10 @@
         </inverter>
         <pemfc_stack>
           <pemfc_stack_1>
-            <current_max units="A" is_input="False">594.9689303977258<!--Maximum current to the pemfc during the mission--></current_max>
+            <current_max units="A" is_input="False">594.9689303977257<!--Maximum current to the pemfc during the mission--></current_max>
             <current_min units="A" is_input="False">567.0523013552091<!--Minimum current to the pemfc during the mission--></current_min>
             <effective_area units="cm**2" is_input="True">2000.0<!--Effective fuel cell area in the stack--></effective_area>
-            <efficiency is_input="False">[0.6337045430084237, 0.6333115873060411, 0.6329254040352896, 0.6325460169799297, 0.6321734505284257, 0.6318077296291366, 0.6314488797466716, 0.6310969268193155, 0.6307518972174427, 0.6304138177028362]</efficiency>
+            <efficiency is_input="False">[0.6342201691622141, 0.6338268937237026, 0.6334403962273443, 0.6330607004762518, 0.6326878308787335, 0.6323218124034482, 0.631962670535725, 0.6316104312349536, 0.6312651208929654, 0.6309267662933186]</efficiency>
             <number_of_layers is_input="True">450.0<!--Total number of layers in the pemfc stacks--></number_of_layers>
           </pemfc_stack_1>
         </pemfc_stack>

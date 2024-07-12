@@ -44,12 +44,12 @@
       </flap>
       <fuselage>
         <PAX_length units="m" is_input="True">5.64<!--(5.64 before) length of the passenger compartment--></PAX_length>
-        <front_length units="m" is_input="True">4<!--(2.59) length of the front cone of the aircraft--></front_length>
-        <length units="m" is_input="True">14.5<!--(11.87, 15.77) total length of the aircraft--></length>
-        <luggage_length units="m" is_input="True">1.3<!--(2.07) length of the luggage compartment--></luggage_length>
+        <front_length units="m" is_input="True">1.59<!--(2.59) length of the front cone of the aircraft--></front_length>
+        <length units="m" is_input="True">14.55<!--(11.87, 15.77) total length of the aircraft--></length>
+        <luggage_length units="m" is_input="True">1.07<!--(2.07) length of the luggage compartment--></luggage_length>
         <maximum_height units="m" is_input="True">2.09<!--maximum fuselage height--></maximum_height>
         <maximum_width units="m" is_input="True">1.865<!--(1.42,1.71) maximum fuselage width--></maximum_width>
-        <rear_length units="m" is_input="True">5<!--(3.05) length of the rear cone of the aircraft--></rear_length>
+        <rear_length units="m" is_input="True">4.05<!--(3.05) length of the rear cone of the aircraft--></rear_length>
       </fuselage>
       <horizontal_tail>
         <aspect_ratio is_input="True">4.35<!--horizontal tail aspect ratio--></aspect_ratio>
@@ -60,7 +60,7 @@
         <MAC>
           <at25percent>
             <x>
-              <from_wingMAC25 units="m" is_input="True">7.63<!--(prev 5.97) distance along X between 25% MAC of wing and 25% MAC of horizontal tail--></from_wingMAC25>
+              <from_wingMAC25 units="m" is_input="True">7.13<!--(prev 5.97) distance along X between 25% MAC of wing and 25% MAC of horizontal tail--></from_wingMAC25>
             </x>
           </at25percent>
         </MAC>
@@ -184,7 +184,7 @@
         <propeller>
           <propeller_1>
             <input_mass units="kg" is_input="False">61.2</input_mass>
-            <from_LE units="m" is_input="False">2.0146</from_LE>
+            <from_LE units="m" is_input="False">3.5146</from_LE>
             <CG>
               <y_ratio is_input="True">0.28<!--Y position of the propeller center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
@@ -200,7 +200,7 @@
           </propeller_1>
           <propeller_2>
             <input_mass units="kg" is_input="False">61.2</input_mass>
-            <from_LE units="m" is_input="False">2.0146</from_LE>
+            <from_LE units="m" is_input="False">3.5146</from_LE>
             <CG>
               <y_ratio is_input="True">0.28<!--Y position of the propeller center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
@@ -220,7 +220,7 @@
             <mass_ratio>2.0</mass_ratio>
             <power_offtake units="kW" is_input="True">10.<!--Mechanical offtake on the turboshaft, is added to shaft power out--></power_offtake>
             <power_rating units="kW" is_input="True">462.33<!--Flat rating of the turboshaft--></power_rating>
-            <from_LE units="m" is_input="False">1.52534</from_LE>
+            <from_LE units="m" is_input="False">3.02534</from_LE>
             <CG>
               <y_ratio is_input="True">0.28<!--Y position of the propeller center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
@@ -238,7 +238,7 @@
             <mass_ratio>2.0</mass_ratio>
             <power_offtake units="kW" is_input="True">10.<!--Mechanical offtake on the turboshaft, is added to shaft power out--></power_offtake>
             <power_rating units="kW" is_input="True">462.33<!--Flat rating of the turboshaft--></power_rating>
-            <from_LE units="m" is_input="False">1.52534</from_LE>
+            <from_LE units="m" is_input="False">3.02534</from_LE>
             <CG>
               <y_ratio is_input="True">0.28<!--Y position of the propeller center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
@@ -361,7 +361,7 @@
         <engine>
           <mass units="lbm" is_input="False">1350.2902616530941<!--Mass of the propulsion system_inp_data:weight:propulsion:engine:mass--></mass>
           <CG>
-            <x units="m">5.2<!--Engine CG position measure from the nose--></x>
+            <x units="m">6.2<!--Engine CG position measure from the nose--></x>
           </CG>
         </engine>
         <fuel_lines>
@@ -399,7 +399,7 @@
           </sizing_factor>
         </cs23>
         <landing>
-          <elevator_angle units="deg" is_input="True">-30<!--elevator maximum angle during landing phase in sizing mission--></elevator_angle>
+          <elevator_angle units="deg" is_input="True">-30.<!--elevator maximum angle during landing phase in sizing mission--></elevator_angle>
           <flap_angle units="deg">37.5</flap_angle>
           <target_sideslip units="deg" is_input="True">15.0</target_sideslip>
         </landing>
@@ -410,7 +410,7 @@
         <takeoff>
           <fuel units="kg" is_input="False">3.2695594760123754</fuel>
           <energy units="W*h" is_input="False">0.0</energy>
-          <elevator_angle units="deg" is_input="True">-30<!--elevator maximum angle during takeoff phase in sizing mission--></elevator_angle>
+          <elevator_angle units="deg" is_input="True">-30.<!--elevator maximum angle during takeoff phase in sizing mission--></elevator_angle>
           <friction_coefficient_no_brake is_input="True">0.03<!--friction coefficient used during the computation of the takeoff phase--></friction_coefficient_no_brake>
           <thrust_rate is_input="True">1.0<!--thrust rate during takeoff phase--></thrust_rate>
         </takeoff>

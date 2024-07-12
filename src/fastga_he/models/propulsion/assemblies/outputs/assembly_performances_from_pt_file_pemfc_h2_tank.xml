@@ -2,7 +2,7 @@
   <altitude units="m" is_input="True">[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]</altitude>
   <density units="kg/m**3" is_input="True">[1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587]</density>
   <exterior_temperature units="degK" is_input="True">[288.15, 288.15, 288.15, 288.15, 288.15, 288.15, 288.15, 288.15, 288.15, 288.15]<!--temperature outside of the cable--></exterior_temperature>
-  <fuel_consumed_t_econ units="kg" is_input="False">[1.3223310327518776, 1.3300801886282394, 1.337702397888111, 1.345196765440723, 1.3525623975729255, 1.3597984024558798, 1.366903890647277, 1.3738779755896116, 1.3807197741050405, 1.387428406887388]<!--fuel consumed at each time step--></fuel_consumed_t_econ>
+  <fuel_consumed_t_econ units="kg" is_input="False">[1.3223310327518776, 1.3300801886282394, 1.337702397888111, 1.3451967654407229, 1.352562397572926, 1.3597984024558798, 1.3669038906472772, 1.3738779755896113, 1.3807197741050405, 1.3874284068873879]<!--fuel consumed at each time step--></fuel_consumed_t_econ>
   <non_consumable_energy_t_econ units="W*h" is_input="False">[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]<!--Non consumable energy at each time step--></non_consumable_energy_t_econ>
   <thrust units="N" is_input="True">[1550.0, 1538.888888888889, 1527.7777777777778, 1516.6666666666667, 1505.5555555555557, 1494.4444444444443, 1483.3333333333333, 1472.2222222222222, 1461.111111111111, 1450.0]</thrust>
   <time_step units="s" is_input="True">[500.0, 500.0, 500.0, 500.0, 500.0, 500.0, 500.0, 500.0, 500.0, 500.0]</time_step>
@@ -13,19 +13,19 @@
         <thrust_distribution is_input="True">1.0</thrust_distribution>
         <DC_DC_converter>
           <dc_dc_converter_1>
-            <current_in_max units="A" is_input="False">594.9621804600158</current_in_max>
-            <losses_max units="W" is_input="False">5018.831809768775</losses_max>
+            <current_in_max units="A" is_input="False">594.9621804600157</current_in_max>
+            <losses_max units="W" is_input="False">5018.831809768774</losses_max>
             <switching_frequency_max units="Hz" is_input="False">12000.0</switching_frequency_max>
             <switching_frequency_mission units="Hz" is_input="True">12000.0<!--Switching frequency of the DC/DC converter for the points--></switching_frequency_mission>
-            <voltage_in_max units="V" is_input="False">350.75826727940944</voltage_in_max>
+            <voltage_in_max units="V" is_input="False">350.7582672794095</voltage_in_max>
             <voltage_out_max units="V" is_input="False">850.0</voltage_out_max>
             <voltage_out_target_mission units="V" is_input="True">850.0<!--Target output voltage of the DC/DC converter for the points--></voltage_out_target_mission>
             <capacitor>
-              <current_max units="A" is_input="False">371.9855720791319</current_max>
+              <current_max units="A" is_input="False">371.9855720791318</current_max>
               <resistance units="ohm" is_input="True">0.0014</resistance>
             </capacitor>
             <diode>
-              <current_max units="A" is_input="False">441.78901163524716</current_max>
+              <current_max units="A" is_input="False">441.7890116352471</current_max>
               <gate_voltage units="V" is_input="True">1.3</gate_voltage>
               <resistance units="ohm" is_input="True">0.002805</resistance>
             </diode>
@@ -49,19 +49,19 @@
               <resistance units="ohm" is_input="True">0.002265</resistance>
             </igbt>
             <inductor>
-              <current_max units="A" is_input="False">818.915982460253</current_max>
+              <current_max units="A" is_input="False">818.9159824602528</current_max>
               <resistance units="ohm" is_input="True">0.0014</resistance>
             </inductor>
           </dc_dc_converter_1>
         </DC_DC_converter>
         <DC_SSPC>
           <dc_sspc_1337>
-            <current_max units="A" is_input="False">238.33645328948228<!--Maximum current flowing through the SSPC--></current_max>
+            <current_max units="A" is_input="False">238.33645328948225<!--Maximum current flowing through the SSPC--></current_max>
             <efficiency is_input="True">0.99<!--Value of the SSPC efficiency, assumed constant during operations (eases convergence)--></efficiency>
             <voltage_max units="V" is_input="False">850.0<!--Maximum voltage at the terminals SSPC--></voltage_max>
           </dc_sspc_1337>
           <dc_sspc_1>
-            <current_max units="A" is_input="False">238.33645328948228<!--Maximum current flowing through the SSPC--></current_max>
+            <current_max units="A" is_input="False">238.33645328948225<!--Maximum current flowing through the SSPC--></current_max>
             <efficiency is_input="True">0.99<!--Value of the SSPC efficiency, assumed constant during operations (eases convergence)--></efficiency>
             <voltage_max units="V" is_input="False">823.978566512022<!--Maximum voltage at the terminals SSPC--></voltage_max>
           </dc_sspc_1>
@@ -78,11 +78,11 @@
         </DC_SSPC>
         <DC_bus>
           <dc_bus_1>
-            <current_max units="A" is_input="False">238.33645328948228</current_max>
+            <current_max units="A" is_input="False">238.33645328948225</current_max>
             <voltage_max units="V" is_input="False">823.978566512022</voltage_max>
           </dc_bus_1>
           <dc_bus_2>
-            <current_max units="A" is_input="False">238.33645328948228</current_max>
+            <current_max units="A" is_input="False">238.33645328948225</current_max>
             <voltage_max units="V" is_input="False">841.5</voltage_max>
           </dc_bus_2>
         </DC_bus>
@@ -121,13 +121,13 @@
         </PMSM>
         <hydrogen_gas_tank>
           <hydrogen_gas_tank_1>
-            <fuel_consumed_mission units="kg" is_input="False">13.556601231967072<!--Amount of fuel from that tank which will be consumed during mission--></fuel_consumed_mission>
+            <fuel_consumed_mission units="kg" is_input="False">13.556601231967074<!--Amount of fuel from that tank which will be consumed during mission--></fuel_consumed_mission>
           </hydrogen_gas_tank_1>
         </hydrogen_gas_tank>
         <inverter>
           <inverter_1>
             <current_ac_max units="A" is_input="False">186.98174220313672<!--Maximum RMS current flowing through one arm of the inverter--></current_ac_max>
-            <current_dc_max units="A" is_input="False">238.33645328948228<!--Maximum value of the current at the input of the inverter--></current_dc_max>
+            <current_dc_max units="A" is_input="False">238.33645328948225<!--Maximum value of the current at the input of the inverter--></current_dc_max>
             <heat_sink_temperature_mission units="degK" is_input="True">288.15<!--Heat sink temperature of the inverter for the points--></heat_sink_temperature_mission>
             <losses_max units="W" is_input="False">5046.789033919051</losses_max>
             <modulation_idx_max is_input="False">0.5068656141530491<!--Maximum modulation index during the mission--></modulation_idx_max>
@@ -181,10 +181,10 @@
         </inverter>
         <pemfc_stack>
           <pemfc_stack_1>
-            <current_max units="A" is_input="False">594.9621804600158<!--Maximum current to the pemfc during the mission--></current_max>
+            <current_max units="A" is_input="False">594.9621804600157<!--Maximum current to the pemfc during the mission--></current_max>
             <current_min units="A" is_input="False">567.0468837386705<!--Minimum current to the pemfc during the mission--></current_min>
             <effective_area units="cm**2" is_input="True">2000.0<!--Effective fuel cell area in the stack--></effective_area>
-            <efficiency is_input="False">[0.6337051839092822, 0.6333122456655885, 0.6329260797249244, 0.6325467098660498, 0.6321741604720515, 0.6318084564855444, 0.6314496233650381, 0.631097687042376, 0.6307526738811648, 0.6304146106361105]</efficiency>
+            <efficiency is_input="False">[0.6342208105845542, 0.6338275526189372, 0.6334410724667673, 0.6330613939261523, 0.6326885414000188, 0.6323225398512771, 0.6319634147591512, 0.6316111920765847, 0.6312658981886352, 0.6309275598717786]</efficiency>
             <number_of_layers is_input="True">450.0<!--Total number of layers in the pemfc stacks--></number_of_layers>
           </pemfc_stack_1>
         </pemfc_stack>
