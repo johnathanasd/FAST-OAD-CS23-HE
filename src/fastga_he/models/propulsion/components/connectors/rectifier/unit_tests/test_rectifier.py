@@ -1344,3 +1344,5 @@ def test_performances_rectifier():
     )
 
     om.n2(problem, show_browser=False)
+
+    problem.check_partials(compact_print=True)

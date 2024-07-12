@@ -22,13 +22,13 @@
         <length units="m" is_input="True">1.477417183742213<!--cabin length--></length>
       </cabin>
       <flap>
-        <span_ratio is_input="True">0.45<!--ratio (width of flaps)/(total span)--></span_ratio>
+        <span_ratio is_input="True">0.45<!--flap span as a percentage of the wing span--></span_ratio>
       </flap>
       <fuselage>
-        <front_length units="m" is_input="True">0.5<!--length of front non-cylindrical part of the fuselage--></front_length>
+        <front_length units="m" is_input="True">0.5<!--length of the front cone of the aircraft--></front_length>
       </fuselage>
       <wing>
-        <area units="m**2" is_input="True">7.105673586278243<!--wing reference area--></area>
+        <area units="m**2" is_input="True">7.105673586278243<!--wing area--></area>
         <span units="m" is_input="True">9.237463382822208<!--wing span--></span>
         <MAC>
           <length units="m" is_input="True">0.7672311779752662<!--length of mean aerodynamic chord of wing--></length>

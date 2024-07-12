@@ -44,7 +44,13 @@ class PerformancesFuelConsumedMission(om.ExplicitComponent):
             "not account for takeoff and initial climb, the amount used for sizing does)",
         )
 
-        self.declare_partials(of="*", wrt="*", val=np.ones(number_of_points))
+        self.declare_partials(
+            of="*",
+            wrt="*",
+            rows=np.zeros(number_of_points),
+            cols=np.arange(number_of_points),
+            val=np.ones(number_of_points),
+        )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 

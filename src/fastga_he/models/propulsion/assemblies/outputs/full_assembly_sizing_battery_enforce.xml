@@ -28,13 +28,13 @@
         <length units="m" is_input="True">1.477417183742213<!--cabin length--></length>
       </cabin>
       <flap>
-        <span_ratio is_input="True">0.45<!--ratio (width of flaps)/(total span)--></span_ratio>
+        <span_ratio is_input="True">0.45<!--flap span as a percentage of the wing span--></span_ratio>
       </flap>
       <fuselage>
-        <front_length units="m" is_input="True">0.5<!--length of front non-cylindrical part of the fuselage--></front_length>
+        <front_length units="m" is_input="True">0.5<!--length of the front cone of the aircraft--></front_length>
       </fuselage>
       <wing>
-        <area units="m**2" is_input="True">7.105673586278243<!--wing reference area--></area>
+        <area units="m**2" is_input="True">7.105673586278243<!--wing area--></area>
         <span units="m" is_input="True">9.237463382822208<!--wing span--></span>
         <MAC>
           <length units="m" is_input="True">0.7672311779752662<!--length of mean aerodynamic chord of wing--></length>
@@ -54,13 +54,13 @@
       <he_power_train>
         <DC_DC_converter>
           <dc_dc_converter_1>
-            <current_in_caliber units="A" is_input="False">422.3568629643162<!--Current caliber of one arm of the DC/DC converter--></current_in_caliber>
+            <current_in_caliber units="A" is_input="False">422.35686296431624<!--Current caliber of one arm of the DC/DC converter--></current_in_caliber>
             <current_in_max units="A" is_input="False">402.2523812728167</current_in_max>
             <current_ripple is_input="True">0.1<!--Amplitude of the current ripple as a percent of the current caliber--></current_ripple>
             <dissipable_heat units="W" is_input="False">3298.8009869581724<!--Maximum power losses of the inverter (all modules)--></dissipable_heat>
             <losses_max units="W" is_input="False">3188.989394166168</losses_max>
             <mass units="kg" is_input="False">566.8716230051436<!--Mass of the converter--></mass>
-            <power_density units="kW/kg" is_input="False">0.4495267677941434<!--Power density of the DC/DC converter--></power_density>
+            <power_density units="kW/kg" is_input="False">0.4495267677941435<!--Power density of the DC/DC converter--></power_density>
             <switching_frequency units="Hz" is_input="False">12000.0<!--Maximum switching frequency of the IGBT module in the converter--></switching_frequency>
             <switching_frequency_max units="Hz" is_input="False">12000.0<!--Maximum switching frequency seen during the mission in the converter--></switching_frequency_max>
             <switching_frequency_mission units="Hz" is_input="True">12000.0<!--Switching frequency of the DC/DC converter for the points--></switching_frequency_mission>
@@ -95,7 +95,7 @@
               </scaling>
             </capacitor>
             <contactor>
-              <mass units="kg" is_input="False">1.589075926394179<!--Mass of the contactor--></mass>
+              <mass units="kg" is_input="False">1.5890759263941794<!--Mass of the contactor--></mass>
             </contactor>
             <control_card>
               <mass units="kg" is_input="True">1.0<!--Weight of the control card, is generally constant, taken at 1 kg--></mass>
@@ -504,7 +504,7 @@
           <battery_pack_1>
             <SOC_min units="percent" is_input="False">19.48093720040768<!--Minimum state-of-charge of the battery during the mission--></SOC_min>
             <c_rate_max units="1/h" is_input="False">0.7251185394639261<!--Maximum C-rate of the battery modules during the mission--></c_rate_max>
-            <c_rate_multiplier is_input="False">0.35021298753260044<!--Multiplier for the the number of module if the c-rate of the battery is the active constraint--></c_rate_multiplier>
+            <c_rate_multiplier is_input="False">0.35021298753260055<!--Multiplier for the the number of module if the c-rate of the battery is the active constraint--></c_rate_multiplier>
             <capacity_multiplier is_input="False">1.103960535722879<!--Multiplier for the the number of module if the capacity of the battery is the active constraint--></capacity_multiplier>
             <cell_temperature_mission units="degK" is_input="True">288.15<!--Cell temperature of the battery for the points--></cell_temperature_mission>
             <cell_volume_fraction is_input="True">0.8<!--Cell volume fraction, represents the contribution to the battery volume of the cells--></cell_volume_fraction>

@@ -10,7 +10,7 @@
       <he_power_train>
         <DC_DC_converter>
           <dc_dc_converter_1>
-            <current_in_max units="A" is_input="False">401.5782527961429</current_in_max>
+            <current_in_max units="A" is_input="False">401.578252796143</current_in_max>
             <losses_max units="W" is_input="False">3517.425219972458</losses_max>
             <switching_frequency_max units="Hz" is_input="False">12000.0</switching_frequency_max>
             <switching_frequency_mission units="Hz" is_input="True">12000.0<!--Switching frequency of the DC/DC converter for the points--></switching_frequency_mission>
@@ -119,12 +119,12 @@
         <battery_pack>
           <battery_pack_1>
             <SOC_min units="percent" is_input="False">32.251832244445055<!--Minimum state-of-charge of the battery during the mission--></SOC_min>
-            <c_rate_max units="1/h" is_input="False">0.5993705265614073<!--Maximum C-rate of the battery modules during the mission--></c_rate_max>
+            <c_rate_max units="1/h" is_input="False">0.5993705265614074<!--Maximum C-rate of the battery modules during the mission--></c_rate_max>
             <cell_temperature_mission units="degK" is_input="True">288.15<!--Cell temperature of the battery for the points--></cell_temperature_mission>
             <number_modules is_input="True">200.0<!--Number of modules in parallel inside the battery pack--></number_modules>
             <cell>
               <capacity units="A*h" is_input="False">3.35<!--Capacity of the cell used for the assembly of the battery pack--></capacity>
-              <losses_max units="W" is_input="False">0.20678071944817766<!--Minimum state-of-charge of the battery during the mission--></losses_max>
+              <losses_max units="W" is_input="False">0.20678071944817777<!--Minimum state-of-charge of the battery during the mission--></losses_max>
               <voltage_max units="V" is_input="False">4.0443027586964595<!--Maximum voltage needed by the cells during the mission--></voltage_max>
               <voltage_min units="V" is_input="False">3.4215574216962565<!--Minimum voltage provided by the cells during the mission--></voltage_min>
             </cell>
