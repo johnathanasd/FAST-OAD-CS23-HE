@@ -262,7 +262,7 @@ class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
 
         self.options.declare(
             "exchange_current_density",
-            default=9 * 10 ** -5,
+            default=10 ** -5,
             desc="exchange current density from pemfc [A/m**2]",
         )
 
