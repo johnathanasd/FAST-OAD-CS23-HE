@@ -44,16 +44,16 @@
       </flap>
       <fuselage>
         <PAX_length units="m" is_input="True">5.64<!--(5.64 before) length of the passenger compartment--></PAX_length>
-        <front_length units="m" is_input="True">0.9<!--(2.59) length of the front cone of the aircraft--></front_length>
+        <front_length units="m" is_input="True">2.59<!--(2.59) length of the front cone of the aircraft--></front_length>
         <length units="m" is_input="True">15.77<!--(14.55, 15.77) total length of the aircraft--></length>
-        <luggage_length units="m" is_input="True">1.07<!--(2.07) length of the luggage compartment--></luggage_length>
+        <luggage_length units="m" is_input="True">2.07<!--(2.07) length of the luggage compartment--></luggage_length>
         <maximum_height units="m" is_input="True">2.09<!--maximum fuselage height--></maximum_height>
         <maximum_width units="m" is_input="True">1.865<!--(1.42,1.71) maximum fuselage width--></maximum_width>
-        <rear_length units="m" is_input="True">6.05<!--(3.05) length of the rear cone of the aircraft--></rear_length>
+        <rear_length units="m" is_input="True">5.55<!--(3.05) length of the rear cone of the aircraft--></rear_length>
       </fuselage>
       <horizontal_tail>
         <aspect_ratio is_input="True">4.35<!--horizontal tail aspect ratio--></aspect_ratio>
-        <elevator_chord_ratio is_input="True">0.6<!--(0.8) elevator chord ratio--></elevator_chord_ratio>
+        <elevator_chord_ratio is_input="True">0.45<!--(0.8) elevator chord ratio--></elevator_chord_ratio>
         <sweep_25 units="deg" is_input="True">0.0<!--sweep angle at 25% chord of horizontal tail--></sweep_25>
         <taper_ratio is_input="True">1.0<!--taper ratio of horizontal tail--></taper_ratio>
         <thickness_ratio is_input="True">0.12<!--thickness ratio of horizontal tail--></thickness_ratio>
@@ -274,7 +274,7 @@
       <wing>
         <low_speed>
           <CL_max_clean is_input="False">1.7<!--wing maximum lift coefficient for positive angle of attack--></CL_max_clean>
-          <CL_min_clean is_input="False">-1.30<!--wing maximum lift coefficient for negative angle of attack--></CL_min_clean>
+          <CL_min_clean is_input="False">-1.25<!--wing maximum lift coefficient for negative angle of attack--></CL_min_clean>
         </low_speed>
       </wing>
       <propeller>
@@ -304,7 +304,7 @@
       </cooling>
       <flaps>
         <landing>
-          <CL is_input="True">1.4325<!--(Gudmundsson p.446) lift coefficient increment due to flaps deployment in landing configuration--></CL>
+          <CL is_input="True">1.4625<!--(Gudmundsson p.446) lift coefficient increment due to flaps deployment in landing configuration--></CL>
           <CL_max is_input="True">1.135<!--maximum lift coefficient increment due to flaps deployment in landing configuration--></CL_max>
           <CM is_input="True">-0.24648012559668536<!--additional pitching moment coefficient ue to the deployment of flaps in landing configuration--></CM>
         </landing>
@@ -327,10 +327,10 @@
         <payload is_input="True" units="kg">1375.0<!--(POH) design payload weight--></payload>
         <CG>
           <aft>
-            <MAC_limit is_input="False">0.6324157179518661<!--most aft X-position of center of gravity as ratio of mean aerodynamic chord--></MAC_limit>
+            <MAC_limit is_input="False">0.15<!--most aft X-position of center of gravity as ratio of mean aerodynamic chord--></MAC_limit>
           </aft>
           <fwd>
-            <MAC_limit is_input="False">0.14035482124400434<!--most fwd X-position of center of gravity as ratio of mean aerodynamic chord--></MAC_limit>
+            <MAC_limit is_input="False">0.05<!--most fwd X-position of center of gravity as ratio of mean aerodynamic chord--></MAC_limit>
           </fwd>
         </CG>
       </aircraft>
@@ -375,6 +375,20 @@
         <recording>
           <mass units="kg" is_input="True">40.0<!--Mass of aircraft systems_inp_data:weight:systems:recording:mass--></mass>
         </recording>
+        <power>
+          <electric_systems>
+            <mass units="lbm" is_input="False">278.4829664102779<!--Mass of aircraft systems_inp_data:weight:systems:power:electric_systems:mass--></mass>
+            <CG>
+              <x units="m" is_input="False">6.75<!--X-position of center of gravity of the electric power unit--></x>
+            </CG>
+          </electric_systems>
+          <hydraulic_systems>
+            <mass units="lbm" is_input="False">186.31586917710987<!--Mass of aircraft systems_inp_data:weight:systems:power:hydraulic_systems:mass--></mass>
+            <CG>
+              <x units="m" is_input="False">6.75<!--X-position of center of gravity of the hydraulic power unit--></x>
+            </CG>
+          </hydraulic_systems>
+        </power>
       </systems>
     </weight>
     <mission>
@@ -399,7 +413,7 @@
           </sizing_factor>
         </cs23>
         <landing>
-          <elevator_angle units="deg" is_input="True">-30.<!--elevator maximum angle during landing phase in sizing mission--></elevator_angle>
+          <elevator_angle units="deg" is_input="True">-25.<!--elevator maximum angle during landing phase in sizing mission--></elevator_angle>
           <flap_angle units="deg">37.5</flap_angle>
           <target_sideslip units="deg" is_input="True">15.0</target_sideslip>
         </landing>
@@ -410,7 +424,7 @@
         <takeoff>
           <fuel units="kg" is_input="False">3.2695594760123754</fuel>
           <energy units="W*h" is_input="False">0.0</energy>
-          <elevator_angle units="deg" is_input="True">-30.<!--elevator maximum angle during takeoff phase in sizing mission--></elevator_angle>
+          <elevator_angle units="deg" is_input="True">-25.<!--elevator maximum angle during takeoff phase in sizing mission--></elevator_angle>
           <friction_coefficient_no_brake is_input="True">0.03<!--friction coefficient used during the computation of the takeoff phase--></friction_coefficient_no_brake>
           <thrust_rate is_input="True">1.0<!--thrust rate during takeoff phase--></thrust_rate>
         </takeoff>
@@ -548,7 +562,7 @@
       <aircraft>
         <MLW_MZFW_ratio is_input="True">1.1<!--(1.16) before--></MLW_MZFW_ratio>
         <CG>
-          <range is_input="True">0.09<!--(0.23) distance between front position and aft position of CG, as ratio of mean aerodynamic chord (allows to have front position of CG, as currently, FAST-OAD estimates only the aft position of CG)--></range>
+          <range is_input="True">0.2<!--(0.23) distance between front position and aft position of CG, as ratio of mean aerodynamic chord (allows to have front position of CG, as currently, FAST-OAD estimates only the aft position of CG)--></range>
           <aft>
             <MAC_position>
               <margin is_input="True">0.01<!--(0.0) Added margin for getting most aft CG position, as ratio of mean aerodynamic chord--></margin>
@@ -578,7 +592,7 @@
         </fuselage>
         <landing_gear>
           <front>
-            <weight_ratio is_input="True">0.27<!--part of aircraft weight that is supported by front landing gear--></weight_ratio>
+            <weight_ratio is_input="True">0.25<!--part of aircraft weight that is supported by front landing gear--></weight_ratio>
           </front>
         </landing_gear>
       </airframe>

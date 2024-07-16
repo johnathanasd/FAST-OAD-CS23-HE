@@ -66,10 +66,6 @@ class PerformancesSinglePEMFCVoltageStatistical(om.ExplicitComponent):
         )
 
         self.options.declare(
-            "pressure_coefficient", default=0.06, desc="pressure coefficient of one layer of pemfc"
-        )
-
-        self.options.declare(
             "max_current_density", default=0.7, desc="maximum current density  of pemfc"
         )
 
@@ -124,7 +120,6 @@ class PerformancesSinglePEMFCVoltageStatistical(om.ExplicitComponent):
         r = self.options["ohmic_resistance"]
         m = self.options["coefficient_in_concentration_loss"]
         n = self.options["exponential_coefficient_in_concentration_loss"]
-        pressure_coeff = self.options["pressure_coefficient"]
 
         i = np.clip(
             inputs["fc_current_density"],
@@ -136,12 +131,16 @@ class PerformancesSinglePEMFCVoltageStatistical(om.ExplicitComponent):
 
         nominal_pressure = inputs["nominal_pressure"]
 
+        pressure_ratio_log = np.log(operation_pressure / nominal_pressure)
+
+        pressure_coeff = -0.0032*pressure_ratio_log**2 + 0.0019*pressure_ratio_log + 0.0542
+
         outputs["single_layer_pemfc_voltage"] = (
             voc
             - active_loss_coeff * np.log(i)
             - r * i
             - m * np.exp(n * i)
-            + pressure_coeff * np.log(operation_pressure / nominal_pressure)
+            + pressure_coeff * pressure_ratio_log
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
@@ -151,7 +150,12 @@ class PerformancesSinglePEMFCVoltageStatistical(om.ExplicitComponent):
         r = self.options["ohmic_resistance"]
         m = self.options["coefficient_in_concentration_loss"]
         n = self.options["exponential_coefficient_in_concentration_loss"]
-        pressure_coeff = self.options["pressure_coefficient"]
+
+        operation_pressure = inputs["operation_pressure"]
+
+        nominal_pressure = inputs["nominal_pressure"]
+
+        pressure_ratio_log = np.log(operation_pressure / nominal_pressure)
 
         i = np.clip(
             inputs["fc_current_density"],
@@ -168,11 +172,11 @@ class PerformancesSinglePEMFCVoltageStatistical(om.ExplicitComponent):
         partials["single_layer_pemfc_voltage", "fc_current_density"] = partials_j
 
         partials["single_layer_pemfc_voltage", "operation_pressure"] = (
-            pressure_coeff / inputs["operation_pressure"]
+            -(48*pressure_ratio_log**2-19*pressure_ratio_log-271)/(5000*operation_pressure)
         )
 
         partials["single_layer_pemfc_voltage", "nominal_pressure"] = (
-            -pressure_coeff * np.ones(number_of_points) / inputs["nominal_pressure"]
+                (48*pressure_ratio_log**2-19*pressure_ratio_log-271)/(5000*nominal_pressure)
         )
 
 
@@ -259,6 +263,7 @@ class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
             default=100.0,
             desc="leak loss of  current density from pemfc [A/m**2]",
         )
+        #TODO: Check the  TAFEL EQUATION, Butler–Volmer equation
 
         self.options.declare(
             "exchange_current_density",
