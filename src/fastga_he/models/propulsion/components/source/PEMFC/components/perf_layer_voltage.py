@@ -133,7 +133,7 @@ class PerformancesSinglePEMFCVoltageStatistical(om.ExplicitComponent):
 
         pressure_ratio_log = np.log(operation_pressure / nominal_pressure)
 
-        pressure_coeff = -0.0032*pressure_ratio_log**2 + 0.0019*pressure_ratio_log + 0.0542
+        pressure_coeff = -0.0032 * pressure_ratio_log ** 2 + 0.0019 * pressure_ratio_log + 0.0542
 
         outputs["single_layer_pemfc_voltage"] = (
             voc
@@ -171,13 +171,13 @@ class PerformancesSinglePEMFCVoltageStatistical(om.ExplicitComponent):
 
         partials["single_layer_pemfc_voltage", "fc_current_density"] = partials_j
 
-        partials["single_layer_pemfc_voltage", "operation_pressure"] = (
-            -(48*pressure_ratio_log**2-19*pressure_ratio_log-271)/(5000*operation_pressure)
-        )
+        partials["single_layer_pemfc_voltage", "operation_pressure"] = -(
+            48 * pressure_ratio_log ** 2 - 19 * pressure_ratio_log - 271
+        ) / (5000 * operation_pressure)
 
         partials["single_layer_pemfc_voltage", "nominal_pressure"] = (
-                (48*pressure_ratio_log**2-19*pressure_ratio_log-271)/(5000*nominal_pressure)
-        )
+            48 * pressure_ratio_log ** 2 - 19 * pressure_ratio_log - 271
+        ) / (5000 * nominal_pressure)
 
 
 @oad.RegisterSubmodel(
@@ -263,7 +263,7 @@ class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
             default=100.0,
             desc="leak loss of  current density from pemfc [A/m**2]",
         )
-        #TODO: Check the  TAFEL EQUATION, Butler–Volmer equation
+        # TODO: Check the  TAFEL EQUATION, Butler–Volmer equation
 
         self.options.declare(
             "exchange_current_density",

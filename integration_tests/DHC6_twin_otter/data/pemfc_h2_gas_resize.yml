@@ -71,7 +71,7 @@ submodels:
   submodel.weight.mass.system.power_system: null
   submodel.weight.mass.system.life_support_system: fastga.submodel.weight.mass.system.life_support_system.flops
   submodel.weight.mass.system.recording_system: null
-  submodel.weight.mass.systems: fastga.submodel.weight.mass.systems.legacy
+  submodel.weight.mass.systems: fastga_he.submodel.weight.mass.systems.weight_nan
   submodel.geometry.nacelle.dimension: null
   submodel.aerodynamics.nacelle.cd0: fastga_he.submodel.aerodynamics.powertrain.cd0.from_pt_file
   submodel.propulsion.constraints.inductor.air_gap: fastga_he.submodel.propulsion.constraints.inductor.air_gap.enforce
@@ -83,3 +83,4 @@ submodels:
   submodel.performances.cg_variation: fastga_he.submodel.performances.cg_variation.simple
   submodel.propulsion.inverter.junction_temperature: fastga_he.submodel.propulsion.inverter.junction_temperature.fixed
   submodel.propulsion.performances.pemfc.layer_voltage: fastga_he.submodel.propulsion.performances.pemfc.layer_voltage.statistical
+  submodel.weight.mass.mzfw_and_mlw: fastga_he.submodel.weight.mass.mzfw_and_mlw.legacy

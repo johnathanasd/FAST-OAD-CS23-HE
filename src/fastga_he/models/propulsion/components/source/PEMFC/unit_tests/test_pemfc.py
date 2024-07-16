@@ -415,7 +415,8 @@ def test_single_layer_voltage_analytical():
     )
 
     assert problem.get_val("single_layer_pemfc_voltage", units="V") == pytest.approx(
-        [0.64212409, 0.58393421, 0.53611602, 0.49164352, 0.44803566, 0.40399003, 0.35861411], rel=1e-2
+        [0.64212409, 0.58393421, 0.53611602, 0.49164352, 0.44803566, 0.40399003, 0.35861411],
+        rel=1e-2,
     )
 
     problem.check_partials(compact_print=True)
