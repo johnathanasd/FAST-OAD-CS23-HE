@@ -55,7 +55,7 @@ submodels:
   submodel.geometry.vertical_tail.position.fd: null
   submodel.performances.mission_vector.descent_speed: null
   submodel.performances.mission_vector.climb_speed: null
-  submodel.weight.mass.airframe.fuselage: fastga.submodel.weight.mass.airframe.fuselage.roskam
+  submodel.weight.mass.airframe.fuselage: fastga.submodel.weight.mass.airframe.fuselage.analytical
   submodel.weight.mass.airframe.paint: fastga.submodel.weight.mass.airframe.paint.by_wet_area
   submodel.performances_he.energy_consumption: fastga_he.submodel.performances.energy_consumption.from_pt_file
   submodel.propulsion.constraints.simple_pmsm.rpm: fastga_he.submodel.propulsion.constraints.simple_pmsm.rpm.ensure
@@ -81,6 +81,6 @@ submodels:
   submodel.weight.mass.airframe.flight_controls: fastga.submodel.weight.mass.airframe.flight_controls.flops
   submodel.weight.mass_breakdown: fastga_he.submodel.weight.mass_breakdown.modular
   submodel.performances.cg_variation: fastga_he.submodel.performances.cg_variation.simple
-  submodel.propulsion.inverter.junction_temperature: fastga_he.submodel.propulsion.inverter.junction_temperature.fixed
+  #submodel.propulsion.inverter.junction_temperature: fastga_he.submodel.propulsion.inverter.junction_temperature.fixed
   submodel.propulsion.performances.pemfc.layer_voltage: fastga_he.submodel.propulsion.performances.pemfc.layer_voltage.statistical
-  submodel.weight.mass.mzfw_and_mlw: fastga_he.submodel.weight.mass.mzfw_and_mlw.legacy
+  submodel.weight.mass.mzfw_and_mlw: fastga_he.submodel.weight.mass.mzfw_and_mlw.only_zfw

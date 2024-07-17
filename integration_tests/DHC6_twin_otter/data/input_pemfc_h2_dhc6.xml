@@ -550,7 +550,7 @@
         <pemfc_stack>
           <pemfc_stack_1>
             <current_max units="A">600.</current_max>
-            <number_of_layers>1600.0<!--length: 3.428e-3 m per layer --></number_of_layers>
+            <number_of_layers>970.0<!--length: 3.428e-3 m per layer 1600 underbelly, 796 front, 970 rear--></number_of_layers>
             <effective_area units="cm**2">1600.</effective_area>
           </pemfc_stack_1>
       </pemfc_stack>
@@ -640,9 +640,10 @@
     </propulsion>
     <weight>
       <aircraft>
-        <max_payload units="kg" is_input="True">1941.<!--max payload weight--></max_payload>
+        <max_payload units="kg" is_input="True">1128.<!--max payload weight--></max_payload>
+        <MLW units="kg" is_input="False">5472.209645318106<!--maximum landing weight--></MLW>
+        <MZFW units="kg" is_input="False">4974.736041198277<!--maximum zero fuel weight--></MZFW>
         <MFW units="kg" is_input="False">5052.209679035955<!--maximum fuel weight--></MFW>
-        <payload units="kg" is_input="True">1375.<!--design payload weight--></payload>
         <target_MTOW units="kg" is_input="False">5498.228238260886<!--maximum takeoff weight of the aircraft--></target_MTOW>
         <CG>
           <aft>

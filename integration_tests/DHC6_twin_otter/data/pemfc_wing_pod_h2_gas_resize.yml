@@ -29,6 +29,8 @@ model:
   weight:
     id: fastga.weight.legacy
     propulsion_id: fastga.wrapper.propulsion.basicTurboprop
+  payload_update:
+    id: fastga_he.weight.payload_for_retrofit
   mtow:
     id: fastga.loop.mtow
   static_margin:
@@ -53,7 +55,7 @@ submodels:
   submodel.geometry.vertical_tail.position.fd: null
   submodel.performances.mission_vector.descent_speed: null
   submodel.performances.mission_vector.climb_speed: null
-  submodel.weight.mass.airframe.fuselage: fastga.submodel.weight.mass.airframe.fuselage.legacy
+  submodel.weight.mass.airframe.fuselage: fastga.submodel.weight.mass.airframe.fuselage.analytical
   submodel.weight.mass.airframe.paint: fastga.submodel.weight.mass.airframe.paint.by_wet_area
   submodel.performances_he.energy_consumption: fastga_he.submodel.performances.energy_consumption.from_pt_file
   submodel.propulsion.constraints.simple_pmsm.rpm: fastga_he.submodel.propulsion.constraints.simple_pmsm.rpm.ensure
@@ -69,7 +71,7 @@ submodels:
   submodel.weight.mass.system.power_system: null
   submodel.weight.mass.system.life_support_system: fastga.submodel.weight.mass.system.life_support_system.flops
   submodel.weight.mass.system.recording_system: null
-  submodel.weight.mass.systems: fastga.submodel.weight.mass.systems.legacy
+  submodel.weight.mass.systems: fastga_he.submodel.weight.mass.systems.weight_nan
   submodel.geometry.nacelle.dimension: null
   submodel.aerodynamics.nacelle.cd0: fastga_he.submodel.aerodynamics.powertrain.cd0.from_pt_file
   submodel.propulsion.constraints.inductor.air_gap: fastga_he.submodel.propulsion.constraints.inductor.air_gap.enforce
@@ -77,7 +79,8 @@ submodels:
   submodel.weight.mass.furniture.seats: null
   submodel.weight.cg.loadcase.flight: fastga_he.submodel.weight.cg.loadcase.flight.simple
   submodel.weight.mass.airframe.flight_controls: fastga.submodel.weight.mass.airframe.flight_controls.flops
-  submodel.weight.mass.mzfw_and_mlw: null
+  submodel.weight.mass.mzfw_and_mlw: fastga_he.submodel.weight.mass.mzfw_and_mlw.only_zfw
   submodel.performances.cg_variation: fastga_he.submodel.performances.cg_variation.simple
-  submodel.propulsion.inverter.junction_temperature: fastga_he.submodel.propulsion.inverter.junction_temperature.fixed
+  #submodel.propulsion.inverter.junction_temperature: fastga_he.submodel.propulsion.inverter.junction_temperature.fixed
   submodel.propulsion.performances.pemfc.layer_voltage: fastga_he.submodel.propulsion.performances.pemfc.layer_voltage.statistical
+  submodel.weight.mass_breakdown: fastga_he.submodel.weight.mass_breakdown.modular
