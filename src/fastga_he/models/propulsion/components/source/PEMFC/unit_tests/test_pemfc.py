@@ -537,13 +537,13 @@ def test_pemfc_efficiency():
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
         PerformancesPEMFCEfficiency(
-            pemfc_stack_id="pemfc_stack_1", number_of_points=NB_POINTS_TEST
+             number_of_points=NB_POINTS_TEST
         ),
         ivc,
     )
     # Not computed with proper losses, to test only
     assert problem.get_val(
-        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:efficiency"
+        "efficiency"
     ) == pytest.approx(
         [0.6843, 0.67, 0.6570, 0.6449, 0.6330, 0.6216, 0.6102, 0.5989, 0.5874, 0.5756], rel=1e-2
     )
@@ -609,7 +609,7 @@ def test_fuel_consumed():
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
         PerformancesPEMFCFuelConsumed(
-            number_of_points=NB_POINTS_TEST, pemfc_stack_id="pemfc_stack_1"
+            number_of_points=NB_POINTS_TEST,
         ),
         ivc,
     )
@@ -669,7 +669,7 @@ def test_performances_pemfc_stack():
     )
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:efficiency"
+        "efficiency"
     ) == pytest.approx(
         [0.6843, 0.67, 0.6570, 0.6449, 0.6330, 0.6216, 0.6102, 0.5989, 0.5874, 0.5756], rel=1e-2
     )

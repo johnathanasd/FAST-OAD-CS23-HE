@@ -17,17 +17,10 @@ class PerformancesPEMFCFuelConsumed(om.ExplicitComponent):
         self.options.declare(
             "number_of_points", default=1, desc="number of equilibrium to be treated"
         )
-        self.options.declare(
-            name="pemfc_stack_id",
-            default=None,
-            desc="Identifier of the PEMFC stack",
-            allow_none=False,
-        )
 
     def setup(self):
 
         number_of_points = self.options["number_of_points"]
-        pemfc_stack_id = self.options["pemfc_stack_id"]
 
         self.add_input(name="fuel_consumption", units="kg/h", val=np.full(number_of_points, np.nan))
         self.add_input("time_step", units="h", val=np.full(number_of_points, np.nan))

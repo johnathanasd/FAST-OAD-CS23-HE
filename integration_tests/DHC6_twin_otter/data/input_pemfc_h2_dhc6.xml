@@ -345,8 +345,8 @@
             </cross_section>
           </dc_bus_1>
         </DC_bus>
-        <PMSM>
-          <motor_1>
+        <simple_PMSM>
+          <simple_motor_1>
             <from_LE units="m" is_input="True">0.05<!--Distance between the PMSM front face and the leading edge--></from_LE>
             <efficiency>0.94</efficiency>
             <rpm_rating units="1/min" is_input="True">4500.0<!--Max continuous rpm of the motor--></rpm_rating>
@@ -358,8 +358,8 @@
             <fairing>
               <fineness is_input="True">1.75<!--Ratio between the fairing length and the motor diameter--></fineness>
             </fairing>
-          </motor_1>
-          <motor_2>
+          </simple_motor_1>
+          <simple_motor_2>
             <from_LE units="m" is_input="True">0.05<!--Distance between the PMSM front face and the leading edge--></from_LE>
             <rpm_rating units="1/min" is_input="True">4500.0<!--Max continuous rpm of the motor--></rpm_rating>
             <torque_rating units="N*m">1783.</torque_rating>
@@ -371,8 +371,8 @@
             <fairing>
               <fineness is_input="True">1.75<!--Ratio between the fairing length and the motor diameter--></fineness>
             </fairing>
-          </motor_2>
-        </PMSM>
+          </simple_motor_2>
+        </simple_PMSM>
         <speed_reducer>
           <speed_reducer_1>
             <efficiency is_input="True">0.98<!--Efficiency of the planetary gear--></efficiency>
@@ -550,7 +550,7 @@
         <pemfc_stack>
           <pemfc_stack_1>
             <current_max units="A">600.</current_max>
-            <number_of_layers>1800.0<!--length: 3.428e-3 m per layer --></number_of_layers>
+            <number_of_layers>1600.0<!--length: 3.428e-3 m per layer --></number_of_layers>
             <effective_area units="cm**2">1600.</effective_area>
           </pemfc_stack_1>
       </pemfc_stack>
@@ -887,16 +887,16 @@
             <void_thickness units="m" is_input="True">5e-05</void_thickness>
           </insulation>
         </DC_bus>
-        <PMSM>
-          <motor_1>
+        <simple_PMSM>
+          <simple_motor_1>
             <k_efficiency is_input="True">1.0<!--K factor for the PMSM efficiency--></k_efficiency>
             <power_factor is_input="True">1.0</power_factor>
-          </motor_1>
-          <motor_2>
+          </simple_motor_1>
+          <simple_motor_2>
             <k_efficiency is_input="True">1.0<!--K factor for the PMSM efficiency--></k_efficiency>
             <power_factor is_input="True">1.0</power_factor>
-          </motor_2>
-        </PMSM>
+          </simple_motor_2>
+        </simple_PMSM>
         <inverter>
           <inverter_1>
             <reference_temperature units="degK" is_input="True">293.15</reference_temperature>
