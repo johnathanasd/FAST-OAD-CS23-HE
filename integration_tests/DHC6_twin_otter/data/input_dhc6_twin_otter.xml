@@ -184,7 +184,7 @@
         <propeller>
           <propeller_1>
             <input_mass units="kg" is_input="False">61.2</input_mass>
-            <from_LE units="m" is_input="False">3.5146</from_LE>
+            <from_LE units="m" is_input="False">2.0146</from_LE>
             <CG>
               <y_ratio is_input="True">0.28<!--Y position of the propeller center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
@@ -200,7 +200,7 @@
           </propeller_1>
           <propeller_2>
             <input_mass units="kg" is_input="False">61.2</input_mass>
-            <from_LE units="m" is_input="False">3.5146</from_LE>
+            <from_LE units="m" is_input="False">2.0146</from_LE>
             <CG>
               <y_ratio is_input="True">0.28<!--Y position of the propeller center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
@@ -220,7 +220,7 @@
             <mass_ratio>2.0</mass_ratio>
             <power_offtake units="kW" is_input="True">10.<!--Mechanical offtake on the turboshaft, is added to shaft power out--></power_offtake>
             <power_rating units="kW" is_input="True">462.33<!--Flat rating of the turboshaft--></power_rating>
-            <from_LE units="m" is_input="False">3.02534</from_LE>
+            <from_LE units="m" is_input="False">0.84</from_LE>
             <CG>
               <y_ratio is_input="True">0.28<!--Y position of the propeller center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
@@ -238,7 +238,7 @@
             <mass_ratio>2.0</mass_ratio>
             <power_offtake units="kW" is_input="True">10.<!--Mechanical offtake on the turboshaft, is added to shaft power out--></power_offtake>
             <power_rating units="kW" is_input="True">462.33<!--Flat rating of the turboshaft--></power_rating>
-            <from_LE units="m" is_input="False">3.02534</from_LE>
+            <from_LE units="m" is_input="False">0.84</from_LE>
             <CG>
               <y_ratio is_input="True">0.28<!--Y position of the propeller center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
@@ -592,7 +592,7 @@
         </fuselage>
         <landing_gear>
           <front>
-            <weight_ratio is_input="True">0.25<!--part of aircraft weight that is supported by front landing gear--></weight_ratio>
+            <weight_ratio is_input="True">0.23<!--part of aircraft weight that is supported by front landing gear--></weight_ratio>
           </front>
         </landing_gear>
       </airframe>

@@ -560,7 +560,7 @@
         <pemfc_stack>
           <pemfc_stack_1>
             <current_max units="A">600.</current_max>
-            <number_of_layers>1600.0<!--length: 3.428e-3 m per layer --></number_of_layers>
+            <number_of_layers>580.0<!--length: 3.428e-3 m per layer --></number_of_layers>
             <effective_area units="cm**2">800.</effective_area>
             <CG>
               <y_ratio is_input="True">0.28</y_ratio>
@@ -568,7 +568,7 @@
           </pemfc_stack_1>
           <pemfc_stack_2>
             <current_max units="A">600.</current_max>
-            <number_of_layers>1600.0</number_of_layers>
+            <number_of_layers>580.0<!--length: 3.428e-3 m per layer --></number_of_layers>
             <effective_area units="cm**2">800.</effective_area>
             <CG>
               <y_ratio is_input="True">0.28</y_ratio>
@@ -717,7 +717,7 @@
     </propulsion>
     <weight>
       <aircraft>
-        <max_payload units="kg" is_input="True">1128.<!--max payload weight--></max_payload>
+        <max_payload units="kg" is_input="True">1941.<!--max payload weightno use with only_zfw--></max_payload>
         <MLW units="kg" is_input="False">5472.209645318106<!--maximum landing weight--></MLW>
         <MZFW units="kg" is_input="False">4974.736041198277<!--maximum zero fuel weight--></MZFW>
         <MFW units="kg" is_input="False">5052.209679035955<!--maximum fuel weight--></MFW>
@@ -928,7 +928,7 @@
         <landing_gear>
           <front>
             <front_fuselage_ratio is_input="True">0.75<!--Position of front landing gear expressed as fuselage front length ratio--></front_fuselage_ratio>
-            <weight_ratio is_input="True">0.24<!--part of aircraft weight that is supported by front landing gear, should not be lower than 0.08. Roskam--></weight_ratio>
+            <weight_ratio is_input="True">0.23<!--part of aircraft weight that is supported by front landing gear, should not be lower than 0.08. Roskam--></weight_ratio>
           </front>
         </landing_gear>
       </airframe>
