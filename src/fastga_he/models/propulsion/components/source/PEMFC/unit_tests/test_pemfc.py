@@ -536,15 +536,11 @@ def test_pemfc_efficiency():
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
-        PerformancesPEMFCEfficiency(
-             number_of_points=NB_POINTS_TEST
-        ),
+        PerformancesPEMFCEfficiency(number_of_points=NB_POINTS_TEST),
         ivc,
     )
     # Not computed with proper losses, to test only
-    assert problem.get_val(
-        "efficiency"
-    ) == pytest.approx(
+    assert problem.get_val("efficiency") == pytest.approx(
         [0.6843, 0.67, 0.6570, 0.6449, 0.6330, 0.6216, 0.6102, 0.5989, 0.5874, 0.5756], rel=1e-2
     )
 
@@ -668,9 +664,7 @@ def test_performances_pemfc_stack():
         rel=1e-2,
     )
 
-    assert problem.get_val(
-        "efficiency"
-    ) == pytest.approx(
+    assert problem.get_val("efficiency") == pytest.approx(
         [0.6843, 0.67, 0.6570, 0.6449, 0.6330, 0.6216, 0.6102, 0.5989, 0.5874, 0.5756], rel=1e-2
     )
 

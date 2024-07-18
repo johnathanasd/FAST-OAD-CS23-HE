@@ -55,14 +55,14 @@
         <wet_area units="m**2" is_input="True">76.165942578043<!--fuselage wet area--></wet_area>
       </fuselage>
       <horizontal_tail>
-        <area units="m**2" is_input="True">9.120101562742216<!--horizontal tail area--></area>
+        <area units="m**2" is_input="True">9.245565801900439<!--horizontal tail area--></area>
         <aspect_ratio is_input="True">4.35<!--horizontal tail aspect ratio--></aspect_ratio>
-        <span units="m" is_input="True">6.372986995013022<!--horizontal tail span--></span>
+        <span units="m" is_input="True">6.381315265358585<!--horizontal tail span--></span>
         <sweep_25 units="deg" is_input="True">0.0<!--sweep angle at 25% chord of horizontal tail--></sweep_25>
         <taper_ratio is_input="True">1.0<!--taper ratio of horizontal tail--></taper_ratio>
         <thickness_ratio is_input="True">0.12<!--thickness ratio of horizontal tail--></thickness_ratio>
         <MAC>
-          <length units="m" is_input="True">1.4650544816121889<!--mean aerodynamic chord length of horizontal tail--></length>
+          <length units="m" is_input="True">1.4669690265192148<!--mean aerodynamic chord length of horizontal tail--></length>
           <at25percent>
             <x>
               <from_wingMAC25 units="m" is_input="True">7.15<!--distance along X between 25% MAC of wing and 25% MAC of horizontal tail--></from_wingMAC25>
@@ -71,10 +71,10 @@
           </at25percent>
         </MAC>
         <root>
-          <chord units="m" is_input="True">1.4650544816121889<!--chord length at root of horizontal tail--></chord>
+          <chord units="m" is_input="True">1.4669690265192148<!--chord length at root of horizontal tail--></chord>
         </root>
         <tip>
-          <chord units="m" is_input="True">1.4650544816121889<!--chord length at tip of horizontal tail--></chord>
+          <chord units="m" is_input="True">1.4669690265192148<!--chord length at tip of horizontal tail--></chord>
         </tip>
         <z>
           <from_wingMAC25 units="m" is_input="True">0.0<!--Z-position of the horizontal tail w.r.t. 25% MAC of wing Z-position--></from_wingMAC25>
@@ -89,43 +89,43 @@
         <diameter units="m" is_input="True">2.59<!--propeller diameter--></diameter>
       </propeller>
       <vertical_tail>
-        <area units="m**2" is_input="True">7.521847942594165<!--vertical tail area--></area>
+        <area units="m**2" is_input="True">7.6119327070357<!--vertical tail area--></area>
         <aspect_ratio is_input="True">1.915<!--vertical tail aspect ratio--></aspect_ratio>
-        <span units="m" is_input="True">3.7904756669538155<!--vertical tail span--></span>
+        <span units="m" is_input="True">3.796291874714831<!--vertical tail span--></span>
         <sweep_25 units="deg" is_input="True">25.0<!--sweep angle at 25% chord of vertical tail--></sweep_25>
         <taper_ratio is_input="True">0.58<!--taper ratio of vertical tail--></taper_ratio>
         <thickness_ratio is_input="True">0.14<!--thickness ratio of vertical tail--></thickness_ratio>
         <MAC>
-          <length units="m" is_input="True">2.025982359600517<!--mean aerodynamic chord length of vertical tail--></length>
+          <length units="m" is_input="True">2.029091081396654<!--mean aerodynamic chord length of vertical tail--></length>
           <at25percent>
             <x>
               <from_wingMAC25 units="m" is_input="True">7.21<!--distance along X between 25% MAC of wing and 25% MAC of vertical tail--></from_wingMAC25>
-              <local units="m" is_input="True">0.9253400870073858<!--X-position of the 25% of mean aerodynamic chord of vertical tail w.r.t. leading edge of root chord--></local>
+              <local units="m" is_input="True">0.9267599537123886<!--X-position of the 25% of mean aerodynamic chord of vertical tail w.r.t. leading edge of root chord--></local>
             </x>
           </at25percent>
         </MAC>
         <root>
-          <chord units="m" is_input="True">2.5055198248033945<!--chord length at root of vertical tail--></chord>
+          <chord units="m" is_input="True">2.509364361777328<!--chord length at root of vertical tail--></chord>
         </root>
         <rudder>
           <max_deflection units="deg" is_input="True">25.0<!--rudder maximum deflection--></max_deflection>
         </rudder>
         <tip>
-          <chord units="m" is_input="True">1.4532014983859687<!--chord length at tip of vertical tail--></chord>
+          <chord units="m" is_input="True">1.45543132983085<!--chord length at tip of vertical tail--></chord>
         </tip>
       </vertical_tail>
       <wing>
         <aspect_ratio is_input="True">10.1<!--wing aspect ratio--></aspect_ratio>
-        <area units="m**2" is_input="True">40.10785034372956<!--_inp_data:geometry:wing:area--></area>
-        <span units="m" is_input="True">20.104894041967455<!--wing span--></span>
+        <area units="m**2" is_input="True">40.23736482578201<!--_inp_data:geometry:wing:area--></area>
+        <span units="m" is_input="True">20.15127449040902<!--wing span--></span>
         <sweep_25 units="deg" is_input="True">0.0<!--sweep angle at 25% chord of wing--></sweep_25>
         <taper_ratio is_input="True">1.0<!--taper ratio of wing--></taper_ratio>
         <thickness_ratio is_input="True">0.16<!--mean thickness ratio of wing--></thickness_ratio>
-        <wet_area units="m**2" is_input="True">77.69919141465387<!--wet area of wing--></wet_area>
+        <wet_area units="m**2" is_input="True">78.07646697616245<!--wet area of wing--></wet_area>
         <MAC>
-          <length units="m" is_input="True">1.9905835685116295<!--length of mean aerodynamic chord of wing--></length>
+          <length units="m" is_input="True">1.9951756921197052<!--length of mean aerodynamic chord of wing--></length>
           <at25percent>
-            <x units="m" is_input="True">8.220965202341823<!--X-position of the 25% of mean aerodynamic chord of wing w.r.t. aircraft nose (drives position of wing along fuselage)--></x>
+            <x units="m" is_input="True">6.164989354284903<!--X-position of the 25% of mean aerodynamic chord of wing w.r.t. aircraft nose (drives position of wing along fuselage)--></x>
           </at25percent>
           <leading_edge>
             <x>
@@ -139,15 +139,15 @@
           <span_ratio is_input="True">0.51</span_ratio>
         </aileron>
         <root>
-          <chord units="m" is_input="True">1.990583568511629<!--chord length at wing root--></chord>
+          <chord units="m" is_input="True">1.9951756921197055<!--chord length at wing root--></chord>
           <thickness_ratio is_input="True">0.16<!--thickness ratio at wing root--></thickness_ratio>
-          <virtual_chord units="m" is_input="True">1.990583568511629<!--virtual chord length at wing root if sweep angle of trailing edge of outer wing part was on the whole wing (no kink)--></virtual_chord>
+          <virtual_chord units="m" is_input="True">1.9951756921197055<!--virtual chord length at wing root if sweep angle of trailing edge of outer wing part was on the whole wing (no kink)--></virtual_chord>
           <y units="m" is_input="True">0.9325<!--Y-position of wing root--></y>
         </root>
         <tip>
-          <chord units="m" is_input="True">1.990583568511629<!--chord length at wing tip--></chord>
+          <chord units="m" is_input="True">1.9951756921197055<!--chord length at wing tip--></chord>
           <thickness_ratio is_input="True">0.16<!--thickness ratio at wing tip--></thickness_ratio>
-          <y units="m" is_input="True">10.052447020983728<!--Y-position of wing tip--></y>
+          <y units="m" is_input="True">10.07563724520451<!--Y-position of wing tip--></y>
         </tip>
       </wing>
       <cockpit>
@@ -182,13 +182,13 @@
         <unit_reynolds units="1/m" is_input="True">5005349.099331735<!--unitary reynolds number representative of high speed aerodynamics--></unit_reynolds>
       </cruise>
       <fuselage>
-        <cm_alpha units="1/rad" is_input="True">-0.2472314204007601<!--derivative of fuselage pitching moment coefficient with respect to angle of attack--></cm_alpha>
-        <Cn_beta units="1/rad" is_input="False">-0.0639746928832291<!--derivative of yawing moment against sideslip angle for fuselage in cruise conditions--></Cn_beta>
+        <cm_alpha units="1/rad" is_input="True">-0.26872257185489523<!--derivative of fuselage pitching moment coefficient with respect to angle of attack--></cm_alpha>
+        <Cn_beta units="1/rad" is_input="False">-0.06353397372742323<!--derivative of yawing moment against sideslip angle for fuselage in cruise conditions--></Cn_beta>
         <cruise>
-          <CD0 is_input="False">0.004937487590068822<!--profile drag coefficient for fuselage w.r.t. data:aerodynamics:aircraft:cruise:CL--></CD0>
+          <CD0 is_input="False">0.004914785368368281<!--profile drag coefficient for fuselage w.r.t. data:aerodynamics:aircraft:cruise:CL--></CD0>
         </cruise>
         <low_speed>
-          <CD0 is_input="False">0.005586037208454448<!--profile drag coefficient for fuselage w.r.t. data:aerodynamics:aircraft:low_speed:CL--></CD0>
+          <CD0 is_input="False">0.0055603530010877545<!--profile drag coefficient for fuselage w.r.t. data:aerodynamics:aircraft:low_speed:CL--></CD0>
         </low_speed>
       </fuselage>
       # Check if need any change or not
@@ -198,78 +198,78 @@
       </low_speed>
       <aircraft>
         <cruise>
-          <CD0 is_input="True">0.021336197188117377<!--profile drag coefficient for the complete aircraft in cruise conditions--></CD0>
+          <CD0 is_input="True">0.02128346025340932<!--profile drag coefficient for the complete aircraft in cruise conditions--></CD0>
         </cruise>
         <low_speed>
-          <CD0 is_input="True">0.023304361304772796<!--profile drag coefficient for the complete aircraft in low speed conditions--></CD0>
+          <CD0 is_input="True">0.023246484845285784<!--profile drag coefficient for the complete aircraft in low speed conditions--></CD0>
         </low_speed>
         <mach_interpolation>
-          <CL_alpha_vector units="1/rad" is_input="False">[4.549537288407939, 4.577678505950302, 4.664228018256916, 4.815977454237224, 5.0457835122024095, 5.375524907183341]<!--lift curve slope coefficients of the aircraft at the mach number given in mach_vector--></CL_alpha_vector>
+          <CL_alpha_vector units="1/rad" is_input="False">[4.548170224510879, 4.576306429067706, 4.662840787212064, 4.814564608800336, 5.044334175231512, 5.37402797571331]<!--lift curve slope coefficients of the aircraft at the mach number given in mach_vector--></CL_alpha_vector>
           <mach_vector is_input="False">[0.0, 0.08838608165277288, 0.17677216330554577, 0.26515824495831863, 0.35354432661109153, 0.4419304082638644]<!--mach numbers at which the aircraft lift curve slope in CL_alpha_vector was computed--></mach_vector>
         </mach_interpolation>
         <landing>
-          <CL_max is_input="False">2.453663337384397<!--maximum lift coefficient at landing--></CL_max>
+          <CL_max is_input="False">2.453684646776832<!--maximum lift coefficient at landing--></CL_max>
         </landing>
         <takeoff>
-          <CL_max is_input="False">2.398663337384397<!--maximum lift coefficient during take-off--></CL_max>
+          <CL_max is_input="False">2.3986846467768324<!--maximum lift coefficient during take-off--></CL_max>
         </takeoff>
       </aircraft>
       <elevator>
         <low_speed>
-          <CD_delta units="1/rad**2" is_input="True">0.07239463286231206<!--derivative of horizontal tail drag coefficient with respect to elevator command--></CD_delta>
-          <CL_delta units="1/rad" is_input="True">0.6359260066323388<!--derivative of horizontal tail lift coefficient with respect to elevator command--></CL_delta>
+          <CD_delta units="1/rad**2" is_input="False">0.07225023226764903<!--derivative of horizontal tail drag coefficient with respect to elevator command--></CD_delta>
+          <CL_delta units="1/rad" is_input="False">0.6346921615483153<!--derivative of horizontal tail lift coefficient with respect to elevator command--></CL_delta>
         </low_speed>
       </elevator>
       <horizontal_tail>
         <efficiency is_input="False">0.9<!--ratio between the dynamic pressure at the tail and the free stream dynamic pressure--></efficiency>
         <cruise>
-          <CL0 is_input="True">-0.011367538974701889<!--lift coefficient of the horizontal tail when aircraft AOA is null in cruise conditions--></CL0>
-          <CL_alpha units="1/rad" is_input="True">0.722558656176841<!--derivative of lift coefficient of horizontal tail with respect to aircraft angle of attack in cruise conditions--></CL_alpha>
-          <induced_drag_coefficient is_input="True">0.16998966910915708<!--coefficient to multiply by the lift coefficient squared to get induced drag in cruise conditions--></induced_drag_coefficient>
+          <CL0 is_input="True">-0.011344864926600506<!--lift coefficient of the horizontal tail when aircraft AOA is null in cruise conditions--></CL0>
+          <CL_alpha units="1/rad" is_input="True">0.7211174181249913<!--derivative of lift coefficient of horizontal tail with respect to aircraft angle of attack in cruise conditions--></CL_alpha>
+          <induced_drag_coefficient is_input="True">0.16965060240855487<!--coefficient to multiply by the lift coefficient squared to get induced drag in cruise conditions--></induced_drag_coefficient>
           <downwash_gradient is_input="False">0.3138497352236813</downwash_gradient>
           <hinge_moment>
-            <CH_alpha units="1/rad" is_input="False">-0.32719933800208895<!--derivative of 3D hinge moment coefficient with respect to the local angle of attack in cruise conditions--></CH_alpha>
-            <CH_delta units="1/rad" is_input="False">-0.7371322719071574<!--derivative of 3D hinge moment coefficient with respect to elevator deflection in cruise conditions--></CH_delta>
+            <CH_alpha units="1/rad" is_input="False">-0.32719573617729<!--derivative of 3D hinge moment coefficient with respect to the local angle of attack in cruise conditions--></CH_alpha>
+            <CH_delta units="1/rad" is_input="False">-0.7371127994061156<!--derivative of 3D hinge moment coefficient with respect to elevator deflection in cruise conditions--></CH_delta>
           </hinge_moment>
         </cruise>
         <low_speed>
-          <CL0 is_input="False">-0.010819284144726528<!--lift coefficient of the horizontal tail when aircraft AOA is null in low speed conditions--></CL0>
-          <CL_alpha units="1/rad" is_input="False">0.7073869962978157<!--derivative of lift coefficient of horizontal tail with respect to aircraft angle of attack in low speed conditions--></CL_alpha>
-          <CL_alpha_isolated units="1/rad" is_input="False">0.9413112675603206<!--derivative of lift coefficient of horizontal tail with respect to local angle of attack in low speed conditions--></CL_alpha_isolated>
-          <CL_max_clean is_input="True">0.3235659358039608<!--maximum horizontal tail lift coefficient in low speed altitude--></CL_max_clean>
+          <CL0 is_input="False">-0.01079770366282398<!--lift coefficient of the horizontal tail when aircraft AOA is null in low speed conditions--></CL0>
+          <CL_alpha units="1/rad" is_input="False">0.705976020112377<!--derivative of lift coefficient of horizontal tail with respect to aircraft angle of attack in low speed conditions--></CL_alpha>
+          <CL_alpha_isolated units="1/rad" is_input="False">0.939433698720967<!--derivative of lift coefficient of horizontal tail with respect to local angle of attack in low speed conditions--></CL_alpha_isolated>
+          <CL_max_clean is_input="True">0.32297536284335043<!--maximum horizontal tail lift coefficient in low speed altitude--></CL_max_clean>
         </low_speed>
       </horizontal_tail>
       <vertical_tail>
         <cruise>
-          <CL_alpha units="1/rad" is_input="False">2.9086648520694496<!--derivative of the vertical tail side force coefficient with respect to the local sideslip angle in cruise conditions--></CL_alpha>
+          <CL_alpha units="1/rad" is_input="False">2.908652946135232<!--derivative of the vertical tail side force coefficient with respect to the local sideslip angle in cruise conditions--></CL_alpha>
         </cruise>
         <low_speed>
-          <CL_alpha units="1/rad" is_input="False">2.832559581650648<!--derivative of the vertical tail side force coefficient with respect to the local sideslip angle in low speed conditions--></CL_alpha>
-          <Cy_beta units="1/rad" is_input="False">-0.4702760568015606</Cy_beta>
+          <CL_alpha units="1/rad" is_input="False">2.832553438966829<!--derivative of the vertical tail side force coefficient with respect to the local sideslip angle in low speed conditions--></CL_alpha>
+          <Cy_beta units="1/rad" is_input="False">-0.46936321677739207</Cy_beta>
         </low_speed>
       </vertical_tail>
       <rudder>
         <cruise>
-          <Cy_delta_r units="1/rad" is_input="False">2.1686936383744437<!--derivative of the side force coefficient with respect to the rudder command in cruise conditions--></Cy_delta_r>
+          <Cy_delta_r units="1/rad" is_input="False">2.1592697418378486<!--derivative of the side force coefficient with respect to the rudder command in cruise conditions--></Cy_delta_r>
         </cruise>
       </rudder>
       <wing>
         <cruise>
-          <CD0 is_input="True">0.006009511473687561<!--profile drag coefficient for wing in cruise conditions--></CD0>
-          <CL0_clean is_input="True">0.20200036805694044<!--wing lift coefficient at zero aircraft angle of attack in cruise conditions and with no flaps deployed--></CL0_clean>
-          <CL_alpha units="1/rad" is_input="True">4.979239513674585<!--wing lift coefficient slope with respect to aircraft angle of attack in cruise conditions--></CL_alpha>
+          <CD0 is_input="False">0.0060056824782018<!--profile drag coefficient for wing in cruise conditions--></CD0>
+          <CL0_clean is_input="False">0.20200036805694044<!--wing lift coefficient at zero aircraft angle of attack in cruise conditions and with no flaps deployed--></CL0_clean>
+          <CL_alpha units="1/rad" is_input="False">4.979239513674585<!--wing lift coefficient slope with respect to aircraft angle of attack in cruise conditions--></CL_alpha>
           <CM0_clean is_input="True">-0.083454137349702<!--wing pitching moment coefficient in cruise conditions and with no flaps deployed--></CM0_clean>
           <induced_drag_coefficient is_input="True">0.03709471485849261<!--coefficient to multiply by the lift coefficient squared to get wing induced drag in cruise conditions--></induced_drag_coefficient>
         </cruise>
         <low_speed>
-          <CL0_clean is_input="True">0.19617845325506084<!--wing lift coefficient at zero aircraft angle of attack in low speed conditions and with no flaps deployed--></CL0_clean>
-          <CL_alpha units="1/rad" is_input="False">4.845350956808046<!--wing lift coefficient slope with respect to aircraft angle of attack in low speed conditions--></CL_alpha>
-          <CL_max_clean is_input="True">1.318827072972431<!--wing maximum lift coefficient for positive angle of attack--></CL_max_clean>
-          <CL_ref is_input="True">1.0418517293646403</CL_ref>
-          <CL_vector is_input="False">[1.2083384171301148, 1.2087499662799028, 1.2087198529274794, 1.207997132469315, 1.2089507219627265, 1.2000271318612248, 1.1988627489008488, 1.198812559980143, 1.1948978241650858, 1.188804889191395, 1.1788474073233524, 1.1707067643848619, 1.1623653657635484, 1.1556601259572457, 1.1502096091685894, 1.1434541804415808, 1.1336271897673735, 1.1250248087583894, 1.1152279314366058, 1.1050897694540223, 1.0918499321718167, 1.080416896035022, 1.0675785701184635, 1.0546499041446342, 1.0376760111619128, 1.022679561655002, 1.0044710212229166, 0.9869249745441484, 0.9663675926230285, 0.9462418354199792, 0.9207358259172618, 0.8949688340268738, 0.8608604435151723, 0.8247043450386715, 0.7739031195002013, 0.7170892612611691, 0.6396176432596056, 0.5354053683059604, 0.407805056303385, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]<!--lift coefficient of the wing at the station along the wing span in Y_vector, the total corresponding wing lift coefficient is equal to CL0_clean--></CL_vector>
-          <CM0_clean is_input="False">-0.08064355779017389<!--wing pitching moment coefficient in low speed conditions and with no flaps deployed--></CM0_clean>
-          <Y_vector units="m" is_input="False">[0.13372479327501108, 0.4011543040416261, 0.6686038905916483, 0.9360334013582633, 1.2034629121248783, 1.4709124986749005, 1.7383420094415156, 2.0008529532733794, 2.2591680583731493, 2.518948695661641, 2.7800141830881904, 3.042244065952354, 3.305457662203468, 3.569494365574275, 3.834213645580925, 4.099434820172754, 4.364997283082504, 4.630740428042919, 4.896483573003334, 5.162086187479898, 5.427367589421948, 5.692147096778819, 5.956304254850069, 6.2196383058016265, 6.48200871914964, 6.743234812843447, 7.003196132182603, 7.261732070899852, 7.518661946944528, 7.773885381399597, 8.027241767997802, 8.278610652038699, 8.52783142725503, 8.774803714729762, 9.019386983979043, 9.26146078030243, 9.500944800566296, 9.737718590070196, 9.971681769897096, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]<!--wing station along the wing span at which chord_vector and Cl_vector are sampled--></Y_vector>
-          <chord_vector units="m" is_input="False">[1.9976207521448286, 1.9976207521448286, 1.9976207521448286, 1.9976207521448286, 1.9976207521448286, 1.9976207521448286, 1.9976207521448286, 1.9976006763614214, 1.9975605247946069, 1.9975203732277929, 1.9975002974443856, 1.9974601458775714, 1.9974400700941641, 1.9974199943107571, 1.9973999185273499, 1.9973798427439429, 1.9973597669605356, 1.9973396911771284, 1.9973396911771284, 1.9973196153937214, 1.9973196153937214, 1.9973196153937214, 1.9973196153937214, 1.9973196153937214, 1.9973196153937214, 1.9973196153937214, 1.9973396911771284, 1.9973396911771284, 1.9973597669605356, 1.9973597669605356, 1.9973798427439429, 1.9973999185273499, 1.9974199943107571, 1.9974601458775714, 1.9974802216609786, 1.9975002974443856, 1.9975404490111999, 1.9975605247946069, 1.9976006763614214, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]<!--wing chord length at the station along the wing span in Y_vector--></chord_vector>
+          <CL0_clean is_input="True">0.1961182265502138<!--wing lift coefficient at zero aircraft angle of attack in low speed conditions and with no flaps deployed--></CL0_clean>
+          <CL_alpha units="1/rad" is_input="False">4.844085686940749<!--wing lift coefficient slope with respect to aircraft angle of attack in low speed conditions--></CL_alpha>
+          <CL_max_clean is_input="True">1.3186846467768323<!--wing maximum lift coefficient for positive angle of attack--></CL_max_clean>
+          <CL_ref is_input="True">1.0415706714086874</CL_ref>
+          <CL_vector is_input="False">[1.207987094685174, 1.208398643834962, 1.2083584926983975, 1.207645810024374, 1.2085993995177855, 1.1996758094162838, 1.1985114264559078, 1.198461237535202, 1.194556539504286, 1.188463604530595, 1.1785061226625524, 1.1703654797240624, 1.1620341188868895, 1.155328879080587, 1.1498783622919306, 1.143122933564922, 1.1333059806748562, 1.1247035996658719, 1.1149067223440883, 1.104778598145646, 1.0915487986475816, 1.080115762510787, 1.0672874743783693, 1.05435880840454, 1.0373949532059599, 1.0223985036990495, 1.004200001051105, 0.9866539543723367, 0.9661166480194993, 0.9460009286005912, 0.9205049568820148, 0.894748002775768, 0.8606496500482076, 0.8245136271399893, 0.7737324771698013, 0.7169386944990516, 0.6394971898499116, 0.5353049904645487, 0.407744829598538, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]<!--lift coefficient of the wing at the station along the wing span in Y_vector, the total corresponding wing lift coefficient is equal to CL0_clean--></CL_vector>
+          <CM0_clean is_input="False">-0.08060340665360921<!--wing pitching moment coefficient in low speed conditions and with no flaps deployed--></CM0_clean>
+          <Y_vector units="m" is_input="False">[0.13356149313780635, 0.4006644281458709, 0.6677874144214836, 0.9348903494295482, 1.2019932844376127, 1.4691162707132255, 1.7362192057212902, 1.9984095801800734, 2.2564092397213065, 2.51587264179355, 2.776619324988871, 3.038528981701981, 3.3014211505249476, 3.5651354213173856, 3.8295314352064582, 4.094428730784234, 4.3596668979103255, 4.625085526444352, 4.890504154978377, 5.155782424639565, 5.420739874019985, 5.685196041711701, 5.949030620109427, 6.212043096537682, 6.474093112123629, 6.735000205459335, 6.994644068939511, 7.252864292423774, 7.509480414504189, 7.764392178843017, 8.017439175299872, 8.268501096269468, 8.517417531611418, 8.764088224987981, 9.008372817526324, 9.250151001621154, 9.489342572202283, 9.725827221664417, 9.959504693669821, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]<!--wing station along the wing span at which chord_vector and Cl_vector are sampled--></Y_vector>
+          <chord_vector units="m" is_input="False">[1.9951813261048315, 1.9951813261048315, 1.9951813261048315, 1.9951813261048315, 1.9951813261048315, 1.9951813261048315, 1.9951813261048315, 1.9951612748372831, 1.9951211723021869, 1.995081069767091, 1.9950610184995428, 1.9950209159644465, 1.9950008646968986, 1.9949808134293505, 1.9949607621618024, 1.9949407108942543, 1.9949206596267062, 1.994900608359158, 1.994900608359158, 1.9948805570916102, 1.9948805570916102, 1.9948805570916102, 1.9948805570916102, 1.9948805570916102, 1.9948805570916102, 1.9948805570916102, 1.994900608359158, 1.994900608359158, 1.9949206596267062, 1.9949206596267062, 1.9949407108942543, 1.9949607621618024, 1.9949808134293505, 1.9950209159644465, 1.9950409672319949, 1.9950610184995428, 1.995101121034639, 1.9951211723021869, 1.9951612748372831, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]<!--wing chord length at the station along the wing span in Y_vector--></chord_vector>
           <induced_drag_coefficient is_input="False">0.03708617948922006<!--coefficient to multiply by the lift coefficient squared to get wing induced drag in low speed conditions--></induced_drag_coefficient>
         </low_speed>
       </wing>
@@ -304,17 +304,17 @@
       </propeller>
       <rudder>
         <low_speed>
-          <Cy_delta_r units="1/rad" is_input="False">2.102720154907558<!--derivative of the side force coefficient with respect to the rudder command in low speed conditions--></Cy_delta_r>
+          <Cy_delta_r units="1/rad" is_input="False">2.1027764556876947<!--derivative of the side force coefficient with respect to the rudder command in low speed conditions--></Cy_delta_r>
         </low_speed>
       </rudder>
       <slipstream>
         <wing>
           <cruise>
             <only_prop>
-              <CL_vector is_input="False">[0.0058, -0.0007, -0.0003, 0.0004, 0.0015, 0.0026, 0.0038, 0.0051, 0.0078, 0.0144, 0.0682, 0.1264, 0.1486, 0.0839, 0.0353, 0.03, -0.0002, -0.0227, -0.0187, -0.0161, -0.0141, -0.0116, -0.0083, -0.0065, -0.0058, -0.0054, -0.0051, -0.0046, -0.0038, -0.0031, -0.0026, -0.0021, -0.0015, -0.001, -0.0007, -0.0005, -0.0005, -0.0005, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]<!--lift coefficient of the wing due to the slipstream effect only at the station along the wing span in Y_vector--></CL_vector>
+              <CL_vector is_input="False">[0.0069, 0.0, 0.0005, 0.0012, 0.0025, 0.0036, 0.0049, 0.0063, 0.0092, 0.0158, 0.069, 0.129, 0.1543, 0.1015, 0.0409, 0.034, 0.0027, -0.0211, -0.0172, -0.0147, -0.0129, -0.0106, -0.0074, -0.0057, -0.0051, -0.0047, -0.0044, -0.0041, -0.0033, -0.0028, -0.0023, -0.0018, -0.0012, -0.0008, -0.0005, -0.0004, -0.0004, -0.0004, 0.0001, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]<!--lift coefficient of the wing due to the slipstream effect only at the station along the wing span in Y_vector--></CL_vector>
             </only_prop>
             <prop_on>
-              <Y_vector units="m" is_input="False">[0.06661, 0.19982, 0.33304, 0.46625, 0.59946, 0.73268, 0.86589, 1.07545, 1.3622, 1.65056, 1.94036, 2.23144, 2.52362, 2.81672, 3.11056, 3.40497, 3.69975, 3.99473, 4.28972, 4.58455, 4.87901, 5.17294, 5.46615, 5.75846, 6.0497, 6.33969, 6.62825, 6.91522, 7.20044, 7.48375, 7.76498, 8.044, 8.32065, 8.59479, 8.86629, 9.13502, 9.40085, 9.66368, 9.92338, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]<!--station along the wing span at which lift is sampled--></Y_vector>
+              <Y_vector units="m" is_input="False">[0.06661, 0.19982, 0.33304, 0.46625, 0.59946, 0.73268, 0.86589, 1.07581, 1.36329, 1.65238, 1.94292, 2.23474, 2.52766, 2.82151, 3.1161, 3.41125, 3.70679, 4.00252, 4.29826, 4.59383, 4.88905, 5.18372, 5.47768, 5.77073, 6.06271, 6.35343, 6.64273, 6.93044, 7.21638, 7.50041, 7.78236, 8.06208, 8.33943, 8.61427, 8.88646, 9.15587, 9.42239, 9.68588, 9.94625, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]<!--station along the wing span at which lift is sampled--></Y_vector>
               <velocity units="m/s" is_input="False">93.62888888888888<!--velocity at which the slipstream effect were computed in cruise conditions--></velocity>
             </prop_on>
           </cruise>
@@ -323,7 +323,7 @@
     </aerodynamics>
     <propulsion>
       <fuel_type is_input="True">3.0<!--1=Avgas ICE engine / 2=Diesel ICE engine / 3=Jet A1--></fuel_type>
-       <he_power_train>
+      <he_power_train>
         <thrust_distribution is_input="True">[1.0, 1.0]</thrust_distribution>
         <DC_bus>
           <bus_nose>
@@ -717,11 +717,11 @@
     </propulsion>
     <weight>
       <aircraft>
-        <max_payload units="kg" is_input="True">1941.<!--max payload weightno use with only_zfw--></max_payload>
-        <MLW units="kg" is_input="False">5472.209645318106<!--maximum landing weight--></MLW>
-        <MZFW units="kg" is_input="False">4974.736041198277<!--maximum zero fuel weight--></MZFW>
-        <MFW units="kg" is_input="False">5052.209679035955<!--maximum fuel weight--></MFW>
-        <target_MTOW units="kg" is_input="False">5498.228238260886<!--maximum takeoff weight of the aircraft--></target_MTOW>
+        <max_payload units="kg" is_input="True">1941.<!--max payload weight--></max_payload>
+        <MLW units="kg" is_input="False">5489.927938819708<!--maximum landing weight--></MLW>
+        <MZFW units="kg" is_input="False">4990.843580745189<!--maximum zero fuel weight--></MZFW>
+        <MFW units="kg" is_input="False">5087.255583676706<!--maximum fuel weight--></MFW>
+        <target_MTOW units="kg" is_input="False">5512.66397941128<!--maximum takeoff weight of the aircraft--></target_MTOW>
         <CG>
           <aft>
             <MAC_limit is_input="True">0.15<!--position of the aft limit of the Weight and balance envelop as a percent of MAC--></MAC_limit>
@@ -898,7 +898,7 @@
     </materials>
     <weight>
       <aircraft>
-        <MLW_MZFW_ratio is_input="True">0.93</MLW_MZFW_ratio>
+        <MLW_MZFW_ratio is_input="True">1.1</MLW_MZFW_ratio>
         <CG>
           <range is_input="True">0.2<!--distance between front position and aft position of CG, as ratio of mean aerodynamic chord (allows to have front position of CG potentially fwd of the computed one, as currently, FAST-OAD uses the aft position of CG as a reference)--></range>
           <aft>

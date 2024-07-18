@@ -116,9 +116,7 @@ class PerformancesPEMFCStack(om.Group):
         )
         self.add_subsystem(
             "pemfc_efficiency",
-            PerformancesPEMFCEfficiency(
-                 number_of_points=number_of_points
-            ),
+            PerformancesPEMFCEfficiency(number_of_points=number_of_points),
             promotes=["*"],
         )
 

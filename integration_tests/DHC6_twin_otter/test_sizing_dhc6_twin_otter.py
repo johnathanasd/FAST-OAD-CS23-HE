@@ -1,11 +1,12 @@
 # This file is part of FAST-OAD_CS23-HE : A framework for rapid Overall Aircraft Design of Hybrid
 # Electric Aircraft.
 # Copyright (C) 2022 ISAE-SUPAERO
-
+import os
 import os.path as pth
 from shutil import rmtree
 import logging
-
+import numpy as np
+import csv
 import pytest
 
 import openmdao.api as om
@@ -18,6 +19,25 @@ from fastga_he.gui.power_train_weight_breakdown import power_train_mass_breakdow
 
 DATA_FOLDER_PATH = pth.join(pth.dirname(__file__), "data")
 RESULTS_FOLDER_PATH = pth.join(pth.dirname(__file__), "results")
+
+
+def residuals_analyzer(recorder_path):
+    cr = om.CaseReader(recorder_path)
+
+    solver_cases = cr.get_cases("root.nonlinear_solver")
+
+    # Get only the last 10 cases (or all if less than 10)
+    last_10_cases = solver_cases[-10:]
+
+    variable_dict = {name: 0.0 for name in last_10_cases[-1].residuals}
+
+    for case in last_10_cases:
+        for residual in case.residuals:
+            variable_dict[residual] = np.sum(np.abs(case.residuals[residual]))
+
+    sorted_variable_dict = dict(sorted(variable_dict.items(), key=lambda x: x[1], reverse=True))
+
+    return sorted_variable_dict
 
 
 @pytest.fixture(scope="module")
@@ -148,7 +168,9 @@ def test_prmfc_h2_gas_retrofit():
     problem.setup()
 
     problem.set_val(name="data:weight:aircraft:MTOW", units="kg", val=5000.0)
-    problem.set_val(name="data:geometry:wing:area", units="m**2", val=40.10785034372956) # Copy the value from source file
+    problem.set_val(
+        name="data:geometry:wing:area", units="m**2", val=40.23736482578201
+    )  # Copy the value from source file
 
     # om.n2(problem)
 
@@ -192,7 +214,9 @@ def test_prmfc_wing_pod_h2_gas_retrofit():
     problem.setup()
 
     problem.set_val(name="data:weight:aircraft:MTOW", units="kg", val=5000.0)
-    problem.set_val(name="data:geometry:wing:area", units="m**2", val=40.10785034372956) # Copy the value from source file
+    problem.set_val(
+        name="data:geometry:wing:area", units="m**2", val=40.23736482578201
+    )  # Copy the value from source file
 
     # om.n2(problem)
 
@@ -211,6 +235,67 @@ def test_turboshaft_pemfc_hybrid_powertrain_network():
 
     if not pth.exists(network_file_path):
         power_train_network_viewer(pt_file_path, network_file_path)
+
+
+def test_turboshaft_pemfc_hybrid_retrofit_residual_check():
+
+    logging.basicConfig(level=logging.WARNING)
+    logging.getLogger("fastoad.module_management._bundle_loader").disabled = True
+    logging.getLogger("fastoad.openmdao.variables.variable").disabled = True
+
+    # Define used files depending on options
+    xml_file_name = "input_turboshaft_pemfc_hybrid_dhc6.xml"
+    process_file_name = "pemfc_turboprop_hybrid_resize.yml"
+
+    configurator = oad.FASTOADProblemConfigurator(pth.join(DATA_FOLDER_PATH, process_file_name))
+    problem = configurator.get_problem()
+
+    # Create inputs
+    ref_inputs = pth.join(DATA_FOLDER_PATH, xml_file_name)
+
+    problem.model_options["*propeller_*"] = {"mass_as_input": True}
+
+    problem.write_needed_inputs(ref_inputs)
+    problem.read_inputs()
+
+    recorder_path = pth.join(RESULTS_FOLDER_PATH, "dhc6_hybrid_cases.sql")
+    recorder = om.SqliteRecorder(recorder_path)
+    solver = problem.model.nonlinear_solver
+    solver.add_recorder(recorder)
+    solver.recording_options["record_solver_residuals"] = True
+
+    problem.setup()
+
+    problem.set_val(name="data:weight:aircraft:MTOW", units="kg", val=5000.0)
+    problem.set_val(
+        name="data:geometry:wing:area", units="m**2", val=40.23736482578201
+    )  # Copy the value from source file
+
+    # om.n2(problem)
+
+    problem.run_model()
+
+    _, _, residuals = problem.model.get_nonlinear_vectors()
+    residuals = filter_residuals(residuals)
+
+    problem.write_outputs()
+    sorted_variable_residuals = residuals_analyzer(recorder_path)
+    # Create the folder if it doesn't exist
+    os.makedirs(RESULTS_FOLDER_PATH, exist_ok=True)
+
+    # Construct the file path
+    file_path = os.path.join(RESULTS_FOLDER_PATH, "dhc6_hybrid_residuals_analysis.csv")
+
+    # Open the file for writing
+    with open(file_path, "w", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+
+        # Write the header
+        writer.writerow(["Variable name", "Sum of squared Residuals"])
+
+        # Write the sum of residuals for each iteration
+        for name, sum_res in sorted_variable_residuals.items():
+            writer.writerow([name, sum_res])
 
 
 def test_turboshaft_pemfc_hybrid_retrofit():
@@ -236,8 +321,9 @@ def test_turboshaft_pemfc_hybrid_retrofit():
     problem.setup()
 
     problem.set_val(name="data:weight:aircraft:MTOW", units="kg", val=5000.0)
-    problem.set_val(name="data:geometry:wing:area", units="m**2",
-                    val=40.10785034372956)  # Copy the value from source file
+    problem.set_val(
+        name="data:geometry:wing:area", units="m**2", val=40.23736482578201
+    )  # Copy the value from source file
 
     # om.n2(problem)
 
