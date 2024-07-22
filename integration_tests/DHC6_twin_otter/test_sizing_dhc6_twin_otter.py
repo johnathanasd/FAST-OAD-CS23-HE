@@ -39,6 +39,34 @@ def residuals_analyzer(recorder_path):
 
     return sorted_variable_dict
 
+def outputs_analyzer(recorder_path):
+    cr = om.CaseReader(recorder_path)
+
+    solver_cases = cr.get_cases("root.nonlinear_solver")
+
+    # Get only the last 10 cases (or all if less than 10)
+    last_10_cases = solver_cases[-10:]
+
+    # Initialize a dictionary to store outputs for each variable and iteration
+    variable_dict = {}
+
+    for case in last_10_cases:
+        for output, value in case.outputs.items():
+            if isinstance(value, np.ndarray) and value.ndim == 1:  # Check if the value is a 1D numpy array
+                if output not in variable_dict:
+                    variable_dict[output] = []
+                # Extract the scalar value if it's a single-element array
+                scalar_value = value.item() if value.size == 1 else value
+                variable_dict[output].append(scalar_value)
+
+    # Remove variables with all zero values
+    non_zero_variable_dict = {
+        key: value for key, value in variable_dict.items()
+        if not np.allclose(np.array(value), 0, atol=1e-10)
+    }
+
+    return non_zero_variable_dict
+
 
 @pytest.fixture(scope="module")
 def cleanup():
@@ -291,11 +319,71 @@ def test_turboshaft_pemfc_hybrid_retrofit_residual_check():
         writer = csv.writer(csvfile)
 
         # Write the header
-        writer.writerow(["Variable name", "Sum of squared Residuals"])
+        writer.writerow(["Variable name", "Residuals"])
 
         # Write the sum of residuals for each iteration
         for name, sum_res in sorted_variable_residuals.items():
             writer.writerow([name, sum_res])
+
+def test_turboshaft_pemfc_hybrid_retrofit_output_check():
+
+    logging.basicConfig(level=logging.WARNING)
+    logging.getLogger("fastoad.module_management._bundle_loader").disabled = True
+    logging.getLogger("fastoad.openmdao.variables.variable").disabled = True
+
+    # Define used files depending on options
+    xml_file_name = "input_turboshaft_pemfc_hybrid_dhc6.xml"
+    process_file_name = "pemfc_turboprop_hybrid_resize.yml"
+
+    configurator = oad.FASTOADProblemConfigurator(pth.join(DATA_FOLDER_PATH, process_file_name))
+    problem = configurator.get_problem()
+
+    # Create inputs
+    ref_inputs = pth.join(DATA_FOLDER_PATH, xml_file_name)
+
+    problem.model_options["*propeller_*"] = {"mass_as_input": True}
+
+    problem.write_needed_inputs(ref_inputs)
+    problem.read_inputs()
+
+    recorder_path = pth.join(RESULTS_FOLDER_PATH, "dhc6_hybrid_cases.sql")
+    recorder = om.SqliteRecorder(recorder_path)
+    solver = problem.model.nonlinear_solver
+    solver.add_recorder(recorder)
+    solver.recording_options["record_outputs"] = True
+
+    problem.setup()
+
+    problem.set_val(name="data:weight:aircraft:MTOW", units="kg", val=5000.0)
+    problem.set_val(
+        name="data:geometry:wing:area", units="m**2", val=40.23736482578201
+    )  # Copy the value from source file
+
+    # om.n2(problem)
+
+    problem.run_model()
+
+    _, _, residuals = problem.model.get_nonlinear_vectors()
+    residuals = filter_residuals(residuals)
+
+    problem.write_outputs()
+    sorted_variable_residuals = outputs_analyzer(recorder_path)
+    # Create the folder if it doesn't exist
+    os.makedirs(RESULTS_FOLDER_PATH, exist_ok=True)
+
+    # Construct the file path
+    file_path = os.path.join(RESULTS_FOLDER_PATH, "dhc6_hybrid_outputs_analysis.csv")
+
+    # Open the file for writing
+    with open(file_path, "w", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+
+        # Write the header
+        writer.writerow(["Variable name", "Outputs"])
+
+        # Write the sum of residuals for each iteration
+        for name, out in sorted_variable_residuals.items():
+            writer.writerow([name, out])
 
 
 def test_turboshaft_pemfc_hybrid_retrofit():
