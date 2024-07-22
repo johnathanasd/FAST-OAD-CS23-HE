@@ -48,6 +48,15 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
             desc="Initial Outer diameter of the hydrogen gas tank input",
         )
 
+        self.add_input(
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":dimension:length",
+            val=0.0,
+            units="m",
+            desc="To avoid negative inner length",
+        )
+
         self.add_output(
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
@@ -64,6 +73,12 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
         position = self.options["position"]
 
+        d = inputs[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":dimension:diameter"
+        ]
+
         not_under_wing = (
             position == "underbelly" or position == "in_the_fuselage" or position == "in_the_back"
         )
@@ -77,7 +92,16 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
             > inputs["data:geometry:fuselage:maximum_height"]
         )
 
-        if not_under_wing and not_fit_in_fuselage:
+        positive_length = (
+            inputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:length"
+            ]
+            >= 0
+        )
+
+        if not_under_wing and not_fit_in_fuselage and positive_length:
 
             outputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -88,6 +112,34 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
             _LOGGER.warning(
                 msg="Tank dimension greater than fuselage!! Tank diameter adjust to proper size"
             )
+
+        elif (
+            inputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:length"
+            ]
+            < 0
+        ):
+
+            outputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:outer_diameter"
+            ] = np.cbrt(
+                d ** 3
+                + 3
+                * d ** 2
+                * inputs[
+                    "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                    + hydrogen_gas_tank_id
+                    + ":dimension:length"
+                ]
+                / 2
+            )
+
+            _LOGGER.warning(msg="Negative length!! Tank diameter adjust to proper size")
+
         else:
 
             outputs[
@@ -109,6 +161,12 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
             position == "underbelly" or position == "in_the_fuselage" or position == "in_the_back"
         )
 
+        d = inputs[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":dimension:diameter"
+        ]
+
         not_fit_in_fuselage = (
             inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -118,7 +176,16 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
             > inputs["data:geometry:fuselage:maximum_height"]
         )
 
-        if not_under_wing and not_fit_in_fuselage:
+        positive_length = (
+            inputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:length"
+            ]
+            >= 0
+        )
+
+        if not_under_wing and not_fit_in_fuselage and positive_length:
 
             partials[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -126,6 +193,68 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
                 + ":dimension:outer_diameter",
                 "data:geometry:fuselage:maximum_height",
             ] = 0.9
+
+        elif (
+            inputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:length"
+            ]
+            < 0
+        ):
+            partials[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:outer_diameter",
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:diameter",
+            ] = (
+                d
+                * (
+                    d
+                    + inputs[
+                        "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                        + hydrogen_gas_tank_id
+                        + ":dimension:length"
+                    ]
+                )
+                / (
+                    d ** 3
+                    + 3
+                    * inputs[
+                        "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                        + hydrogen_gas_tank_id
+                        + ":dimension:length"
+                    ]
+                    * d ** 2
+                    / 2
+                )
+                ** (2 / 3)
+            )
+            partials[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:outer_diameter",
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:length",
+            ] = (
+                0.5
+                * d ** 2
+                / (
+                    3
+                    * d ** 2
+                    * inputs[
+                        "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                        + hydrogen_gas_tank_id
+                        + ":dimension:length"
+                    ]
+                    / 2
+                    + d ** 3
+                )
+                ** (2 / 3)
+            )
 
         else:
 

@@ -39,6 +39,7 @@ def residuals_analyzer(recorder_path):
 
     return sorted_variable_dict
 
+
 def outputs_analyzer(recorder_path):
     cr = om.CaseReader(recorder_path)
 
@@ -52,7 +53,9 @@ def outputs_analyzer(recorder_path):
 
     for case in last_10_cases:
         for output, value in case.outputs.items():
-            if isinstance(value, np.ndarray) and value.ndim == 1:  # Check if the value is a 1D numpy array
+            if (
+                isinstance(value, np.ndarray) and value.ndim == 1
+            ):  # Check if the value is a 1D numpy array
                 if output not in variable_dict:
                     variable_dict[output] = []
                 # Extract the scalar value if it's a single-element array
@@ -61,7 +64,8 @@ def outputs_analyzer(recorder_path):
 
     # Remove variables with all zero values
     non_zero_variable_dict = {
-        key: value for key, value in variable_dict.items()
+        key: value
+        for key, value in variable_dict.items()
         if not np.allclose(np.array(value), 0, atol=1e-10)
     }
 
@@ -324,6 +328,7 @@ def test_turboshaft_pemfc_hybrid_retrofit_residual_check():
         # Write the sum of residuals for each iteration
         for name, sum_res in sorted_variable_residuals.items():
             writer.writerow([name, sum_res])
+
 
 def test_turboshaft_pemfc_hybrid_retrofit_output_check():
 

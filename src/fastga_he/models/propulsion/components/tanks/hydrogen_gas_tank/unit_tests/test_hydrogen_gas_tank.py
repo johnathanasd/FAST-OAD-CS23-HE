@@ -238,6 +238,41 @@ def test_tank_outer_diameter():
         problem.check_partials(compact_print=True, step=1e-7)
 
 
+def test_tank_adjust_outer_diameter():
+
+    ivc = om.IndepVarComp()
+    # Research independent input value in .xml file
+
+    ivc.add_output(
+        "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:length",
+        val=-1.0,
+        units="m",
+    )
+
+    ivc.add_output(
+        "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:diameter",
+        val=3.0,
+        units="m",
+    )
+    ivc.add_output("data:geometry:fuselage:maximum_height",val = 10.0,units="m")
+
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        SizingHydrogenGasTankOuterDiameter(hydrogen_gas_tank_id="hydrogen_gas_tank_1",position="wing_pod"),
+        ivc,
+    )
+
+    assert (
+            problem.get_val(
+                "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:outer_diameter",
+                units="m",
+            )
+            == pytest.approx(2.3811, rel=1e-2)
+    )
+
+    problem.check_partials(compact_print=True, step=1e-7)
+
+
 def test_tank_overall_length():
     # Research independent input value in .xml file
     ivc = get_indep_var_comp(
