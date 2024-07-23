@@ -8,7 +8,7 @@ from ..constants import POSSIBLE_POSITION
 import logging
 
 _LOGGER = logging.getLogger(__name__)
-ADJUST_FACTOR = 0.8
+ADJUST_FACTOR = 1.0
 
 
 class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):

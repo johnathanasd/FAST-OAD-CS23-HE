@@ -11,7 +11,7 @@ output_file: ../results/oad_process_outputs_pemfc_turboshaft_hybrid.xml
 driver: om.ScipyOptimizeDriver(tol=1e-2, optimizer='COBYLA')
 
 model:
-  nonlinear_solver: om.NonlinearBlockGS(maxiter=100, iprint=2, rtol=1e-5, debug_print=True, reraise_child_analysiserror=True,use_aitken=True)
+  nonlinear_solver: om.NonlinearBlockGS(maxiter=100, iprint=2, rtol=1e-5, debug_print=True, reraise_child_analysiserror=True,use_aitken=False)
   linear_solver: om.LinearBlockGS()
   power_train_sizing:
     id: fastga_he.power_train.sizing
@@ -89,4 +89,5 @@ submodels:
   submodel.propulsion.performances.pemfc.layer_voltage: fastga_he.submodel.propulsion.performances.pemfc.layer_voltage.statistical
   submodel.propulsion.constraints.fuel_tank.capacity: fastga_he.submodel.propulsion.constraints.fuel_tank.capacity.ensure
   submodel.weight.mass.mzfw_and_mlw: fastga_he.submodel.weight.mass.mzfw_and_mlw.only_zfw
+  submodel.propulsion.constraints.planetary_gear.torque: fastga_he.submodel.propulsion.constraints.planetary_gear.torque.enforce
 

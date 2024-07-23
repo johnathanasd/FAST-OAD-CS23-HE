@@ -16,6 +16,7 @@ from .sizing_tank_weight import SizingHydrogenGasTankWeight
 from .sizing_specific_weight import SizingHydrogenGasTankSpecificWeight
 from .sizing_tank_drag import SizingHydrogenGasTankDrag
 from .sizing_tank_outer_diameter import SizingHydrogenGasTankOuterDiameter
+from .sizing_tank_diameter_update import SizingHydrogenGasTankDiameterUpdate
 from .sizing_tank_overall_length import SizingHydrogenGasTankOverallLength
 from .sizing_tank_overall_length_fuselage_check import (
     SizingHydrogenGasTankOverallLengthFuselageCheck,
@@ -58,6 +59,12 @@ class SizingHydrogenGasTank(om.Group):
             subsys=SizingHydrogenGasTankOuterDiameter(
                 hydrogen_gas_tank_id=hydrogen_gas_tank_id, position=position
             ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            name="tank_diameter_update",
+            subsys=SizingHydrogenGasTankDiameterUpdate(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
             promotes=["*"],
         )
 

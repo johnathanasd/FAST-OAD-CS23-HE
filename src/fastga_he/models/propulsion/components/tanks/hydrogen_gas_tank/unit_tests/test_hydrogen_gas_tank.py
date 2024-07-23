@@ -18,6 +18,7 @@ from ..components.sizing_tank_cg_y import SizingHydrogenGasTankCGY
 from ..components.sizing_tank_length import SizingHydrogenGasTankLength
 from ..components.sizing_tank_inner_diameter import SizingHydrogenGasTankInnerDiameter
 from ..components.sizing_tank_outer_diameter import SizingHydrogenGasTankOuterDiameter
+from ..components.sizing_tank_diameter_update import SizingHydrogenGasTankDiameterUpdate
 from ..components.sizing_tank_weight import SizingHydrogenGasTankWeight
 from ..components.sizing_specific_weight import SizingHydrogenGasTankSpecificWeight
 from ..components.sizing_tank_drag import SizingHydrogenGasTankDrag
@@ -270,6 +271,34 @@ def test_tank_adjust_outer_diameter():
             units="m",
         )
         == pytest.approx(2.3811, rel=1e-2)
+    )
+
+    problem.check_partials(compact_print=True, step=1e-7)
+
+
+def test_tank_diameter_update():
+
+    ivc = om.IndepVarComp()
+    # Research independent input value in .xml file
+
+    ivc.add_output(
+        "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:outer_diameter",
+        val=1.0,
+        units="m",
+    )
+
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        SizingHydrogenGasTankDiameterUpdate(hydrogen_gas_tank_id="hydrogen_gas_tank_1"),
+        ivc,
+    )
+
+    assert (
+        problem.get_val(
+            "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:diameter",
+            units="m",
+        )
+        == pytest.approx(1.0, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True, step=1e-7)
