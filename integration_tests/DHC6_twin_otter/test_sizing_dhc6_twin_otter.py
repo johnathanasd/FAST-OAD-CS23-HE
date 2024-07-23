@@ -177,7 +177,7 @@ def test_pemfc_h2_gas_tank_powertrain_network():
         power_train_network_viewer(pt_file_path, network_file_path)
 
 
-def test_prmfc_h2_gas_retrofit():
+def test_pemfc_h2_gas_retrofit():
 
     logging.basicConfig(level=logging.WARNING)
     logging.getLogger("fastoad.module_management._bundle_loader").disabled = True
@@ -223,7 +223,7 @@ def test_pemfc_wing_pod_h2_gas_tank_powertrain_network():
         power_train_network_viewer(pt_file_path, network_file_path)
 
 
-def test_prmfc_wing_pod_h2_gas_retrofit():
+def test_pemfc_wing_pod_h2_gas_retrofit():
 
     logging.basicConfig(level=logging.WARNING)
     logging.getLogger("fastoad.module_management._bundle_loader").disabled = True

@@ -217,7 +217,6 @@
         </propeller>
         <turboshaft>
           <turboshaft_1>
-            <mass_ratio>2.0</mass_ratio>
             <power_offtake units="kW" is_input="True">10.<!--Mechanical offtake on the turboshaft, is added to shaft power out--></power_offtake>
             <power_rating units="kW" is_input="True">462.33<!--Flat rating of the turboshaft--></power_rating>
             <from_LE units="m" is_input="False">0.84</from_LE>
@@ -235,7 +234,6 @@
             </limit>
           </turboshaft_1>
           <turboshaft_2>
-            <mass_ratio>2.0</mass_ratio>
             <power_offtake units="kW" is_input="True">10.<!--Mechanical offtake on the turboshaft, is added to shaft power out--></power_offtake>
             <power_rating units="kW" is_input="True">462.33<!--Flat rating of the turboshaft--></power_rating>
             <from_LE units="m" is_input="False">0.84</from_LE>
