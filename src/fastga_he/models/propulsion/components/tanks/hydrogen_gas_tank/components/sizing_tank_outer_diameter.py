@@ -8,6 +8,7 @@ from ..constants import POSSIBLE_POSITION
 import logging
 
 _LOGGER = logging.getLogger(__name__)
+ADJUST_FACTOR = 0.8
 
 
 class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
@@ -126,7 +127,7 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
                 + ":dimension:outer_diameter"
-            ] = np.cbrt(
+            ] = ADJUST_FACTOR * np.cbrt(
                 d ** 3
                 + 3
                 * d ** 2
@@ -210,7 +211,8 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
                 + hydrogen_gas_tank_id
                 + ":dimension:diameter",
             ] = (
-                d
+                ADJUST_FACTOR
+                * d
                 * (
                     d
                     + inputs[
@@ -240,7 +242,8 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
                 + hydrogen_gas_tank_id
                 + ":dimension:length",
             ] = (
-                0.5
+                ADJUST_FACTOR
+                * 0.5
                 * d ** 2
                 / (
                     3

@@ -254,20 +254,22 @@ def test_tank_adjust_outer_diameter():
         val=3.0,
         units="m",
     )
-    ivc.add_output("data:geometry:fuselage:maximum_height",val = 10.0,units="m")
+    ivc.add_output("data:geometry:fuselage:maximum_height", val=10.0, units="m")
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
-        SizingHydrogenGasTankOuterDiameter(hydrogen_gas_tank_id="hydrogen_gas_tank_1",position="wing_pod"),
+        SizingHydrogenGasTankOuterDiameter(
+            hydrogen_gas_tank_id="hydrogen_gas_tank_1", position="wing_pod"
+        ),
         ivc,
     )
 
     assert (
-            problem.get_val(
-                "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:outer_diameter",
-                units="m",
-            )
-            == pytest.approx(2.3811, rel=1e-2)
+        problem.get_val(
+            "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:outer_diameter",
+            units="m",
+        )
+        == pytest.approx(2.3811, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True, step=1e-7)
