@@ -55,7 +55,7 @@ from tests.testing_utilities import run_system, get_indep_var_comp, list_inputs
 XML_FILE = "sample_turboshaft.xml"
 NB_POINTS_TEST = 10
 
-# TODO: Verify PT6A-34 with the same test function
+
 def test_fuel_consumption_pw206b():
 
     ivc = om.IndepVarComp()
