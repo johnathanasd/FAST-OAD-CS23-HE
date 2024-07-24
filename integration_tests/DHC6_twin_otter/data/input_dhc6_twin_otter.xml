@@ -375,13 +375,13 @@
         </recording>
         <power>
           <electric_systems>
-            <mass units="lbm" is_input="False">578.4829664102779<!--Mass of aircraft systems_inp_data:weight:systems:power:electric_systems:mass--></mass>
+            <mass units="lbm" is_input="False">558.4829664102779<!--Mass of aircraft systems_inp_data:weight:systems:power:electric_systems:mass--></mass>
             <CG>
               <x units="m" is_input="False">6.75<!--X-position of center of gravity of the electric power unit--></x>
             </CG>
           </electric_systems>
           <hydraulic_systems>
-            <mass units="lbm" is_input="False">586.31586917710987<!--Mass of aircraft systems_inp_data:weight:systems:power:hydraulic_systems:mass--></mass>
+            <mass units="lbm" is_input="False">566.31586917710987<!--Mass of aircraft systems_inp_data:weight:systems:power:hydraulic_systems:mass--></mass>
             <CG>
               <x units="m" is_input="False">6.75<!--X-position of center of gravity of the hydraulic power unit--></x>
             </CG>
@@ -455,7 +455,7 @@
           </descent>
           <reserve>
             <altitude units="ft" is_input="True">10000.0</altitude>
-            <duration units="min" is_input="True">45.0<!--reserve fuel to extend cruise phase duration--></duration>
+            <duration units="min" is_input="True">51.5<!--reserve fuel to extend cruise phase duration--></duration>
           </reserve>
         </main_route>
       </sizing>
