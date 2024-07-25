@@ -17,7 +17,6 @@ from ..components.sizing_pemfc_volume import SizingPEMFCVolume
 from ..components.sizing_pemfc_dimensions import SizingPEMFCDimensions
 from ..components.sizing_pemfc_drag import SizingPEMFCDrag
 
-from ..components.perf_direct_bus_connection import PerformancesPEMFCDirectBusConnection
 from ..components.perf_fuel_consumption import PerformancesPEMFCFuelConsumption
 from ..components.perf_fuel_consumed import PerformancesPEMFCFuelConsumed
 from ..components.perf_layer_voltage import PerformancesSinglePEMFCVoltageStatistical
@@ -26,6 +25,7 @@ from ..components.perf_pemfc_current_density import PerformancesCurrentDensity
 from ..components.perf_maximum import PerformancesMaximum
 from ..components.perf_pemfc_efficiency import PerformancesPEMFCEfficiency
 from ..components.perf_pemfc_power import PerformancesPEMFCPower
+from ..components.perf_pemfc_power_density import PerformancesPEMFCPowerDensity
 from ..components.perf_pemfc_voltage import PerformancesPEMFCVoltage
 from ..components.perf_operation_pressure import PerformancesOperationPressure
 
@@ -513,6 +513,32 @@ def test_pemfc_power():
         rel=1e-2,
     )
 
+    problem.check_partials(compact_print=True)
+
+
+def test_pemfc_power_density():
+
+    ivc = om.IndepVarComp()
+    ivc.add_output(
+        "power_out",
+        units="kW",
+        val=np.array([802.0, 786.0, 770.0, 760.0, 750.0, 740.0, 734.0, 726.0, 720.0, 714.0]),
+    )
+    ivc.add_output(
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", 1000.0, units="kg"
+    )
+
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        PerformancesPEMFCPowerDensity(
+            number_of_points=NB_POINTS_TEST, pemfc_stack_id="pemfc_stack_1"
+        ),
+        ivc,
+    )
+    assert problem.get_val("power_density", units="kW/kg") == pytest.approx(
+        [0.802, 0.786, 0.77, 0.76, 0.75, 0.74, 0.734, 0.726, 0.72, 0.714],
+        rel=1e-2,
+    )
     problem.check_partials(compact_print=True)
 
 

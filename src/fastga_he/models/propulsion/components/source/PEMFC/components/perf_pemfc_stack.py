@@ -8,6 +8,7 @@ import fastoad.api as oad
 
 from ..components.perf_direct_bus_connection import PerformancesPEMFCDirectBusConnection
 from ..components.perf_pemfc_power import PerformancesPEMFCPower
+from ..components.perf_pemfc_power_density import PerformancesPEMFCPowerDensity
 from ..components.perf_maximum import PerformancesMaximum
 from ..components.perf_pemfc_current_density import PerformancesCurrentDensity
 from ..constants import SUBMODEL_PERFORMANCES_PEMFC_LAYER_VOLTAGE
@@ -123,6 +124,14 @@ class PerformancesPEMFCStack(om.Group):
         self.add_subsystem(
             "pemfc_power",
             PerformancesPEMFCPower(number_of_points=number_of_points),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            "pemfc_power_density",
+            PerformancesPEMFCPowerDensity(
+                number_of_points=number_of_points, pemfc_stack_id=pemfc_stack_id
+            ),
             promotes=["*"],
         )
 

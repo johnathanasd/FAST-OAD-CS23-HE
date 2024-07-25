@@ -996,6 +996,7 @@ PEMFC_STACK = {
         {"voltage_out": "V"},
         {"fuel_consumption": "kg/h"},
         {"efficiency": None},
+        {"power_density": "kW/kg"},
     ],
     SMP: [
         {"delta_Cd": None},
