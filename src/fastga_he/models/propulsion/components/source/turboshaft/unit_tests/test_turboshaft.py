@@ -94,7 +94,9 @@ def test_fuel_consumption_pt6a_34_dhc6():
 
     ivc = om.IndepVarComp()
     ivc.add_output(
-        "data:propulsion:he_power_train:turboshaft:turboshaft_1:power_rating", units="kW", val=462.33
+        "data:propulsion:he_power_train:turboshaft:turboshaft_1:power_rating",
+        units="kW",
+        val=462.33,
     )
     ivc.add_output(
         "data:propulsion:he_power_train:turboshaft:turboshaft_1:design_point:T41t",
@@ -122,6 +124,7 @@ def test_fuel_consumption_pt6a_34_dhc6():
     )
     print("k_sfc:", 0.595 / sfc)
     # Should be 0.595
+
 
 def test_constraint_power_enforce():
 
