@@ -7,11 +7,11 @@ import numpy as np
 
 import fastoad.api as oad
 
-from ..constants import SUBMODEL_CONSTRAINTS_HYDROGEN_GAS_TANK_CAPACITY
+from ..constants import SUBMODEL_CONSTRAINTS_CRYOGENIC_HYDROGEN_TANK_CAPACITY
 
 
 @oad.RegisterSubmodel(
-    SUBMODEL_CONSTRAINTS_HYDROGEN_GAS_TANK_CAPACITY,
+    SUBMODEL_CONSTRAINTS_CRYOGENIC_HYDROGEN_TANK_CAPACITY,
     "fastga_he.submodel.propulsion.constraints.hydrogen_gas_tank.capacity.ensure",
 )
 class ConstraintsHydrogenGasTankCapacityEnsure(om.ExplicitComponent):

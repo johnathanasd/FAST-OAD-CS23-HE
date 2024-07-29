@@ -7,7 +7,7 @@ import numpy as np
 
 import fastoad.api as oad
 
-from ..constants import SUBMODEL_CONSTRAINTS_HYDROGEN_GAS_TANK_CAPACITY
+from ..constants import SUBMODEL_CONSTRAINTS_CRYOGENIC_HYDROGEN_TANK_CAPACITY
 
 
 class ConstraintsHydrogenGasTank(om.Group):
@@ -17,20 +17,23 @@ class ConstraintsHydrogenGasTank(om.Group):
 
     def initialize(self):
         self.options.declare(
-            name="hydrogen_gas_tank_id",
+            name="cryogenic_hydrogen_tank_id",
             default=None,
-            desc="Identifier of the hydrogen gas tank",
+            desc="Identifier of the cryogenic hydrogen tank",
             allow_none=False,
         )
 
     def setup(self):
 
-        option_hydrogen_gas_tank_id = {"hydrogen_gas_tank_id": self.options["hydrogen_gas_tank_id"]}
+        option_cryogenic_hydrogen_tank_id = {
+            "cryogenic_hydrogen_tank_id": self.options["cryogenic_hydrogen_tank_id"]
+        }
 
         self.add_subsystem(
             name="constraints_hydrogen_gas_tank",
             subsys=oad.RegisterSubmodel.get_submodel(
-                SUBMODEL_CONSTRAINTS_HYDROGEN_GAS_TANK_CAPACITY, options=option_hydrogen_gas_tank_id
+                SUBMODEL_CONSTRAINTS_CRYOGENIC_HYDROGEN_TANK_CAPACITY,
+                options=option_cryogenic_hydrogen_tank_id,
             ),
             promotes=["*"],
         )
