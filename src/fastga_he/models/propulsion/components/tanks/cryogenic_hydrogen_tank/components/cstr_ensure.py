@@ -12,9 +12,9 @@ from ..constants import SUBMODEL_CONSTRAINTS_CRYOGENIC_HYDROGEN_TANK_CAPACITY
 
 @oad.RegisterSubmodel(
     SUBMODEL_CONSTRAINTS_CRYOGENIC_HYDROGEN_TANK_CAPACITY,
-    "fastga_he.submodel.propulsion.constraints.hydrogen_gas_tank.capacity.ensure",
+    "fastga_he.submodel.propulsion.constraints.cryogenic_hydrogen_tank.capacity.ensure",
 )
-class ConstraintsHydrogenGasTankCapacityEnsure(om.ExplicitComponent):
+class ConstraintsCryogenicHydrogenTankCapacityEnsure(om.ExplicitComponent):
     """
     Class that ensures that the capacity of the tank is greater than the amount of fuel needed for
     the mission (which includes the unusable fuel).
@@ -23,19 +23,19 @@ class ConstraintsHydrogenGasTankCapacityEnsure(om.ExplicitComponent):
     def initialize(self):
 
         self.options.declare(
-            name="hydrogen_gas_tank_id",
+            name="cryogenic_hydrogen_tank_id",
             default=None,
-            desc="Identifier of the hydrogen gas tank",
+            desc="Identifier of the cryogenic hydrogen tank",
             allow_none=False,
         )
 
     def setup(self):
 
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
 
         self.add_input(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":fuel_total_mission",
             units="kg",
             val=np.nan,
@@ -43,8 +43,8 @@ class ConstraintsHydrogenGasTankCapacityEnsure(om.ExplicitComponent):
         )
 
         self.add_input(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":capacity",
             units="kg",
             val=np.nan,
@@ -52,8 +52,8 @@ class ConstraintsHydrogenGasTankCapacityEnsure(om.ExplicitComponent):
         )
 
         self.add_output(
-            "constraints:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "constraints:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":capacity",
             units="kg",
             val=-0.0,
@@ -61,42 +61,42 @@ class ConstraintsHydrogenGasTankCapacityEnsure(om.ExplicitComponent):
         )
 
         self.declare_partials(
-            of="constraints:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            of="constraints:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":capacity",
-            wrt="data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            wrt="data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":fuel_total_mission",
             val=1.0,
         )
 
         self.declare_partials(
-            of="constraints:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            of="constraints:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":capacity",
-            wrt="data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            wrt="data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":capacity",
             val=-1.0,
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
 
         outputs[
-            "constraints:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "constraints:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":capacity"
         ] = (
             inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
                 + ":fuel_total_mission"
             ]
             - inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
                 + ":capacity"
             ]
         )

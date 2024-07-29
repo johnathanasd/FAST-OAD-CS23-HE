@@ -4,8 +4,8 @@
 
 import openmdao.api as om
 
-from .sizing_tank_unusable_hydrogen import SizingHydrogenGasTankUnusableHydrogen
-from .sizing_tank_total_hydrogen_mission import SizingHydrogenGasTankTotalHydrogenMission
+from .sizing_tank_unusable_hydrogen import SizingCryogenicHydrogenTankUnusableHydrogen
+from .sizing_tank_total_hydrogen_mission import SizingCrogenicHydrogenTankTotalHydrogenMission
 from .sizing_tank_wall_thickness import SizingHydrogenGasTankWallThickness
 from .sizing_tank_cg_x import SizingHydrogenGasTankCGX
 from .sizing_tank_cg_y import SizingHydrogenGasTankCGY
@@ -22,7 +22,7 @@ from .sizing_tank_overall_length_fuselage_check import (
     SizingHydrogenGasTankOverallLengthFuselageCheck,
 )
 
-from .cstr_hydrogen_gas_tank import ConstraintsHydrogenGasTank
+from .cstr_cryogenic_hydrogen_tank import ConstraintsCryogenicHydrogenTank
 
 from ..constants import POSSIBLE_POSITION
 
@@ -34,9 +34,9 @@ class SizingHydrogenGasTank(om.Group):
 
     def initialize(self):
         self.options.declare(
-            name="hydrogen_gas_tank_id",
+            name="cryogenic_hydrogen_tank_id",
             default=None,
-            desc="Identifier of the hydrogen gas tank",
+            desc="Identifier of the cryogenic hydrogen tank",
             allow_none=False,
         )
 
@@ -49,79 +49,84 @@ class SizingHydrogenGasTank(om.Group):
             allow_none=False,
         )
 
+        self.options.declare(
+            "number_of_points", default=1, desc="number of equilibrium to be treated"
+        )
+
     def setup(self):
 
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
         position = self.options["position"]
+        number_of_points = self.options["number_of_points"]
 
         self.add_subsystem(
             name="tank_outer_diameter",
             subsys=SizingHydrogenGasTankOuterDiameter(
-                hydrogen_gas_tank_id=hydrogen_gas_tank_id, position=position
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id, position=position
             ),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="tank_diameter_update",
-            subsys=SizingHydrogenGasTankDiameterUpdate(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
+            subsys=SizingHydrogenGasTankDiameterUpdate(cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="unusable_hydrogen_gas",
-            subsys=SizingHydrogenGasTankUnusableHydrogen(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
+            subsys=SizingCryogenicHydrogenTankUnusableHydrogen(number_of_points=number_of_points , cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="total_hydrogen_gas",
-            subsys=SizingHydrogenGasTankTotalHydrogenMission(
-                hydrogen_gas_tank_id=hydrogen_gas_tank_id
+            subsys=SizingCrogenicHydrogenTankTotalHydrogenMission(
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
             ),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="tank_constraints",
-            subsys=ConstraintsHydrogenGasTank(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
+            subsys=ConstraintsCryogenicHydrogenTank(cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="tank_inner_diameter",
-            subsys=SizingHydrogenGasTankInnerDiameter(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
+            subsys=SizingHydrogenGasTankInnerDiameter(cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="tank_wall_thickness",
-            subsys=SizingHydrogenGasTankWallThickness(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
+            subsys=SizingHydrogenGasTankWallThickness(cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="tank_inner_volume",
-            subsys=SizingHydrogenGasTankInnerVolume(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
+            subsys=SizingHydrogenGasTankInnerVolume(cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="tank_length",
-            subsys=SizingHydrogenGasTankLength(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
+            subsys=SizingHydrogenGasTankLength(cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="tank_overall_length",
-            subsys=SizingHydrogenGasTankOverallLength(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
+            subsys=SizingHydrogenGasTankOverallLength(cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="tank_cg_x",
             subsys=SizingHydrogenGasTankCGX(
-                hydrogen_gas_tank_id=hydrogen_gas_tank_id, position=position
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id, position=position
             ),
             promotes=["*"],
         )
@@ -129,7 +134,7 @@ class SizingHydrogenGasTank(om.Group):
         self.add_subsystem(
             name="tank_cg_y",
             subsys=SizingHydrogenGasTankCGY(
-                hydrogen_gas_tank_id=hydrogen_gas_tank_id, position=position
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id, position=position
             ),
             promotes=["*"],
         )
@@ -137,7 +142,7 @@ class SizingHydrogenGasTank(om.Group):
         self.add_subsystem(
             name="tank_overall_length_length_fuselage_check",
             subsys=SizingHydrogenGasTankOverallLengthFuselageCheck(
-                hydrogen_gas_tank_id=hydrogen_gas_tank_id,
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
                 position=position,
             ),
             promotes=["*"],
@@ -145,13 +150,13 @@ class SizingHydrogenGasTank(om.Group):
 
         self.add_subsystem(
             name="tank_weight",
-            subsys=SizingHydrogenGasTankWeight(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
+            subsys=SizingHydrogenGasTankWeight(cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="tank_specific_weight",
-            subsys=SizingHydrogenGasTankSpecificWeight(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
+            subsys=SizingHydrogenGasTankSpecificWeight(cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
             promotes=["*"],
         )
 
@@ -160,7 +165,7 @@ class SizingHydrogenGasTank(om.Group):
             self.add_subsystem(
                 name=system_name,
                 subsys=SizingHydrogenGasTankDrag(
-                    hydrogen_gas_tank_id=hydrogen_gas_tank_id,
+                    cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
                     position=position,
                     low_speed_aero=low_speed_aero,
                 ),

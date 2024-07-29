@@ -10,7 +10,7 @@ import fastoad.api as oad
 from ..constants import SUBMODEL_CONSTRAINTS_CRYOGENIC_HYDROGEN_TANK_CAPACITY
 
 
-class ConstraintsHydrogenGasTank(om.Group):
+class ConstraintsCryogenicHydrogenTank(om.Group):
     """
     Class that gather the different constraints for the fuel tank, be they ensure or enforce.
     """

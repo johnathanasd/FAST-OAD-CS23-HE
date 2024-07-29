@@ -6,7 +6,7 @@ import openmdao.api as om
 import numpy as np
 
 
-class PerformancesHydrogenGasConsumedMission(om.ExplicitComponent):
+class PerformancesLiquidHydrogenConsumedMission(om.ExplicitComponent):
     """
     Computation of the amount of hydrogen in that particular tank which will be consumed. Simple
     summation.

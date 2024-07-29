@@ -6,7 +6,7 @@ import openmdao.api as om
 import numpy as np
 
 
-class PerformancesHydrogenGasRemainingMission(om.ExplicitComponent):
+class PerformancesLiquidHydrogenRemainingMission(om.ExplicitComponent):
     """
     Computation of the amount of the amount of hydrogen remaining inside the tank.
     """
@@ -14,7 +14,7 @@ class PerformancesHydrogenGasRemainingMission(om.ExplicitComponent):
     def initialize(self):
 
         self.options.declare(
-            name="hydrogen_gas_tank_id",
+            name="cryogenic_hydrogen_tank_id",
             default=None,
             desc="Identifier of the hydrogen gas tank",
             allow_none=False,
@@ -25,12 +25,12 @@ class PerformancesHydrogenGasRemainingMission(om.ExplicitComponent):
 
     def setup(self):
 
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
         number_of_points = self.options["number_of_points"]
 
         self.add_input(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":fuel_consumed_mission",
             units="kg",
             val=np.nan,
@@ -44,6 +44,13 @@ class PerformancesHydrogenGasRemainingMission(om.ExplicitComponent):
             desc="Hydrogen from this tank consumed at each time step",
         )
 
+        self.add_input(
+            "hydrogen_boil_off_t",
+            units="kg",
+            val=np.full(number_of_points, np.nan),
+            desc="Amount of hydrogen boil off  at each time step",
+        )
+
         self.add_output(
             "fuel_remaining_t",
             units="kg",
@@ -55,31 +62,37 @@ class PerformancesHydrogenGasRemainingMission(om.ExplicitComponent):
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
         number_of_points = self.options["number_of_points"]
 
         total_fuel = inputs[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":fuel_consumed_mission"
         ]
 
-        outputs["fuel_remaining_t"] = np.full(number_of_points, total_fuel) - np.cumsum(
-            np.concatenate((np.zeros(1), inputs["fuel_consumed_t"][:-1]))
+        outputs["fuel_remaining_t"] = (
+            np.full(number_of_points, total_fuel)
+            - np.cumsum(np.concatenate((np.zeros(1), inputs["fuel_consumed_t"][:-1])))
+            - np.cumsum(np.concatenate((np.zeros(1), inputs["hydrogen_boil_off_t"][:-1])))
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
         number_of_points = self.options["number_of_points"]
 
         partials[
             "fuel_remaining_t",
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":fuel_consumed_mission",
         ] = np.ones(number_of_points)
 
         partials["fuel_remaining_t", "fuel_consumed_t"] = -(
+            np.tri(number_of_points, number_of_points) - np.eye(number_of_points)
+        )
+
+        partials["fuel_remaining_t", "hydrogen_boil_off_t"] = -(
             np.tri(number_of_points, number_of_points) - np.eye(number_of_points)
         )

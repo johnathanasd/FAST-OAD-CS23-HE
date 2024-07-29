@@ -7,57 +7,52 @@ import numpy as np
 from utils.filter_residuals import filter_residuals
 
 
-class SizingHydrogenGasTankUnusableHydrogen(om.ExplicitComponent):
+class SizingCryogenicHydrogenTankUnusableHydrogen(om.ExplicitComponent):
     """
-    Computation of the amount of trapped fuel in that particular tank.
+    Computation of the amount of boil-off hydrogen in tank.
     """
 
     def initialize(self):
 
         self.options.declare(
-            name="hydrogen_gas_tank_id",
+            name="cryogenic_hydrogen_tank_id",
             default=None,
             desc="Identifier of the hydrogen gas tank",
             allow_none=False,
         )
+        self.options.declare(
+            "number_of_points", default=1, desc="number of equilibrium to be treated"
+        )
 
     def setup(self):
         # To modify based on the minimum pressure for the output hydrogen mass flow
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
+        number_of_points = self.options["number_of_points"]
 
         self.add_input(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
-            + ":fuel_consumed_mission",
+            "hydrogen_boil_off_t",
             units="kg",
-            val=15.0,
+            val=np.full(number_of_points, np.nan),
             desc="Amount of hydrogen from that tank which will be consumed during mission",
         )
 
         self.add_output(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":unusable_fuel_mission",
             units="kg",
-            val=0.15,
+            val=3.,
             desc="Amount of trapped hydrogen in the tank",
         )
 
-        self.declare_partials(of="*", wrt="*", val=0.01)
+        self.declare_partials(of="*", wrt="*", val=np.ones(number_of_points))
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         # To modify based on the minimum pressure for the output hydrogen mass flow
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
 
         outputs[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":unusable_fuel_mission"
-        ] = (
-            0.01
-            * inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
-                + ":fuel_consumed_mission"
-            ]
-        )
+        ] = np.sum(inputs["hydrogen_boil_off_t"])

@@ -4,8 +4,9 @@
 
 import openmdao.api as om
 
-from ..components.perf_fuel_mission_consumed import PerformancesHydrogenGasConsumedMission
-from ..components.perf_fuel_remaining import PerformancesHydrogenGasRemainingMission
+from ..components.perf_fuel_mission_consumed import PerformancesLiquidHydrogenConsumedMission
+from ..components.perf_fuel_remaining import PerformancesLiquidHydrogenRemainingMission
+from ..components.perf_fuel_boil_off import PerformancesHydrogenBoilOffMission
 
 
 class PerformancesHydrogenGasTank(om.Group):
@@ -36,7 +37,7 @@ class PerformancesHydrogenGasTank(om.Group):
 
         self.add_subsystem(
             "hydrogen_gas_consumed_mission",
-            PerformancesHydrogenGasConsumedMission(
+            PerformancesLiquidHydrogenConsumedMission(
                 number_of_points=number_of_points, hydrogen_gas_tank_id=hydrogen_gas_tank_id
             ),
             promotes=["*"],
@@ -44,7 +45,15 @@ class PerformancesHydrogenGasTank(om.Group):
 
         self.add_subsystem(
             "hydrogen_gas_remaining_mission",
-            PerformancesHydrogenGasRemainingMission(
+            PerformancesLiquidHydrogenRemainingMission(
+                number_of_points=number_of_points, hydrogen_gas_tank_id=hydrogen_gas_tank_id
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            "hydrogen_gas_boil_off_mission",
+            PerformancesHydrogenBoilOffMission(
                 number_of_points=number_of_points, hydrogen_gas_tank_id=hydrogen_gas_tank_id
             ),
             promotes=["*"],

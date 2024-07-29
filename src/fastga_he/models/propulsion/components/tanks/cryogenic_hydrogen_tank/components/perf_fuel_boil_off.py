@@ -40,12 +40,13 @@ class PerformancesHydrogenBoilOffMission(om.ExplicitComponent):
         )
 
         self.declare_partials(
-            of="*",
+            of="hydrogen_boil_off_t",
             wrt="*",
             method="exact",
             rows=np.arange(number_of_points),
             cols=np.arange(number_of_points),
         )
+
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -62,3 +63,5 @@ class PerformancesHydrogenBoilOffMission(om.ExplicitComponent):
         partials["hydrogen_boil_off_t", "conductive_heat_flow"] = (
             inputs["time_step"] / HYDROGEN_VAPORIZATION_LATENT_HEAT
         )
+
+
