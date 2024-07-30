@@ -8,9 +8,9 @@ import numpy as np
 HYDROGEN_VAPORIZATION_LATENT_HEAT = 446592.0  # J/kg
 
 
-class PerformancesHydrogenBoilOffMission(om.ExplicitComponent):
+class PerformancesCryogenicHydrogenTankConvection(om.ExplicitComponent):
     """
-    Computation of the amount of the amount of hydrogen boil-off during the mission.
+    Computation of the heat convection at the outer surface of the cryogenic tank
     """
 
     def initialize(self):
@@ -19,46 +19,139 @@ class PerformancesHydrogenBoilOffMission(om.ExplicitComponent):
             "number_of_points", default=1, desc="number of equilibrium to be treated"
         )
 
+        self.options.declare(
+            name="cryogenic_hydrogen_tank_id",
+            default=None,
+            desc="Identifier of the cryogenic hydrogen tank",
+            allow_none=False,
+        )
+
     def setup(self):
 
         number_of_points = self.options["number_of_points"]
-
-        self.add_input(
-            "conductive_heat_flow",
-            units="J/s",
-            val=np.full(number_of_points, np.nan),
-            desc="Hydrogen from this tank consumed at each time step",
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
+        input_prefix = (
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id
         )
 
-        self.add_input("time_step", units="s", val=np.full(number_of_points, np.nan))
+        self.add_input(
+            "tank_nusselt_number",
+            val=np.linspace(15.15, 0.15, number_of_points),
+            desc="Tank Nusselt number at each time step",
+        )
+
+        self.add_input(
+            name="free_stream_temperature",
+            units="K",
+            val=np.full(number_of_points, np.nan),
+        )
+
+        self.add_input(
+            name="skin_temperature",
+            units="K",
+            val=np.full(number_of_points, np.nan),
+        )
+
+        self.add_input(
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
+            + ":dimension:length",
+            val=np.nan,
+            units="m",
+        )
+
+        self.add_input(
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
+            + ":dimension:outer_diameter",
+            units="m",
+            val=np.nan,
+            desc="Outer diameter of the hydrogen gas tank",
+        )
+
+        self.add_input(
+            "air_thermal_conductivity",
+            units="W/m/K",
+            val=np.full(number_of_points, np.nan),
+            desc="air thermal conductivity at each time step",
+        )
 
         self.add_output(
-            "hydrogen_boil_off_t",
-            units="kg",
+            "heat_convection",
+            units="W",
             val=np.linspace(15.15, 0.15, number_of_points),
             desc="Hydrogen boil-off in the tank at each time step",
         )
 
         self.declare_partials(
-            of="hydrogen_boil_off_t",
-            wrt="*",
+            of="heat_convection",
+            wrt=[
+                "air_thermal_conductivity",
+                "skin_temperature",
+                "free_stream_temperature",
+                "tank_nusselt_number",
+            ],
             method="exact",
             rows=np.arange(number_of_points),
             cols=np.arange(number_of_points),
         )
 
-    def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
+        self.declare_partials(
+            of="heat_convection",
+            wrt=[
+                input_prefix + ":dimension:outer_diameter",
+                input_prefix + ":dimension:length",
+            ],
+            method="exact",
+            rows=np.arange(number_of_points),
+            cols=np.zeros(number_of_points),
+        )
 
-        outputs["hydrogen_boil_off_t"] = (
-            inputs["time_step"] * inputs["conductive_heat_flow"] / HYDROGEN_VAPORIZATION_LATENT_HEAT
+    def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
+        input_prefix = (
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id
+        )
+
+        d = inputs[input_prefix + ":dimension:outer_diameter"]
+        area = np.pi * d ** 2 + np.pi * d * inputs[input_prefix + ":dimension:length"]
+
+        h = inputs["air_thermal_conductivity"] * inputs["tank_nusselt_number"] / d
+
+        outputs["heat_convection"] = (
+            h * area * (inputs["free_stream_temperature"] - inputs["skin_temperature"])
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
-
-        partials["hydrogen_boil_off_t", "time_step"] = (
-            inputs["conductive_heat_flow"] / HYDROGEN_VAPORIZATION_LATENT_HEAT
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
+        number_of_points = self.options["number_of_points"]
+        input_prefix = (
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id
         )
 
-        partials["hydrogen_boil_off_t", "conductive_heat_flow"] = (
-            inputs["time_step"] / HYDROGEN_VAPORIZATION_LATENT_HEAT
+        d = inputs[input_prefix + ":dimension:outer_diameter"]
+        area = np.pi * d ** 2 + np.pi * d * inputs[input_prefix + ":dimension:length"]
+        h = inputs["air_thermal_conductivity"] * inputs["tank_nusselt_number"] / d
+
+        partials["heat_convection", "air_thermal_conductivity"] = (
+            inputs["tank_nusselt_number"]
+            / d
+            * area
+            * (inputs["free_stream_temperature"] - inputs["skin_temperature"])
+        )
+        partials["heat_convection", "tank_nusselt_number"] = (
+            inputs["air_thermal_conductivity"]
+            / d
+            * area
+            * (inputs["free_stream_temperature"] - inputs["skin_temperature"])
+        )
+        partials["heat_convection", "free_stream_temperature"] = (
+            h * area * np.ones(number_of_points)
+        )
+        partials["heat_convection", "skin_temperature"] = -h * area * np.ones(number_of_points)
+        partials["heat_convection", input_prefix + ":dimension:length"] = (
+            h * np.pi * d * (inputs["free_stream_temperature"] - inputs["skin_temperature"])
+        )
+        partials["heat_convection", input_prefix + ":dimension:outer_diameter"] = (
+            h * np.pi * (inputs["free_stream_temperature"] - inputs["skin_temperature"])
         )

@@ -5,10 +5,8 @@
 import openmdao.api as om
 import numpy as np
 
-HYDROGEN_VAPORIZATION_LATENT_HEAT = 446592.0  # J/kg
 
-
-class PerformancesHydrogenBoilOffMission(om.ExplicitComponent):
+class PerformancesCryogenicHydrogenTankConduction(om.ExplicitComponent):
     """
     Computation of the amount of the amount of hydrogen boil-off during the mission.
     """
@@ -24,23 +22,28 @@ class PerformancesHydrogenBoilOffMission(om.ExplicitComponent):
         number_of_points = self.options["number_of_points"]
 
         self.add_input(
-            "conductive_heat_flow",
-            units="J/s",
+            "heat_convection",
+            units="W",
             val=np.full(number_of_points, np.nan),
-            desc="Hydrogen from this tank consumed at each time step",
+            desc="Tank exterior heat convection at each time step",
         )
 
-        self.add_input("time_step", units="s", val=np.full(number_of_points, np.nan))
+        self.add_input(
+            "heat_radiation",
+            units="W",
+            val=np.full(number_of_points, np.nan),
+            desc="Tank exterior heat radiation at each time step",
+        )
 
-        self.add_output(
-            "hydrogen_boil_off_t",
-            units="kg",
-            val=np.linspace(15.15, 0.15, number_of_points),
-            desc="Hydrogen boil-off in the tank at each time step",
+        self.add_input(
+            "heat_conduction",
+            units="W",
+            val=np.full(number_of_points, 1.0),
+            desc="Tank wall heat conduction at each time step",
         )
 
         self.declare_partials(
-            of="hydrogen_boil_off_t",
+            of="*",
             wrt="*",
             method="exact",
             rows=np.arange(number_of_points),
@@ -49,16 +52,11 @@ class PerformancesHydrogenBoilOffMission(om.ExplicitComponent):
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
-        outputs["hydrogen_boil_off_t"] = (
-            inputs["time_step"] * inputs["conductive_heat_flow"] / HYDROGEN_VAPORIZATION_LATENT_HEAT
-        )
+        outputs["heat_conduction"] = inputs["heat_convection"] + inputs["heat_radiation"]
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
+        number_of_points = self.options["number_of_points"]
 
-        partials["hydrogen_boil_off_t", "time_step"] = (
-            inputs["conductive_heat_flow"] / HYDROGEN_VAPORIZATION_LATENT_HEAT
-        )
+        partials["heat_conduction", "heat_convection"] = np.ones(number_of_points)
 
-        partials["hydrogen_boil_off_t", "conductive_heat_flow"] = (
-            inputs["time_step"] / HYDROGEN_VAPORIZATION_LATENT_HEAT
-        )
+        partials["heat_conduction", "heat_radiation"] = np.ones(number_of_points)

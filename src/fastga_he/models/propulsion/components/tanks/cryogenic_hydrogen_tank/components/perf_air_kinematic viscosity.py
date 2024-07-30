@@ -6,23 +6,16 @@ import openmdao.api as om
 import numpy as np
 from stdatm import AtmosphereWithPartials
 
-DEFAULT_TEMPERATURE = 15.0
+DEFAULT_KINEMATIC_VISCOSITY = 1.5 * 10 ** -5
 
 
-class PerformancesOperationTemperature(om.ExplicitComponent):
+class PerformancesAirKinematicViscosity(om.ExplicitComponent):
     """
-    Computation of the ambient temperature that PEMFC is working based on altitude only applied to the model
-    from: `Preliminary Propulsion System Sizing Methods for PEM Fuel Cell Aircraft by D.Juschus:2021`
+    Computation of the free stream temperature of the exterior surface of the tank
     """
 
     def initialize(self):
 
-        self.options.declare(
-            name="pemfc_stack_id",
-            default=None,
-            desc="Identifier of the PEMFC stack",
-            allow_none=False,
-        )
         self.options.declare(
             "number_of_points", default=1, desc="number of equilibrium to be treated"
         )
@@ -34,9 +27,9 @@ class PerformancesOperationTemperature(om.ExplicitComponent):
         self.add_input("altitude", units="m", val=np.zeros(number_of_points))
 
         self.add_output(
-            name="operation_temperature",
-            units="K",
-            val=np.full(number_of_points, DEFAULT_TEMPERATURE),
+            name="air_kinematic_viscosity",
+            units="m**2/s",
+            val=np.full(number_of_points, DEFAULT_KINEMATIC_VISCOSITY),
         )
 
         self.declare_partials(
@@ -49,10 +42,12 @@ class PerformancesOperationTemperature(om.ExplicitComponent):
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
-        outputs["operation_temperature"] = AtmosphereWithPartials(inputs["altitude"]).temperature
+        outputs["air_kinematic_viscosity"] = AtmosphereWithPartials(
+            inputs["altitude"]
+        ).kinematic_viscosity
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
-        partials["operation_temperature", "altitude"] = AtmosphereWithPartials(
+        partials["air_kinematic_viscosity", "altitude"] = AtmosphereWithPartials(
             inputs["altitude"]
-        ).partial_temperature_altitude
+        ).partial_kinematic_viscosity_altitude

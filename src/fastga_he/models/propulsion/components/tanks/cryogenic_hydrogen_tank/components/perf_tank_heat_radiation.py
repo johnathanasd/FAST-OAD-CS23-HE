@@ -4,13 +4,15 @@
 
 import openmdao.api as om
 import numpy as np
+from ..constants import POSSIBLE_POSITION
 
-HYDROGEN_VAPORIZATION_LATENT_HEAT = 446592.0  # J/kg
+STEFAN_BOLTZMANN_CONSTANT = 5.67 * 10 ** -8  # W/m^2.K^4
+SOLAR_HEAT_FLUX = 1420.0  # W/m^2
 
 
-class PerformancesHydrogenBoilOffMission(om.ExplicitComponent):
+class PerformancesCryogenicHydrogenTankRadiation(om.ExplicitComponent):
     """
-    Computation of the amount of the amount of hydrogen boil-off during the mission.
+    Computation of the heat radiation at the outer surface of the cryogenic tank
     """
 
     def initialize(self):
@@ -19,46 +21,198 @@ class PerformancesHydrogenBoilOffMission(om.ExplicitComponent):
             "number_of_points", default=1, desc="number of equilibrium to be treated"
         )
 
+        self.options.declare(
+            name="cryogenic_hydrogen_tank_id",
+            default=None,
+            desc="Identifier of the cryogenic hydrogen tank",
+            allow_none=False,
+        )
+
+        self.options.declare(
+            name="position",
+            default="in_the_fuselage",
+            values=POSSIBLE_POSITION,
+            desc="Option to give the position of the hydrogen gas tank, possible position include "
+            + ", ".join(POSSIBLE_POSITION),
+            allow_none=False,
+        )
+
     def setup(self):
 
         number_of_points = self.options["number_of_points"]
-
-        self.add_input(
-            "conductive_heat_flow",
-            units="J/s",
-            val=np.full(number_of_points, np.nan),
-            desc="Hydrogen from this tank consumed at each time step",
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
+        input_prefix = (
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id
         )
 
-        self.add_input("time_step", units="s", val=np.full(number_of_points, np.nan))
+        self.add_input(
+            name="data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
+            + ":insulation:thermal_emissivity",
+            val=np.nan,
+            desc="Thermal emissivity of insulation material",
+        )
+
+        self.add_input(
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
+            + ":dimension:length",
+            val=np.nan,
+            units="m",
+        )
+
+        self.add_input(
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
+            + ":dimension:outer_diameter",
+            units="m",
+            val=np.nan,
+            desc="Outer diameter of the hydrogen gas tank",
+        )
+
+        self.add_input(
+            "free_stream_temperature",
+            units="K",
+            val=np.full(number_of_points, np.nan),
+            desc="free stream temperature at the tank exterior",
+        )
+
+        self.add_input(
+            "skin_temperature",
+            units="K",
+            val=np.full(number_of_points, np.nan),
+            desc="skin temperature of the tank exterior",
+        )
 
         self.add_output(
-            "hydrogen_boil_off_t",
-            units="kg",
+            "heat_radiation",
+            units="W",
             val=np.linspace(15.15, 0.15, number_of_points),
-            desc="Hydrogen boil-off in the tank at each time step",
+            desc="heat transfer from radiation",
         )
 
         self.declare_partials(
-            of="hydrogen_boil_off_t",
-            wrt="*",
+            of="heat_radiation",
+            wrt=["free_stream_temperature", "skin_temperature"],
             method="exact",
             rows=np.arange(number_of_points),
             cols=np.arange(number_of_points),
         )
 
+        self.declare_partials(
+            of="heat_radiation",
+            wrt=[
+                input_prefix + ":insulation:thermal_emissivity",
+                input_prefix + ":dimension:outer_diameter",
+                input_prefix + ":dimension:length",
+            ],
+            method="exact",
+            rows=np.arange(number_of_points),
+            cols=np.zeros(number_of_points),
+        )
+
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
-        outputs["hydrogen_boil_off_t"] = (
-            inputs["time_step"] * inputs["conductive_heat_flow"] / HYDROGEN_VAPORIZATION_LATENT_HEAT
+        number_of_points = self.options["number_of_points"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
+        position = self.options["position"]
+        d = inputs[
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
+            + ":dimension:outer_diameter"
+        ]
+        area = (
+            np.pi * d ** 2
+            + np.pi
+            * d
+            * inputs[
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":dimension:length"
+            ]
+        )
+        if position == "wing_pod" or position == "underbelly":
+            solar_radiation_heat = SOLAR_HEAT_FLUX * area * np.ones(number_of_points)
+        else:
+            solar_radiation_heat = np.zeros(number_of_points)
+        outputs["heat_radiation"] = (
+            inputs[
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":insulation:thermal_emissivity"
+            ]
+            * STEFAN_BOLTZMANN_CONSTANT
+            * area
+            * (inputs["free_stream_temperature"] ** 4 - inputs["skin_temperature"] ** 4)
+            + solar_radiation_heat
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
+        position = self.options["position"]
+        number_of_points = self.options["number_of_points"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
+        input_prefix = (
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id
+        )
+        d = inputs[input_prefix + ":dimension:outer_diameter"]
+        area = np.pi * d ** 2 + np.pi * d * inputs[input_prefix + ":dimension:length"]
 
-        partials["hydrogen_boil_off_t", "time_step"] = (
-            inputs["conductive_heat_flow"] / HYDROGEN_VAPORIZATION_LATENT_HEAT
+        partials["heat_radiation", input_prefix + ":insulation:thermal_emissivity"] = (
+            STEFAN_BOLTZMANN_CONSTANT
+            * area
+            * (inputs["free_stream_temperature"] ** 4 - inputs["skin_temperature"] ** 4)
+        )
+        partials["heat_radiation", "free_stream_temperature"] = (
+            4
+            * inputs[input_prefix + ":insulation:thermal_emissivity"]
+            * STEFAN_BOLTZMANN_CONSTANT
+            * area
+            * inputs["free_stream_temperature"] ** 3
+        )
+        partials["heat_radiation", "skin_temperature"] = (
+            -4
+            * inputs[input_prefix + ":insulation:thermal_emissivity"]
+            * STEFAN_BOLTZMANN_CONSTANT
+            * area
+            * inputs["skin_temperature"] ** 3
         )
 
-        partials["hydrogen_boil_off_t", "conductive_heat_flow"] = (
-            inputs["time_step"] / HYDROGEN_VAPORIZATION_LATENT_HEAT
-        )
+        if position == "wing_pod" or position == "underbelly":
+
+            partials["heat_radiation", input_prefix + ":dimension:length"] = np.pi * d * inputs[
+                input_prefix + ":insulation:thermal_emissivity"
+            ] * STEFAN_BOLTZMANN_CONSTANT * (
+                inputs["free_stream_temperature"] ** 4 - inputs["skin_temperature"] ** 4
+            ) + SOLAR_HEAT_FLUX * np.pi * d * np.ones(
+                number_of_points
+            )
+
+            partials["heat_radiation", input_prefix + ":dimension:outer_diameter"] = (
+                2 * np.pi * d
+                + np.pi
+                * inputs[input_prefix + ":dimension:length"]
+                * inputs[input_prefix + ":insulation:thermal_emissivity"]
+                * STEFAN_BOLTZMANN_CONSTANT
+                * (inputs["free_stream_temperature"] ** 4 - inputs["skin_temperature"] ** 4)
+                + 2 * np.pi * d
+                + np.pi
+                * inputs[input_prefix + ":dimension:length"]
+                * SOLAR_HEAT_FLUX
+                * np.ones(number_of_points)
+            )
+        else:
+            partials["heat_radiation", input_prefix + ":dimension:length"] = (
+                np.pi
+                * d
+                * inputs[input_prefix + ":insulation:thermal_emissivity"]
+                * STEFAN_BOLTZMANN_CONSTANT
+                * (inputs["free_stream_temperature"] ** 4 - inputs["skin_temperature"] ** 4)
+            )
+
+            partials[
+                "heat_radiation", input_prefix + ":dimension:outer_diameter"
+            ] = 2 * np.pi * d + np.pi * inputs[input_prefix + ":dimension:length"] * inputs[
+                input_prefix + ":insulation:thermal_emissivity"
+            ] * STEFAN_BOLTZMANN_CONSTANT * (
+                inputs["free_stream_temperature"] ** 4 - inputs["skin_temperature"] ** 4
+            )

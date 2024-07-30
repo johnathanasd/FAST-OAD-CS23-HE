@@ -16,7 +16,7 @@ class PerformancesLiquidHydrogenRemainingMission(om.ExplicitComponent):
         self.options.declare(
             name="cryogenic_hydrogen_tank_id",
             default=None,
-            desc="Identifier of the hydrogen gas tank",
+            desc="Identifier of the cryogenic hydrogen tank",
             allow_none=False,
         )
         self.options.declare(
