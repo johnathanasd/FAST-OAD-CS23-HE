@@ -27,7 +27,7 @@ from .cstr_cryogenic_hydrogen_tank import ConstraintsCryogenicHydrogenTank
 from ..constants import POSSIBLE_POSITION
 
 
-class SizingHydrogenGasTank(om.Group):
+class SizingCryogenicHydrogenTank(om.Group):
     """
     Class that regroups all the subcomponents for the sizing of the hydrogen gas tank.
     """
@@ -69,13 +69,18 @@ class SizingHydrogenGasTank(om.Group):
 
         self.add_subsystem(
             name="tank_diameter_update",
-            subsys=SizingHydrogenGasTankDiameterUpdate(cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
+            subsys=SizingHydrogenGasTankDiameterUpdate(
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
+            ),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="unusable_hydrogen_gas",
-            subsys=SizingCryogenicHydrogenTankUnusableHydrogen(number_of_points=number_of_points , cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
+            subsys=SizingCryogenicHydrogenTankUnusableHydrogen(
+                number_of_points=number_of_points,
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
+            ),
             promotes=["*"],
         )
 
@@ -89,37 +94,49 @@ class SizingHydrogenGasTank(om.Group):
 
         self.add_subsystem(
             name="tank_constraints",
-            subsys=ConstraintsCryogenicHydrogenTank(cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
+            subsys=ConstraintsCryogenicHydrogenTank(
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
+            ),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="tank_inner_diameter",
-            subsys=SizingHydrogenGasTankInnerDiameter(cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
+            subsys=SizingHydrogenGasTankInnerDiameter(
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
+            ),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="tank_wall_thickness",
-            subsys=SizingHydrogenGasTankWallThickness(cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
+            subsys=SizingHydrogenGasTankWallThickness(
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
+            ),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="tank_inner_volume",
-            subsys=SizingHydrogenGasTankInnerVolume(cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
+            subsys=SizingHydrogenGasTankInnerVolume(
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
+            ),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="tank_length",
-            subsys=SizingHydrogenGasTankLength(cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
+            subsys=SizingHydrogenGasTankLength(
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
+            ),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="tank_overall_length",
-            subsys=SizingHydrogenGasTankOverallLength(cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
+            subsys=SizingHydrogenGasTankOverallLength(
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
+            ),
             promotes=["*"],
         )
 
@@ -150,13 +167,17 @@ class SizingHydrogenGasTank(om.Group):
 
         self.add_subsystem(
             name="tank_weight",
-            subsys=SizingHydrogenGasTankWeight(cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
+            subsys=SizingHydrogenGasTankWeight(
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
+            ),
             promotes=["*"],
         )
 
         self.add_subsystem(
             name="tank_specific_weight",
-            subsys=SizingHydrogenGasTankSpecificWeight(cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id),
+            subsys=SizingHydrogenGasTankSpecificWeight(
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
+            ),
             promotes=["*"],
         )
 

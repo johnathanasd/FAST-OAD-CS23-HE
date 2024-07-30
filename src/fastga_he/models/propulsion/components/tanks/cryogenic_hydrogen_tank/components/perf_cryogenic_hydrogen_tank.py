@@ -9,7 +9,7 @@ from ..components.perf_fuel_remaining import PerformancesLiquidHydrogenRemaining
 from ..components.perf_fuel_boil_off import PerformancesHydrogenBoilOffMission
 
 
-class PerformancesHydrogenGasTank(om.Group):
+class PerformancesCryogenicHydrogenTank(om.Group):
     """
     Regrouping all the components for the performances of the tank. Note that to limit the work
     to be done for the implementation of fuel tanks, fuel tanks don't output the fuel consumed
@@ -24,37 +24,40 @@ class PerformancesHydrogenGasTank(om.Group):
             "number_of_points", default=1, desc="number of equilibrium to be treated"
         )
         self.options.declare(
-            name="hydrogen_gas_tank_id",
+            name="cryogenic_hydrogen_tank_id",
             default=None,
-            desc="Identifier of the fuel tank",
+            desc="Identifier of the cryogenic hydrogen tank",
             allow_none=False,
         )
 
     def setup(self):
 
         number_of_points = self.options["number_of_points"]
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
 
         self.add_subsystem(
-            "hydrogen_gas_consumed_mission",
+            "liquid_hydrogen_consumed_mission",
             PerformancesLiquidHydrogenConsumedMission(
-                number_of_points=number_of_points, hydrogen_gas_tank_id=hydrogen_gas_tank_id
+                number_of_points=number_of_points,
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
             ),
             promotes=["*"],
         )
 
         self.add_subsystem(
-            "hydrogen_gas_remaining_mission",
+            "liquid_hydrogen_remaining_mission",
             PerformancesLiquidHydrogenRemainingMission(
-                number_of_points=number_of_points, hydrogen_gas_tank_id=hydrogen_gas_tank_id
+                number_of_points=number_of_points,
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
             ),
             promotes=["*"],
         )
 
         self.add_subsystem(
-            "hydrogen_gas_boil_off_mission",
+            "hydrogen_boil_off_mission",
             PerformancesHydrogenBoilOffMission(
-                number_of_points=number_of_points, hydrogen_gas_tank_id=hydrogen_gas_tank_id
+                number_of_points=number_of_points,
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
             ),
             promotes=["*"],
         )
