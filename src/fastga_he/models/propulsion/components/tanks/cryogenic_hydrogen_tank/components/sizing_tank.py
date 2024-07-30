@@ -5,7 +5,7 @@
 import openmdao.api as om
 
 from .sizing_tank_unusable_hydrogen import SizingCryogenicHydrogenTankUnusableHydrogen
-from .sizing_tank_total_hydrogen_mission import SizingCrogenicHydrogenTankTotalHydrogenMission
+from .sizing_tank_total_hydrogen_mission import SizingCryogenicHydrogenTankTotalHydrogenMission
 from .sizing_tank_wall_thickness import SizingHydrogenGasTankWallThickness
 from .sizing_tank_cg_x import SizingHydrogenGasTankCGX
 from .sizing_tank_cg_y import SizingHydrogenGasTankCGY
@@ -13,7 +13,7 @@ from .sizing_tank_length import SizingHydrogenGasTankLength
 from .sizing_tank_inner_volume import SizingHydrogenGasTankInnerVolume
 from .sizing_tank_inner_diameter import SizingHydrogenGasTankInnerDiameter
 from .sizing_tank_weight import SizingHydrogenGasTankWeight
-from .sizing_specific_weight import SizingHydrogenGasTankSpecificWeight
+from .sizing_gravimetric_index import SizingCryogenicHydrogenTankGravimetricIndex
 from .sizing_tank_drag import SizingHydrogenGasTankDrag
 from .sizing_tank_outer_diameter import SizingHydrogenGasTankOuterDiameter
 from .sizing_tank_diameter_update import SizingHydrogenGasTankDiameterUpdate
@@ -86,7 +86,7 @@ class SizingCryogenicHydrogenTank(om.Group):
 
         self.add_subsystem(
             name="total_hydrogen_gas",
-            subsys=SizingCrogenicHydrogenTankTotalHydrogenMission(
+            subsys=SizingCryogenicHydrogenTankTotalHydrogenMission(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
             ),
             promotes=["*"],
@@ -174,8 +174,8 @@ class SizingCryogenicHydrogenTank(om.Group):
         )
 
         self.add_subsystem(
-            name="tank_specific_weight",
-            subsys=SizingHydrogenGasTankSpecificWeight(
+            name="tank_gravimetric_index",
+            subsys=SizingCryogenicHydrogenTankGravimetricIndex(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
             ),
             promotes=["*"],

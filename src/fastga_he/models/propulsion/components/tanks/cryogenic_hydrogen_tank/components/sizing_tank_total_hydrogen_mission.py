@@ -6,7 +6,7 @@ import openmdao.api as om
 import numpy as np
 
 
-class SizingCrogenicHydrogenTankTotalHydrogenMission(om.ExplicitComponent):
+class SizingCryogenicHydrogenTankTotalHydrogenMission(om.ExplicitComponent):
     """
     Computation of the amount of the total amount of hydrogen loaded for the mission. Is the sum of
     the consumed hydrogen and unusable hydrogen.

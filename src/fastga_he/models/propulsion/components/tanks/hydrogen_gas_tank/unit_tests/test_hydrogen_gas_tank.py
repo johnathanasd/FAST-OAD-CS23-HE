@@ -20,7 +20,7 @@ from ..components.sizing_tank_inner_diameter import SizingHydrogenGasTankInnerDi
 from ..components.sizing_tank_outer_diameter import SizingHydrogenGasTankOuterDiameter
 from ..components.sizing_tank_diameter_update import SizingHydrogenGasTankDiameterUpdate
 from ..components.sizing_tank_weight import SizingHydrogenGasTankWeight
-from ..components.sizing_specific_weight import SizingHydrogenGasTankSpecificWeight
+from ..components.sizing_gravimetric_index import SizingHydrogenGasTankGravimetricIndex
 from ..components.sizing_tank_drag import SizingHydrogenGasTankDrag
 from ..components.sizing_tank_wall_thickness import SizingHydrogenGasTankWallThickness
 from ..components.sizing_tank_overall_length import SizingHydrogenGasTankOverallLength
@@ -432,12 +432,12 @@ def test_hydrogen_gas_tank_weight():
     problem.check_partials(compact_print=True)
 
 
-def test_hydrogen_gas_tank_specific_weight():
+def test_hydrogen_gas_tank_gravimetric_index():
 
     # Research independent input value in .xml file
     ivc = get_indep_var_comp(
         list_inputs(
-            SizingHydrogenGasTankSpecificWeight(hydrogen_gas_tank_id="hydrogen_gas_tank_1")
+            SizingHydrogenGasTankGravimetricIndex(hydrogen_gas_tank_id="hydrogen_gas_tank_1")
         ),
         __file__,
         XML_FILE,
@@ -450,12 +450,12 @@ def test_hydrogen_gas_tank_specific_weight():
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
-        SizingHydrogenGasTankSpecificWeight(hydrogen_gas_tank_id="hydrogen_gas_tank_1"),
+        SizingHydrogenGasTankGravimetricIndex(hydrogen_gas_tank_id="hydrogen_gas_tank_1"),
         ivc,
     )
     assert problem.get_val(
-        "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:specific_weight"
-    ) == pytest.approx(20.0, rel=1e-2)
+        "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:gravimetric_index"
+    ) == pytest.approx(0.0476, rel=1e-2)
 
     problem.check_partials(compact_print=True)
 

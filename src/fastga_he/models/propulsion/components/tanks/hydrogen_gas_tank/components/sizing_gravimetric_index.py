@@ -10,9 +10,10 @@ import logging
 _LOGGER = logging.getLogger(__name__)
 
 
-class SizingHydrogenGasTankSpecificWeight(om.ExplicitComponent):
+class SizingHydrogenGasTankGravimetricIndex(om.ExplicitComponent):
     """
-    Computation of the weight ratio of the tank. The ratio between the tank weight and the hydrogen
+    Computation of the gravimetric index of cryogenic hydrogen tank,
+    ratio between the mission used weight and overall weight
     """
 
     def initialize(self):
@@ -46,12 +47,21 @@ class SizingHydrogenGasTankSpecificWeight(om.ExplicitComponent):
             desc="Total amount of hydrogen loaded in the tank for the mission",
         )
 
+        self.add_input(
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":fuel_consumed_mission",
+            units="kg",
+            val=15.0,
+            desc="Amount of hydrogen from that tank which will be consumed during mission",
+        )
+
         self.add_output(
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":specific_weight",
+            + ":gravimetric_index",
             val=10.0,
-            desc="The amount of tank weight to keep 1 kg of hydrogen gas",
+            desc="Ratio between the mission used weight and overall weight",
         )
 
         self.declare_partials(of="*", wrt="*", method="exact")
@@ -63,16 +73,18 @@ class SizingHydrogenGasTankSpecificWeight(om.ExplicitComponent):
         outputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":specific_weight"
+            + ":gravimetric_index"
         ] = (
             inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass"
+                "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":fuel_consumed_mission"
             ]
-            / inputs[
+            / (inputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
                 + ":fuel_total_mission"
-            ]
+            ] + inputs["data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":mass"])
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
@@ -81,32 +93,55 @@ class SizingHydrogenGasTankSpecificWeight(om.ExplicitComponent):
         partials[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":specific_weight",
-            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass",
+            + ":gravimetric_index",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":fuel_consumed_mission",
         ] = (
-            1
-            / inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
-                + ":fuel_total_mission"
-            ]
+                1
+                / (inputs[
+                       "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                       + hydrogen_gas_tank_id
+                       + ":fuel_total_mission"
+                       ] + inputs["data:propulsion:he_power_train:hydrogen_gas_tank:"
+                                  + hydrogen_gas_tank_id
+                                  + ":mass"])
         )
 
         partials[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
-            + ":specific_weight",
+            + ":gravimetric_index",
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":mass",
+        ] = (
+            -inputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":fuel_consumed_mission"
+            ]
+            / (inputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":fuel_total_mission"
+            ] + inputs["data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":mass"]) ** 2
+        )
+
+        partials[
+            "data:propulsion:he_power_train:hydrogen_gas_tank:"
+            + hydrogen_gas_tank_id
+            + ":gravimetric_index",
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
             + ":fuel_total_mission",
         ] = (
-            -inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass"
-            ]
-            / inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
-                + ":fuel_total_mission"
-            ]
-            ** 2
+                -inputs[
+                    "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":fuel_consumed_mission"
+                    ]
+                / (inputs[
+                       "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                       + hydrogen_gas_tank_id
+                       + ":fuel_total_mission"
+                       ] + inputs["data:propulsion:he_power_train:hydrogen_gas_tank:"
+                                  + hydrogen_gas_tank_id
+                                  + ":mass"]) ** 2
         )

@@ -2,6 +2,6 @@
 # Electric Aircraft.
 # Copyright (C) 2022 ISAE-SUPAERO
 
-from .components.sizing_tank import SizingHydrogenGasTank
-from .components.perf_cryogenic_hydrogen_tank import PerformancesHydrogenGasTank
+from .components.sizing_tank import SizingCryogenicHydrogenTank
+from .components.perf_cryogenic_hydrogen_tank import PerformancesCryogenicHydrogenTank
 from .components.slipstream_cryogenic_hydrogen_tank import SlipstreamCryogenicHydrogenTank
