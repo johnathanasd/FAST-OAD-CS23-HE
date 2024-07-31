@@ -40,7 +40,9 @@ class SizingCryogenicHydrogenTankCGY(om.ExplicitComponent):
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
 
         self.add_output(
-            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id + ":CG:y",
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
+            + ":CG:y",
             units="m",
             val=0.0,
             desc="Y position of the pemfc center of gravity",
@@ -66,7 +68,9 @@ class SizingCryogenicHydrogenTankCGY(om.ExplicitComponent):
         if position == "wing_pod":
 
             outputs[
-                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id + ":CG:y"
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":CG:y"
             ] = (
                 inputs["data:geometry:wing:span"]
                 * inputs[
@@ -80,7 +84,9 @@ class SizingCryogenicHydrogenTankCGY(om.ExplicitComponent):
         else:
 
             outputs[
-                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id + ":CG:y"
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":CG:y"
             ] = 0.0
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):

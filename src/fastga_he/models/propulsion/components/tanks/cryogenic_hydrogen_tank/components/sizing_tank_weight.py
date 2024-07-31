@@ -10,38 +10,29 @@ import logging
 _LOGGER = logging.getLogger(__name__)
 
 
-class SizingHydrogenGasTankWeight(om.ExplicitComponent):
+class SizingCryogenicHydrogenTankWeight(om.ExplicitComponent):
     """
     Computation of the weight of the tank. The very simplistic approach we will use is to say
-    that weight of tank is the weight of unused fuel and the weight of the tank itself.
+    that weight of tank is the weight of the tank itself.
     Reference material density are cite from: Hydrogen Storage for Aircraft Application Overview, NASA 2002
     """
 
     def initialize(self):
 
         self.options.declare(
-            name="hydrogen_gas_tank_id",
+            name="cryogenic_hydrogen_tank_id",
             default=None,
-            desc="Identifier of the hydrogen gas tank",
+            desc="Identifier of the cryogenic hydrogen tank",
             allow_none=False,
         )
 
     def setup(self):
 
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
 
         self.add_input(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
-            + ":unusable_fuel_mission",
-            units="kg",
-            val=np.nan,
-            desc="Amount of trapped hydrogen gas in the tank",
-        )
-
-        self.add_input(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":inner_volume",
             units="m**3",
             val=np.nan,
@@ -49,16 +40,17 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
         )
 
         self.add_input(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":dimension:length",
             val=np.nan,
             units="m",
             desc="Value of the length of the tank in the x-direction",
         )
+
         self.add_input(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":dimension:outer_diameter",
             units="m",
             val=np.nan,
@@ -66,8 +58,8 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
         )
 
         self.add_input(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":material:density",
             units="kg/m**3",
             val=7860.0,
@@ -75,9 +67,29 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
             "Aluminum(2014-T6):2800, Titanium(6%Al,4%V):4460, Carbon Composite:1530",
         )
 
+        self.add_input(
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
+            + ":insulation:material_density",
+            units="kg/m**3",
+            val=120.0,
+            desc="Choice of the insulation material,Some reference: "
+            "Evacuated aluminum foil & glass paper laminate:120,"
+            "Evacuated silica powder:160",
+        )
+
+        self.add_input(
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
+            + ":dimension:insulation_thickness",
+            units="m",
+            val=np.nan,
+            desc="Insulation layer thickness of the cryogenic hydrogen tank",
+        )
+
         self.add_output(
-            name="data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            name="data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":mass",
             units="kg",
             val=20.0,
@@ -88,116 +100,75 @@ class SizingHydrogenGasTankWeight(om.ExplicitComponent):
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
+
+        input_prefix = (
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id
+        )
 
         wall_density = inputs[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":material:density"
         ]
 
-        r = (
-            inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
-                + ":dimension:outer_diameter"
-            ]
-            / 2
-        )
+        insulation_density = inputs[input_prefix + ":insulation:material_density"]
 
-        l = inputs[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
-            + ":dimension:length"
-        ]
+        d = inputs[input_prefix + ":dimension:outer_diameter"]
 
-        outputs[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass"
-        ] = (
-            wall_density
-            * (
-                4 * np.pi * r ** 3 / 3
-                + np.pi * r ** 2 * l
-                - inputs[
-                    "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                    + hydrogen_gas_tank_id
-                    + ":inner_volume"
-                ]
-            )
-            + inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
-                + ":unusable_fuel_mission"
-            ]
+        dt = d - 2 * inputs[input_prefix + ":dimension:insulation_thickness"]
+
+        l = inputs[input_prefix + ":dimension:length"]
+
+        outputs[input_prefix + ":mass"] = wall_density * (
+            np.pi * dt ** 3 / 6 + np.pi * dt ** 2 * l / 4 - inputs[input_prefix + ":inner_volume"]
+        ) + insulation_density * (
+            np.pi * (d ** 3 - dt ** 3) / 6 + np.pi * (d ** 2 - dt ** 2) * l / 4
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
-
-        r = (
-            inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
-                + ":dimension:outer_diameter"
-            ]
-            / 2
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
+        input_prefix = (
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id
         )
 
-        d = 2 * r
+        d = inputs[input_prefix + ":dimension:outer_diameter"]
 
-        l = inputs[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
-            + ":dimension:length"
-        ]
+        dt = d - 2 * inputs[input_prefix + ":dimension:insulation_thickness"]
 
-        wall_density = inputs[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
-            + ":material:density"
-        ]
+        l = inputs[input_prefix + ":dimension:length"]
 
-        partials[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass",
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
-            + ":material:density",
-        ] = (
-            4 / 3 * np.pi * r ** 3
-            + np.pi * r ** 2 * l
-            - inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
-                + ":inner_volume"
-            ]
+        wall_density = inputs[input_prefix + ":material:density"]
+
+        insulation_density = inputs[input_prefix + ":insulation:material_density"]
+
+        partials[input_prefix + ":mass", input_prefix + ":insulation:material_density",] = (
+            np.pi * (d ** 3 - dt ** 3) / 6 + np.pi * (d ** 2 - dt ** 2) * l / 4
+        )
+
+        partials[input_prefix + ":mass", input_prefix + ":material:density",] = (
+            np.pi * dt ** 3 / 6 + np.pi * dt ** 2 / 4 * l - inputs[input_prefix + ":inner_volume"]
+        )
+
+        partials[input_prefix + ":mass", input_prefix + ":dimension:length",] = (
+            wall_density * np.pi * dt ** 2 / 4 + insulation_density * np.pi * (d ** 2 - dt ** 2) / 4
         )
 
         partials[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass",
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
-            + ":dimension:length",
-        ] = (
-            wall_density * np.pi * r ** 2
-        )
-
-        partials[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass",
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
-            + ":inner_volume",
+            input_prefix + ":mass",
+            input_prefix + ":inner_volume",
         ] = -wall_density
 
         partials[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass",
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
-            + ":dimension:outer_diameter",
-        ] = wall_density * (np.pi * d ** 2 / 2 + np.pi * d * l / 2)
+            input_prefix + ":mass",
+            input_prefix + ":dimension:outer_diameter",
+        ] = wall_density * (np.pi * dt ** 2 / 2 + np.pi * dt * l / 2) + insulation_density * (
+            np.pi * (d ** 2 - dt ** 2) / 2 + np.pi * (d - dt) * l / 2
+        )
 
         partials[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":mass",
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
-            + ":unusable_fuel_mission",
-        ] = 1
+            input_prefix + ":mass",
+            input_prefix + ":dimension:insulation_thickness",
+        ] = -wall_density * (np.pi * dt ** 2 + np.pi * dt * l) - insulation_density * (
+            np.pi * (d ** 2 - dt ** 2) + np.pi * (d - dt) * l
+        )
