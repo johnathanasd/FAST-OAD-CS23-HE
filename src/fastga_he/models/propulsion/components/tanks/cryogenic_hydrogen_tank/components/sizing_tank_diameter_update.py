@@ -6,7 +6,7 @@ import numpy as np
 import openmdao.api as om
 
 
-class SizingHydrogenGasTankDiameterUpdate(om.ExplicitComponent):
+class SizingCryogenicHydrogenTankDiameterUpdate(om.ExplicitComponent):
     """
     Update Diameter variable to activate length adjustment if negative length occurs
     """
@@ -14,27 +14,27 @@ class SizingHydrogenGasTankDiameterUpdate(om.ExplicitComponent):
     def initialize(self):
 
         self.options.declare(
-            name="hydrogen_gas_tank_id",
+            name="cryogenic_hydrogen_tank_id",
             default=None,
-            desc="Identifier of the hydrogen gas tank",
+            desc="Identifier of the cryogenic hydrogen tank",
             allow_none=False,
         )
 
     def setup(self):
 
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
 
         self.add_input(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":dimension:outer_diameter",
             val=np.nan,
             units="m",
         )
 
         self.add_output(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":dimension:diameter",
             val=3.0,
             units="m",
@@ -49,13 +49,13 @@ class SizingHydrogenGasTankDiameterUpdate(om.ExplicitComponent):
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
         outputs[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":dimension:diameter"
         ] = inputs[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":dimension:outer_diameter"
         ]

@@ -24,7 +24,7 @@ class PerformancesHydrogenBoilOffMission(om.ExplicitComponent):
         number_of_points = self.options["number_of_points"]
 
         self.add_input(
-            "conductive_heat_flow",
+            "heat_conduction",
             units="J/s",
             val=np.full(number_of_points, np.nan),
             desc="Hydrogen from this tank consumed at each time step",
@@ -35,7 +35,7 @@ class PerformancesHydrogenBoilOffMission(om.ExplicitComponent):
         self.add_output(
             "hydrogen_boil_off_t",
             units="kg",
-            val=np.linspace(15.15, 0.15, number_of_points),
+            val=np.linspace(0.25, 0.15, number_of_points),
             desc="Hydrogen boil-off in the tank at each time step",
         )
 
@@ -50,15 +50,15 @@ class PerformancesHydrogenBoilOffMission(om.ExplicitComponent):
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
         outputs["hydrogen_boil_off_t"] = (
-            inputs["time_step"] * inputs["conductive_heat_flow"] / HYDROGEN_VAPORIZATION_LATENT_HEAT
+            inputs["time_step"] * inputs["heat_conduction"] / HYDROGEN_VAPORIZATION_LATENT_HEAT
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
         partials["hydrogen_boil_off_t", "time_step"] = (
-            inputs["conductive_heat_flow"] / HYDROGEN_VAPORIZATION_LATENT_HEAT
+            inputs["heat_conduction"] / HYDROGEN_VAPORIZATION_LATENT_HEAT
         )
 
-        partials["hydrogen_boil_off_t", "conductive_heat_flow"] = (
+        partials["hydrogen_boil_off_t", "heat_conduction"] = (
             inputs["time_step"] / HYDROGEN_VAPORIZATION_LATENT_HEAT
         )

@@ -8,7 +8,7 @@ import numpy as np
 from ..constants import POSSIBLE_POSITION
 
 
-class SizingHydrogenGasTankCGY(om.ExplicitComponent):
+class SizingCryogenicHydrogenTankCGY(om.ExplicitComponent):
     """
     Class that computes the y - CG of the pemfc according to the position given in the options.
     """
@@ -16,9 +16,9 @@ class SizingHydrogenGasTankCGY(om.ExplicitComponent):
     def initialize(self):
 
         self.options.declare(
-            name="hydrogen_gas_tank_id",
+            name="cryogenic_hydrogen_tank_id",
             default=None,
-            desc="Identifier of the hydrogen gas tank",
+            desc="Identifier of the cryogenic hydrogen tank",
             allow_none=False,
         )
 
@@ -33,14 +33,14 @@ class SizingHydrogenGasTankCGY(om.ExplicitComponent):
 
     def setup(self):
 
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
         position = self.options["position"]
 
         # At least one input is needed regardless of the case
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
 
         self.add_output(
-            "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:y",
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id + ":CG:y",
             units="m",
             val=0.0,
             desc="Y position of the pemfc center of gravity",
@@ -49,8 +49,8 @@ class SizingHydrogenGasTankCGY(om.ExplicitComponent):
         if position == "wing_pod":
 
             self.add_input(
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
                 + ":CG:y_ratio",
                 val=np.nan,
                 desc="X position of the pemfc center of gravity as a ratio of the wing half-span",
@@ -60,18 +60,18 @@ class SizingHydrogenGasTankCGY(om.ExplicitComponent):
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
         position = self.options["position"]
 
         if position == "wing_pod":
 
             outputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:y"
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id + ":CG:y"
             ] = (
                 inputs["data:geometry:wing:span"]
                 * inputs[
-                    "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                    + hydrogen_gas_tank_id
+                    "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                    + cryogenic_hydrogen_tank_id
                     + ":CG:y_ratio"
                 ]
                 / 2.0
@@ -80,35 +80,35 @@ class SizingHydrogenGasTankCGY(om.ExplicitComponent):
         else:
 
             outputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:y"
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id + ":CG:y"
             ] = 0.0
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
         position = self.options["position"]
 
         if position == "wing_pod":
 
             partials[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
                 + ":CG:y",
                 "data:geometry:wing:span",
             ] = (
                 inputs[
-                    "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                    + hydrogen_gas_tank_id
+                    "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                    + cryogenic_hydrogen_tank_id
                     + ":CG:y_ratio"
                 ]
                 / 2.0
             )
             partials[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
                 + ":CG:y",
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
                 + ":CG:y_ratio",
             ] = (
                 inputs["data:geometry:wing:span"] / 2.0

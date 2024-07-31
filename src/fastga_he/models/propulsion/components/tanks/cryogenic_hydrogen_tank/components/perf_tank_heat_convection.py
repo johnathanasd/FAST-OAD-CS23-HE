@@ -36,7 +36,7 @@ class PerformancesCryogenicHydrogenTankConvection(om.ExplicitComponent):
 
         self.add_input(
             "tank_nusselt_number",
-            val=np.linspace(15.15, 0.15, number_of_points),
+            val=np.full(number_of_points, np.nan),
             desc="Tank Nusselt number at each time step",
         )
 
@@ -79,7 +79,7 @@ class PerformancesCryogenicHydrogenTankConvection(om.ExplicitComponent):
         self.add_output(
             "heat_convection",
             units="W",
-            val=np.linspace(15.15, 0.15, number_of_points),
+            val=np.full(number_of_points, 1.0),
             desc="Hydrogen boil-off in the tank at each time step",
         )
 

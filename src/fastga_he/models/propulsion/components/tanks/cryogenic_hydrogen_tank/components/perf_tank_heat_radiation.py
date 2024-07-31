@@ -87,7 +87,7 @@ class PerformancesCryogenicHydrogenTankRadiation(om.ExplicitComponent):
         self.add_output(
             "heat_radiation",
             units="W",
-            val=np.linspace(15.15, 0.15, number_of_points),
+            val=np.full(number_of_points, 1.0),
             desc="heat transfer from radiation",
         )
 

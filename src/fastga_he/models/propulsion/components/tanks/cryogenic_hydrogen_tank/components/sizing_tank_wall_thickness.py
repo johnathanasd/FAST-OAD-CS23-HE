@@ -6,7 +6,7 @@ import openmdao.api as om
 import numpy as np
 
 # To modify
-class SizingHydrogenGasTankWallThickness(om.ExplicitComponent):
+class SizingCryogenicHydrogenTankWallThickness(om.ExplicitComponent):
     """
     Computation of the wall thickness of the tank. Using tank pressure and yield stress of material
     """
@@ -14,19 +14,19 @@ class SizingHydrogenGasTankWallThickness(om.ExplicitComponent):
     def initialize(self):
 
         self.options.declare(
-            name="hydrogen_gas_tank_id",
+            name="cryogenic_hydrogen_tank_id",
             default=None,
-            desc="Identifier of the hydrogen gas tank",
+            desc="Identifier of the cryogenic hydrogen tank",
             allow_none=False,
         )
 
     def setup(self):
 
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
 
         self.add_input(
-            name="data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            name="data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":dimension:inner_diameter",
             units="m",
             val=np.nan,
@@ -34,8 +34,8 @@ class SizingHydrogenGasTankWallThickness(om.ExplicitComponent):
         )
 
         self.add_input(
-            name="data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            name="data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":dimension:outer_diameter",
             units="m",
             val=np.nan,
@@ -43,8 +43,8 @@ class SizingHydrogenGasTankWallThickness(om.ExplicitComponent):
         )
 
         self.add_output(
-            name="data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            name="data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":dimension:wall_thickness",
             units="m",
             val=0.001,
@@ -53,37 +53,37 @@ class SizingHydrogenGasTankWallThickness(om.ExplicitComponent):
 
         self.declare_partials(
             of="*",
-            wrt="data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            wrt="data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":dimension:outer_diameter",
             val=0.5,
         )
 
         self.declare_partials(
             of="*",
-            wrt="data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            wrt="data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":dimension:inner_diameter",
             val=-0.5,
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
-        hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
 
         outputs[
-            "data:propulsion:he_power_train:hydrogen_gas_tank:"
-            + hydrogen_gas_tank_id
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
             + ":dimension:wall_thickness"
         ] = 0.5 * (
             inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
                 + ":dimension:outer_diameter"
             ]
             - inputs[
-                "data:propulsion:he_power_train:hydrogen_gas_tank:"
-                + hydrogen_gas_tank_id
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
                 + ":dimension:inner_diameter"
             ]
         )

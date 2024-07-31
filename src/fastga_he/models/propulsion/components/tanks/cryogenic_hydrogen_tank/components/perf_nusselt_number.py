@@ -52,7 +52,7 @@ class PerformancesCryogenicHydrogenTankNusseltNumber(om.ExplicitComponent):
 
         self.add_output(
             "tank_nusselt_number",
-            val=np.linspace(15.15, 0.15, number_of_points),
+            val=np.linspace(1.15, 0.15, number_of_points),
             desc="Tank Nusselt number at each time step",
         )
 

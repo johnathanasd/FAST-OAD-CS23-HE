@@ -6,7 +6,7 @@ import openmdao.api as om
 import numpy as np
 from stdatm import AtmosphereWithPartials
 
-DEFAULT_TEMPERATURE = 15.0
+DEFAULT_TEMPERATURE = 300.0
 
 
 class PerformancesOperationTemperature(om.ExplicitComponent):
