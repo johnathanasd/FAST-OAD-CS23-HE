@@ -25,7 +25,13 @@ from ..components.sizing_tank_outer_diameter import SizingCryogenicHydrogenTankO
 from ..components.sizing_tank_wall_diameter import SizingCryogenicHydrogenTankWallDiameter
 from ..components.sizing_tank_diameter_update import SizingCryogenicHydrogenTankDiameterUpdate
 from ..components.sizing_tank_overall_length import SizingCryogenicHydrogenTankOverallLength
-
+from ..components.sizing_tank_insulation_layer_thermal_resistance import (
+    SizingCryogenicHydrogenTankInsulationThermalResistance,
+)
+from ..components.sizing_tank_wall_thermal_resistance import (
+    SizingCryogenicHydrogenTankWallThermalResistance,
+)
+from ..components.sizing_tank_thermal_resistance import SizingCryogenicHydrogenTankThermalResistance
 from ..components.sizing_tank_overall_length_fuselage_check import (
     SizingCryogenicHydrogenTankOverallLengthFuselageCheck,
 )
