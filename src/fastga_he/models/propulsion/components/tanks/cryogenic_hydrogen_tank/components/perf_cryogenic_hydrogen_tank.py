@@ -19,6 +19,7 @@ from ..components.perf_tank_temperature import PerformancesLiquidHydrogenTankTem
 
 from ..constants import POSSIBLE_POSITION
 
+
 class PerformancesCryogenicHydrogenTank(om.Group):
     """
     Regrouping all the components for the performances of the tank. Note that to limit the work
@@ -44,7 +45,7 @@ class PerformancesCryogenicHydrogenTank(om.Group):
             default="in_the_fuselage",
             values=POSSIBLE_POSITION,
             desc="Option to give the position of the hydrogen gas tank, possible position include "
-                 + ", ".join(POSSIBLE_POSITION),
+            + ", ".join(POSSIBLE_POSITION),
             allow_none=False,
         )
 
@@ -167,5 +168,3 @@ class PerformancesCryogenicHydrogenTank(om.Group):
             ),
             promotes=["*"],
         )
-
-

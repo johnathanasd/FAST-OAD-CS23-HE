@@ -18,7 +18,10 @@ from .sizing_tank_drag import SizingCryogenicHydrogenTankDrag
 from .sizing_tank_outer_diameter import SizingCryogenicHydrogenTankOuterDiameter
 from .sizing_tank_diameter_update import SizingCryogenicHydrogenTankDiameterUpdate
 from .sizing_tank_overall_length import SizingCryogenicHydrogenTankOverallLength
+from .sizing_tank_insulation_layer_thermal_resistance import SizingCryogenicHydrogenTankInsulationThermalResistance
+from .sizing_tank_wall_thermal_resistance import SizingCryogenicHydrogenTankWallThermalResistance
 from .sizing_tank_thermal_resistance import SizingCryogenicHydrogenTankThermalResistance
+
 from .sizing_tank_overall_length_fuselage_check import (
     SizingCryogenicHydrogenTankOverallLengthFuselageCheck,
 )
@@ -162,6 +165,22 @@ class SizingCryogenicHydrogenTank(om.Group):
             subsys=SizingCryogenicHydrogenTankOverallLengthFuselageCheck(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
                 position=position,
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            name="insulation_thermal_resistance",
+            subsys=SizingCryogenicHydrogenTankInsulationThermalResistance(
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            name="wall_thermal_resistance",
+            subsys=SizingCryogenicHydrogenTankWallThermalResistance(
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
             ),
             promotes=["*"],
         )
