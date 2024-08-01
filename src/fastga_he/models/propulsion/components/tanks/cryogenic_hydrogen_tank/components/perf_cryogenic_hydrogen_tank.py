@@ -7,7 +7,17 @@ import openmdao.api as om
 from ..components.perf_fuel_mission_consumed import PerformancesLiquidHydrogenConsumedMission
 from ..components.perf_fuel_remaining import PerformancesLiquidHydrogenRemainingMission
 from ..components.perf_fuel_boil_off import PerformancesHydrogenBoilOffMission
+from ..components.perf_free_stream_temperature import PerformancesFreeStreamTemperature
+from ..components.perf_nusselt_number import PerformancesCryogenicHydrogenTankNusseltNumber
+from ..components.perf_tank_skin_temperature import PerformancesLiquidHydrogenTankSkinTemperature
+from ..components.perf_air_kinematic_viscosity import PerformancesAirKinematicViscosity
+from ..components.perf_air_conductivity import PerformancesAirThermalConductivity
+from ..components.perf_tank_heat_radiation import PerformancesCryogenicHydrogenTankRadiation
+from ..components.perf_tank_heat_convection import PerformancesCryogenicHydrogenTankConvection
+from ..components.perf_tank_heat_conduction import PerformancesCryogenicHydrogenTankConduction
+from ..components.perf_tank_temperature import PerformancesLiquidHydrogenTankTemperature
 
+from ..constants import POSSIBLE_POSITION
 
 class PerformancesCryogenicHydrogenTank(om.Group):
     """
@@ -29,15 +39,120 @@ class PerformancesCryogenicHydrogenTank(om.Group):
             desc="Identifier of the cryogenic hydrogen tank",
             allow_none=False,
         )
+        self.options.declare(
+            name="position",
+            default="in_the_fuselage",
+            values=POSSIBLE_POSITION,
+            desc="Option to give the position of the hydrogen gas tank, possible position include "
+                 + ", ".join(POSSIBLE_POSITION),
+            allow_none=False,
+        )
 
     def setup(self):
 
         number_of_points = self.options["number_of_points"]
         cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
+        position = self.options["position"]
 
         self.add_subsystem(
             "liquid_hydrogen_consumed_mission",
             PerformancesLiquidHydrogenConsumedMission(
+                number_of_points=number_of_points,
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            "hydrogen_free_stream_temperature",
+            PerformancesFreeStreamTemperature(
+                number_of_points=number_of_points,
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            "hydrogen_air_kinematic_viscosity",
+            PerformancesAirKinematicViscosity(
+                number_of_points=number_of_points,
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            "hydrogen_air_conductivity",
+            PerformancesAirThermalConductivity(
+                number_of_points=number_of_points,
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            "tank_skin_temperature",
+            PerformancesLiquidHydrogenTankSkinTemperature(
+                number_of_points=number_of_points,
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            "tank_skin_temperature",
+            PerformancesLiquidHydrogenTankSkinTemperature(
+                number_of_points=number_of_points,
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            "nusselt_number",
+            PerformancesCryogenicHydrogenTankNusseltNumber(
+                number_of_points=number_of_points,
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
+                position=position,
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            "tank_temperature",
+            PerformancesLiquidHydrogenTankTemperature(
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            "heat_radiation",
+            PerformancesCryogenicHydrogenTankRadiation(
+                number_of_points=number_of_points,
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
+                position=position,
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            "heat_convection",
+            PerformancesCryogenicHydrogenTankConvection(
+                number_of_points=number_of_points,
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            "heat_conduction",
+            PerformancesCryogenicHydrogenTankConduction(
+                number_of_points=number_of_points,
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            "hydrogen_boil_off_mission",
+            PerformancesHydrogenBoilOffMission(
                 number_of_points=number_of_points,
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
             ),
@@ -53,11 +168,4 @@ class PerformancesCryogenicHydrogenTank(om.Group):
             promotes=["*"],
         )
 
-        self.add_subsystem(
-            "hydrogen_boil_off_mission",
-            PerformancesHydrogenBoilOffMission(
-                number_of_points=number_of_points,
-                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
-            ),
-            promotes=["*"],
-        )
+

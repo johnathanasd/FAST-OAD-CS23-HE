@@ -10,7 +10,7 @@ import numpy as np
 LIQUID_HYDROGEN_DENSITY = 70.85  # kg/m**3
 
 
-class SizingHydrogenGasTankInnerVolume(om.ExplicitComponent):
+class SizingCryogenicHydrogenTankInnerVolume(om.ExplicitComponent):
     """
     Computation of the volume of fuel to be stored in the tank in standard temperature condition (300K).
     Calculate under ideal gas assumption.

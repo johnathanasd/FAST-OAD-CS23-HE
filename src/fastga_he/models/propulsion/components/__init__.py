@@ -49,3 +49,9 @@ from .tanks.hydrogen_gas_tank import (
     PerformancesHydrogenGasTank,
     SlipstreamHydrogenGasTank,
 )
+
+from .tanks.cryogenic_hydrogen_tank import (
+    SizingCryogenicHydrogenTank,
+    PerformancesCryogenicHydrogenTank,
+    SlipstreamCryogenicHydrogenTank,
+)

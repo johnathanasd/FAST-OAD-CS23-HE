@@ -6,20 +6,21 @@ import openmdao.api as om
 
 from .sizing_tank_unusable_hydrogen import SizingCryogenicHydrogenTankUnusableHydrogen
 from .sizing_tank_total_hydrogen_mission import SizingCryogenicHydrogenTankTotalHydrogenMission
-from .sizing_tank_wall_thickness import SizingHydrogenGasTankWallThickness
-from .sizing_tank_cg_x import SizingHydrogenGasTankCGX
-from .sizing_tank_cg_y import SizingHydrogenGasTankCGY
-from .sizing_tank_length import SizingHydrogenGasTankLength
-from .sizing_tank_inner_volume import SizingHydrogenGasTankInnerVolume
-from .sizing_tank_inner_diameter import SizingHydrogenGasTankInnerDiameter
-from .sizing_tank_weight import SizingHydrogenGasTankWeight
+from .sizing_tank_wall_thickness import SizingCryogenicHydrogenTankWallThickness
+from .sizing_tank_cg_x import SizingCryogenicHydrogenTankCGX
+from .sizing_tank_cg_y import SizingCryogenicHydrogenTankCGY
+from .sizing_tank_length import SizingCryogenicHydrogenTankLength
+from .sizing_tank_inner_volume import SizingCryogenicHydrogenTankInnerVolume
+from .sizing_tank_inner_diameter import SizingCryogenicHydrogenTankInnerDiameter
+from .sizing_tank_weight import SizingCryogenicHydrogenTankWeight
 from .sizing_gravimetric_index import SizingCryogenicHydrogenTankGravimetricIndex
-from .sizing_tank_drag import SizingHydrogenGasTankDrag
-from .sizing_tank_outer_diameter import SizingHydrogenGasTankOuterDiameter
-from .sizing_tank_diameter_update import SizingHydrogenGasTankDiameterUpdate
-from .sizing_tank_overall_length import SizingHydrogenGasTankOverallLength
+from .sizing_tank_drag import SizingCryogenicHydrogenTankDrag
+from .sizing_tank_outer_diameter import SizingCryogenicHydrogenTankOuterDiameter
+from .sizing_tank_diameter_update import SizingCryogenicHydrogenTankDiameterUpdate
+from .sizing_tank_overall_length import SizingCryogenicHydrogenTankOverallLength
+from .sizing_tank_thermal_resistance import SizingCryogenicHydrogenTankThermalResistance
 from .sizing_tank_overall_length_fuselage_check import (
-    SizingHydrogenGasTankOverallLengthFuselageCheck,
+    SizingCryogenicHydrogenTankOverallLengthFuselageCheck,
 )
 
 from .cstr_cryogenic_hydrogen_tank import ConstraintsCryogenicHydrogenTank
@@ -61,7 +62,7 @@ class SizingCryogenicHydrogenTank(om.Group):
 
         self.add_subsystem(
             name="tank_outer_diameter",
-            subsys=SizingHydrogenGasTankOuterDiameter(
+            subsys=SizingCryogenicHydrogenTankOuterDiameter(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id, position=position
             ),
             promotes=["*"],
@@ -69,7 +70,7 @@ class SizingCryogenicHydrogenTank(om.Group):
 
         self.add_subsystem(
             name="tank_diameter_update",
-            subsys=SizingHydrogenGasTankDiameterUpdate(
+            subsys=SizingCryogenicHydrogenTankDiameterUpdate(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
             ),
             promotes=["*"],
@@ -102,7 +103,7 @@ class SizingCryogenicHydrogenTank(om.Group):
 
         self.add_subsystem(
             name="tank_inner_diameter",
-            subsys=SizingHydrogenGasTankInnerDiameter(
+            subsys=SizingCryogenicHydrogenTankInnerDiameter(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
             ),
             promotes=["*"],
@@ -110,7 +111,7 @@ class SizingCryogenicHydrogenTank(om.Group):
 
         self.add_subsystem(
             name="tank_wall_thickness",
-            subsys=SizingHydrogenGasTankWallThickness(
+            subsys=SizingCryogenicHydrogenTankWallThickness(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
             ),
             promotes=["*"],
@@ -118,7 +119,7 @@ class SizingCryogenicHydrogenTank(om.Group):
 
         self.add_subsystem(
             name="tank_inner_volume",
-            subsys=SizingHydrogenGasTankInnerVolume(
+            subsys=SizingCryogenicHydrogenTankInnerVolume(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
             ),
             promotes=["*"],
@@ -126,7 +127,7 @@ class SizingCryogenicHydrogenTank(om.Group):
 
         self.add_subsystem(
             name="tank_length",
-            subsys=SizingHydrogenGasTankLength(
+            subsys=SizingCryogenicHydrogenTankLength(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
             ),
             promotes=["*"],
@@ -134,7 +135,7 @@ class SizingCryogenicHydrogenTank(om.Group):
 
         self.add_subsystem(
             name="tank_overall_length",
-            subsys=SizingHydrogenGasTankOverallLength(
+            subsys=SizingCryogenicHydrogenTankOverallLength(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
             ),
             promotes=["*"],
@@ -142,7 +143,7 @@ class SizingCryogenicHydrogenTank(om.Group):
 
         self.add_subsystem(
             name="tank_cg_x",
-            subsys=SizingHydrogenGasTankCGX(
+            subsys=SizingCryogenicHydrogenTankCGX(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id, position=position
             ),
             promotes=["*"],
@@ -150,7 +151,7 @@ class SizingCryogenicHydrogenTank(om.Group):
 
         self.add_subsystem(
             name="tank_cg_y",
-            subsys=SizingHydrogenGasTankCGY(
+            subsys=SizingCryogenicHydrogenTankCGY(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id, position=position
             ),
             promotes=["*"],
@@ -158,7 +159,7 @@ class SizingCryogenicHydrogenTank(om.Group):
 
         self.add_subsystem(
             name="tank_overall_length_length_fuselage_check",
-            subsys=SizingHydrogenGasTankOverallLengthFuselageCheck(
+            subsys=SizingCryogenicHydrogenTankOverallLengthFuselageCheck(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
                 position=position,
             ),
@@ -166,8 +167,16 @@ class SizingCryogenicHydrogenTank(om.Group):
         )
 
         self.add_subsystem(
+            name="tank_thermal_resistance",
+            subsys=SizingCryogenicHydrogenTankThermalResistance(
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
             name="tank_weight",
-            subsys=SizingHydrogenGasTankWeight(
+            subsys=SizingCryogenicHydrogenTankWeight(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
             ),
             promotes=["*"],
@@ -185,7 +194,7 @@ class SizingCryogenicHydrogenTank(om.Group):
             system_name = "tank_drag_ls" if low_speed_aero else "tank_drag_cruise"
             self.add_subsystem(
                 name=system_name,
-                subsys=SizingHydrogenGasTankDrag(
+                subsys=SizingCryogenicHydrogenTankDrag(
                     cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
                     position=position,
                     low_speed_aero=low_speed_aero,
