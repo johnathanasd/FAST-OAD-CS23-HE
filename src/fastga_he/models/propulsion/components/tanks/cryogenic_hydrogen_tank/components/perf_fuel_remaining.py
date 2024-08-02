@@ -8,7 +8,7 @@ import numpy as np
 
 class PerformancesLiquidHydrogenRemainingMission(om.ExplicitComponent):
     """
-    Computation of the amount of the amount of hydrogen remaining inside the tank.
+    Computation of the amount of the amount of liquid hydrogen remaining inside the tank.
     """
 
     def initialize(self):
