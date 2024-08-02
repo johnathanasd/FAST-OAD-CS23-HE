@@ -116,25 +116,24 @@ class SizingCryogenicHydrogenTankWallThermalResistance(om.ExplicitComponent):
 
         partials[
             input_prefix + ":wall_thermal_resistance",
-            input_prefix + ":insulation:thermal_conductivity",
-        ] = (-2 * np.pi * k ** 2 * (l / np.log(dw / din) + dw * din / (dw + din))) ** -1
+            input_prefix + ":material:thermal_conductivity",
+        ] = (-2 * np.pi * k ** 2 * (l / np.log(dw / din) + 1/(1 / dw + 1 / din))) ** -1
 
         partials[
             input_prefix + ":wall_thermal_resistance", input_prefix + ":dimension:length"
-        ] = -np.log(dw / din) / (
-            2 * np.pi * k ** 2 * (l + np.log(dw / din) * dw * din / (dw + din)) ** 2
-        )
+        ] = -(2 * np.pi * k)**-1 / (np.log(dw / din)*(l/np.log(dw / din) + 1/(1 / dw + 1 / din))**2)
+
 
         partials[
             input_prefix + ":wall_thermal_resistance",
-            input_prefix + ":dimension:outer_diameter",
+            input_prefix + ":dimension:wall_diameter",
         ] = (l / (dw * np.log(dw / din) ** 2) - din / (dw + din) + dw * din / (dw + din) ** 2) / (
             2 * np.pi * k * (l / np.log(dw / din) + dw * din / (dw + din)) ** 2
         )
 
         partials[
             input_prefix + ":wall_thermal_resistance",
-            input_prefix + ":dimension:wall_diameter",
+            input_prefix + ":dimension:inner_diameter",
         ] = -(dw / (dw + din) - dw * din / (dw + din) ** 2 + l / (din * np.log(dw / din) ** 2)) / (
             2 * np.pi * k * (l / np.log(dw / din) + dw * din / (dw + din)) ** 2
         )

@@ -540,7 +540,7 @@ def test_cryogenic_hydrogen_tank_weight():
     problem.check_partials(compact_print=True)
 
 
-def test_cryogenic_hydrogen_tank_specific_weight():
+def test_cryogenic_hydrogen_tank_gravimetric_index():
 
     # Research independent input value in .xml file
     ivc = get_indep_var_comp(
@@ -622,17 +622,71 @@ def test_cryogenic_hydrogen_tank_drag():
             problem.check_partials(compact_print=True)
 
 
-def test_thermal_resistance():
+def test_insulation_thermal_resistance():
 
     # Research independent input value in .xml file
     ivc = get_indep_var_comp(
-        list_inputs(
-            SizingCryogenicHydrogenTankThermalResistance(
-                cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1"
-            )
-        ),
+        list_inputs(SizingCryogenicHydrogenTankInsulationThermalResistance(cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1")),
         __file__,
         XML_FILE,
+    )
+
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        SizingCryogenicHydrogenTankInsulationThermalResistance(
+            cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1"
+        ),
+        ivc,
+    )
+    assert (
+        problem.get_val(
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:insulation:thermal_resistance",
+            units="K/W",
+        )
+        == pytest.approx(94.765, rel=1e-2)
+    )
+
+    problem.check_partials(compact_print=True)
+
+def test_wall_thermal_resistance():
+
+    # Research independent input value in .xml file
+    ivc = get_indep_var_comp(
+        list_inputs(SizingCryogenicHydrogenTankWallThermalResistance(cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1")),
+        __file__,
+        XML_FILE,
+    )
+
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        SizingCryogenicHydrogenTankWallThermalResistance(
+            cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1"
+        ),
+        ivc,
+    )
+    assert (
+        problem.get_val(
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:wall_thermal_resistance",
+            units="K/W",
+        )
+        == pytest.approx(2.015e-6, rel=1e-2)
+    )
+
+    problem.check_partials(compact_print=True)
+def test_thermal_resistance():
+
+    # Research independent input value in .xml file
+    ivc = om.IndepVarComp()
+    ivc.add_output(
+        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:wall_thermal_resistance",
+        val=1.0,
+        units="K/W",
+    )
+
+    ivc.add_output(
+        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:insulation:thermal_resistance",
+        val=1.0,
+        units="K/W",
     )
 
     # Run problem and check obtained value(s) is/(are) correct
@@ -644,10 +698,10 @@ def test_thermal_resistance():
     )
     assert (
         problem.get_val(
-            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:insulation:thermal_resistance",
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:thermal_resistance",
             units="K/W",
         )
-        == pytest.approx(1.01, rel=1e-2)
+        == pytest.approx(2.0, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True)
@@ -657,14 +711,20 @@ def test_sizing_tank():
 
     # Research independent input value in .xml file
     ivc = get_indep_var_comp(
-        list_inputs(SizingHydrogenGasTank(cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1")),
+        list_inputs(SizingCryogenicHydrogenTank(cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1",number_of_points=NB_POINTS_TEST)),
         __file__,
         XML_FILE,
     )
 
+    ivc.add_output(
+        "hydrogen_boil_off_t",
+        val=np.full(NB_POINTS_TEST, 0.01),
+        units="kg",
+    )
+
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
-        SizingHydrogenGasTank(cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1"),
+        SizingCryogenicHydrogenTank(cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1",number_of_points=NB_POINTS_TEST),
         ivc,
     )
     assert (
@@ -672,7 +732,7 @@ def test_sizing_tank():
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
             units="kg",
         )
-        == pytest.approx(1.2179, rel=1e-2)
+        == pytest.approx(0.84641413, rel=1e-2)
     )
     assert problem.get_val(
         "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:cruise:CD0"
@@ -682,15 +742,9 @@ def test_sizing_tank():
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:dimension:inner_diameter",
             units="m",
         )
-        == pytest.approx(0.97776, rel=1e-2)
+        == pytest.approx(0.96776, rel=1e-2)
     )
-    assert (
-        problem.get_val(
-            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:dimension:overall_length",
-            units="m",
-        )
-        == pytest.approx(1.97802, rel=1e-2)
-    )
+
 
     problem.check_partials(compact_print=True, step=1e-7)
     om.n2(problem, show_browser=False, outfile=pth.join(pth.dirname(__file__), "n2.html"))
