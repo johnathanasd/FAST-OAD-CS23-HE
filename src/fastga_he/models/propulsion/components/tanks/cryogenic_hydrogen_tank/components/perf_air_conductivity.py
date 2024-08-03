@@ -39,9 +39,12 @@ class PerformancesAirThermalConductivity(om.ExplicitComponent):
             of="*",
             wrt="*",
             method="exact",
+            rows=np.arange(number_of_points),
+            cols=np.arange(number_of_points),
             val=np.full(number_of_points, 0.00007),
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
+        number_of_points = self.options["number_of_points"]
 
-        outputs["air_thermal_conductivity"] = 0.024 + 0.00007 * inputs["free_stream_temperature"]
+        outputs["air_thermal_conductivity"] = 0.024*np.ones(number_of_points) + 0.00007 * inputs["free_stream_temperature"]
