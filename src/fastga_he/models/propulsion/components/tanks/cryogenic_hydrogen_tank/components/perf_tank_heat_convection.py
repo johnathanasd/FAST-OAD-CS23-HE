@@ -153,5 +153,8 @@ class PerformancesCryogenicHydrogenTankConvection(om.ExplicitComponent):
             h * np.pi * d * (inputs["free_stream_temperature"] - inputs["skin_temperature"])
         )
         partials["heat_convection", input_prefix + ":dimension:outer_diameter"] = (
-                inputs["air_thermal_conductivity"]*inputs["tank_nusselt_number"] * np.pi * (inputs["free_stream_temperature"] - inputs["skin_temperature"])
+            inputs["air_thermal_conductivity"]
+            * inputs["tank_nusselt_number"]
+            * np.pi
+            * (inputs["free_stream_temperature"] - inputs["skin_temperature"])
         )

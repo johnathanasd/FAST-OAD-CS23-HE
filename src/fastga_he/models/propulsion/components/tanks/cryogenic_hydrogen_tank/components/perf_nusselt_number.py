@@ -237,9 +237,16 @@ class PerformancesCryogenicHydrogenTankNusseltNumber(om.ExplicitComponent):
             partials["tank_nusselt_number", input_prefix + ":dimension:outer_diameter"] = (
                 0.555
                 * 0.75
-                * inputs[input_prefix + ":dimension:outer_diameter"] ** 2
                 * GRAVITY_ACCELERATION
+                * (1 - inputs["skin_temperature"] / inputs["free_stream_temperature"])
+                * inputs[input_prefix + ":dimension:outer_diameter"] ** 2
                 * PRANDTL_NUMBER
-                * (1 - inputs["skin_temperature"])
-                / (rayleigh_number ** 0.75 * inputs["air_kinematic_viscosity"])
+                / inputs["air_kinematic_viscosity"]
+                / (
+                    GRAVITY_ACCELERATION
+                    * (1 - inputs["skin_temperature"] / inputs["free_stream_temperature"])
+                    * inputs[input_prefix + ":dimension:outer_diameter"] ** 3
+                    * PRANDTL_NUMBER
+                )
+                ** 0.75
             )

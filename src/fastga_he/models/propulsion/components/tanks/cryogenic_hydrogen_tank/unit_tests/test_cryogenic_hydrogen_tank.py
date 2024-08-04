@@ -900,6 +900,7 @@ def test_hydrogen_boil_off():
 
     problem.check_partials(compact_print=True)
 
+
 def test_tank_temperature():
     # Research independent input value in .xml file
     ivc = get_indep_var_comp(
@@ -929,16 +930,17 @@ def test_tank_temperature():
 
     problem.check_partials(compact_print=True)
 
+
 def test_air_kinematic_viscosity():
 
     # Research independent input value in .xml file
     ivc = om.IndepVarComp()
-    ivc.add_output("altitude", val=np.full(NB_POINTS_TEST, 0.), units="m")
+    ivc.add_output("altitude", val=np.full(NB_POINTS_TEST, 0.0), units="m")
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
         PerformancesAirKinematicViscosity(
-             number_of_points=NB_POINTS_TEST,
+            number_of_points=NB_POINTS_TEST,
         ),
         ivc,
     )
@@ -953,16 +955,17 @@ def test_air_kinematic_viscosity():
 
     problem.check_partials(compact_print=True)
 
+
 def test_free_stream_temperature():
 
     # Research independent input value in .xml file
     ivc = om.IndepVarComp()
-    ivc.add_output("altitude", val=np.full(NB_POINTS_TEST, 0.), units="m")
+    ivc.add_output("altitude", val=np.full(NB_POINTS_TEST, 0.0), units="m")
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
         PerformancesFreeStreamTemperature(
-             number_of_points=NB_POINTS_TEST,
+            number_of_points=NB_POINTS_TEST,
         ),
         ivc,
     )
@@ -977,14 +980,21 @@ def test_free_stream_temperature():
 
     problem.check_partials(compact_print=True)
 
+
 def test_tank_skin_temperature():
     # Research independent input value in .xml file
     ivc = om.IndepVarComp()
-    ivc.add_output("data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:insulation:thermal_resistance", val=10., units="K/W")
+    ivc.add_output(
+        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:insulation:thermal_resistance",
+        val=10.0,
+        units="K/W",
+    )
     ivc.add_output(
         "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:liquid_hydrogen_temperature",
-        val=30., units="K")
-    ivc.add_output("heat_conduction", val=np.full(NB_POINTS_TEST, 10.), units="W")
+        val=30.0,
+        units="K",
+    )
+    ivc.add_output("heat_conduction", val=np.full(NB_POINTS_TEST, 10.0), units="W")
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
@@ -995,25 +1005,26 @@ def test_tank_skin_temperature():
     )
 
     assert (
-            problem.get_val(
-                "skin_temperature",
-                units="K",
-            )
-            == pytest.approx(np.full(NB_POINTS_TEST, 130.), rel=1e-2)
+        problem.get_val(
+            "skin_temperature",
+            units="K",
+        )
+        == pytest.approx(np.full(NB_POINTS_TEST, 130.0), rel=1e-2)
     )
 
     problem.check_partials(compact_print=True)
+
 
 def test_air_conductivity():
 
     # Research independent input value in .xml file
     ivc = om.IndepVarComp()
-    ivc.add_output("free_stream_temperature", val=np.full(NB_POINTS_TEST, 0.), units="degC")
+    ivc.add_output("free_stream_temperature", val=np.full(NB_POINTS_TEST, 0.0), units="degC")
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
         PerformancesAirThermalConductivity(
-             number_of_points=NB_POINTS_TEST,
+            number_of_points=NB_POINTS_TEST,
         ),
         ivc,
     )
@@ -1028,19 +1039,69 @@ def test_air_conductivity():
 
     problem.check_partials(compact_print=True)
 
+
+def test_tank_nusselt_number():
+
+    expected_values = [
+        np.full(NB_POINTS_TEST, 1.126),
+        np.full(NB_POINTS_TEST, 2.158),
+        np.full(NB_POINTS_TEST, 1.126),
+        np.full(NB_POINTS_TEST, 2.158),
+    ]
+
+    for option, expected_value in zip(POSSIBLE_POSITION, expected_values):
+        # Research independent input value in .xml file
+        ivc = get_indep_var_comp(
+            list_inputs(
+                PerformancesCryogenicHydrogenTankNusseltNumber(
+                    cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1",
+                    position=option,
+                    number_of_points=NB_POINTS_TEST,
+                )
+            ),
+            __file__,
+            XML_FILE,
+        )
+        ivc.add_output("air_kinematic_viscosity", val=np.full(NB_POINTS_TEST, 1.0), units="m**2/s")
+
+        if option == "wing_pod" or option == "underbelly":
+            ivc.add_output("true_airspeed", val=np.full(NB_POINTS_TEST, 100.0), units="m/s")
+        else:
+            ivc.add_output("free_stream_temperature", val=np.full(NB_POINTS_TEST, 300.0), units="K")
+            ivc.add_output("skin_temperature", val=np.full(NB_POINTS_TEST, 200.0), units="K")
+
+        # Run problem and check obtained value(s) is/(are) correct
+        problem = run_system(
+            PerformancesCryogenicHydrogenTankNusseltNumber(
+                cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1",
+                position=option,
+                number_of_points=NB_POINTS_TEST,
+            ),
+            ivc,
+        )
+
+        assert problem.get_val("tank_nusselt_number") == pytest.approx(expected_value, rel=1e-2)
+
+        problem.check_partials(compact_print=True)
+
+
 def test_tank_heat_convection():
     # Research independent input value in .xml file
     ivc = om.IndepVarComp()
     ivc.add_output(
         "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:dimension:length",
-        val=1., units="m")
+        val=1.0,
+        units="m",
+    )
 
     ivc.add_output(
-    "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:dimension:outer_diameter",
-        val=0.98802, units="m")
+        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:dimension:outer_diameter",
+        val=0.98802,
+        units="m",
+    )
 
-    ivc.add_output("skin_temperature", val=np.full(NB_POINTS_TEST, 250.), units="K")
-    ivc.add_output("free_stream_temperature", val=np.full(NB_POINTS_TEST, 300.), units="K")
+    ivc.add_output("skin_temperature", val=np.full(NB_POINTS_TEST, 250.0), units="K")
+    ivc.add_output("free_stream_temperature", val=np.full(NB_POINTS_TEST, 300.0), units="K")
     ivc.add_output("air_thermal_conductivity", val=np.full(NB_POINTS_TEST, 0.024), units="W/m/K")
     ivc.add_output("tank_nusselt_number", val=np.full(NB_POINTS_TEST, 1.0))
 
@@ -1053,14 +1114,15 @@ def test_tank_heat_convection():
     )
 
     assert (
-            problem.get_val(
-                "heat_convection",
-                units="W",
-            )
-            == pytest.approx(np.full(NB_POINTS_TEST, 7.4947), rel=1e-2)
+        problem.get_val(
+            "heat_convection",
+            units="W",
+        )
+        == pytest.approx(np.full(NB_POINTS_TEST, 7.4947), rel=1e-2)
     )
 
     problem.check_partials(compact_print=True)
+
 
 def test_tank_heat_conduction():
 
@@ -1082,7 +1144,7 @@ def test_tank_heat_conduction():
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
         PerformancesCryogenicHydrogenTankConduction(
-             number_of_points=NB_POINTS_TEST,
+            number_of_points=NB_POINTS_TEST,
         ),
         ivc,
     )
