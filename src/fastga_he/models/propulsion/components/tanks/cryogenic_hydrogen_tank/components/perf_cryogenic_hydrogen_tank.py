@@ -16,6 +16,7 @@ from ..components.perf_tank_heat_radiation import PerformancesCryogenicHydrogenT
 from ..components.perf_tank_heat_convection import PerformancesCryogenicHydrogenTankConvection
 from ..components.perf_tank_heat_conduction import PerformancesCryogenicHydrogenTankConduction
 from ..components.perf_tank_temperature import PerformancesLiquidHydrogenTankTemperature
+from ..components.perf_total_boil_off_hydrogen import PerformancesHydrogenBoilOffTotal
 
 from ..constants import POSSIBLE_POSITION
 
@@ -115,8 +116,6 @@ class PerformancesCryogenicHydrogenTank(om.Group):
             promotes=["*"],
         )
 
-
-
         self.add_subsystem(
             "heat_radiation",
             PerformancesCryogenicHydrogenTankRadiation(
@@ -155,6 +154,15 @@ class PerformancesCryogenicHydrogenTank(om.Group):
         self.add_subsystem(
             "liquid_hydrogen_remaining_mission",
             PerformancesLiquidHydrogenRemainingMission(
+                number_of_points=number_of_points,
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            "liquid_hydrogen_boil_off_overall",
+            PerformancesHydrogenBoilOffTotal(
                 number_of_points=number_of_points,
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
             ),

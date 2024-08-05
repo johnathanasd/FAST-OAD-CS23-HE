@@ -10,6 +10,10 @@ import fastoad.api as oad
 DEFAULT_LAYER_VOLTAGE = 0.7
 DEFAULT_PRESSURE_ATM = 1.0
 
+oad.RegisterSubmodel.active_models[
+    SUBMODEL_PERFORMANCES_PEMFC_LAYER_VOLTAGE
+] = "fastga_he.submodel.propulsion.performances.pemfc.layer_voltage.statistical"
+
 
 @oad.RegisterSubmodel(
     SUBMODEL_PERFORMANCES_PEMFC_LAYER_VOLTAGE,

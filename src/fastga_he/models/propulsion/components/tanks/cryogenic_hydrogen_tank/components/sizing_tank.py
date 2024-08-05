@@ -55,15 +55,10 @@ class SizingCryogenicHydrogenTank(om.Group):
             allow_none=False,
         )
 
-        self.options.declare(
-            "number_of_points", default=1, desc="number of equilibrium to be treated"
-        )
-
     def setup(self):
 
         cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
         position = self.options["position"]
-        number_of_points = self.options["number_of_points"]
 
         self.add_subsystem(
             name="tank_outer_diameter",
@@ -84,7 +79,6 @@ class SizingCryogenicHydrogenTank(om.Group):
         self.add_subsystem(
             name="unusable_hydrogen_gas",
             subsys=SizingCryogenicHydrogenTankUnusableHydrogen(
-                number_of_points=number_of_points,
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
             ),
             promotes=["*"],

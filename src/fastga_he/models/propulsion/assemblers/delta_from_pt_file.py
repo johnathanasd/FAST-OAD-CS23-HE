@@ -34,6 +34,7 @@ from fastga_he.models.propulsion.components import (
     SlipstreamSimplePMSM,
     SlipstreamPEMFCStack,
     SlipstreamHydrogenGasTank,
+    SlipstreamCryogenicHydrogenTank,
 )
 
 from .constants import (

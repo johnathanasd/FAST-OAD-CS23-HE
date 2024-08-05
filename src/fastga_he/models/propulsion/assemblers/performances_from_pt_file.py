@@ -37,6 +37,7 @@ from fastga_he.models.propulsion.components import (
     PerformancesSimplePMSM,
     PerformancesPEMFCStack,
     PerformancesHydrogenGasTank,
+    PerformancesCryogenicHydrogenTank,
 )
 
 from .constants import SUBMODEL_POWER_TRAIN_PERF, SUBMODEL_THRUST_DISTRIBUTOR

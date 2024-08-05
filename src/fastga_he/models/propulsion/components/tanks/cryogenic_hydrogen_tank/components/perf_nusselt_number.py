@@ -247,6 +247,7 @@ class PerformancesCryogenicHydrogenTankNusseltNumber(om.ExplicitComponent):
                     * (1 - inputs["skin_temperature"] / inputs["exterior_temperature"])
                     * inputs[input_prefix + ":dimension:outer_diameter"] ** 3
                     * PRANDTL_NUMBER
+                    / inputs["air_kinematic_viscosity"]
                 )
                 ** 0.75
             )

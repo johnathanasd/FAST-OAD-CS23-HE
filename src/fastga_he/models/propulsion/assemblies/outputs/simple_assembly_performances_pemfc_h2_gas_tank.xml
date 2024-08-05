@@ -181,7 +181,7 @@
             <current_max units="A" is_input="False">594.9689303977257<!--Maximum current to the pemfc during the mission--></current_max>
             <current_min units="A" is_input="False">567.0523013552091<!--Minimum current to the pemfc during the mission--></current_min>
             <effective_area units="cm**2" is_input="True">2000.0<!--Effective fuel cell area in the stack--></effective_area>
-            <efficiency is_input="False">[0.6342201691622141, 0.6338268937237026, 0.6334403962273443, 0.6330607004762518, 0.6326878308787335, 0.6323218124034482, 0.631962670535725, 0.6316104312349536, 0.6312651208929654, 0.6309267662933186]</efficiency>
+            <mass units="kg" is_input="True">327.988</mass>
             <number_of_layers is_input="True">450.0<!--Total number of layers in the pemfc stacks--></number_of_layers>
           </pemfc_stack_1>
         </pemfc_stack>

@@ -195,7 +195,6 @@ class PerformancesCryogenicHydrogenTankRadiation(om.ExplicitComponent):
         area = np.pi * d ** 2 + np.pi * d * l
         r = inputs[input_prefix + ":insulation:reflectivity_coefficient"]
 
-
         partials["heat_radiation", input_prefix + ":insulation:thermal_emissivity"] = (
             STEFAN_BOLTZMANN_CONSTANT
             * area
@@ -250,10 +249,9 @@ class PerformancesCryogenicHydrogenTankRadiation(om.ExplicitComponent):
                 * (inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4)
             )
 
-            partials[
-                "heat_radiation", input_prefix + ":dimension:outer_diameter"
-            ] = (2 * np.pi * d + np.pi * l) * inputs[
-                input_prefix + ":insulation:thermal_emissivity"
-            ] * STEFAN_BOLTZMANN_CONSTANT * (
-                inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4
+            partials["heat_radiation", input_prefix + ":dimension:outer_diameter"] = (
+                (2 * np.pi * d + np.pi * l)
+                * inputs[input_prefix + ":insulation:thermal_emissivity"]
+                * STEFAN_BOLTZMANN_CONSTANT
+                * (inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4)
             )

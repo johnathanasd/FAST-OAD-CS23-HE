@@ -979,6 +979,47 @@ HYDROGEN_GAS_TANK = {
     ETA: 1.0,
     CTRL_PARAM: [],
 }
+CRYOGENIC_HYDROGEN_TANK = {
+    ID: "fastga_he.pt_component.cryogenic_hydrogen_tank",
+    CN: "CryogenicHydrogenTank",
+    CN_ID: "cryogenic_hydrogen_tank_id",
+    CT: "cryogenic_hydrogen_tank",
+    ATT: None,
+    PT: [],
+    SPT: [],
+    PTS: [],
+    IN: None,
+    OUT: [("fuel_consumed_t", None)],
+    CTC: "tank",
+    MP: [
+        {"fuel_remaining_t": "kg"},
+        {"hydrogen_boil_off_t": "kg"},
+        {"heat_convection": "W"},
+        {"heat_radiation": "W"},
+    ],
+    SMP: [
+        {"delta_Cd": None},
+    ],
+    ICON: "fuel_tank",
+    ICON_SIZE: 30,
+    RSD: ["fuel_remaining_t"],
+    SETS_V: False,
+    IO_INDEP_V: False,
+    V_TO_SET: [],
+    P_TO_SET: [],
+    I_TO_SET: [],
+    SFR: False,
+    SWL: False,
+    DST_W: [],
+    PCT_W: [],
+    DST_W_F: [],
+    PCT_W_F: ["wing_pod"],
+    VARIES_MASS: False,  # Seems weird but the ICE already does the job so we won't double up
+    VARIESN_T_MASS: True,
+    ETA: 1.0,
+    CTRL_PARAM: [],
+}
+
 PEMFC_STACK = {
     ID: "fastga_he.pt_component.pemfc_stack",
     CN: "PEMFCStack",
@@ -1088,6 +1129,7 @@ KNOWN_COMPONENTS = [
     PEMFC_STACK,
     HYDROGEN_GAS_TANK,
     SIMPLE_PMSM,
+    CRYOGENIC_HYDROGEN_TANK,
 ]
 
 KNOWN_ID = []

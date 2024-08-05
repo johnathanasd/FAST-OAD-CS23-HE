@@ -51,6 +51,7 @@ from ..components.perf_tank_heat_radiation import PerformancesCryogenicHydrogenT
 from ..components.perf_tank_heat_convection import PerformancesCryogenicHydrogenTankConvection
 from ..components.perf_tank_heat_conduction import PerformancesCryogenicHydrogenTankConduction
 from ..components.perf_tank_temperature import PerformancesLiquidHydrogenTankTemperature
+from ..components.perf_total_boil_off_hydrogen import PerformancesHydrogenBoilOffTotal
 
 from ..components.sizing_tank import SizingCryogenicHydrogenTank
 from ..components.perf_cryogenic_hydrogen_tank import PerformancesCryogenicHydrogenTank
@@ -69,15 +70,15 @@ def test_unusable_hydrogen_mission():
     ivc = om.IndepVarComp()
 
     ivc.add_output(
-        "hydrogen_boil_off_t",
-        val=np.full(NB_POINTS_TEST, 0.3),
+        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:overall_hydrogen_boil_off",
+        val=3.0,
         units="kg",
     )
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
         SizingCryogenicHydrogenTankUnusableHydrogen(
-            cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1", number_of_points=NB_POINTS_TEST
+            cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1"
         ),
         ivc,
     )
@@ -725,7 +726,6 @@ def test_sizing_tank():
         list_inputs(
             SizingCryogenicHydrogenTank(
                 cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1",
-                number_of_points=NB_POINTS_TEST,
             )
         ),
         __file__,
@@ -733,16 +733,14 @@ def test_sizing_tank():
     )
 
     ivc.add_output(
-        "hydrogen_boil_off_t",
-        val=np.full(NB_POINTS_TEST, 0.01),
+        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:overall_hydrogen_boil_off",
+        val=0.1,
         units="kg",
     )
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
-        SizingCryogenicHydrogenTank(
-            cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1", number_of_points=NB_POINTS_TEST
-        ),
+        SizingCryogenicHydrogenTank(cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1"),
         ivc,
     )
     assert (
@@ -896,6 +894,35 @@ def test_hydrogen_boil_off():
     )
     assert problem.get_val("hydrogen_boil_off_t", units="kg") == pytest.approx(
         np.full(NB_POINTS_TEST, 2.239e-5), rel=1e-2
+    )
+
+    problem.check_partials(compact_print=True)
+
+
+def test_overall_hydrogen_boil_off():
+
+    # Research independent input value in .xml file
+    ivc = om.IndepVarComp()
+
+    ivc.add_output(
+        "hydrogen_boil_off_t",
+        val=np.full(NB_POINTS_TEST, 0.3),
+        units="kg",
+    )
+
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        PerformancesHydrogenBoilOffTotal(
+            cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1", number_of_points=NB_POINTS_TEST
+        ),
+        ivc,
+    )
+    assert (
+        problem.get_val(
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:overall_hydrogen_boil_off",
+            units="kg",
+        )
+        == pytest.approx(3.0, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True)
@@ -1216,7 +1243,7 @@ def test_performances_cryogenic_hydrogen_tank():
         XML_FILE,
     )
     ivc.add_output("fuel_consumed_t", val=np.linspace(13.37, 42.0, NB_POINTS_TEST))
-    ivc.add_output("time_step", val=np.full(NB_POINTS_TEST, 200.0),units="s")
+    ivc.add_output("time_step", val=np.full(NB_POINTS_TEST, 200.0), units="s")
 
     problem = run_system(
         PerformancesCryogenicHydrogenTank(
@@ -1225,7 +1252,7 @@ def test_performances_cryogenic_hydrogen_tank():
         ivc,
     )
     assert problem.get_val("fuel_remaining_t", units="kg") == pytest.approx(
-        np.array([276.85,263.43,246.82,227.03,204.06,177.91,148.58,116.07,80.38, 41.5]),
+        np.array([276.85, 263.43, 246.82, 227.03, 204.06, 177.91, 148.58, 116.07, 80.38, 41.5]),
         rel=1e-2,
     )
     assert (

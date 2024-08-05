@@ -34,6 +34,7 @@ from fastga_he.models.propulsion.components import (
     SizingSimplePMSM,
     SizingPEMFCStack,
     SizingHydrogenGasTank,
+    SizingCryogenicHydrogenTank,
 )
 
 from .constants import (
