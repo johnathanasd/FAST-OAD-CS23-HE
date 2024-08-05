@@ -99,7 +99,7 @@ class PerformancesCryogenicHydrogenTankNusseltNumber(om.ExplicitComponent):
             )
 
             self.add_input(
-                name="free_stream_temperature",
+                name="exterior_temperature",
                 units="K",
                 val=np.full(number_of_points, np.nan),
             )
@@ -111,7 +111,7 @@ class PerformancesCryogenicHydrogenTankNusseltNumber(om.ExplicitComponent):
             )
             self.declare_partials(
                 of="tank_nusselt_number",
-                wrt=["air_kinematic_viscosity", "free_stream_temperature", "skin_temperature"],
+                wrt=["air_kinematic_viscosity", "exterior_temperature", "skin_temperature"],
                 method="exact",
                 rows=np.arange(number_of_points),
                 cols=np.arange(number_of_points),
@@ -146,7 +146,7 @@ class PerformancesCryogenicHydrogenTankNusseltNumber(om.ExplicitComponent):
         else:
             rayleigh_number = (
                 GRAVITY_ACCELERATION
-                * (1 - inputs["skin_temperature"] / inputs["free_stream_temperature"])
+                * (1 - inputs["skin_temperature"] / inputs["exterior_temperature"])
                 * inputs[input_prefix + ":dimension:outer_diameter"] ** 3
                 * PRANDTL_NUMBER
                 / inputs["air_kinematic_viscosity"]
@@ -195,7 +195,7 @@ class PerformancesCryogenicHydrogenTankNusseltNumber(om.ExplicitComponent):
         else:
             rayleigh_number = (
                 GRAVITY_ACCELERATION
-                * (1 - inputs["skin_temperature"] / inputs["free_stream_temperature"])
+                * (1 - inputs["skin_temperature"] / inputs["exterior_temperature"])
                 * inputs[input_prefix + ":dimension:outer_diameter"] ** 3
                 * PRANDTL_NUMBER
                 / inputs["air_kinematic_viscosity"]
@@ -207,12 +207,12 @@ class PerformancesCryogenicHydrogenTankNusseltNumber(om.ExplicitComponent):
                 * GRAVITY_ACCELERATION
                 * PRANDTL_NUMBER
                 / (
-                    inputs["free_stream_temperature"]
+                    inputs["exterior_temperature"]
                     * inputs["air_kinematic_viscosity"]
                     * rayleigh_number ** 0.75
                 )
             )
-            partials["tank_nusselt_number", "free_stream_temperature"] = (
+            partials["tank_nusselt_number", "exterior_temperature"] = (
                 0.555
                 * 0.25
                 * inputs[input_prefix + ":dimension:outer_diameter"] ** 3
@@ -220,7 +220,7 @@ class PerformancesCryogenicHydrogenTankNusseltNumber(om.ExplicitComponent):
                 * PRANDTL_NUMBER
                 * inputs["skin_temperature"]
                 / (
-                    inputs["free_stream_temperature"] ** 2
+                    inputs["exterior_temperature"] ** 2
                     * inputs["air_kinematic_viscosity"]
                     * rayleigh_number ** 0.75
                 )
@@ -231,20 +231,20 @@ class PerformancesCryogenicHydrogenTankNusseltNumber(om.ExplicitComponent):
                 * inputs[input_prefix + ":dimension:outer_diameter"] ** 3
                 * GRAVITY_ACCELERATION
                 * PRANDTL_NUMBER
-                * (1 - inputs["skin_temperature"] / inputs["free_stream_temperature"])
+                * (1 - inputs["skin_temperature"] / inputs["exterior_temperature"])
                 / (rayleigh_number ** 0.75 * inputs["air_kinematic_viscosity"] ** 2)
             )
             partials["tank_nusselt_number", input_prefix + ":dimension:outer_diameter"] = (
                 0.555
                 * 0.75
                 * GRAVITY_ACCELERATION
-                * (1 - inputs["skin_temperature"] / inputs["free_stream_temperature"])
+                * (1 - inputs["skin_temperature"] / inputs["exterior_temperature"])
                 * inputs[input_prefix + ":dimension:outer_diameter"] ** 2
                 * PRANDTL_NUMBER
                 / inputs["air_kinematic_viscosity"]
                 / (
                     GRAVITY_ACCELERATION
-                    * (1 - inputs["skin_temperature"] / inputs["free_stream_temperature"])
+                    * (1 - inputs["skin_temperature"] / inputs["exterior_temperature"])
                     * inputs[input_prefix + ":dimension:outer_diameter"] ** 3
                     * PRANDTL_NUMBER
                 )

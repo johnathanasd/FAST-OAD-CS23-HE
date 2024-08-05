@@ -23,7 +23,7 @@ class PerformancesAirThermalConductivity(om.ExplicitComponent):
         number_of_points = self.options["number_of_points"]
 
         self.add_input(
-            name="free_stream_temperature",
+            name="exterior_temperature",
             units="degC",
             val=np.full(number_of_points, np.nan),
         )
@@ -48,5 +48,5 @@ class PerformancesAirThermalConductivity(om.ExplicitComponent):
         number_of_points = self.options["number_of_points"]
 
         outputs["air_thermal_conductivity"] = (
-            0.024 * np.ones(number_of_points) + 0.00007 * inputs["free_stream_temperature"]
+            0.024 * np.ones(number_of_points) + 0.00007 * inputs["exterior_temperature"]
         )

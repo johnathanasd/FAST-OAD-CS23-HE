@@ -7,7 +7,7 @@ import openmdao.api as om
 from ..components.perf_fuel_mission_consumed import PerformancesLiquidHydrogenConsumedMission
 from ..components.perf_fuel_remaining import PerformancesLiquidHydrogenRemainingMission
 from ..components.perf_fuel_boil_off import PerformancesHydrogenBoilOffMission
-from ..components.perf_free_stream_temperature import PerformancesFreeStreamTemperature
+from ..components.perf_exterior_temperature import PerformancesExteriorTemperature
 from ..components.perf_nusselt_number import PerformancesCryogenicHydrogenTankNusseltNumber
 from ..components.perf_tank_skin_temperature import PerformancesLiquidHydrogenTankSkinTemperature
 from ..components.perf_air_kinematic_viscosity import PerformancesAirKinematicViscosity
@@ -65,8 +65,8 @@ class PerformancesCryogenicHydrogenTank(om.Group):
         )
 
         self.add_subsystem(
-            "hydrogen_free_stream_temperature",
-            PerformancesFreeStreamTemperature(
+            "exterior_temperature",
+            PerformancesExteriorTemperature(
                 number_of_points=number_of_points,
             ),
             promotes=["*"],
@@ -89,9 +89,8 @@ class PerformancesCryogenicHydrogenTank(om.Group):
         )
 
         self.add_subsystem(
-            "tank_skin_temperature",
-            PerformancesLiquidHydrogenTankSkinTemperature(
-                number_of_points=number_of_points,
+            "tank_temperature",
+            PerformancesLiquidHydrogenTankTemperature(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
             ),
             promotes=["*"],
@@ -116,13 +115,7 @@ class PerformancesCryogenicHydrogenTank(om.Group):
             promotes=["*"],
         )
 
-        self.add_subsystem(
-            "tank_temperature",
-            PerformancesLiquidHydrogenTankTemperature(
-                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
-            ),
-            promotes=["*"],
-        )
+
 
         self.add_subsystem(
             "heat_radiation",
@@ -155,7 +148,6 @@ class PerformancesCryogenicHydrogenTank(om.Group):
             "hydrogen_boil_off_mission",
             PerformancesHydrogenBoilOffMission(
                 number_of_points=number_of_points,
-                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
             ),
             promotes=["*"],
         )

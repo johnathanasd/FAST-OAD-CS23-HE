@@ -92,6 +92,8 @@
                         <insulation>
                             <material_density units="kg/m**3">120.</material_density>
                             <thermal_conductivity units="W/m/K">0.000017</thermal_conductivity>
+                            <thermal_emissivity>0.03</thermal_emissivity>
+                            <reflectivity_coefficient>0.8</reflectivity_coefficient>
                         </insulation>
                     </cryogenic_hydrogen_tank_1>
                 </cryogenic_hydrogen_tank>

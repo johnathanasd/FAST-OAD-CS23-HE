@@ -37,7 +37,7 @@ class PerformancesLiquidHydrogenTankSkinTemperature(om.ExplicitComponent):
             + cryogenic_hydrogen_tank_id
             + ":insulation:thermal_resistance",
             units="K/W",
-            val=np.nan,
+            val=100.,
             desc="Thermal resistance of the tank wall including the insulation layer",
         )
 

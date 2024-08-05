@@ -121,8 +121,9 @@ class SizingCryogenicHydrogenTankInsulationThermalResistance(om.ExplicitComponen
 
         partials[
             input_prefix + ":insulation:thermal_resistance", input_prefix + ":dimension:length"
-        ] = -((2 * np.pi * k) ** -1) / (
-            np.log(d / dw) * (l / np.log(d / dw) + 1 / (1 / dw + 1 / d)) ** 2
+        ] = -(
+            (2 * np.pi * k * np.log(d / dw) * (l / np.log(d / dw) + 1 / (1 / dw + 1 / d)) ** 2)
+            ** -1
         )
 
         partials[

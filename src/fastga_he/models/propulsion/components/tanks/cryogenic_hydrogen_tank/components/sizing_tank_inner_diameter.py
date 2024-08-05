@@ -140,5 +140,9 @@ class SizingCryogenicHydrogenTankInnerDiameter(om.ExplicitComponent):
             input_prefix + ":dimension:inner_diameter",
             input_prefix + ":material:yield_strength",
         ] = (
-            2*tank_pressure*sf*(d_outer-2*t_insulation)/(2*sigma+tank_pressure*sf)**2
+            2
+            * tank_pressure
+            * sf
+            * (d_outer - 2 * t_insulation)
+            / (2 * sigma + tank_pressure * sf) ** 2
         )

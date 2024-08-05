@@ -81,10 +81,10 @@ class SizingCryogenicHydrogenTankWeight(om.ExplicitComponent):
         self.add_input(
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
             + cryogenic_hydrogen_tank_id
-            + ":dimension:insulation_thickness",
+            + ":dimension:wall_diameter",
             units="m",
             val=np.nan,
-            desc="Insulation layer thickness of the cryogenic hydrogen tank",
+            desc="Wall diameter of the hydrogen tank without insulation layer",
         )
 
         self.add_output(
@@ -116,14 +116,14 @@ class SizingCryogenicHydrogenTankWeight(om.ExplicitComponent):
 
         d = inputs[input_prefix + ":dimension:outer_diameter"]
 
-        dt = d - 2 * inputs[input_prefix + ":dimension:insulation_thickness"]
+        dw = inputs[input_prefix + ":dimension:wall_diameter"]
 
         l = inputs[input_prefix + ":dimension:length"]
 
         outputs[input_prefix + ":mass"] = wall_density * (
-            np.pi * dt ** 3 / 6 + np.pi * dt ** 2 * l / 4 - inputs[input_prefix + ":inner_volume"]
+            np.pi * dw ** 3 / 6 + np.pi * dw ** 2 * l / 4 - inputs[input_prefix + ":inner_volume"]
         ) + insulation_density * (
-            np.pi * (d ** 3 - dt ** 3) / 6 + np.pi * (d ** 2 - dt ** 2) * l / 4
+            np.pi * (d ** 3 - dw ** 3) / 6 + np.pi * (d ** 2 - dw ** 2) * l / 4
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
@@ -134,7 +134,7 @@ class SizingCryogenicHydrogenTankWeight(om.ExplicitComponent):
 
         d = inputs[input_prefix + ":dimension:outer_diameter"]
 
-        dt = d - 2 * inputs[input_prefix + ":dimension:insulation_thickness"]
+        dw = inputs[input_prefix + ":dimension:wall_diameter"]
 
         l = inputs[input_prefix + ":dimension:length"]
 
@@ -143,15 +143,15 @@ class SizingCryogenicHydrogenTankWeight(om.ExplicitComponent):
         insulation_density = inputs[input_prefix + ":insulation:material_density"]
 
         partials[input_prefix + ":mass", input_prefix + ":insulation:material_density",] = (
-            np.pi * (d ** 3 - dt ** 3) / 6 + np.pi * (d ** 2 - dt ** 2) * l / 4
+            np.pi * (d ** 3 - dw ** 3) / 6 + np.pi * (d ** 2 - dw ** 2) * l / 4
         )
 
         partials[input_prefix + ":mass", input_prefix + ":material:density",] = (
-            np.pi * dt ** 3 / 6 + np.pi * dt ** 2 / 4 * l - inputs[input_prefix + ":inner_volume"]
+            np.pi * dw ** 3 / 6 + np.pi * dw ** 2 / 4 * l - inputs[input_prefix + ":inner_volume"]
         )
 
         partials[input_prefix + ":mass", input_prefix + ":dimension:length",] = (
-            wall_density * np.pi * dt ** 2 / 4 + insulation_density * np.pi * (d ** 2 - dt ** 2) / 4
+            wall_density * np.pi * dw ** 2 / 4 + insulation_density * np.pi * (d ** 2 - dw ** 2) / 4
         )
 
         partials[
@@ -159,16 +159,10 @@ class SizingCryogenicHydrogenTankWeight(om.ExplicitComponent):
             input_prefix + ":inner_volume",
         ] = -wall_density
 
-        partials[
-            input_prefix + ":mass",
-            input_prefix + ":dimension:outer_diameter",
-        ] = wall_density * (np.pi * dt ** 2 / 2 + np.pi * dt * l / 2) + insulation_density * (
-            np.pi * (d ** 2 - dt ** 2) / 2 + np.pi * (d - dt) * l / 2
+        partials[input_prefix + ":mass", input_prefix + ":dimension:outer_diameter",] = (
+            insulation_density * np.pi / 2 * (d ** 2 + d * l)
         )
 
-        partials[
-            input_prefix + ":mass",
-            input_prefix + ":dimension:insulation_thickness",
-        ] = -wall_density * (np.pi * dt ** 2 + np.pi * dt * l) - insulation_density * (
-            np.pi * (d ** 2 - dt ** 2) + np.pi * (d - dt) * l
+        partials[input_prefix + ":mass", input_prefix + ":dimension:wall_diameter",] = (
+            np.pi / 2 * (wall_density - insulation_density) * (dw ** 2 + dw * l)
         )

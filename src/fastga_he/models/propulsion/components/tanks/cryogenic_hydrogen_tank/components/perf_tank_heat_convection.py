@@ -41,7 +41,7 @@ class PerformancesCryogenicHydrogenTankConvection(om.ExplicitComponent):
         )
 
         self.add_input(
-            name="free_stream_temperature",
+            name="exterior_temperature",
             units="K",
             val=np.full(number_of_points, np.nan),
         )
@@ -88,7 +88,7 @@ class PerformancesCryogenicHydrogenTankConvection(om.ExplicitComponent):
             wrt=[
                 "air_thermal_conductivity",
                 "skin_temperature",
-                "free_stream_temperature",
+                "exterior_temperature",
                 "tank_nusselt_number",
             ],
             method="exact",
@@ -119,7 +119,7 @@ class PerformancesCryogenicHydrogenTankConvection(om.ExplicitComponent):
         h = inputs["air_thermal_conductivity"] * inputs["tank_nusselt_number"] / d
 
         outputs["heat_convection"] = (
-            h * area * (inputs["free_stream_temperature"] - inputs["skin_temperature"])
+            h * area * (inputs["exterior_temperature"] - inputs["skin_temperature"])
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
@@ -137,24 +137,22 @@ class PerformancesCryogenicHydrogenTankConvection(om.ExplicitComponent):
             inputs["tank_nusselt_number"]
             / d
             * area
-            * (inputs["free_stream_temperature"] - inputs["skin_temperature"])
+            * (inputs["exterior_temperature"] - inputs["skin_temperature"])
         )
         partials["heat_convection", "tank_nusselt_number"] = (
             inputs["air_thermal_conductivity"]
             / d
             * area
-            * (inputs["free_stream_temperature"] - inputs["skin_temperature"])
+            * (inputs["exterior_temperature"] - inputs["skin_temperature"])
         )
-        partials["heat_convection", "free_stream_temperature"] = (
-            h * area * np.ones(number_of_points)
-        )
+        partials["heat_convection", "exterior_temperature"] = h * area * np.ones(number_of_points)
         partials["heat_convection", "skin_temperature"] = -h * area * np.ones(number_of_points)
         partials["heat_convection", input_prefix + ":dimension:length"] = (
-            h * np.pi * d * (inputs["free_stream_temperature"] - inputs["skin_temperature"])
+            h * np.pi * d * (inputs["exterior_temperature"] - inputs["skin_temperature"])
         )
         partials["heat_convection", input_prefix + ":dimension:outer_diameter"] = (
             inputs["air_thermal_conductivity"]
             * inputs["tank_nusselt_number"]
             * np.pi
-            * (inputs["free_stream_temperature"] - inputs["skin_temperature"])
+            * (inputs["exterior_temperature"] - inputs["skin_temperature"])
         )

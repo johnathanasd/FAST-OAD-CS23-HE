@@ -9,7 +9,7 @@ from stdatm import AtmosphereWithPartials
 DEFAULT_TEMPERATURE = 300.0
 
 
-class PerformancesFreeStreamTemperature(om.ExplicitComponent):
+class PerformancesExteriorTemperature(om.ExplicitComponent):
     """
     Computation of the free stream temperature of the exterior surface of the tank
     """
@@ -27,7 +27,7 @@ class PerformancesFreeStreamTemperature(om.ExplicitComponent):
         self.add_input("altitude", units="m", val=np.zeros(number_of_points))
 
         self.add_output(
-            name="free_stream_temperature",
+            name="exterior_temperature",
             units="K",
             val=np.full(number_of_points, DEFAULT_TEMPERATURE),
         )
@@ -42,10 +42,10 @@ class PerformancesFreeStreamTemperature(om.ExplicitComponent):
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
-        outputs["free_stream_temperature"] = AtmosphereWithPartials(inputs["altitude"]).temperature
+        outputs["exterior_temperature"] = AtmosphereWithPartials(inputs["altitude"]).temperature
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
-        partials["free_stream_temperature", "altitude"] = AtmosphereWithPartials(
+        partials["exterior_temperature", "altitude"] = AtmosphereWithPartials(
             inputs["altitude"]
         ).partial_temperature_altitude
