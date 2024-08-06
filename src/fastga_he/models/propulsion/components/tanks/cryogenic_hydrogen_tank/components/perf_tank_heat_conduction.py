@@ -38,7 +38,7 @@ class PerformancesCryogenicHydrogenTankConduction(om.ExplicitComponent):
         self.add_output(
             "heat_conduction",
             units="W",
-            val=np.full(number_of_points, 2.0),
+            val=np.full(number_of_points, 17.23),
             desc="Tank wall heat conduction at each time step",
         )
 

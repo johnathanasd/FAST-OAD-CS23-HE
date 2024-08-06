@@ -79,7 +79,7 @@ class PerformancesCryogenicHydrogenTankConvection(om.ExplicitComponent):
         self.add_output(
             "heat_convection",
             units="W",
-            val=np.full(number_of_points, 1.0),
+            val=np.full(number_of_points, 10.2185),
             desc="Hydrogen boil-off in the tank at each time step",
         )
 

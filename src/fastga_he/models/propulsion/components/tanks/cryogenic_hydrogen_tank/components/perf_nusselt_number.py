@@ -52,7 +52,7 @@ class PerformancesCryogenicHydrogenTankNusseltNumber(om.ExplicitComponent):
 
         self.add_output(
             "tank_nusselt_number",
-            val=np.linspace(1.15, 0.15, number_of_points),
+            val=np.full(number_of_points, 5.272),
             desc="Tank Nusselt number at each time step",
         )
 
@@ -228,11 +228,14 @@ class PerformancesCryogenicHydrogenTankNusseltNumber(om.ExplicitComponent):
             partials["tank_nusselt_number", "air_kinematic_viscosity"] = (
                 -0.555
                 * 0.25
-                * inputs[input_prefix + ":dimension:outer_diameter"] ** 3
-                * GRAVITY_ACCELERATION
-                * PRANDTL_NUMBER
-                * (1 - inputs["skin_temperature"] / inputs["exterior_temperature"])
-                / (rayleigh_number ** 0.75 * inputs["air_kinematic_viscosity"] ** 2)
+                * (
+                    GRAVITY_ACCELERATION
+                    * (1 - inputs["skin_temperature"] / inputs["exterior_temperature"])
+                    * inputs[input_prefix + ":dimension:outer_diameter"] ** 3
+                    * PRANDTL_NUMBER
+                )
+                ** 0.25
+                / inputs["air_kinematic_viscosity"] ** 1.25
             )
             partials["tank_nusselt_number", input_prefix + ":dimension:outer_diameter"] = (
                 0.555

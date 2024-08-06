@@ -46,7 +46,7 @@ class SizingCryogenicHydrogenTankOverallLength(om.ExplicitComponent):
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
             + cryogenic_hydrogen_tank_id
             + ":dimension:overall_length",
-            val=1.0,
+            val=0.521,
             units="m",
             desc="Value of the length of the tank in the x-direction, computed differently based "
             "on the location of the tank",

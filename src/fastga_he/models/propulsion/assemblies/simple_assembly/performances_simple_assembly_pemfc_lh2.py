@@ -141,7 +141,7 @@ class PerformancesAssembly(om.Group):
                 cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1",
                 number_of_points=number_of_points,
             ),
-            promotes=["data:*"],
+            promotes=["data:*", "time_step"],
         )
 
         self.connect("propeller_1.rpm", "motor_1.rpm")

@@ -42,7 +42,7 @@ class PerformancesLiquidHydrogenConsumedMission(om.ExplicitComponent):
             + cryogenic_hydrogen_tank_id
             + ":fuel_consumed_mission",
             units="kg",
-            val=15.0,
+            val=21.525,
             desc="Amount of fuel from that tank which will be consumed during mission",
         )
 

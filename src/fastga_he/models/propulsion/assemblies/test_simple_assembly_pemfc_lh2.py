@@ -76,10 +76,18 @@ def test_assembly_performances():
     # Run problem and check obtained value(s) is/(are) correct
     problem.run_model()
 
-    _, _, residuals = problem.model.performances.get_nonlinear_vectors()
+    _, _, residuals = problem.model.get_nonlinear_vectors()
+    residuals = filter_residuals(residuals)
+    print(residuals)
+
     print("\n=========== Check variable ===========")
     print(problem.get_val("performances.dc_dc_converter_1.dc_current_in", units="A"))
     print(problem.get_val("performances.dc_dc_converter_1.dc_current_out", units="A"))
+
+    write_outputs(
+        pth.join(outputs.__path__[0], "simple_assembly_performances_pemfc_lh2_tank.xml"),
+        problem,
+    )
 
     assert problem.get_val(
         "performances.dc_dc_converter_1.dc_current_in", units="A"
@@ -101,10 +109,7 @@ def test_assembly_performances():
         abs=1,
     )
 
-    write_outputs(
-        pth.join(outputs.__path__[0], "simple_assembly_performances_pemfc_h2_gas_tank.xml"),
-        problem,
-    )
+
 
     print("\n=========== Propulsive power ===========")
     print(problem.get_val("true_airspeed", units="m/s") * problem.get_val("thrust", units="N"))
@@ -159,6 +164,7 @@ def test_assembly_performances():
     # om.n2(problem)
 
 
+
 def test_assembly_sizing():
 
     ivc = get_indep_var_comp(list_inputs(SizingAssembly()), __file__, XML_FILE)
@@ -198,10 +204,13 @@ def test_assembly_sizing():
     assert problem.get_val(
         "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", units="kg"
     ) == pytest.approx(327.988, rel=1e-2)
-    assert problem.get_val(
-        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
-        units="kg",
-    ) == pytest.approx(16.34, rel=1e-2)
+    assert (
+        problem.get_val(
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
+            units="kg",
+        )
+        == pytest.approx(1.29, rel=1e-2)
+    )
     assert problem.get_val(
         "data:propulsion:he_power_train:DC_SSPC:dc_sspc_1:mass", units="kg"
     ) == pytest.approx(6.47, rel=1e-2)
@@ -216,7 +225,7 @@ def test_assembly_sizing():
     ) == pytest.approx(6.47, rel=1e-2)
 
     write_outputs(
-        pth.join(outputs.__path__[0], "simple_assembly_sizing_pemfc_lh2_gas_tank.xml"),
+        pth.join(outputs.__path__[0], "simple_assembly_sizing_pemfc_lh2_tank.xml"),
         problem,
     )
 
@@ -230,8 +239,8 @@ def test_performances_sizing_assembly_pemfc_enforce():
         "submodel.propulsion.constraints.pemfc_stack.effective_area"
     ] = "fastga_he.submodel.propulsion.constraints.pemfc_stack.effective_area.enforce"
     oad.RegisterSubmodel.active_models[
-        "submodel.propulsion.constraints.hydrogen_gas_tank.capacity"
-    ] = "fastga_he.submodel.propulsion.constraints.hydrogen_gas_tank.capacity.enforce"
+        "submodel.propulsion.constraints.cryogenic_hydrogen_tank.capacity"
+    ] = "fastga_he.submodel.propulsion.constraints.cryogenic_hydrogen_tank.capacity.enforce"
     oad.RegisterSubmodel.active_models[
         "submodel.propulsion.performances.pemfc.layer_voltage"
     ] = "fastga_he.submodel.propulsion.performances.pemfc.layer_voltage.statistical"
@@ -279,8 +288,8 @@ def test_performances_sizing_assembly_pemfc_enforce():
     ) == pytest.approx(371.103, rel=1e-2)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:mass", units="kg"
-    ) == pytest.approx(17.682, rel=1e-2)
+        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass", units="kg"
+    ) == pytest.approx(1.33, rel=1e-2)
 
 
 def test_assembly_sizing_from_pt_file():
@@ -289,7 +298,7 @@ def test_assembly_sizing_from_pt_file():
         "submodel.propulsion.constraints.pmsm.rpm"
     ] = "fastga_he.submodel.propulsion.constraints.pmsm.rpm.enforce"
 
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_lh2_tank.yml")
 
     ivc = get_indep_var_comp(
         list_inputs(PowerTrainSizingFromFile(power_train_file_path=pt_file_path)),
@@ -329,8 +338,8 @@ def test_assembly_sizing_from_pt_file():
         "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", units="kg"
     ) == pytest.approx(327.988, rel=1e-2)
     assert problem.get_val(
-        "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:mass", units="kg"
-    ) == pytest.approx(16.34, rel=1e-2)
+        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass", units="kg"
+    ) == pytest.approx(1.33, rel=1e-2)
     assert problem.get_val(
         "data:propulsion:he_power_train:DC_SSPC:dc_sspc_1:mass", units="kg"
     ) == pytest.approx(6.47, rel=1e-2)
@@ -358,7 +367,7 @@ def test_assembly_sizing_from_pt_file():
     )
 
     write_outputs(
-        pth.join(outputs.__path__[0], "assembly_performances_from_pt_file_pemfc_h2_tank.xml"),
+        pth.join(outputs.__path__[0], "assembly_performances_from_pt_file_pemfc_lh2_tank.xml"),
         problem,
     )
 
@@ -418,15 +427,15 @@ def test_performances_sizing_assembly_pemfc_ensure():
     ) == pytest.approx(765.306, rel=1e-2)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:mass", units="kg"
-    ) == pytest.approx(17.292, rel=1e-2)
+        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass", units="kg"
+    ) == pytest.approx(1.17, rel=1e-2)
 
 
 def test_performances_from_pt_file():
     oad.RegisterSubmodel.active_models[
         "submodel.propulsion.performances.pemfc.layer_voltage"
     ] = "fastga_he.submodel.propulsion.performances.pemfc.layer_voltage.statistical"
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_lh2_tank.yml")
 
     ivc = get_indep_var_comp(
         list_inputs(
@@ -464,6 +473,7 @@ def test_performances_from_pt_file():
     # om.n2(problem)
 
     _, _, residuals = problem.model.component.get_nonlinear_vectors()
+    print(residuals)
 
     assert problem.get_val(
         "component.dc_dc_converter_1.dc_current_in", units="A"
@@ -486,13 +496,13 @@ def test_performances_from_pt_file():
     )
 
     write_outputs(
-        pth.join(outputs.__path__[0], "assembly_performances_from_pt_file_pemfc_h2_tank.xml"),
+        pth.join(outputs.__path__[0], "assembly_performances_from_pt_file_pemfc_lh2_tank.xml"),
         problem,
     )
 
 
 def test_mass_from_pt_file():
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_lh2_tank.yml")
 
     ivc = get_indep_var_comp(
         list_inputs(PowerTrainMassFromFile(power_train_file_path=pt_file_path)),
@@ -506,7 +516,7 @@ def test_mass_from_pt_file():
     )
 
     assert problem.get_val("data:propulsion:he_power_train:mass", units="kg") == pytest.approx(
-        574.38, rel=1e-2
+        560.19, rel=1e-2
     )
     problem.check_partials(compact_print=True)
 

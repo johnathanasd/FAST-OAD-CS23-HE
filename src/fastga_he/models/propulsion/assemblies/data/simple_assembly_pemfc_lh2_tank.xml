@@ -92,7 +92,7 @@
                 </pemfc_stack>
                 <cryogenic_hydrogen_tank>
                     <cryogenic_hydrogen_tank_1>
-                        <mass units="kg">16.34</mass>
+                        <mass units="kg">2.1913</mass>
                         <low_speed>
                             <CD0>0.0</CD0>
                         </low_speed>
@@ -105,11 +105,11 @@
                             <x units="m">1.238</x>
                         </CG>
                         <fuel_consumed_mission units="kg">14.</fuel_consumed_mission>
-                        <overall_hydrogen_boil_off units="kg">14.34</overall_hydrogen_boil_off>
-                        <unusable_fuel_mission units="kg">14.34</unusable_fuel_mission>
-                        <fuel_total_mission units="kg">28.34</fuel_total_mission>
-                        <capacity units="kg">28.34</capacity>
-                        <inner_volume units="m**3">0.4</inner_volume>
+                        <overall_hydrogen_boil_off units="kg">0.766</overall_hydrogen_boil_off>
+                        <unusable_fuel_mission units="kg">0.766</unusable_fuel_mission>
+                        <fuel_total_mission units="kg">14.766</fuel_total_mission>
+                        <capacity units="kg">14.766</capacity>
+                        <inner_volume units="m**3">0.208</inner_volume>
                         <tank_pressure units="Pa">1013250</tank_pressure>
                         <Safety_factor>1.0</Safety_factor>
                         <material>
@@ -119,20 +119,21 @@
                             <thermal_conductivity units="W/m/K">21.</thermal_conductivity>
                         </material>
                         <dimension>
-                            <length units="m">1.</length>
-                            <diameter units="m">1.21<!--inital guess for the tank outer diameter --></diameter>
+                            <length units="m">0.521</length>
+                            <diameter units="m">0.6129<!--inital guess for the tank outer diameter --></diameter>
                             <insulation_thickness units="m">0.005</insulation_thickness>
-                            <inner_diameter units="m">0.6028</inner_diameter>
-                            <wall_diameter units="m">0.60296</wall_diameter>
-                            <outer_diameter units="m">0.61296</outer_diameter>
+                            <inner_diameter units="m">0.60274</inner_diameter>
+                            <wall_diameter units="m">0.6029</wall_diameter>
+                            <outer_diameter units="m">0.6129</outer_diameter>
                             <wall_thickness units="m">5.08e-3</wall_thickness>
-                            <overall_length units="m">1.61296</overall_length>
+                            <overall_length units="m">1.1339</overall_length>
                         </dimension>
                         <insulation>
                             <material_density units="kg/m**3">120.</material_density>
                             <thermal_conductivity units="W/m/K">0.000017</thermal_conductivity>
                             <thermal_emissivity>0.03</thermal_emissivity>
                             <reflectivity_coefficient>0.8</reflectivity_coefficient>
+                            <thermal_resistance units="K/W">153.24</thermal_resistance>
                         </insulation>
                     </cryogenic_hydrogen_tank_1>
                 </cryogenic_hydrogen_tank>

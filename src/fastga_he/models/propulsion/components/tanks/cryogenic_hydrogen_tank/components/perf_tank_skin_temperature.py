@@ -5,6 +5,9 @@
 import openmdao.api as om
 import numpy as np
 
+SKIN_TEMPERATURE_MAX = 280.0
+SKIN_TEMPERATURE_MIN = 30.0
+
 
 class PerformancesLiquidHydrogenTankSkinTemperature(om.ExplicitComponent):
     """
@@ -37,7 +40,7 @@ class PerformancesLiquidHydrogenTankSkinTemperature(om.ExplicitComponent):
             + cryogenic_hydrogen_tank_id
             + ":insulation:thermal_resistance",
             units="K/W",
-            val=100.0,
+            val=14.5,
             desc="Thermal resistance of the tank wall including the insulation layer",
         )
 
@@ -53,7 +56,7 @@ class PerformancesLiquidHydrogenTankSkinTemperature(om.ExplicitComponent):
         self.add_input(
             "heat_conduction",
             units="W",
-            val=np.full(number_of_points, 2.0),
+            val=np.full(number_of_points, 17.23),
             desc="Tank wall heat conduction at each time step",
         )
 
@@ -91,12 +94,12 @@ class PerformancesLiquidHydrogenTankSkinTemperature(om.ExplicitComponent):
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id
         )
 
-        outputs["skin_temperature"] = inputs[
-            input_prefix + ":insulation:thermal_resistance"
-        ] * inputs["heat_conduction"] + inputs[
-            input_prefix + ":liquid_hydrogen_temperature"
-        ] * np.ones(
-            number_of_points
+        unclipped_t_skin = inputs[input_prefix + ":insulation:thermal_resistance"] * inputs[
+            "heat_conduction"
+        ] + inputs[input_prefix + ":liquid_hydrogen_temperature"] * np.ones(number_of_points)
+
+        outputs["skin_temperature"] = np.clip(
+            unclipped_t_skin, SKIN_TEMPERATURE_MIN, SKIN_TEMPERATURE_MAX
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
@@ -107,16 +110,24 @@ class PerformancesLiquidHydrogenTankSkinTemperature(om.ExplicitComponent):
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id
         )
 
-        partials[
-            "skin_temperature",
-            input_prefix + ":insulation:thermal_resistance",
-        ] = inputs["heat_conduction"]
+        unclipped_t_skin = inputs[input_prefix + ":insulation:thermal_resistance"] * inputs[
+            "heat_conduction"
+        ] + inputs[input_prefix + ":liquid_hydrogen_temperature"] * np.ones(number_of_points)
 
-        partials["skin_temperature", "heat_conduction",] = inputs[
-            input_prefix + ":insulation:thermal_resistance"
-        ] * np.ones(number_of_points)
+        partials["skin_temperature", input_prefix + ":insulation:thermal_resistance",] = np.where(
+            (unclipped_t_skin <= SKIN_TEMPERATURE_MAX) & (unclipped_t_skin >= SKIN_TEMPERATURE_MIN),
+            inputs["heat_conduction"],
+            np.full_like(inputs["heat_conduction"], 1e-6),
+        )
 
-        partials[
-            "skin_temperature",
-            input_prefix + ":liquid_hydrogen_temperature",
-        ] = np.ones(number_of_points)
+        partials["skin_temperature", "heat_conduction",] = np.where(
+            (unclipped_t_skin <= SKIN_TEMPERATURE_MAX) & (unclipped_t_skin >= SKIN_TEMPERATURE_MIN),
+            inputs[input_prefix + ":insulation:thermal_resistance"] * np.ones(number_of_points),
+            np.full_like(inputs["heat_conduction"], 1e-6),
+        )
+
+        partials["skin_temperature", input_prefix + ":liquid_hydrogen_temperature",] = np.where(
+            (unclipped_t_skin <= SKIN_TEMPERATURE_MAX) & (unclipped_t_skin >= SKIN_TEMPERATURE_MIN),
+            np.ones(number_of_points),
+            np.full_like(inputs["heat_conduction"], 1e-6),
+        )

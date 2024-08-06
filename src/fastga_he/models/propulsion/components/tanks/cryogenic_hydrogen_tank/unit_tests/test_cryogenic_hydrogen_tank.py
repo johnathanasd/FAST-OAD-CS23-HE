@@ -1252,7 +1252,7 @@ def test_performances_cryogenic_hydrogen_tank():
         ivc,
     )
     assert problem.get_val("fuel_remaining_t", units="kg") == pytest.approx(
-        np.array([276.85, 263.43, 246.82, 227.03, 204.06, 177.91, 148.58, 116.07, 80.38, 41.5]),
+        np.array([276.85, 263.47, 246.92, 227.18, 204.26, 178.15, 148.87, 116.41, 80.76, 41.94]),
         rel=1e-2,
     )
     assert (
