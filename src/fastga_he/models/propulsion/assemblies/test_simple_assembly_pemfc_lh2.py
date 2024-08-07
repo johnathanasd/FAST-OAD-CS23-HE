@@ -526,7 +526,7 @@ def test_mass_from_pt_file():
 
 
 def test_cg_from_pt_file():
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_lh2_tank.yml")
 
     ivc = get_indep_var_comp(
         list_inputs(PowerTrainCGFromFile(power_train_file_path=pt_file_path)),
@@ -546,7 +546,7 @@ def test_cg_from_pt_file():
 
 
 def test_drag_from_pt_file():
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_lh2_tank.yml")
 
     ivc = get_indep_var_comp(
         list_inputs(PowerTrainDragFromFile(power_train_file_path=pt_file_path)),
@@ -570,7 +570,7 @@ def test_drag_from_pt_file():
 
 def test_delta_cls_summer():
 
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_lh2_tank.yml")
 
     ivc = om.IndepVarComp()
     configurator = FASTGAHEPowerTrainConfigurator()
@@ -602,7 +602,7 @@ def test_delta_cls_summer():
 
 def test_delta_cds_summer():
 
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_lh2_tank.yml")
 
     ivc = om.IndepVarComp()
     configurator = FASTGAHEPowerTrainConfigurator()
@@ -636,7 +636,7 @@ def test_delta_cds_summer():
 
 def test_delta_cms_summer():
 
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_lh2_tank.yml")
 
     ivc = om.IndepVarComp()
     configurator = FASTGAHEPowerTrainConfigurator()
@@ -668,7 +668,7 @@ def test_delta_cms_summer():
 
 def test_slipstream_from_pt_file():
 
-    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_h2_tank.yml")
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "simple_assembly_pemfc_lh2_tank.yml")
 
     ivc = get_indep_var_comp(
         list_inputs(
