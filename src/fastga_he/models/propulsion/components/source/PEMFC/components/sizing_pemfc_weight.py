@@ -12,7 +12,7 @@ DEFAULT_FC_POWER_DENSITY = 0.345 # kW/kg
 
 oad.RegisterSubmodel.active_models[
     SUBMODEL_SIZING_PEMFC_WEIGHT
-] = "fastga_he.submodel.propulsion.sizing.pemfc.weight.adjusted"
+] = "fastga_he.submodel.propulsion.sizing.pemfc.weight.base"
 
 @oad.RegisterSubmodel(
     SUBMODEL_SIZING_PEMFC_WEIGHT,
