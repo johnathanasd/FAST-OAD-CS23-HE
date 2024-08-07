@@ -3,9 +3,10 @@
 # Copyright (C) 2022 ISAE-SUPAERO
 
 import openmdao.api as om
+import fastoad.api as oad
 
 
-from .sizing_pemfc_weight import SizingPEMFCWeight
+from ..constants import SUBMODEL_SIZING_PEMFC_WEIGHT
 from .sizing_pemfc_volume import SizingPEMFCVolume
 from .sizing_pemfc_dimensions import SizingPEMFCDimensions
 from .sizing_pemfc_cg_x import SizingPEMFCCGX
@@ -40,6 +41,7 @@ class SizingPEMFCStack(om.Group):
 
         pemfc_stack_id = self.options["pemfc_stack_id"]
         position = self.options["position"]
+        option_weight = {"pemfc_stack_id": pemfc_stack_id,}
 
         # It was decided to add the constraints computation at the beginning of the sizing to
         # ensure that both are ran along and to avoid having an additional id to add in the
@@ -56,7 +58,9 @@ class SizingPEMFCStack(om.Group):
         )
         self.add_subsystem(
             name="pemfc_weight",
-            subsys=SizingPEMFCWeight(pemfc_stack_id=pemfc_stack_id),
+            subsys=oad.RegisterSubmodel.get_submodel(
+                SUBMODEL_SIZING_PEMFC_WEIGHT, options=option_weight
+            ),
             promotes=["*"],
         )
         self.add_subsystem(

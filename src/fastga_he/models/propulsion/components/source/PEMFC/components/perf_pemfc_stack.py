@@ -12,6 +12,7 @@ from ..components.perf_pemfc_power_density import PerformancesPEMFCPowerDensity
 from ..components.perf_maximum import PerformancesMaximum
 from ..components.perf_pemfc_current_density import PerformancesCurrentDensity
 from ..constants import SUBMODEL_PERFORMANCES_PEMFC_LAYER_VOLTAGE
+from ..constants import SUBMODEL_PERFORMANCES_PEMFC_MAX_POWER_DENSITY
 from ..components.perf_fuel_consumption import PerformancesPEMFCFuelConsumption
 from ..components.perf_fuel_consumed import PerformancesPEMFCFuelConsumed
 from ..components.perf_pemfc_efficiency import PerformancesPEMFCEfficiency
@@ -50,6 +51,8 @@ class PerformancesPEMFCStack(om.Group):
             "pemfc_stack_id": pemfc_stack_id,
         }
 
+        option_max_power_density = {"pemfc_stack_id": pemfc_stack_id,}
+
         self.add_subsystem(
             "maximum",
             PerformancesMaximum(number_of_points=number_of_points, pemfc_stack_id=pemfc_stack_id),
@@ -77,7 +80,7 @@ class PerformancesPEMFCStack(om.Group):
         )
 
         self.add_subsystem(
-            name="constraints_pemfc_effective_area",
+            name="pemfc_layer_voltage",
             subsys=oad.RegisterSubmodel.get_submodel(
                 SUBMODEL_PERFORMANCES_PEMFC_LAYER_VOLTAGE, options=option_layer_voltage
             ),
@@ -90,6 +93,14 @@ class PerformancesPEMFCStack(om.Group):
                 number_of_points=number_of_points,
                 direct_bus_connection=direct_bus_connection,
                 pemfc_stack_id=pemfc_stack_id,
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            name="maximum_power_density",
+            subsys=oad.RegisterSubmodel.get_submodel(
+                SUBMODEL_PERFORMANCES_PEMFC_MAX_POWER_DENSITY, options=option_max_power_density
             ),
             promotes=["*"],
         )
