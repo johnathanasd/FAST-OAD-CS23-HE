@@ -339,7 +339,7 @@ def test_assembly_sizing_from_pt_file():
     ) == pytest.approx(327.988, rel=1e-2)
     assert problem.get_val(
         "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass", units="kg"
-    ) == pytest.approx(1.33, rel=1e-2)
+    ) == pytest.approx(1.29, rel=1e-2)
     assert problem.get_val(
         "data:propulsion:he_power_train:DC_SSPC:dc_sspc_1:mass", units="kg"
     ) == pytest.approx(6.47, rel=1e-2)
@@ -354,7 +354,7 @@ def test_assembly_sizing_from_pt_file():
     ) == pytest.approx(6.47, rel=1e-2)
 
     assert problem.get_val("data:propulsion:he_power_train:mass", units="kg") == pytest.approx(
-        733.3, rel=1e-2
+        718.30534919, rel=1e-2
     )
     assert problem.get_val("data:propulsion:he_power_train:CG:x", units="m") == pytest.approx(
         1.936, rel=1e-2
@@ -418,7 +418,7 @@ def test_performances_sizing_assembly_pemfc_ensure():
     _, _, residuals = problem.model.get_nonlinear_vectors()
 
     write_outputs(
-        pth.join(outputs.__path__[0], "full_assembly_sizing_pemfc_h2_gas_tank_ensure.xml"),
+        pth.join(outputs.__path__[0], "full_assembly_sizing_pemfc_lh2_tank_ensure.xml"),
         problem,
     )
 
@@ -472,8 +472,11 @@ def test_performances_from_pt_file():
 
     # om.n2(problem)
 
-    _, _, residuals = problem.model.component.get_nonlinear_vectors()
+    _, _, residuals = problem.model.get_nonlinear_vectors()
+    residuals = filter_residuals(residuals)
     print(residuals)
+
+
 
     assert problem.get_val(
         "component.dc_dc_converter_1.dc_current_in", units="A"
@@ -499,6 +502,7 @@ def test_performances_from_pt_file():
         pth.join(outputs.__path__[0], "assembly_performances_from_pt_file_pemfc_lh2_tank.xml"),
         problem,
     )
+
 
 
 def test_mass_from_pt_file():

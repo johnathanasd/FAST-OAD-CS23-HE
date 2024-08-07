@@ -1,5 +1,4 @@
 <FASTOAD_model>
-  <tank_temperature units="degK" is_input="True">300.0<!--Hydrogen gas tank temperature--></tank_temperature>
   <data>
     <aerodynamics>
       <cruise>
@@ -10,6 +9,14 @@
         <mach is_input="True">0.11791720574958639<!--mach number representative of low speed aerodynamics--></mach>
         <unit_reynolds units="1/m" is_input="True">2746998.9244866637<!--unitary reynolds number representative of low speed aerodynamics--></unit_reynolds>
       </low_speed>
+      <fuselage>
+        <cruise>
+          <CD0 is_input="True">0.01194819286123646<!--profile drag coefficient for fuselage in cruise conditions--></CD0>
+        </cruise>
+        <low_speed>
+          <CD0 is_input="True">0.012114342193164637<!--profile drag coefficient for fuselage in low speed conditions--></CD0>
+        </low_speed>
+      </fuselage>
       <wing>
         <low_speed>
           <CL_vector is_input="True">[1.1017227197335075, 1.1013013453498266, 1.10038811694889, 1.098403873777725, 1.0918579844211873, 1.080610615570361, 1.0628034699038733, 1.0347815173407644, 0.9892716074062258, 0.9114284949703251, 0.8359515927452368, 0.7818631930166186, 0.7254369570766273, 0.660566179673128, 0.5814473768423762, 0.4785864136757275, 0.32879610850232355, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]<!--lift coefficient of the wing at the station along the wing span in Y_vector, the total corresponding wing lift coefficient is equal to CL0_clean--></CL_vector>
@@ -28,6 +35,8 @@
       <fuselage>
         <front_length units="m" is_input="True">0.5<!--length of the front cone of the aircraft--></front_length>
         <maximum_height units="m" is_input="True">2.3245<!--maximum height of the fuselage--></maximum_height>
+        <maximum_width units="m" is_input="True">1.1978<!--maximum width of the fuselage--></maximum_width>
+        <wet_area units="m**2" is_input="True">23.873036515818036<!--fuselage wet area--></wet_area>
       </fuselage>
       <wing>
         <area units="m**2" is_input="True">7.105673586278243<!--wing area--></area>
@@ -42,6 +51,16 @@
     </geometry>
     <propulsion>
       <he_power_train>
+        <mass units="kg" is_input="False">718.3053491924229</mass>
+        <CG>
+          <x units="m" is_input="False">1.9493376246164538</x>
+        </CG>
+        <cruise>
+          <CD0 is_input="False">0.002891236190860175</CD0>
+        </cruise>
+        <low_speed>
+          <CD0 is_input="False">0.002931290334667284</CD0>
+        </low_speed>
         <DC_DC_converter>
           <dc_dc_converter_1>
             <current_in_caliber units="A" is_input="False">400.0<!--Current caliber of one arm of the DC/DC converter--></current_in_caliber>
@@ -482,42 +501,52 @@
             </scaling>
           </motor_1>
         </PMSM>
-        <hydrogen_gas_tank>
-          <hydrogen_gas_tank_1>
-            <Safety_factor is_input="True">1.0<!--Hydrogen gas tank design safety factor--></Safety_factor>
-            <capacity units="kg" is_input="False">15.15<!--Capacity of the tank in terms of weight--></capacity>
-            <fuel_consumed_mission units="kg" is_input="True">15.0<!--Amount of hydrogen from that tank which will be consumed during mission--></fuel_consumed_mission>
-            <fuel_total_mission units="kg" is_input="False">15.15<!--Total amount of hydrogen loaded in the tank for the mission--></fuel_total_mission>
-            <gravimetric_index is_input="False">nan<!--Ratio between the mission used weight and overall weight--></gravimetric_index>
-            <inner_volume units="m**3" is_input="False">nan<!--Capacity of the tank in terms of volume--></inner_volume>
-            <mass units="kg" is_input="False">nan<!--Weight of the hydrogen gas tanks--></mass>
-            <tank_pressure units="Pa" is_input="True">nan<!--Hydrogen gas tank static pressure--></tank_pressure>
-            <unusable_fuel_mission units="kg" is_input="False">0.15<!--Amount of trapped hydrogen in the tank--></unusable_fuel_mission>
+        <cryogenic_hydrogen_tank>
+          <cryogenic_hydrogen_tank_1>
+            <Safety_factor is_input="True">1.0<!--Cryogenic hydrogen tank design safety factor--></Safety_factor>
+            <capacity units="kg" is_input="False">14.766<!--Capacity of the tank in terms of weight--></capacity>
+            <fuel_consumed_mission units="kg" is_input="True">14.0<!--Amount of hydrogen from that tank which will be consumed during mission--></fuel_consumed_mission>
+            <fuel_total_mission units="kg" is_input="False">14.766<!--Total amount of hydrogen loaded in the tank for the mission--></fuel_total_mission>
+            <gravimetric_index is_input="False">0.871948926934283<!--The amount ratio between the mission used weight and overall weight --></gravimetric_index>
+            <inner_volume units="m**3" is_input="False">0.2084121383203952<!--Capacity of the tank in terms of volume--></inner_volume>
+            <mass units="kg" is_input="False">1.289986271149055<!--Weight of the hydrogen gas tanks--></mass>
+            <overall_hydrogen_boil_off units="kg" is_input="True">0.766<!--Amount of trapped hydrogen in the tank--></overall_hydrogen_boil_off>
+            <tank_pressure units="Pa" is_input="True">1013250.0<!--Cryogenic hydrogen tank static pressure--></tank_pressure>
+            <thermal_resistance units="degK/W" is_input="False">461.66605014015556<!--overall thermal resistance of the tank--></thermal_resistance>
+            <unusable_fuel_mission units="kg" is_input="False">0.766<!--Amount of trapped hydrogen in the tank--></unusable_fuel_mission>
+            <wall_thermal_resistance units="degK/W" is_input="False">6.147621185797751e-06<!--Thermal resistance of the tank wall --></wall_thermal_resistance>
             <CG>
-              <x units="m" is_input="False">2.8846643019251306<!--X position of the tank center of gravity--></x>
-              <y units="m" is_input="False">nan<!--Y position of the pemfc center of gravity--></y>
-              <y_ratio is_input="True">nan<!--X position of the pemfc center of gravity as a ratio of the wing half-span--></y_ratio>
+              <x units="m" is_input="False">1.2387085918711065<!--X position of the tank center of gravity--></x>
+              <y units="m" is_input="False">0.0<!--Y position of the pemfc center of gravity--></y>
             </CG>
             <cruise>
-              <CD0 is_input="False">0.09947802111579072</CD0>
+              <CD0 is_input="False">0.0</CD0>
             </cruise>
             <dimension>
-              <diameter units="m" is_input="False">3.0<!--Initial Outer diameter of the hydrogen gas tank input--></diameter>
-              <inner_diameter units="m" is_input="False">nan<!--Inner diameter of the hydrogen gas tanks--></inner_diameter>
-              <length units="m" is_input="False">nan<!--Value of the cylindrical length of the tank in the x-direction, computed differently based on the location of the tank--></length>
-              <outer_diameter units="m" is_input="False">3.0<!--Outer diameter of the hydrogen gas tank--></outer_diameter>
-              <overall_length units="m" is_input="False">nan<!--Value of the length of the tank in the x-direction, computed differently based on the location of the tank--></overall_length>
-              <wall_thickness units="m" is_input="False">nan<!--Inner diameter of the hydrogen gas tanks--></wall_thickness>
+              <diameter units="m" is_input="False">0.6129<!--Initial Outer diameter of the hydrogen gas tank input--></diameter>
+              <inner_diameter units="m" is_input="False">0.6027392827425687<!--Inner diameter of the cryogenic hydrogen tank--></inner_diameter>
+              <insulation_thickness units="m" is_input="True">0.005<!--Insulation layer thickness of the cryogenic hydrogen tank--></insulation_thickness>
+              <length units="m" is_input="False">0.3285962970928001<!--Value of the cylindrical length of the tank in the x-direction, computed differently based on the location of the tank--></length>
+              <outer_diameter units="m" is_input="False">0.6129<!--Outer diameter of the hydrogen gas tank--></outer_diameter>
+              <overall_length units="m" is_input="False">0.9414962970928<!--Value of the length of the tank in the x-direction, computed differently based on the location of the tank--></overall_length>
+              <wall_diameter units="m" is_input="True">0.6029<!--Wall diameter of the hydrogen tank--></wall_diameter>
+              <wall_thickness units="m" is_input="False">0.005080358628715642<!--Inner diameter of the hydrogen gas tanks--></wall_thickness>
             </dimension>
+            <insulation>
+              <material_density units="kg/m**3" is_input="True">120.0<!--Choice of the insulation material,Some reference: Evacuated aluminum foil & glass paper laminate:120,Evacuated silica powder:160--></material_density>
+              <thermal_conductivity units="W/m/degK" is_input="True">1.7e-05<!--Thermal conductivity of the insulation material--></thermal_conductivity>
+              <thermal_resistance units="degK/W" is_input="False">461.66604399253436<!--Thermal resistance of the the insulation layer--></thermal_resistance>
+            </insulation>
             <low_speed>
-              <CD0 is_input="False">0.09947802111579072</CD0>
+              <CD0 is_input="False">0.0</CD0>
             </low_speed>
             <material>
-              <density units="kg/m**3" is_input="True">7860.0<!--Choice of the tank material,Some reference: Steel(ASTM-A514):7860, Aluminum(2014-T6):2800, Titanium(6%Al,4%V):4460, Carbon Composite:1530--></density>
-              <yield_strength units="Pa" is_input="True">nan<!--Hydrogen gas tank material yield stress--></yield_strength>
+              <density units="kg/m**3" is_input="True">1530.0<!--Choice of the tank material,Some reference: Steel(ASTM-A514):7860, Aluminum(2014-T6):2800, Titanium(6%Al,4%V):4460, Carbon Composite:1530--></density>
+              <thermal_conductivity units="W/m/degK" is_input="True">21.0<!--Thermal conductivity of the tank wall material--></thermal_conductivity>
+              <yield_strength units="Pa" is_input="True">1900000000.0<!--Cryogenic hydrogen tank material yield stress--></yield_strength>
             </material>
-          </hydrogen_gas_tank_1>
-        </hydrogen_gas_tank>
+          </cryogenic_hydrogen_tank_1>
+        </cryogenic_hydrogen_tank>
         <inverter>
           <inverter_1>
             <current_ac_max units="A" is_input="True">400.0</current_ac_max>
@@ -668,20 +697,19 @@
             <number_of_layers is_input="True">450.0<!--Number of layer in 1 PEMFC stack--></number_of_layers>
             <volume units="m**3" is_input="False">1.0623053886277545<!--Volume of the pemfc stack--></volume>
             <CG>
-              <x units="m" is_input="False">2.8846643019251306<!--X position of the pemfc center of gravity--></x>
-              <y units="m" is_input="False">nan<!--Y position of the pemfc center of gravity--></y>
-              <y_ratio is_input="True">nan<!--X position of the pemfc center of gravity as a ratio of the wing half-span--></y_ratio>
+              <x units="m" is_input="False">1.2387085918711065<!--X position of the pemfc center of gravity--></x>
+              <y units="m" is_input="False">0.0<!--Y position of the pemfc center of gravity--></y>
             </CG>
             <cruise>
-              <CD0 is_input="False">0.015223365729047644</CD0>
+              <CD0 is_input="False">0.0025388177882167437</CD0>
             </cruise>
             <dimension>
-              <height units="m" is_input="False">0.8298470008065759<!--Height of the pemfc, as in the size of the pemfc along the Z-axis--></height>
+              <height units="m" is_input="False">0.7186571680869815<!--Height of the pemfc, as in the size of the pemfc along the Z-axis--></height>
               <length units="m" is_input="False">1.5426<!--Length of the pemfc, as in the size of the pemfc along the X-axis--></length>
-              <width units="m" is_input="False">0.8298470008065759<!--Width of the pemfc, as in the size of the pemfc along the Y-axis--></width>
+              <width units="m" is_input="False">0.95824<!--Width of the pemfc, as in the size of the pemfc along the Y-axis--></width>
             </dimension>
             <low_speed>
-              <CD0 is_input="False">0.015223365729047644</CD0>
+              <CD0 is_input="False">0.002574122112837089</CD0>
             </low_speed>
           </pemfc_stack_1>
         </pemfc_stack>
@@ -718,6 +746,34 @@
         </propeller>
       </he_power_train>
     </propulsion>
+    <weight>
+      <airframe>
+        <wing>
+          <distributed_mass>
+            <chord_slope is_input="False">[]</chord_slope>
+            <mass units="kg" is_input="False">[]</mass>
+            <start_chord units="m" is_input="False">[]</start_chord>
+            <y_ratio_end is_input="False">[]</y_ratio_end>
+            <y_ratio_start is_input="False">[]</y_ratio_start>
+          </distributed_mass>
+          <distributed_tanks>
+            <chord_slope is_input="False">[]</chord_slope>
+            <fuel_inside units="kg" is_input="False">[]</fuel_inside>
+            <start_chord units="m" is_input="False">[]</start_chord>
+            <y_ratio_end is_input="False">[]</y_ratio_end>
+            <y_ratio_start is_input="False">[]</y_ratio_start>
+          </distributed_tanks>
+          <punctual_mass>
+            <mass units="kg" is_input="False">[]<!--mass of the punctual masses on the wing used for wing load computation--></mass>
+            <y_ratio is_input="False">[]<!--position (as a percent of wing semi-span) of the punctual masses on the wing used for wing load computation, only positive ratio will be considered--></y_ratio>
+          </punctual_mass>
+          <punctual_tanks>
+            <fuel_inside units="kg" is_input="False">[]</fuel_inside>
+            <y_ratio is_input="False">[]</y_ratio>
+          </punctual_tanks>
+        </wing>
+      </airframe>
+    </weight>
   </data>
   <constraints>
     <propulsion>
@@ -730,21 +786,21 @@
         <DC_DC_converter>
           <dc_dc_converter_1>
             <inductor>
-              <air_gap units="m" is_input="False">0.0072499999999999995<!--Constraints on maximum air gap in the inductor, respected if <0--></air_gap>
+              <air_gap units="m" is_input="False">-0.007512726289508364<!--Constraints on maximum air gap in the inductor, respected if <0--></air_gap>
             </inductor>
           </dc_dc_converter_1>
         </DC_DC_converter>
-        <hydrogen_gas_tank>
-          <hydrogen_gas_tank_1>
+        <cryogenic_hydrogen_tank>
+          <cryogenic_hydrogen_tank_1>
             <dimension>
-              <overall_length units="m" is_input="False">0.0<!--Constraints on the tank length w.r.t the cabin/rear_fuselage length,  respected if <0--></overall_length>
+              <overall_length units="m" is_input="False">-0.535920886649413<!--Constraints on the tank length w.r.t the cabin/rear_fuselage length,  respected if <0--></overall_length>
             </dimension>
-          </hydrogen_gas_tank_1>
-        </hydrogen_gas_tank>
+          </cryogenic_hydrogen_tank_1>
+        </cryogenic_hydrogen_tank>
         <inverter>
           <inverter_1>
             <inductor>
-              <air_gap units="m" is_input="False">0.0072499999999999995<!--Constraints on maximum air gap in the inductor, respected if <0--></air_gap>
+              <air_gap units="m" is_input="False">0.007964236757793338<!--Constraints on maximum air gap in the inductor, respected if <0--></air_gap>
             </inductor>
           </inverter_1>
         </inverter>

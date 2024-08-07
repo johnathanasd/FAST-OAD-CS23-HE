@@ -1,4 +1,4 @@
-title: Sample pemfc hydrogen gas tank power train file for testing purposes
+title: Sample pemfc cryogenic hydrogen tank power train file for testing purposes
 
 power_train_components:
   propeller_1:
