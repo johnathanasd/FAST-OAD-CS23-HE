@@ -985,7 +985,7 @@ CRYOGENIC_HYDROGEN_TANK = {
     CN_ID: "cryogenic_hydrogen_tank_id",
     CT: "cryogenic_hydrogen_tank",
     ATT: None,
-    PT: [],
+    PT: ["time_step"],
     SPT: [],
     PTS: [],
     IN: None,
