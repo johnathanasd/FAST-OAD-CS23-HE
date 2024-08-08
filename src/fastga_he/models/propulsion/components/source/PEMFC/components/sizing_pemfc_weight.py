@@ -8,11 +8,12 @@ from ..constants import SUBMODEL_SIZING_PEMFC_WEIGHT
 import fastoad.api as oad
 
 FC_WEIGHT_DENSITY = 8.5034  # kg/m^2
-DEFAULT_FC_POWER_DENSITY = 0.345 # kW/kg
+DEFAULT_FC_POWER_DENSITY = 0.345  # kW/kg
 
 oad.RegisterSubmodel.active_models[
     SUBMODEL_SIZING_PEMFC_WEIGHT
 ] = "fastga_he.submodel.propulsion.sizing.pemfc.weight.base"
+
 
 @oad.RegisterSubmodel(
     SUBMODEL_SIZING_PEMFC_WEIGHT,
@@ -97,6 +98,7 @@ class SizingPEMFCWeightAerostak200W(om.ExplicitComponent):
             ]
         )
 
+
 @oad.RegisterSubmodel(
     SUBMODEL_SIZING_PEMFC_WEIGHT,
     "fastga_he.submodel.propulsion.sizing.pemfc.weight.adjusted",
@@ -105,7 +107,6 @@ class SizingPEMFCWeightAdjusted(om.ExplicitComponent):
     """
     Computation of the weight the PEMFC based on the layer weight density but adjusted with power density
     """
-
 
     def initialize(self):
 
@@ -133,8 +134,13 @@ class SizingPEMFCWeightAdjusted(om.ExplicitComponent):
             desc="Effective fuel cell area in the stack",
         )
 
-        self.add_input(name="data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + "max_power_density", units="kW/kg", val=np.nan)
-
+        self.add_input(
+            name="data:propulsion:he_power_train:pemfc_stack:"
+            + pemfc_stack_id
+            + ":max_power_density",
+            units="kW/kg",
+            val=np.nan,
+        )
 
         self.add_output(
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":mass",
@@ -149,10 +155,18 @@ class SizingPEMFCWeightAdjusted(om.ExplicitComponent):
 
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
-        adjust_factor = DEFAULT_FC_POWER_DENSITY / inputs["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + "max_power_density"]
+        adjust_factor = (
+            DEFAULT_FC_POWER_DENSITY
+            / inputs[
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
+                + ":max_power_density"
+            ]
+        )
 
         outputs["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":mass"] = (
-            FC_WEIGHT_DENSITY * adjust_factor
+            FC_WEIGHT_DENSITY
+            * adjust_factor
             * inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers"
             ]
@@ -164,14 +178,21 @@ class SizingPEMFCWeightAdjusted(om.ExplicitComponent):
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
         pemfc_stack_id = self.options["pemfc_stack_id"]
-        adjust_factor = DEFAULT_FC_POWER_DENSITY / inputs[
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + "max_power_density"]
+        adjust_factor = (
+            DEFAULT_FC_POWER_DENSITY
+            / inputs[
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
+                + ":max_power_density"
+            ]
+        )
 
         partials[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":mass",
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers",
         ] = (
-            FC_WEIGHT_DENSITY*adjust_factor
+            FC_WEIGHT_DENSITY
+            * adjust_factor
             * inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
             ]
@@ -181,7 +202,8 @@ class SizingPEMFCWeightAdjusted(om.ExplicitComponent):
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":mass",
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area",
         ] = (
-            FC_WEIGHT_DENSITY*adjust_factor
+            FC_WEIGHT_DENSITY
+            * adjust_factor
             * inputs[
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers"
             ]
@@ -191,12 +213,18 @@ class SizingPEMFCWeightAdjusted(om.ExplicitComponent):
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":mass",
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":max_power_density",
         ] = (
-                -FC_WEIGHT_DENSITY * DEFAULT_FC_POWER_DENSITY
-                * inputs[
-                    "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers"
-                    ]
-                * inputs[
-                    "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
-                    ] / inputs[
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + "max_power_density"]**2
+            -FC_WEIGHT_DENSITY
+            * DEFAULT_FC_POWER_DENSITY
+            * inputs[
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":number_of_layers"
+            ]
+            * inputs[
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":effective_area"
+            ]
+            / inputs[
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
+                + ":max_power_density"
+            ]
+            ** 2
         )

@@ -11,7 +11,6 @@ MAX_DEFAULT_STACK_POWER = 1000.0
 MIN_DEFAULT_STACK_POWER = 100.0
 
 
-
 class PerformancesMaximum(om.ExplicitComponent):
     """
     Class to identify the maximum current and  power output from PEMFC.
@@ -67,14 +66,19 @@ class PerformancesMaximum(om.ExplicitComponent):
         )
 
         self.declare_partials(
-            of=["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_min","data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_max"],
+            of=[
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_min",
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_max",
+            ],
             wrt="dc_current_out",
             method="exact",
         )
 
         self.declare_partials(
-            of=["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_min",
-                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"],
+            of=[
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_min",
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max",
+            ],
             wrt="power_out",
             method="exact",
         )
@@ -93,11 +97,11 @@ class PerformancesMaximum(om.ExplicitComponent):
 
         outputs[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"
-            ] = np.max(inputs["power_out"])
+        ] = np.max(inputs["power_out"])
 
         outputs[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_min"
-            ] = np.min(inputs["power_out"])
+        ] = np.min(inputs["power_out"])
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 

@@ -41,7 +41,9 @@ class SizingPEMFCStack(om.Group):
 
         pemfc_stack_id = self.options["pemfc_stack_id"]
         position = self.options["position"]
-        option_weight = {"pemfc_stack_id": pemfc_stack_id,}
+        option_weight = {
+            "pemfc_stack_id": pemfc_stack_id,
+        }
 
         # It was decided to add the constraints computation at the beginning of the sizing to
         # ensure that both are ran along and to avoid having an additional id to add in the

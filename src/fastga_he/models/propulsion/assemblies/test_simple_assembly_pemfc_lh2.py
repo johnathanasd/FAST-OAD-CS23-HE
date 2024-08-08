@@ -109,8 +109,6 @@ def test_assembly_performances():
         abs=1,
     )
 
-
-
     print("\n=========== Propulsive power ===========")
     print(problem.get_val("true_airspeed", units="m/s") * problem.get_val("thrust", units="N"))
 
@@ -162,7 +160,6 @@ def test_assembly_performances():
     print(problem.get_val("performances.pemfc_stack_1.power_out", units="kW"))
 
     # om.n2(problem)
-
 
 
 def test_assembly_sizing():
@@ -288,7 +285,8 @@ def test_performances_sizing_assembly_pemfc_enforce():
     ) == pytest.approx(371.103, rel=1e-2)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass", units="kg"
+        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
+        units="kg",
     ) == pytest.approx(1.33, rel=1e-2)
 
 
@@ -338,7 +336,8 @@ def test_assembly_sizing_from_pt_file():
         "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", units="kg"
     ) == pytest.approx(327.988, rel=1e-2)
     assert problem.get_val(
-        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass", units="kg"
+        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
+        units="kg",
     ) == pytest.approx(1.29, rel=1e-2)
     assert problem.get_val(
         "data:propulsion:he_power_train:DC_SSPC:dc_sspc_1:mass", units="kg"
@@ -427,7 +426,8 @@ def test_performances_sizing_assembly_pemfc_ensure():
     ) == pytest.approx(765.306, rel=1e-2)
 
     assert problem.get_val(
-        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass", units="kg"
+        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
+        units="kg",
     ) == pytest.approx(1.17, rel=1e-2)
 
 
@@ -476,8 +476,6 @@ def test_performances_from_pt_file():
     residuals = filter_residuals(residuals)
     print(residuals)
 
-
-
     assert problem.get_val(
         "component.dc_dc_converter_1.dc_current_in", units="A"
     ) * problem.get_val("component.dc_dc_converter_1.dc_voltage_in", units="V") == pytest.approx(
@@ -502,7 +500,6 @@ def test_performances_from_pt_file():
         pth.join(outputs.__path__[0], "assembly_performances_from_pt_file_pemfc_lh2_tank.xml"),
         problem,
     )
-
 
 
 def test_mass_from_pt_file():

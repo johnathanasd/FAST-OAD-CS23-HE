@@ -49,6 +49,7 @@
             <he_power_train>
                 <pemfc_stack>
                     <pemfc_stack_1>
+                        <max_power_density units="kW/kg">0.345</max_power_density>
                         <number_of_layers>35.0</number_of_layers>
                         <effective_area units="cm**2">16.8</effective_area>
                         <operation_pressure units="atm">1.2</operation_pressure>

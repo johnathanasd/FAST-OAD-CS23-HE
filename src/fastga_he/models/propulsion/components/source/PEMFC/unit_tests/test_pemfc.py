@@ -10,7 +10,8 @@ import pytest
 import numpy as np
 import fastoad.api as oad
 
-from ..components.sizing_pemfc_weight import SizingPEMFCWeight
+from ..components.sizing_pemfc_weight import SizingPEMFCWeightAerostak200W
+from ..components.sizing_pemfc_weight import SizingPEMFCWeightAdjusted
 from ..components.sizing_pemfc_cg_x import SizingPEMFCCGX
 from ..components.sizing_pemfc_cg_y import SizingPEMFCCGY
 from ..components.sizing_pemfc_volume import SizingPEMFCVolume
@@ -28,6 +29,10 @@ from ..components.perf_pemfc_power import PerformancesPEMFCPower
 from ..components.perf_pemfc_power_density import PerformancesPEMFCPowerDensity
 from ..components.perf_pemfc_voltage import PerformancesPEMFCVoltage
 from ..components.perf_operation_pressure import PerformancesOperationPressure
+from ..components.perf_pemfc_expect_power_density import PerformancesPEMFCMaxPowerDensityAerostak
+from ..components.perf_pemfc_expect_power_density import (
+    PerformancesPEMFCMaxPowerDensityIntelligentEnergy,
+)
 
 from ..components.cstr_ensure import ConstraintsEffectiveAreaEnsure
 from ..components.cstr_enforce import ConstraintsEffectiveAreaEnforce
@@ -43,18 +48,39 @@ XML_FILE = "sample_pemfc_stack.xml"
 NB_POINTS_TEST = 10
 
 
-def test_pemfc_weight():
+def test_pemfc_weight_aerostak_200w():
 
     # Research independent input value in .xml file
     ivc = get_indep_var_comp(
-        list_inputs(SizingPEMFCWeight(pemfc_stack_id="pemfc_stack_1")),
+        list_inputs(SizingPEMFCWeightAerostak200W(pemfc_stack_id="pemfc_stack_1")),
         __file__,
         XML_FILE,
     )
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
-        SizingPEMFCWeight(pemfc_stack_id="pemfc_stack_1"),
+        SizingPEMFCWeightAerostak200W(pemfc_stack_id="pemfc_stack_1"),
+        ivc,
+    )
+    assert problem.get_val(
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", units="kg"
+    ) == pytest.approx(0.5, rel=1e-2)
+
+    problem.check_partials(compact_print=True)
+
+
+def test_pemfc_weight_adjusted():
+
+    # Research independent input value in .xml file
+    ivc = get_indep_var_comp(
+        list_inputs(SizingPEMFCWeightAdjusted(pemfc_stack_id="pemfc_stack_1")),
+        __file__,
+        XML_FILE,
+    )
+
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        SizingPEMFCWeightAdjusted(pemfc_stack_id="pemfc_stack_1"),
         ivc,
     )
     assert problem.get_val(
@@ -470,6 +496,11 @@ def test_maximum():
         units="A",
         val=np.array([4.01, 3.93, 3.85, 3.8, 3.75, 3.7, 3.67, 3.63, 3.6, 3.57]),
     )
+    ivc.add_output(
+        "power_out",
+        units="kW",
+        val=np.array([10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0]),
+    )
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
@@ -486,6 +517,68 @@ def test_maximum():
         "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:current_max", units="A"
     ) == pytest.approx(
         4.01,
+        rel=1e-2,
+    )
+    assert problem.get_val(
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:power_min", units="kW"
+    ) == pytest.approx(
+        10.0,
+        rel=1e-2,
+    )
+    assert problem.get_val(
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:power_max", units="kW"
+    ) == pytest.approx(
+        100.0,
+        rel=1e-2,
+    )
+
+    problem.check_partials(compact_print=True)
+
+
+def test_max_power_density_aerostak():
+
+    # Research independent input value in .xml file
+    ivc = om.IndepVarComp()
+    ivc.add_output(
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:power_max",
+        units="kW",
+        val=0.2,
+    )
+
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        PerformancesPEMFCMaxPowerDensityAerostak(pemfc_stack_id="pemfc_stack_1"),
+        ivc,
+    )
+    assert problem.get_val(
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:max_power_density", units="kW/kg"
+    ) == pytest.approx(
+        0.401,
+        rel=1e-2,
+    )
+
+    problem.check_partials(compact_print=True)
+
+
+def test_max_power_density_intelligent_energy():
+
+    # Research independent input value in .xml file
+    ivc = om.IndepVarComp()
+    ivc.add_output(
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:power_max",
+        units="kW",
+        val=600.0,
+    )
+
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        PerformancesPEMFCMaxPowerDensityIntelligentEnergy(pemfc_stack_id="pemfc_stack_1"),
+        ivc,
+    )
+    assert problem.get_val(
+        "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:max_power_density", units="kW/kg"
+    ) == pytest.approx(
+        2.06,
         rel=1e-2,
     )
 

@@ -51,7 +51,9 @@ class PerformancesPEMFCStack(om.Group):
             "pemfc_stack_id": pemfc_stack_id,
         }
 
-        option_max_power_density = {"pemfc_stack_id": pemfc_stack_id,}
+        option_max_power_density = {
+            "pemfc_stack_id": pemfc_stack_id,
+        }
 
         self.add_subsystem(
             "maximum",

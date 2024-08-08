@@ -5,7 +5,7 @@
 import openmdao.api as om
 import numpy as np
 
-SKIN_TEMPERATURE_MAX = 288.15*0.999
+SKIN_TEMPERATURE_MAX = 288.15 * 0.999
 SKIN_TEMPERATURE_MIN = 20.0
 
 
