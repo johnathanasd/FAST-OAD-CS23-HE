@@ -441,7 +441,7 @@ def test_single_layer_voltage_analytical():
     )
 
     assert problem.get_val("single_layer_pemfc_voltage", units="V") == pytest.approx(
-        [0.54015323, 0.48196335, 0.43414516, 0.38967266, 0.3460648, 0.30201917, 0.25664325],
+        [0.857, 0.799, 0.75, 0.71, 0.66, 0.62, 0.57],
         rel=1e-2,
     )
 
@@ -785,6 +785,73 @@ def test_performances_pemfc_stack():
 
     assert problem.get_val("efficiency") == pytest.approx(
         [0.6843, 0.67, 0.6570, 0.6449, 0.6330, 0.6216, 0.6102, 0.5989, 0.5874, 0.5756], rel=1e-2
+    )
+
+    om.n2(problem, show_browser=False, outfile=pth.join(pth.dirname(__file__), "n2.html"))
+
+    problem.check_partials(compact_print=True)
+
+
+def test_performances_pemfc_stack_analytical():
+    oad.RegisterSubmodel.active_models[
+        "submodel.propulsion.performances.pemfc.layer_voltage"
+    ] = "fastga_he.submodel.propulsion.performances.pemfc.layer_voltage.analytical"
+    # Research independent input value in .xml file
+    ivc = get_indep_var_comp(
+        list_inputs(
+            PerformancesPEMFCStack(number_of_points=NB_POINTS_TEST, pemfc_stack_id="pemfc_stack_1")
+        ),
+        __file__,
+        XML_FILE,
+    )
+    dc_current_out = np.linspace(1.68, 9.24, NB_POINTS_TEST)
+    ivc.add_output("dc_current_out", dc_current_out, units="A")
+    ivc.add_output("time_step", units="h", val=np.full(NB_POINTS_TEST, 1))
+
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        PerformancesPEMFCStack(number_of_points=NB_POINTS_TEST, pemfc_stack_id="pemfc_stack_1"),
+        ivc,
+    )
+
+    assert problem.get_val("single_layer_pemfc_voltage", units="V") == pytest.approx(
+        [
+            0.90045315,
+            0.87104179,
+            0.84551353,
+            0.82201006,
+            0.79965299,
+            0.77794886,
+            0.75658583,
+            0.73534818,
+            0.71407501,
+            0.69263817,
+        ],
+        rel=1e-2,
+    )
+
+    assert problem.get_val("fc_current_density", units="A/cm**2") == pytest.approx(
+        [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55], rel=1e-2
+    )
+    assert problem.get_val("fuel_consumption", units="kg/h") == pytest.approx(
+        [0.00219, 0.00329, 0.00439, 0.00548, 0.00658, 0.00768, 0.00877, 0.00987, 0.01097, 0.01207],
+        rel=1e-2,
+    )
+
+    assert problem.get_val("efficiency") == pytest.approx(
+        [
+            0.7326714,
+            0.70874027,
+            0.6879687,
+            0.66884464,
+            0.65065337,
+            0.63299337,
+            0.61561092,
+            0.59833049,
+            0.58102117,
+            0.56357866,
+        ],
+        rel=1e-2,
     )
 
     om.n2(problem, show_browser=False, outfile=pth.join(pth.dirname(__file__), "n2.html"))
