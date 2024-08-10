@@ -19,6 +19,7 @@ from ..components.perf_pemfc_efficiency import PerformancesPEMFCEfficiency
 from ..components.perf_pemfc_voltage import PerformancesPEMFCVoltage
 from ..components.perf_operation_pressure import PerformancesOperationPressure
 from ..components.perf_operation_temperature import PerformancesOperationTemperature
+from ..components.perf_analytical_voltage_adjustment import PerformancesAnalyticalVoltageAdjustment
 
 
 class PerformancesPEMFCStack(om.Group):
@@ -72,6 +73,12 @@ class PerformancesPEMFCStack(om.Group):
         self.add_subsystem(
             "pemfc_ambient_pressure",
             PerformancesOperationPressure(number_of_points=number_of_points),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            "pemfc_analytical_voltage_adjustment",
+            PerformancesAnalyticalVoltageAdjustment(number_of_points=number_of_points),
             promotes=["*"],
         )
 

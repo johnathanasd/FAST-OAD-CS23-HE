@@ -84,3 +84,5 @@ submodels:
   #submodel.propulsion.inverter.junction_temperature: fastga_he.submodel.propulsion.inverter.junction_temperature.fixed
   submodel.propulsion.performances.pemfc.layer_voltage: fastga_he.submodel.propulsion.performances.pemfc.layer_voltage.statistical
   submodel.weight.mass_breakdown: fastga_he.submodel.weight.mass_breakdown.modular
+  submodel.propulsion.sizing.pemfc.weight: fastga_he.submodel.propulsion.sizing.pemfc.weight.adjusted
+  submodel.propulsion.performances.pemfc.max_power_density: fastga_he.submodel.propulsion.performances.pemfc.max_power_density.intelligent_energy #aerostak, intelligent_energy

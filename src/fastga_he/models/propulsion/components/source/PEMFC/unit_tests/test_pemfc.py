@@ -33,6 +33,7 @@ from ..components.perf_pemfc_expect_power_density import PerformancesPEMFCMaxPow
 from ..components.perf_pemfc_expect_power_density import (
     PerformancesPEMFCMaxPowerDensityIntelligentEnergy,
 )
+from ..components.perf_analytical_voltage_adjustment import PerformancesAnalyticalVoltageAdjustment
 
 from ..components.cstr_ensure import ConstraintsEffectiveAreaEnsure
 from ..components.cstr_enforce import ConstraintsEffectiveAreaEnforce
@@ -376,6 +377,26 @@ def test_operation_pressure():
         ivc,
     )
     assert problem.get_val("operation_pressure", units="atm") == pytest.approx(
+        [1.0] * int(NB_POINTS_TEST), rel=1e-2
+    )
+    problem.check_partials(compact_print=True)
+
+def test_analytical_voltage_adjustment():
+
+    ivc = om.IndepVarComp()
+    ivc.add_output(
+        "operation_pressure",
+        units="atm",
+        val=np.ones(NB_POINTS_TEST),
+    )
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        PerformancesAnalyticalVoltageAdjustment(
+             number_of_points=NB_POINTS_TEST
+        ),
+        ivc,
+    )
+    assert problem.get_val("analytical_voltage_adjust_factor") == pytest.approx(
         [1.0] * int(NB_POINTS_TEST), rel=1e-2
     )
     problem.check_partials(compact_print=True)

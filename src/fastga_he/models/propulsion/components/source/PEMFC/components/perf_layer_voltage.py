@@ -303,6 +303,11 @@ class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
             val=np.full(number_of_points, DEFAULT_TEMPERATURE),
         )
 
+        self.add_input(
+            name="analytical_voltage_adjust_factor",
+            val=np.full(number_of_points, 1.0),
+        )
+
         self.add_output(
             "single_layer_pemfc_voltage",
             units="V",
@@ -311,7 +316,7 @@ class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
 
         self.declare_partials(
             of="*",
-            wrt=["fc_current_density", "operation_pressure", "operation_temperature"],
+            wrt=["fc_current_density", "operation_pressure", "operation_temperature","analytical_voltage_adjust_factor"],
             method="exact",
             rows=np.arange(number_of_points),
             cols=np.arange(number_of_points),
@@ -338,6 +343,7 @@ class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
         jlim = self.options["limiting_current_density"] * np.ones(number_of_points)
         jleak = self.options["leakage_current_density"] * np.ones(number_of_points)
         J = inputs["fc_current_density"]
+        vf = inputs["analytical_voltage_adjust_factor"]
 
         j = np.clip(
             inputs["fc_current_density"],
@@ -351,7 +357,7 @@ class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
 
         t = inputs["operation_temperature"]
 
-        outputs["single_layer_pemfc_voltage"] = (
+        outputs["single_layer_pemfc_voltage"] = vf*(
             e0
             - ds / (2 * faraday_const) * (t - t0)
             + gas_const * t / (2 * faraday_const) * np.log(p_h2 * np.sqrt(p_o2 * 0.21))
@@ -363,6 +369,7 @@ class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
         number_of_points = self.options["number_of_points"]
+        e0 = self.options["reversible_electric_potential"]
         ds = self.options["entropy_difference"]
         gas_const = self.options["gas_constant"]
         faraday_const = self.options["faraday_constant"]
@@ -374,6 +381,8 @@ class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
         jlim = self.options["limiting_current_density"] * np.ones(number_of_points)
         jleak = self.options["leakage_current_density"] * np.ones(number_of_points)
         p_o2 = inputs["operation_pressure"]
+        vf = inputs["analytical_voltage_adjust_factor"]
+
 
         p_h2 = inputs["hydrogen_reactant_pressure"]
 
@@ -385,24 +394,33 @@ class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
 
         partials_j = np.where(
             inputs["fc_current_density"] == j,
-            -gas_const * t / (2 * faraday_const * a * (j + jleak))
+            vf*(- gas_const * t / (2 * faraday_const * a * (j + jleak))
             - c / (-j + jlim - jleak)
-            - r * np.ones(number_of_points),
+            - r * np.ones(number_of_points)),
             1e-6,
         )
 
         partials["single_layer_pemfc_voltage", "fc_current_density"] = partials_j
 
-        partials["single_layer_pemfc_voltage", "operation_temperature"] = (
+        partials["single_layer_pemfc_voltage", "operation_temperature"] = vf*(
             -ds / (2 * faraday_const) * np.ones(number_of_points)
             + gas_const / (2 * faraday_const) * np.log(p_h2 * np.sqrt(p_o2 * 0.21))
             - gas_const / (2 * a * faraday_const) * np.log(j + jleak)
         )
 
-        partials["single_layer_pemfc_voltage", "operation_pressure"] = (
+        partials["single_layer_pemfc_voltage", "operation_pressure"] = vf*(
             gas_const * t / (4 * faraday_const * p_o2)
         )
 
-        partials["single_layer_pemfc_voltage", "hydrogen_reactant_pressure"] = (
+        partials["single_layer_pemfc_voltage", "hydrogen_reactant_pressure"] = vf*(
             gas_const * t / (2 * faraday_const * p_h2)
+        )
+
+        partials["single_layer_pemfc_voltage","analytical_voltage_adjust_factor"] = (
+            e0
+            - ds / (2 * faraday_const) * (t - t0)
+            + gas_const * t / (2 * faraday_const) * np.log(p_h2 * np.sqrt(p_o2 * 0.21))
+            - gas_const * t / (2 * a * faraday_const) * np.log(j + jleak)
+            - r * j
+            - c * np.log(jlim / (jlim - j - jleak))
         )
