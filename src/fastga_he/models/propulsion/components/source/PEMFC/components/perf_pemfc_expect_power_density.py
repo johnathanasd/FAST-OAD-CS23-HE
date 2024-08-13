@@ -144,7 +144,7 @@ class PerformancesPEMFCMaxPowerDensityIntelligentEnergy(om.ExplicitComponent):
 
         outputs[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":max_power_density"
-        ] = np.clip(unclipped_power_density, 1e-6, MAX_PEMFC_POWER_DENSITY)
+        ] = np.clip(unclipped_power_density, 0.05, MAX_PEMFC_POWER_DENSITY)
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
         pemfc_stack_id = self.options["pemfc_stack_id"]
@@ -163,7 +163,7 @@ class PerformancesPEMFCMaxPowerDensityIntelligentEnergy(om.ExplicitComponent):
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":max_power_density",
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max",
         ] = np.where(
-            (unclipped_power_density <= MAX_PEMFC_POWER_DENSITY),
+            (unclipped_power_density <= MAX_PEMFC_POWER_DENSITY & unclipped_power_density >= 0.05),
             0.27775
             / inputs["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"],
             np.full_like(

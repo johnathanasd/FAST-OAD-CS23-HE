@@ -118,7 +118,7 @@
         </PMSM>
         <cryogenic_hydrogen_tank>
           <cryogenic_hydrogen_tank_1>
-            <fuel_consumed_mission units="kg" is_input="False">13.556743268938837<!--Amount of fuel from that tank which will be consumed during mission--></fuel_consumed_mission>
+            <fuel_consumed_mission units="kg" is_input="False">13.556743268938835<!--Amount of fuel from that tank which will be consumed during mission--></fuel_consumed_mission>
             <liquid_hydrogen_temperature units="degK" is_input="False">34.69409465334292<!--Liquid hydrogen temperature in the tank--></liquid_hydrogen_temperature>
             <overall_hydrogen_boil_off units="kg" is_input="False">0.018337785441719427<!--Amount of trapped hydrogen in the tank--></overall_hydrogen_boil_off>
             <tank_pressure units="Pa" is_input="True">1013250.0<!--Inner thank pressure --></tank_pressure>
@@ -194,7 +194,10 @@
             <current_min units="A" is_input="False">567.0523013634211<!--Minimum current to the pemfc during the mission--></current_min>
             <effective_area units="cm**2" is_input="True">2000.0<!--Effective fuel cell area in the stack--></effective_area>
             <mass units="kg" is_input="True">327.988</mass>
+            <max_power_density units="kW/kg" is_input="False">0.6399459072204433</max_power_density>
             <number_of_layers is_input="True">450.0<!--Total number of layers in the pemfc stacks--></number_of_layers>
+            <power_max units="kW" is_input="False">207.60491737809815<!--Maximum power to the pemfc during the mission--></power_max>
+            <power_min units="kW" is_input="False">198.8966933914959<!--Minimum power to the pemfc during the mission--></power_min>
           </pemfc_stack_1>
         </pemfc_stack>
         <propeller>

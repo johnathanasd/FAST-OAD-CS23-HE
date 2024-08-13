@@ -90,4 +90,5 @@ submodels:
   submodel.propulsion.constraints.fuel_tank.capacity: fastga_he.submodel.propulsion.constraints.fuel_tank.capacity.ensure
   submodel.weight.mass.mzfw_and_mlw: fastga_he.submodel.weight.mass.mzfw_and_mlw.only_zfw
   submodel.propulsion.constraints.planetary_gear.torque: fastga_he.submodel.propulsion.constraints.planetary_gear.torque.enforce
-
+  submodel.propulsion.sizing.pemfc.weight: fastga_he.submodel.propulsion.sizing.pemfc.weight.adjusted
+  submodel.propulsion.performances.pemfc.max_power_density: fastga_he.submodel.propulsion.performances.pemfc.max_power_density.aerostak #aerostak, intelligent_energy

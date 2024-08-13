@@ -381,6 +381,7 @@ def test_operation_pressure():
     )
     problem.check_partials(compact_print=True)
 
+
 def test_analytical_voltage_adjustment():
 
     ivc = om.IndepVarComp()
@@ -391,9 +392,7 @@ def test_analytical_voltage_adjustment():
     )
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
-        PerformancesAnalyticalVoltageAdjustment(
-             number_of_points=NB_POINTS_TEST
-        ),
+        PerformancesAnalyticalVoltageAdjustment(number_of_points=NB_POINTS_TEST),
         ivc,
     )
     assert problem.get_val("analytical_voltage_adjust_factor") == pytest.approx(

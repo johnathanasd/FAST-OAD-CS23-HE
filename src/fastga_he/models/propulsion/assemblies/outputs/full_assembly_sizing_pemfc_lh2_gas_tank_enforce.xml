@@ -65,12 +65,12 @@
             <dissipable_heat units="W" is_input="False">4692.5396602742<!--Maximum power losses of the inverter (all modules)--></dissipable_heat>
             <losses_max units="W" is_input="False">4728.962423966975</losses_max>
             <mass units="kg" is_input="False">917.0484187301823<!--Mass of the converter--></mass>
-            <power_density units="kW/kg" is_input="False">0.22385764144479464<!--Power density of the DC/DC converter--></power_density>
+            <power_density units="kW/kg" is_input="False">0.22385764144479467<!--Power density of the DC/DC converter--></power_density>
             <switching_frequency units="Hz" is_input="False">12000.0<!--Maximum switching frequency of the IGBT module in the converter--></switching_frequency>
             <switching_frequency_max units="Hz" is_input="False">12000.0<!--Maximum switching frequency seen during the mission in the converter--></switching_frequency_max>
             <switching_frequency_mission units="Hz" is_input="True">12000.0<!--Switching frequency of the DC/DC converter for the points--></switching_frequency_mission>
             <voltage_caliber units="V" is_input="False">850.0<!--Voltage caliber of the converter--></voltage_caliber>
-            <voltage_in_caliber units="V" is_input="False">302.3962207237537</voltage_in_caliber>
+            <voltage_in_caliber units="V" is_input="False">302.39622072375374</voltage_in_caliber>
             <voltage_in_max units="V" is_input="False">300.4903596454035</voltage_in_max>
             <voltage_out_max units="V" is_input="False">850.0</voltage_out_max>
             <voltage_out_target_mission units="V" is_input="True">850.0<!--Target output voltage of the DC/DC converter for the points--></voltage_out_target_mission>
@@ -507,18 +507,18 @@
         <cryogenic_hydrogen_tank>
           <cryogenic_hydrogen_tank_1>
             <Safety_factor is_input="True">1.0<!--Cryogenic hydrogen tank design safety factor--></Safety_factor>
-            <capacity units="kg" is_input="False">15.30707262719401<!--Capacity of the tank in terms of weight--></capacity>
+            <capacity units="kg" is_input="False">15.307072627194009<!--Capacity of the tank in terms of weight--></capacity>
             <fuel_consumed_mission units="kg" is_input="False">15.418620564512779<!--Amount of fuel from that tank which will be consumed during mission--></fuel_consumed_mission>
-            <fuel_total_mission units="kg" is_input="False">15.30707262719401<!--Total amount of hydrogen loaded in the tank for the mission--></fuel_total_mission>
-            <gravimetric_index is_input="False">0.9198116962729522<!--The amount ratio between the mission used weight and overall weight --></gravimetric_index>
-            <inner_volume units="m**3" is_input="False">0.21604901379243488<!--Capacity of the tank in terms of volume--></inner_volume>
+            <fuel_total_mission units="kg" is_input="False">15.307072627194009<!--Total amount of hydrogen loaded in the tank for the mission--></fuel_total_mission>
+            <gravimetric_index is_input="False">0.9198116962729547<!--The amount ratio between the mission used weight and overall weight --></gravimetric_index>
+            <inner_volume units="m**3" is_input="False">0.21604901379243485<!--Capacity of the tank in terms of volume--></inner_volume>
             <liquid_hydrogen_temperature units="degK" is_input="False">34.69409465334292<!--Liquid hydrogen temperature in the tank--></liquid_hydrogen_temperature>
-            <mass units="kg" is_input="False">1.3268873140399526<!--Weight of the hydrogen gas tanks--></mass>
-            <overall_hydrogen_boil_off units="kg" is_input="False">0.006610432487298016<!--Amount of trapped hydrogen in the tank--></overall_hydrogen_boil_off>
+            <mass units="kg" is_input="False">1.3268873140399102<!--Weight of the hydrogen gas tanks--></mass>
+            <overall_hydrogen_boil_off units="kg" is_input="False">0.006610432487298014<!--Amount of trapped hydrogen in the tank--></overall_hydrogen_boil_off>
             <tank_pressure units="Pa" is_input="True">1013250.0<!--Inner thank pressure --></tank_pressure>
-            <thermal_resistance units="degK/W" is_input="False">427.3768832354533<!--overall thermal resistance of the tank--></thermal_resistance>
-            <unusable_fuel_mission units="kg" is_input="False">0.006961717911261947<!--Amount of trapped hydrogen in the tank--></unusable_fuel_mission>
-            <wall_thermal_resistance units="degK/W" is_input="False">5.6847015101156985e-06<!--Thermal resistance of the tank wall --></wall_thermal_resistance>
+            <thermal_resistance units="degK/W" is_input="False">427.3768832354535<!--overall thermal resistance of the tank--></thermal_resistance>
+            <unusable_fuel_mission units="kg" is_input="False">0.006961717911261948<!--Amount of trapped hydrogen in the tank--></unusable_fuel_mission>
+            <wall_thermal_resistance units="degK/W" is_input="False">5.6847015101157e-06<!--Thermal resistance of the tank wall --></wall_thermal_resistance>
             <CG>
               <x units="m" is_input="False">1.2387085918711065<!--X position of the tank center of gravity--></x>
               <y units="m" is_input="False">0.0<!--Y position of the pemfc center of gravity--></y>
@@ -530,10 +530,10 @@
               <diameter units="m" is_input="False">0.6129<!--Initial Outer diameter of the hydrogen gas tank input--></diameter>
               <inner_diameter units="m" is_input="False">0.6027392827425687<!--Inner diameter of the cryogenic hydrogen tank--></inner_diameter>
               <insulation_thickness units="m" is_input="True">0.005<!--Insulation layer thickness of the cryogenic hydrogen tank--></insulation_thickness>
-              <length units="m" is_input="False">0.35536127157733177<!--Value of the cylindrical length of the tank in the x-direction, computed differently based on the location of the tank--></length>
+              <length units="m" is_input="False">0.35536127157733166<!--Value of the cylindrical length of the tank in the x-direction, computed differently based on the location of the tank--></length>
               <outer_diameter units="m" is_input="False">0.6129<!--Outer diameter of the hydrogen gas tank--></outer_diameter>
-              <overall_length units="m" is_input="False">0.9682612715773318<!--Value of the length of the tank in the x-direction, computed differently based on the location of the tank--></overall_length>
-              <wall_diameter units="m" is_input="True">0.6029<!--Wall diameter of the hydrogen tank--></wall_diameter>
+              <overall_length units="m" is_input="False">0.9682612715773317<!--Value of the length of the tank in the x-direction, computed differently based on the location of the tank--></overall_length>
+              <wall_diameter units="m" is_input="False">0.6029<!--Wall diameter of the hydrogen tank without insulation layer--></wall_diameter>
               <wall_thickness units="m" is_input="False">0.005080358628715642<!--Inner diameter of the hydrogen gas tanks--></wall_thickness>
             </dimension>
             <insulation>
@@ -541,7 +541,7 @@
               <reflectivity_coefficient is_input="True">0.8<!--The reflectiveness of the material, values between 0 and 1, 0 means no reflectiveness--></reflectivity_coefficient>
               <thermal_conductivity units="W/m/degK" is_input="True">1.7e-05<!--Thermal conductivity of the insulation material--></thermal_conductivity>
               <thermal_emissivity is_input="True">0.03<!--Thermal emissivity of insulation material--></thermal_emissivity>
-              <thermal_resistance units="degK/W" is_input="False">427.3768775507518<!--Thermal resistance of the the insulation layer--></thermal_resistance>
+              <thermal_resistance units="degK/W" is_input="False">427.37687755075194<!--Thermal resistance of the the insulation layer--></thermal_resistance>
             </insulation>
             <low_speed>
               <CD0 is_input="False">0.0</CD0>
@@ -721,7 +721,10 @@
             <current_min units="A" is_input="False">637.7732183577069<!--Minimum current to the pemfc during the mission--></current_min>
             <effective_area units="cm**2" is_input="False">969.8169961831676<!--Effective area of PEMFC chemical reaction--></effective_area>
             <mass units="kg" is_input="False">371.10338304047764<!--Mass of the pemfc stack--></mass>
+            <max_power_density units="kW/kg" is_input="False">0.6386162397691392</max_power_density>
             <number_of_layers is_input="True">450.0<!--Total number of layers in the pemfc stacks--></number_of_layers>
+            <power_max units="kW" is_input="False">199.7334473180361<!--Maximum power to the pemfc during the mission--></power_max>
+            <power_min units="kW" is_input="False">191.6447037565138<!--Minimum power to the pemfc during the mission--></power_min>
             <volume units="m**3" is_input="False">1.2019487911995212<!--Volume of the pemfc stack--></volume>
             <CG>
               <x units="m" is_input="False">1.2387085918711065<!--X position of the pemfc center of gravity--></x>
@@ -800,7 +803,7 @@
         <cryogenic_hydrogen_tank>
           <cryogenic_hydrogen_tank_1>
             <dimension>
-              <overall_length units="m" is_input="False">-0.5091559121648812<!--Constraints on the tank length w.r.t the cabin/rear_fuselage length,  respected if <0--></overall_length>
+              <overall_length units="m" is_input="False">-0.5091559121648813<!--Constraints on the tank length w.r.t the cabin/rear_fuselage length,  respected if <0--></overall_length>
             </dimension>
           </cryogenic_hydrogen_tank_1>
         </cryogenic_hydrogen_tank>

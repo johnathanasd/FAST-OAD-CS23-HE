@@ -7,6 +7,7 @@ import openmdao.api as om
 from .sizing_tank_unusable_hydrogen import SizingCryogenicHydrogenTankUnusableHydrogen
 from .sizing_tank_total_hydrogen_mission import SizingCryogenicHydrogenTankTotalHydrogenMission
 from .sizing_tank_wall_thickness import SizingCryogenicHydrogenTankWallThickness
+from .sizing_tank_wall_diameter import SizingCryogenicHydrogenTankWallDiameter
 from .sizing_tank_cg_x import SizingCryogenicHydrogenTankCGX
 from .sizing_tank_cg_y import SizingCryogenicHydrogenTankCGY
 from .sizing_tank_length import SizingCryogenicHydrogenTankLength
@@ -111,6 +112,14 @@ class SizingCryogenicHydrogenTank(om.Group):
         self.add_subsystem(
             name="tank_wall_thickness",
             subsys=SizingCryogenicHydrogenTankWallThickness(
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            name="tank_wall_diameter",
+            subsys=SizingCryogenicHydrogenTankWallDiameter(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
             ),
             promotes=["*"],

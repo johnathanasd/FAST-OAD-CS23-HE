@@ -519,7 +519,7 @@
               <length units="m" is_input="False">0.3285962970928001<!--Value of the cylindrical length of the tank in the x-direction, computed differently based on the location of the tank--></length>
               <outer_diameter units="m" is_input="False">0.6129<!--Outer diameter of the hydrogen gas tank--></outer_diameter>
               <overall_length units="m" is_input="False">0.9414962970928<!--Value of the length of the tank in the x-direction, computed differently based on the location of the tank--></overall_length>
-              <wall_diameter units="m" is_input="True">0.6029<!--Wall diameter of the hydrogen tank--></wall_diameter>
+              <wall_diameter units="m" is_input="False">0.6029<!--Wall diameter of the hydrogen tank without insulation layer--></wall_diameter>
               <wall_thickness units="m" is_input="False">0.005080358628715642<!--Inner diameter of the hydrogen gas tanks--></wall_thickness>
             </dimension>
             <insulation>
