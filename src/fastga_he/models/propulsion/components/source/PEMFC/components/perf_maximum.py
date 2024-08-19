@@ -89,19 +89,19 @@ class PerformancesMaximum(om.ExplicitComponent):
 
         outputs[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_max"
-        ] = np.max(inputs["dc_current_out"])
+        ] = np.nanmax(inputs["dc_current_out"])
 
         outputs[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":current_min"
-        ] = np.min(inputs["dc_current_out"])
+        ] = np.nanmin(inputs["dc_current_out"])
 
         outputs[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"
-        ] = np.max(inputs["power_out"])
+        ] = np.nanmax(inputs["power_out"])
 
         outputs[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_min"
-        ] = np.min(inputs["power_out"])
+        ] = np.nanmin(inputs["power_out"])
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 

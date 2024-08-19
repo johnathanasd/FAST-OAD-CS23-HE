@@ -61,28 +61,46 @@ class PerformancesPEMFCMaxPowerDensityAerostak(om.ExplicitComponent):
 
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
-        outputs[
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":max_power_density"
-        ] = (
+        power_max = inputs[
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"
+            ]
+
+
+        unclipped_power_density = (
             0.0344
             * np.log(
-                inputs[
-                    "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"
-                ]
+                power_max
             )
             + 0.4564
         )
 
+        outputs[
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":max_power_density"
+            ] = np.clip(unclipped_power_density, 0.05, MAX_PEMFC_POWER_DENSITY)
+
     def compute_partials(self, inputs, partials, discrete_inputs=None):
         pemfc_stack_id = self.options["pemfc_stack_id"]
+        power_max = inputs[
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"
+            ]
 
-        partials[
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":max_power_density",
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max",
-        ] = (
-            0.0344
-            / inputs["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"]
+        unclipped_power_density = (
+                0.0344
+                * np.log(
+            power_max
         )
+                + 0.4564
+        )
+        if unclipped_power_density <= MAX_PEMFC_POWER_DENSITY and unclipped_power_density >= 0.05:
+            partials[
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":max_power_density",
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max",
+            ] = 0.0344/ power_max
+        else:
+            partials[
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":max_power_density",
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max",
+            ] = 0.0
 
 
 @oad.RegisterSubmodel(
@@ -132,14 +150,13 @@ class PerformancesPEMFCMaxPowerDensityIntelligentEnergy(om.ExplicitComponent):
 
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
-        unclipped_power_density = (
-            0.27775
-            * np.log(
-                inputs[
+        power_max = inputs[
                     "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"
                 ]
-            )
-            + 1.598
+
+        unclipped_power_density = (
+            0.27775
+            * np.log(power_max)+ 1.598
         )
 
         outputs[
@@ -159,17 +176,15 @@ class PerformancesPEMFCMaxPowerDensityIntelligentEnergy(om.ExplicitComponent):
             + 1.598
         )
 
-        partials[
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":max_power_density",
-            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max",
-        ] = np.where(
-            (unclipped_power_density <= MAX_PEMFC_POWER_DENSITY & unclipped_power_density >= 0.05),
-            0.27775
-            / inputs["data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"],
-            np.full_like(
-                inputs[
+        if unclipped_power_density <= MAX_PEMFC_POWER_DENSITY and unclipped_power_density >= 0.05:
+            partials[
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":max_power_density",
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max",
+            ] = 0.27775 / inputs[
                     "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"
-                ],
-                1e-6,
-            ),
-        )
+                ]
+        else:
+            partials[
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":max_power_density",
+                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max",
+            ] = 0.0

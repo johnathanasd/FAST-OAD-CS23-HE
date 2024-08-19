@@ -473,3 +473,44 @@ def test_pemfc_lh2_retrofit():
     residuals = filter_residuals(residuals)
 
     problem.write_outputs()
+
+def test_pemfc_lh2_hybrid_retrofit():
+
+    logging.basicConfig(level=logging.WARNING)
+    logging.getLogger("fastoad.module_management._bundle_loader").disabled = True
+    logging.getLogger("fastoad.openmdao.variables.variable").disabled = True
+
+    # Define used files depending on options
+    xml_file_name = "input_turboshaft_pemfc_lh2_hybrid_dhc6.xml"
+    process_file_name = "pemfc_turboprop_hybrid_lh2_resize.yml"
+
+    configurator = oad.FASTOADProblemConfigurator(pth.join(DATA_FOLDER_PATH, process_file_name))
+    problem = configurator.get_problem()
+
+    # Create inputs
+    ref_inputs = pth.join(DATA_FOLDER_PATH, xml_file_name)
+
+    problem.model_options["*propeller_*"] = {"mass_as_input": True}
+
+    problem.write_needed_inputs(ref_inputs)
+    problem.read_inputs()
+    problem.setup()
+
+    problem.set_val(name="data:weight:aircraft:MTOW", units="kg", val=5000.0)
+    problem.set_val(
+        name="data:geometry:wing:area", units="m**2", val=40.23736482578201
+    )  # Copy the value from source file
+
+    # om.n2(problem)
+
+    problem.run_model()
+
+    _, _, residuals = problem.model.get_nonlinear_vectors()
+    residuals = filter_residuals(residuals)
+    print(residuals)
+
+    problem.write_outputs()
+
+
+
+
