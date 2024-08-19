@@ -6,4 +6,4 @@ SUBMODEL_CONSTRAINTS_CRYOGENIC_HYDROGEN_TANK_CAPACITY = (
     "submodel.propulsion.constraints.cryogenic_hydrogen_tank.capacity"
 )
 
-POSSIBLE_POSITION = ["in_the_fuselage", "wing_pod", "in_the_back", "underbelly"]
+POSSIBLE_POSITION = ["in_the_front","in_the_fuselage", "wing_pod", "in_the_back", "underbelly"]

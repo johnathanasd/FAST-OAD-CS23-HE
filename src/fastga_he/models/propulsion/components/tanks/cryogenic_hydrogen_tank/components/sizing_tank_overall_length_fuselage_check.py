@@ -57,6 +57,15 @@ class SizingCryogenicHydrogenTankOverallLengthFuselageCheck(om.ExplicitComponent
                 val=0.5,
             )
 
+        if position == "in_the_front":
+            self.add_input("data:geometry:fuselage:front_length", val=np.nan, units="m")
+            self.add_input(
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":dimension:front_length_ratio",
+                val=0.7,
+            )
+
         self.add_output(
             "constraints:propulsion:he_power_train:cryogenic_hydrogen_tank:"
             + cryogenic_hydrogen_tank_id
@@ -98,7 +107,19 @@ class SizingCryogenicHydrogenTankOverallLengthFuselageCheck(om.ExplicitComponent
 
             self.declare_partials(
                 of="*",
-                wrt="*",
+                wrt=["data:geometry:fuselage:rear_length","data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":dimension:rear_length_ratio"],
+                method="exact",
+            )
+
+        elif position == "in_the_front":
+
+            self.declare_partials(
+                of="*",
+                wrt=["data:geometry:fuselage:front_length","data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":dimension:front_length_ratio"],
                 method="exact",
             )
 
@@ -140,6 +161,27 @@ class SizingCryogenicHydrogenTankOverallLengthFuselageCheck(om.ExplicitComponent
                 ]
                 * inputs["data:geometry:fuselage:rear_length"]
             )
+
+        elif position == "in_the_front":
+
+            outputs[
+                "constraints:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":dimension:overall_length"
+            ] = (
+                inputs[
+                    "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                    + cryogenic_hydrogen_tank_id
+                    + ":dimension:overall_length"
+                ]
+                - inputs[
+                    "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                    + cryogenic_hydrogen_tank_id
+                    + ":dimension:front_length_ratio"
+                ]
+                * inputs["data:geometry:fuselage:front_length"]
+            )
+
         else:
 
             outputs[
@@ -173,4 +215,26 @@ class SizingCryogenicHydrogenTankOverallLengthFuselageCheck(om.ExplicitComponent
                 "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
                 + cryogenic_hydrogen_tank_id
                 + ":dimension:rear_length_ratio"
+            ]
+
+        elif position == "in_the_front":
+
+            partials[
+                "constraints:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":dimension:overall_length",
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":dimension:front_length_ratio",
+            ] = -inputs["data:geometry:fuselage:front_length"]
+
+            partials[
+                "constraints:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":dimension:overall_length",
+                "data:geometry:fuselage:front_length",
+            ] = -inputs[
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":dimension:front_length_ratio"
             ]

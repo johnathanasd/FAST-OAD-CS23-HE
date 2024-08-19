@@ -284,10 +284,13 @@ def test_performances_sizing_assembly_pemfc_enforce():
         "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", units="kg"
     ) == pytest.approx(371.103, rel=1e-2)
 
-    assert problem.get_val(
-        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
-        units="kg",
-    ) == pytest.approx(1.33, rel=1e-2)
+    assert (
+        problem.get_val(
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
+            units="kg",
+        )
+        == pytest.approx(1.33, rel=1e-2)
+    )
 
 
 def test_assembly_sizing_from_pt_file():
@@ -335,10 +338,13 @@ def test_assembly_sizing_from_pt_file():
     assert problem.get_val(
         "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", units="kg"
     ) == pytest.approx(327.988, rel=1e-2)
-    assert problem.get_val(
-        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
-        units="kg",
-    ) == pytest.approx(1.29, rel=1e-2)
+    assert (
+        problem.get_val(
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
+            units="kg",
+        )
+        == pytest.approx(1.29, rel=1e-2)
+    )
     assert problem.get_val(
         "data:propulsion:he_power_train:DC_SSPC:dc_sspc_1:mass", units="kg"
     ) == pytest.approx(6.47, rel=1e-2)
@@ -425,10 +431,13 @@ def test_performances_sizing_assembly_pemfc_ensure():
         "data:propulsion:he_power_train:pemfc_stack:pemfc_stack_1:mass", units="kg"
     ) == pytest.approx(765.306, rel=1e-2)
 
-    assert problem.get_val(
-        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
-        units="kg",
-    ) == pytest.approx(1.17, rel=1e-2)
+    assert (
+        problem.get_val(
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
+            units="kg",
+        )
+        == pytest.approx(1.17, rel=1e-2)
+    )
 
 
 def test_performances_from_pt_file():
