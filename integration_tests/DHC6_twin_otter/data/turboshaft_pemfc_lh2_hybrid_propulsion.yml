@@ -129,6 +129,6 @@ component_connections:
     target: pemfc_stack_1
 
   - source: pemfc_stack_1
-    target: cryogenic_hydrogen_tank
+    target: cryogenic_hydrogen_tank_1
 
 watcher_file_path: ../results/pemfc_turboshaft_hybrid_lh2_propulsion_pt_watcher.csv

@@ -474,6 +474,7 @@ def test_pemfc_lh2_retrofit():
 
     problem.write_outputs()
 
+
 def test_pemfc_lh2_hybrid_retrofit():
 
     logging.basicConfig(level=logging.WARNING)
@@ -510,7 +511,3 @@ def test_pemfc_lh2_hybrid_retrofit():
     print(residuals)
 
     problem.write_outputs()
-
-
-
-

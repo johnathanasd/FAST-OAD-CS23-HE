@@ -254,7 +254,7 @@ def test_tank_length():
 
 def test_tank_outer_diameter():
 
-    expected_values = [0.97802,0.97802, 1.2, 0.97802, 0.97802]
+    expected_values = [0.97802, 0.97802, 1.2, 0.97802, 0.97802]
 
     for option, expected_value in zip(POSSIBLE_POSITION, expected_values):
         # Research independent input value in .xml file

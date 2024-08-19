@@ -996,7 +996,7 @@ CRYOGENIC_HYDROGEN_TANK = {
         {"hydrogen_boil_off_t": "kg"},
         {"heat_convection": "W"},
         {"heat_radiation": "W"},
-        {"skin_temperature": "K"}
+        {"skin_temperature": "K"},
     ],
     SMP: [
         {"delta_Cd": None},

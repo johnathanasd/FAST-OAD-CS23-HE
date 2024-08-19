@@ -80,7 +80,7 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
             + ":dimension:diameter"
         ]
 
-        not_under_wing = (position != "wing_pod")
+        not_under_wing = position != "wing_pod"
 
         not_fit_in_fuselage = (
             inputs[
@@ -156,7 +156,7 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
         hydrogen_gas_tank_id = self.options["hydrogen_gas_tank_id"]
         position = self.options["position"]
 
-        not_under_wing = (position != "wing_pod")
+        not_under_wing = position != "wing_pod"
 
         d = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"

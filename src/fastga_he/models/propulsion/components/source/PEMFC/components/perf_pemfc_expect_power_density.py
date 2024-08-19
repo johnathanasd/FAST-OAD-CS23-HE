@@ -63,42 +63,35 @@ class PerformancesPEMFCMaxPowerDensityAerostak(om.ExplicitComponent):
 
         power_max = inputs[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"
-            ]
+        ]
 
-
-        unclipped_power_density = (
-            0.0344
-            * np.log(
-                power_max
-            )
-            + 0.4564
-        )
+        unclipped_power_density = 0.0344 * np.log(power_max) + 0.4564
 
         outputs[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":max_power_density"
-            ] = np.clip(unclipped_power_density, 0.05, MAX_PEMFC_POWER_DENSITY)
+        ] = np.clip(unclipped_power_density, 0.05, MAX_PEMFC_POWER_DENSITY)
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
         pemfc_stack_id = self.options["pemfc_stack_id"]
         power_max = inputs[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"
-            ]
+        ]
 
-        unclipped_power_density = (
-                0.0344
-                * np.log(
-            power_max
-        )
-                + 0.4564
-        )
+        unclipped_power_density = 0.0344 * np.log(power_max) + 0.4564
         if unclipped_power_density <= MAX_PEMFC_POWER_DENSITY and unclipped_power_density >= 0.05:
             partials[
-                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":max_power_density",
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
+                + ":max_power_density",
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max",
-            ] = 0.0344/ power_max
+            ] = (
+                0.0344 / power_max
+            )
         else:
             partials[
-                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":max_power_density",
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
+                + ":max_power_density",
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max",
             ] = 0.0
 
@@ -151,13 +144,10 @@ class PerformancesPEMFCMaxPowerDensityIntelligentEnergy(om.ExplicitComponent):
         pemfc_stack_id = self.options["pemfc_stack_id"]
 
         power_max = inputs[
-                    "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"
-                ]
+            "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"
+        ]
 
-        unclipped_power_density = (
-            0.27775
-            * np.log(power_max)+ 1.598
-        )
+        unclipped_power_density = 0.27775 * np.log(power_max) + 1.598
 
         outputs[
             "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":max_power_density"
@@ -178,13 +168,20 @@ class PerformancesPEMFCMaxPowerDensityIntelligentEnergy(om.ExplicitComponent):
 
         if unclipped_power_density <= MAX_PEMFC_POWER_DENSITY and unclipped_power_density >= 0.05:
             partials[
-                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":max_power_density",
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
+                + ":max_power_density",
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max",
-            ] = 0.27775 / inputs[
+            ] = (
+                0.27775
+                / inputs[
                     "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max"
                 ]
+            )
         else:
             partials[
-                "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":max_power_density",
+                "data:propulsion:he_power_train:pemfc_stack:"
+                + pemfc_stack_id
+                + ":max_power_density",
                 "data:propulsion:he_power_train:pemfc_stack:" + pemfc_stack_id + ":power_max",
             ] = 0.0
