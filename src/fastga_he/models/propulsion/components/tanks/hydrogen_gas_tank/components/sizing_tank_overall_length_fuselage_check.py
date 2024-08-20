@@ -112,6 +112,7 @@ class SizingHydrogenGasTankOverallLengthFuselageCheck(om.ExplicitComponent):
                     "data:propulsion:he_power_train:hydrogen_gas_tank:"
                     + hydrogen_gas_tank_id
                     + ":dimension:rear_length_ratio",
+                    "data:geometry:fuselage:rear_length",
                 ],
                 method="exact",
             )
@@ -125,6 +126,7 @@ class SizingHydrogenGasTankOverallLengthFuselageCheck(om.ExplicitComponent):
                     "data:propulsion:he_power_train:hydrogen_gas_tank:"
                     + hydrogen_gas_tank_id
                     + ":dimension:front_length_ratio",
+                    "data:geometry:fuselage:front_length",
                 ],
                 method="exact",
             )
