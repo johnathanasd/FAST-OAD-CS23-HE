@@ -139,6 +139,15 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
 
             _LOGGER.warning(msg="Negative length!! Tank diameter adjust to proper size")
 
+        elif position == "in_the_fuselage" and d >= (
+            0.2 * inputs["data:geometry:fuselage:maximum_height"]
+        ):
+            outputs[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:outer_diameter"
+            ] = (0.2 * inputs["data:geometry:fuselage:maximum_height"])
+
         else:
 
             outputs[
@@ -255,8 +264,17 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
                 ** (2 / 3)
             )
 
-        else:
+        elif position == "in_the_fuselage" and d >= (
+            0.2 * inputs["data:geometry:fuselage:maximum_height"]
+        ):
+            partials[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:outer_diameter",
+                "data:geometry:fuselage:maximum_height",
+            ] = 0.2
 
+        else:
             partials[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
