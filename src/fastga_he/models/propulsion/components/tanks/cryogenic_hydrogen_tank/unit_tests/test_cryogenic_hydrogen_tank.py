@@ -157,7 +157,7 @@ def test_inner_volume_cryogenic_hydrogen_tank():
 
 def test_tank_cg_x():
 
-    expected_values = [1.73871, 2.8847, 3.96643, 1.73871]
+    expected_values = [0.,1.73871, 2.8847, 3.96643, 1.73871]
 
     for option, expected_value in zip(POSSIBLE_POSITION, expected_values):
         # Research independent input value in .xml file
@@ -333,7 +333,7 @@ def test_tank_adjust_outer_diameter():
 
     ivc.add_output(
         "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:dimension:diameter",
-        val=3.0,
+        val=8.0,
         units="m",
     )
     ivc.add_output("data:geometry:fuselage:maximum_height", val=10.0, units="m")
@@ -351,7 +351,7 @@ def test_tank_adjust_outer_diameter():
                 "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:dimension:outer_diameter",
                 units="m",
             )
-            == pytest.approx(2.0, rel=1e-2)
+            == pytest.approx(7.5, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True, step=1e-7)

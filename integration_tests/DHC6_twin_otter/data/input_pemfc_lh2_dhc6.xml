@@ -550,7 +550,7 @@
         <pemfc_stack>
           <pemfc_stack_1>
             <current_max units="A">600.</current_max>
-            <number_of_layers>1600.0<!--length: 3.428e-3 m per layer 1600 underbelly, 796 front, 970 rear--></number_of_layers>
+            <number_of_layers>1600.0<!--length: 3.428e-3 m per layer 1600 underbelly, 750 front, 970 rear--></number_of_layers>
             <effective_area units="cm**2">1600.</effective_area>
           </pemfc_stack_1>
         </pemfc_stack>

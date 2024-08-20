@@ -259,6 +259,50 @@ def test_pemfc_wing_pod_h2_gas_retrofit():
 
     problem.write_outputs()
 
+def test_pemfc_belly_h2_gas_tank_wingpod_powertrain_network():
+
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "pemfc_belly_h2_tank_wingpod_propulsion.yml")
+    network_file_path = pth.join(RESULTS_FOLDER_PATH, "pemfc_belly_h2_tank_wingpod_propulsion.html")
+
+    if not pth.exists(network_file_path):
+        power_train_network_viewer(pt_file_path, network_file_path)
+
+def test_pemfc_belly_h2_gas_tank_wingpod_retrofit():
+
+    logging.basicConfig(level=logging.WARNING)
+    logging.getLogger("fastoad.module_management._bundle_loader").disabled = True
+    logging.getLogger("fastoad.openmdao.variables.variable").disabled = True
+
+    # Define used files depending on options
+    xml_file_name = "input_pemfc_belly_h2_tank_wingpod_dhc6.xml"
+    process_file_name = "pemfc_belly_h2_gas_tank_wingpod_resize.yml"
+
+    configurator = oad.FASTOADProblemConfigurator(pth.join(DATA_FOLDER_PATH, process_file_name))
+    problem = configurator.get_problem()
+
+    # Create inputs
+    ref_inputs = pth.join(DATA_FOLDER_PATH, xml_file_name)
+
+    problem.model_options["*propeller_*"] = {"mass_as_input": True}
+
+    problem.write_needed_inputs(ref_inputs)
+    problem.read_inputs()
+    problem.setup()
+
+    problem.set_val(name="data:weight:aircraft:MTOW", units="kg", val=5000.0)
+    problem.set_val(
+        name="data:geometry:wing:area", units="m**2", val=40.23736482578201
+    )  # Copy the value from source file
+
+    # om.n2(problem)
+
+    problem.run_model()
+
+    _, _, residuals = problem.model.get_nonlinear_vectors()
+    residuals = filter_residuals(residuals)
+
+    problem.write_outputs()
+
 
 def test_turboshaft_pemfc_hybrid_powertrain_network():
 

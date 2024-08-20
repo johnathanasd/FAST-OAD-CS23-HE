@@ -87,10 +87,31 @@ class SizingHydrogenGasTankCGX(om.ExplicitComponent):
                 val=0.5,
             )
 
+        elif position == "in_the_front":
+            self.add_input("data:geometry:fuselage:front_length", val=np.nan, units="m")
+
+            self.add_input(
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:length",
+                units="m",
+                val=np.nan,
+                desc="Length of the pemfc, as in the size of the pemfc along the X-axis",
+            )
+
+            self.declare_partials(of="*", wrt="data:geometry:fuselage:front_length", val=1.0)
+
+            self.declare_partials(
+                of="*",
+                wrt="data:propulsion:he_power_train:hydrogen_gas_tank:"
+                    + hydrogen_gas_tank_id
+                    + ":dimension:length",
+                val=-0.5,
+            )
+
         # We can do an else for the last option since we gave OpenMDAO the possible, ensuring it
         # is one among them
         else:
-
             self.add_input("data:geometry:fuselage:front_length", val=np.nan, units="m")
             self.add_input("data:geometry:cabin:length", val=np.nan, units="m")
 
@@ -129,6 +150,18 @@ class SizingHydrogenGasTankCGX(om.ExplicitComponent):
                     "data:propulsion:he_power_train:hydrogen_gas_tank:"
                     + hydrogen_gas_tank_id
                     + ":dimension:outer_diameter"
+                ]
+            )
+
+        elif position == "in_the_front":
+
+            outputs["data:propulsion:he_power_train:hydrogen_gas_tank:" + hydrogen_gas_tank_id + ":CG:x"] = (
+                inputs["data:geometry:fuselage:front_length"]
+                - 0.5
+                * inputs[
+                    "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                    + hydrogen_gas_tank_id
+                    + ":dimension:length"
                 ]
             )
 

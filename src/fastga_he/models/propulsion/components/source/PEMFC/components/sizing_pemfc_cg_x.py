@@ -64,7 +64,7 @@ class SizingPEMFCCGX(om.ExplicitComponent):
                 desc="Length of the pemfc, as in the size of the pemfc along the X-axis",
             )
 
-            self.declare_partials(of="*", wrt="data:geometry:fuselage:front_length", val=0.9)
+            self.declare_partials(of="*", wrt="data:geometry:fuselage:front_length", val=1.0)
 
             self.declare_partials(
                 of="*",

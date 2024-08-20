@@ -159,6 +159,39 @@ def test_fuel_consumption_pt6a_110():
     print("k_sfc:", 0.657 / sfc)
     # Should be 0,657
 
+def test_fuel_consumption_pt6a_112():
+
+    ivc = om.IndepVarComp()
+    ivc.add_output(
+        "data:propulsion:he_power_train:turboshaft:turboshaft_1:power_rating", units="kW", val=373
+    )
+    ivc.add_output(
+        "data:propulsion:he_power_train:turboshaft:turboshaft_1:design_point:T41t",
+        units="degK",
+        val=1400.0,
+    )
+    ivc.add_output(
+        "data:propulsion:he_power_train:turboshaft:turboshaft_1:design_point:OPR", val=7.0
+    )
+    ivc.add_output(
+        "data:propulsion:he_power_train:turboshaft:turboshaft_1:design_point:power_ratio", val=1.5
+    )
+    ivc.add_output("density_ratio", val=1.0)
+    ivc.add_output("mach", val=0.02)
+    ivc.add_output("power_required", val=373, units="kW")
+
+    problem = run_system(
+        PerformancesTurboshaftFuelConsumption(turboshaft_id="turboshaft_1", number_of_points=1),
+        ivc,
+    )
+
+    sfc = (
+        problem.get_val("fuel_consumption", units="lb/h")[0]
+        / problem.get_val("power_required", units="hp")[0]
+    )
+    print("k_sfc:", 0.637 / sfc)
+    # Should be 0,637
+
 
 def test_fuel_consumption_pt6a_114a():
 
