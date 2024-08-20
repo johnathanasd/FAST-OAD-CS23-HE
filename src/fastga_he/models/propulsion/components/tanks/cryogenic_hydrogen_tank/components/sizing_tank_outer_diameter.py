@@ -112,14 +112,7 @@ class SizingCryogenicHydrogenTankOuterDiameter(om.ExplicitComponent):
                 msg="Tank dimension greater than fuselage!! Tank diameter adjust to proper size"
             )
 
-        elif (
-            inputs[
-                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
-                + cryogenic_hydrogen_tank_id
-                + ":dimension:length"
-            ]
-            < 0
-        ):
+        elif not positive_length:
 
             outputs[
                 "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
@@ -200,14 +193,7 @@ class SizingCryogenicHydrogenTankOuterDiameter(om.ExplicitComponent):
                 "data:geometry:fuselage:maximum_height",
             ] = 0.9
 
-        elif (
-            inputs[
-                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
-                + cryogenic_hydrogen_tank_id
-                + ":dimension:length"
-            ]
-            < 0
-        ):
+        elif not positive_length:
             partials[
                 "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
                 + cryogenic_hydrogen_tank_id
