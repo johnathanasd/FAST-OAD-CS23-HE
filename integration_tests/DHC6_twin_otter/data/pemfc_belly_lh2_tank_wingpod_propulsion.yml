@@ -1,4 +1,4 @@
-title: Powertrain file for the sizing of PEMFC and Hydrogen Pressure Tank
+title: Powertrain file for the sizing of PEMFC and Cryogenic Hydrogen Tank
 
 power_train_components:
   propeller_1:
@@ -40,9 +40,21 @@ power_train_components:
   pemfc_stack_1:
     id: fastga_he.pt_component.pemfc_stack
     position: underbelly  #"in_the_front", "wing_pod", "underbelly", "in_the_back"
-  hydrogen_gas_tank_1:
-    id: fastga_he.pt_component.hydrogen_gas_tank
-    position: in_the_fuselage #"in_the_fuselage", "wing_pod", "in_the_back", "underbelly", "in_the_front"
+
+  fuel_system_1:
+    id: fastga_he.pt_component.fuel_system
+    options:
+      number_of_engines: 1
+      number_of_tanks: 2
+    position: in_the_wing  # "in_the_wing", "in_the_front", "in_the_back"
+
+  cryogenic_hydrogen_tank_1:
+    id: fastga_he.pt_component.cryogenic_hydrogen_tank
+    position: wing_pod # "in_the_fuselage", "wing_pod", "in_the_back", "underbelly"
+
+  cryogenic_hydrogen_tank_2:
+    id: fastga_he.pt_component.cryogenic_hydrogen_tank
+    position: wing_pod # "in_the_fuselage", "wing_pod", "in_the_back", "underbelly"
 
 component_connections:
   - source: propeller_1
@@ -76,7 +88,13 @@ component_connections:
     target: pemfc_stack_1
 
   - source: pemfc_stack_1
-    target: hydrogen_gas_tank_1
+    target: [fuel_system_1, 1]
+
+  - source: [fuel_system_1, 1]
+    target: cryogenic_hydrogen_tank_1
+
+  - source: [ fuel_system_1, 2 ]
+    target: cryogenic_hydrogen_tank_2
 
 
-watcher_file_path: ../results/dhc6_twin_otter_single_pemfc_h2_gas_tank_variant.csv
+watcher_file_path: ../results/dhc6_twin_otter_single_pemfc_belly_lh2_tank_wingpod_variant.csv
