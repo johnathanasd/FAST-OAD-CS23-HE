@@ -126,7 +126,7 @@ def test_inner_volume_hydrogen_gas_tank():
 
 def test_tank_cg_x():
 
-    expected_values = [0., 1.73871, 2.8847, 3.96643, 1.73871]
+    expected_values = [0.0, 1.73871, 2.8847, 3.96643, 1.73871]
 
     for option, expected_value in zip(POSSIBLE_POSITION, expected_values):
         # Research independent input value in .xml file
@@ -300,11 +300,11 @@ def test_tank_adjust_outer_diameter():
     )
 
     assert (
-            problem.get_val(
-                "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:outer_diameter",
-                units="m",
-            )
-            == pytest.approx(7.5, rel=1e-2)
+        problem.get_val(
+            "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:outer_diameter",
+            units="m",
+        )
+        == pytest.approx(7.5, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True, step=1e-7)

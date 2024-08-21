@@ -271,7 +271,7 @@ class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
 
         self.options.declare(
             "max_current_density",
-            default=17.5 * 10 ** 3,
+            default=7e3,
             desc="maximum current density  of pemfc",
         )
 

@@ -259,6 +259,7 @@ def test_pemfc_wing_pod_h2_gas_retrofit():
 
     problem.write_outputs()
 
+
 def test_pemfc_belly_h2_gas_tank_wingpod_powertrain_network():
 
     pt_file_path = pth.join(DATA_FOLDER_PATH, "pemfc_belly_h2_tank_wingpod_propulsion.yml")
@@ -266,6 +267,7 @@ def test_pemfc_belly_h2_gas_tank_wingpod_powertrain_network():
 
     if not pth.exists(network_file_path):
         power_train_network_viewer(pt_file_path, network_file_path)
+
 
 def test_pemfc_belly_h2_gas_tank_wingpod_retrofit():
 
@@ -291,9 +293,7 @@ def test_pemfc_belly_h2_gas_tank_wingpod_retrofit():
 
     problem.set_val(name="data:weight:aircraft:MTOW", units="kg", val=5000.0)
     # Copy the value from source file
-    problem.set_val(
-        name="data:geometry:wing:area", units="m**2", val=40.72394
-    )
+    problem.set_val(name="data:geometry:wing:area", units="m**2", val=40.72394)
 
     # om.n2(problem)
 
@@ -519,6 +519,7 @@ def test_pemfc_lh2_retrofit():
 
     problem.write_outputs()
 
+
 def test_pemfc_wing_pod_lh2_tank_powertrain_network():
 
     pt_file_path = pth.join(DATA_FOLDER_PATH, "pemfc_wing_pod_lh2_propulsion.yml")
@@ -564,13 +565,17 @@ def test_pemfc_wing_pod_lh2_retrofit():
 
     problem.write_outputs()
 
+
 def test_pemfc_belly_lh2_tank_wingpod_powertrain_network():
 
     pt_file_path = pth.join(DATA_FOLDER_PATH, "pemfc_belly_lh2_tank_wingpod_propulsion.yml")
-    network_file_path = pth.join(RESULTS_FOLDER_PATH, "pemfc_belly_lh2_tank_wingpod_propulsion.html")
+    network_file_path = pth.join(
+        RESULTS_FOLDER_PATH, "pemfc_belly_lh2_tank_wingpod_propulsion.html"
+    )
 
     if not pth.exists(network_file_path):
         power_train_network_viewer(pt_file_path, network_file_path)
+
 
 def test_pemfc_belly_lh2_tank_wingpod_retrofit():
 
@@ -645,6 +650,7 @@ def test_pemfc_lh2_hybrid_retrofit():
     print(residuals)
 
     problem.write_outputs()
+
 
 def test_ghc_6():
 

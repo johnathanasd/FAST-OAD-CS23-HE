@@ -159,6 +159,7 @@ def test_fuel_consumption_pt6a_110():
     print("k_sfc:", 0.657 / sfc)
     # Should be 0,657
 
+
 def test_fuel_consumption_pt6a_112():
 
     ivc = om.IndepVarComp()

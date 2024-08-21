@@ -106,8 +106,8 @@ class SizingCryogenicHydrogenTankCGX(om.ExplicitComponent):
             self.declare_partials(
                 of="*",
                 wrt="data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
-                    + cryogenic_hydrogen_tank_id
-                    + ":dimension:length",
+                + cryogenic_hydrogen_tank_id
+                + ":dimension:length",
                 val=-0.5,
             )
 
@@ -161,7 +161,11 @@ class SizingCryogenicHydrogenTankCGX(om.ExplicitComponent):
 
         elif position == "in_the_front":
 
-            outputs["data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id + ":CG:x"] = (
+            outputs[
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":CG:x"
+            ] = (
                 inputs["data:geometry:fuselage:front_length"]
                 - 0.5
                 * inputs[
