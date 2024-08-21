@@ -290,9 +290,10 @@ def test_pemfc_belly_h2_gas_tank_wingpod_retrofit():
     problem.setup()
 
     problem.set_val(name="data:weight:aircraft:MTOW", units="kg", val=5000.0)
+    # Copy the value from source file
     problem.set_val(
         name="data:geometry:wing:area", units="m**2", val=40.72394
-    )  # Copy the value from source file
+    )
 
     # om.n2(problem)
 

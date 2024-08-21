@@ -36,7 +36,7 @@ class SizingCryogenicHydrogenTankDiameterUpdate(om.ExplicitComponent):
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
             + cryogenic_hydrogen_tank_id
             + ":dimension:diameter",
-            val=10.,
+            val=3.0,
             units="m",
         )
 

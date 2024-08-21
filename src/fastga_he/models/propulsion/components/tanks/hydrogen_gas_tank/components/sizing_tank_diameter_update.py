@@ -36,7 +36,7 @@ class SizingHydrogenGasTankDiameterUpdate(om.ExplicitComponent):
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
             + ":dimension:diameter",
-            val=10.0,
+            val=3.0,
             units="m",
         )
 
