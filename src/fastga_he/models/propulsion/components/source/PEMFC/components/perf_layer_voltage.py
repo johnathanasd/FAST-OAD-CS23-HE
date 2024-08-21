@@ -347,7 +347,7 @@ class PerformancesSinglePEMFCVoltageAnalytical(om.ExplicitComponent):
         c = self.options["mass_transport_loss_constant"]
         jlim = self.options["limiting_current_density"] * np.ones(number_of_points)
         jleak = self.options["leakage_current_density"] * np.ones(number_of_points)
-        J = inputs["fc_current_density"]
+
         vf = inputs["analytical_voltage_adjust_factor"]
 
         j = np.clip(

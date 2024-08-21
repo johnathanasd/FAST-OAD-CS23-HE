@@ -82,7 +82,7 @@ submodels:
   submodel.weight.mass_breakdown: fastga_he.submodel.weight.mass_breakdown.modular
   submodel.performances.cg_variation: fastga_he.submodel.performances.cg_variation.simple
   #submodel.propulsion.inverter.junction_temperature: fastga_he.submodel.propulsion.inverter.junction_temperature.fixed
-  submodel.propulsion.performances.pemfc.layer_voltage: fastga_he.submodel.propulsion.performances.pemfc.layer_voltage.statistical
+  submodel.propulsion.performances.pemfc.layer_voltage: fastga_he.submodel.propulsion.performances.pemfc.layer_voltage.statistical #statistical, analytical
   submodel.weight.mass.mzfw_and_mlw: fastga_he.submodel.weight.mass.mzfw_and_mlw.only_zfw #only_zfw or legacy
   submodel.propulsion.sizing.pemfc.weight: fastga_he.submodel.propulsion.sizing.pemfc.weight.adjusted
   submodel.propulsion.performances.pemfc.max_power_density: fastga_he.submodel.propulsion.performances.pemfc.max_power_density.aerostak #aerostak, intelligent_energy
