@@ -13,7 +13,7 @@ driver: om.ScipyOptimizeDriver(tol=1e-2, optimizer='COBYLA')
 
 model:
     aircraft_sizing:
-        nonlinear_solver: om.NonlinearBlockGS(maxiter=100, iprint=2, rtol=1e-3, debug_print=True, reraise_child_analysiserror=True)
+        nonlinear_solver: om.NonlinearBlockGS(maxiter=100, iprint=2, rtol=1e-3, debug_print=True, reraise_child_analysiserror=True,use_aitken=False)
         linear_solver: om.DirectSolver()
         geometry:
             id: fastga.geometry.legacy
@@ -86,16 +86,16 @@ submodels:
     submodel.performances.mission_vector.climb_speed: null
     submodel.performances_he.energy_consumption: fastga_he.submodel.performances.energy_consumption.from_pt_file
     submodel.performances_he.dep_effect: fastga_he.submodel.performances.dep_effect.from_pt_file
-    submodel.propulsion.constraints.simple_pmsm.rpm: fastga_he.submodel.propulsion.constraints.simple_pmsm.rpm.ensure
+    submodel.propulsion.constraints.pmsm.rpm: fastga_he.submodel.propulsion.constraints.pmsm.rpm.ensure
     submodel.propulsion.constraints.pemfc_stack.effective_area: fastga_he.submodel.propulsion.constraints.pemfc_stack.effective_area.enforce
     submodel.propulsion.constraints.hydrogen_gas_tank.capacity: fastga_he.submodel.propulsion.constraints.hydrogen_gas_tank.capacity.enforce
     submodel.propulsion.performances.dc_line.temperature_profile: fastga_he.submodel.propulsion.performances.dc_line.temperature_profile.with_dynamics
     submodel.propulsion.constraints.inverter.current: fastga_he.submodel.propulsion.constraints.inverter.current.enforce
-    submodel.propulsion.constraints.simple_pmsm.torque: fastga_he.submodel.propulsion.constraints.simple_pmsm.torque.ensure
+    submodel.propulsion.constraints.pmsm.torque: fastga_he.submodel.propulsion.constraints.pmsm.torque.ensure
     submodel.propulsion.performances.pemfc.layer_voltage: fastga_he.submodel.propulsion.performances.pemfc.layer_voltage.statistical #statistical, analytical
     submodel.weight.mass.mzfw_and_mlw: fastga_he.submodel.weight.mass.mzfw_and_mlw.legacy #only_zfw or legacy
     submodel.propulsion.sizing.pemfc.weight: fastga_he.submodel.propulsion.sizing.pemfc.weight.adjusted
-    submodel.propulsion.performances.pemfc.max_power_density: fastga_he.submodel.propulsion.performances.pemfc.max_power_density.intelligent_energy #aerostak, intelligent_energy
+    submodel.propulsion.performances.pemfc.max_power_density: fastga_he.submodel.propulsion.performances.pemfc.max_power_density.aerostak #aerostak, intelligent_energy
     submodel.weight.mass.propulsion: fastga_he.submodel.weight.mass.propulsion.power_train
     submodel.weight.cg.propulsion: fastga_he.submodel.weight.cg.propulsion.power_train
     submodel.weight.cg.aircraft_empty.x: fastga_he.submodel.weight.cg.aircraft_empty.x.with_propulsion_as_one
@@ -105,6 +105,7 @@ submodels:
     submodel.aerodynamics.nacelle.cd0: fastga_he.submodel.aerodynamics.powertrain.cd0.from_pt_file
     submodel.weight.cg.loadcase.flight: fastga_he.submodel.weight.cg.loadcase.flight.simple
     submodel.weight.mass_breakdown: fastga_he.submodel.weight.mass_breakdown.modular
+    submodel.propulsion.constraints.inductor.air_gap: fastga_he.submodel.propulsion.constraints.inductor.air_gap.enforce
 
 
 

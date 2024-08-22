@@ -674,7 +674,7 @@ def test_ghc_6():
     problem.read_inputs()
     problem.setup()
 
-    problem.set_val(name="data:weight:aircraft:MTOW", units="kg", val=5000.0)
+    problem.set_val(name="data:weight:aircraft:MTOW", units="kg", val=6000.0)
     problem.set_val(
         name="data:geometry:wing:area", units="m**2", val=40.72394
     )  # Copy the value from source file
@@ -685,5 +685,9 @@ def test_ghc_6():
 
     _, _, residuals = problem.model.get_nonlinear_vectors()
     residuals = filter_residuals(residuals)
+    print(residuals)
 
     problem.write_outputs()
+
+
+
