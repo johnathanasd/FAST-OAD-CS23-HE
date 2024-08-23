@@ -58,10 +58,11 @@ submodels:
   submodel.weight.mass.airframe.fuselage: fastga.submodel.weight.mass.airframe.fuselage.analytical
   submodel.weight.mass.airframe.paint: fastga.submodel.weight.mass.airframe.paint.by_wet_area
   submodel.performances_he.energy_consumption: fastga_he.submodel.performances.energy_consumption.from_pt_file
-  submodel.propulsion.constraints.pmsm.rpm: fastga_he.submodel.propulsion.constraints.pmsm.rpm.ensure
+  submodel.propulsion.constraints.pmsm.rpm: fastga_he.submodel.propulsion.constraints.pmsm.rpm.enforce
   submodel.propulsion.performances.dc_line.temperature_profile: fastga_he.submodel.propulsion.performances.dc_line.temperature_profile.with_dynamics
   submodel.propulsion.constraints.inverter.current: fastga_he.submodel.propulsion.constraints.inverter.current.enforce
   submodel.propulsion.constraints.pmsm.torque: fastga_he.submodel.propulsion.constraints.pmsm.torque.ensure
+  submodel.propulsion.constraints.pmsm.voltage: fastga_he.submodel.propulsion.constraints.pmsm.voltage.ensure
   submodel.propulsion.constraints.pemfc_stack.effective_area: fastga_he.submodel.propulsion.constraints.pemfc_stack.effective_area.enforce
   submodel.propulsion.constraints.hydrogen_gas_tank.capacity: fastga_he.submodel.propulsion.constraints.hydrogen_gas_tank.capacity.enforce
   submodel.performances_he.dep_effect: fastga_he.submodel.performances.dep_effect.from_pt_file
@@ -75,7 +76,7 @@ submodels:
   submodel.weight.mass.systems: fastga_he.submodel.weight.mass.systems.weight_nan
   submodel.geometry.nacelle.dimension: null
   submodel.aerodynamics.nacelle.cd0: fastga_he.submodel.aerodynamics.powertrain.cd0.from_pt_file
-  submodel.propulsion.constraints.inductor.air_gap: fastga_he.submodel.propulsion.constraints.inductor.air_gap.ensure
+  submodel.propulsion.constraints.inductor.air_gap: fastga_he.submodel.propulsion.constraints.inductor.air_gap.enforce
   submodel.propulsion.dc_dc_converter.inductor.inductance: null
   submodel.handling_qualities.vertical_tail.area: null
   submodel.weight.mass_breakdown: fastga_he.submodel.weight.mass_breakdown.modular
@@ -83,7 +84,7 @@ submodels:
   submodel.weight.mass.furniture.seats: null
   submodel.weight.cg.loadcase.flight: fastga_he.submodel.weight.cg.loadcase.flight.simple
   submodel.weight.mass.airframe.flight_controls: fastga.submodel.weight.mass.airframe.flight_controls.flops
-  submodel.propulsion.constraints.turboshaft.rated_power: fastga_he.submodel.propulsion.constraints.turboshaft.rated_power.ensure
+  submodel.propulsion.constraints.turboshaft.rated_power: fastga_he.submodel.propulsion.constraints.turboshaft.rated_power.enforce
   submodel.performances.cg_variation: fastga_he.submodel.performances.cg_variation.simple
   #submodel.propulsion.inverter.junction_temperature: fastga_he.submodel.propulsion.inverter.junction_temperature.fixed
   submodel.propulsion.performances.pemfc.layer_voltage: fastga_he.submodel.propulsion.performances.pemfc.layer_voltage.statistical
