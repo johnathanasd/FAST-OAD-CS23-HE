@@ -345,10 +345,11 @@
             </cross_section>
           </dc_bus_1>
         </DC_bus>
-        <PMSM>
-          <motor_1>
+        <simple_PMSM>
+          <simple_motor_1>
             <from_LE units="m" is_input="True">0.05<!--Distance between the PMSM front face and the leading edge--></from_LE>
             <rpm_rating units="1/min" is_input="True">4000.0<!--Max continuous rpm of the motor--></rpm_rating>
+            <efficiency>0.94</efficiency>
             <voltage_caliber units="V" is_input="True">800.0<!--Max voltage of the motor--></voltage_caliber>
             <torque_rating units="N*m" is_input="True">1783.0<!--Max continuous torque of the motor--></torque_rating>
             <CG>
@@ -357,10 +358,11 @@
             <fairing>
               <fineness is_input="True">1.75<!--Ratio between the fairing length and the motor diameter--></fineness>
             </fairing>
-          </motor_1>
-          <motor_2>
+          </simple_motor_1>
+          <simple_motor_2>
             <from_LE units="m" is_input="True">0.05<!--Distance between the PMSM front face and the leading edge--></from_LE>
             <rpm_rating units="1/min" is_input="True">4000.0<!--Max continuous rpm of the motor--></rpm_rating>
+            <efficiency>0.94</efficiency>
             <voltage_caliber units="V" is_input="True">800.0<!--Max voltage of the motor--></voltage_caliber>
             <torque_rating units="N*m" is_input="True">1783.0<!--Max continuous torque of the motor--></torque_rating>
             <CG>
@@ -369,8 +371,8 @@
             <fairing>
               <fineness is_input="True">1.75<!--Ratio between the fairing length and the motor diameter--></fineness>
             </fairing>
-          </motor_2>
-        </PMSM>
+          </simple_motor_2>
+        </simple_PMSM>
         <speed_reducer>
           <speed_reducer_1>
             <efficiency is_input="True">0.98<!--Efficiency of the planetary gear--></efficiency>
@@ -396,7 +398,7 @@
             <efficiency is_input="True">0.98<!--Efficiency of the planetary gear--></efficiency>
             <front_length_ratio is_input="True">0.9<!--Location of the planetary gear CG as a ratio of the aircraft front length--></front_length_ratio>
             <gear_ratio is_input="True">2.0<!--Gear ratio of the planetary gear--></gear_ratio>
-            <power_share units="kW" is_input="True">278.<!--Share of the power going to the first (primary) input, in W--></power_share>
+            <power_share units="kW" is_input="True">343.<!--Share of the power going to the first (primary) input, in W--></power_share>
             <tech_level_constant is_input="True">6.157<!--Technology level constant for the gearbox, default value computed with the results from the source paper--></tech_level_constant>
             <CG>
               <y_ratio is_input="True">0.28<!--Y position of the planetary gear center of gravity as a ratio of the wing half-span--></y_ratio>
@@ -406,7 +408,7 @@
             <efficiency is_input="True">0.98<!--Efficiency of the planetary gear--></efficiency>
             <front_length_ratio is_input="True">0.9<!--Location of the planetary gear CG as a ratio of the aircraft front length--></front_length_ratio>
             <gear_ratio is_input="True">2.0<!--Gear ratio of the planetary gear--></gear_ratio>
-            <power_share units="kW" is_input="True">278.<!--Share of the power going to the first (primary) input, in W--></power_share>
+            <power_share units="kW" is_input="True">343.<!--Share of the power going to the first (primary) input, in W--></power_share>
             <tech_level_constant is_input="True">6.157<!--Technology level constant for the gearbox, default value computed with the results from the source paper--></tech_level_constant>
              <CG>
               <y_ratio is_input="True">0.28<!--Y position of the planetary gear center of gravity as a ratio of the wing half-span--></y_ratio>
@@ -572,15 +574,15 @@
         <turboshaft>
           <turboshaft_1>
             <power_offtake units="kW" is_input="True">30.0<!--Mechanical offtake on the turboshaft, is added to shaft power out--></power_offtake>
-            <power_rating units="kW" is_input="True">308.00<!--Flat rating of the turboshaft 503 for pt6a-114a--></power_rating>
+            <power_rating units="kW" is_input="True">373.00<!--Flat rating of the turboshaft 503 for pt6a-114a--></power_rating>
             <design_point>
-              <OPR is_input="True">8.0<!--OPR of the turboshaft at the design point--></OPR>
+              <OPR is_input="True">7.0<!--OPR of the turboshaft at the design point--></OPR>
               <T41t units="degK" is_input="True">1400.0<!--Total temperature at the output of the combustion chamber of the turboshaft at the design point--></T41t>
-              <power_ratio is_input="True">1.56<!--Ratio of the thermodynamic power divided by the rated power, typical values on the PT6A family is between 1.3 and 2.5--></power_ratio>
+              <power_ratio is_input="True">1.5<!--Ratio of the thermodynamic power divided by the rated power, typical values on the PT6A family is between 1.3 and 2.5--></power_ratio>
             </design_point>
             <limit>
               <ITT units="degK" is_input="True">1000.<!--Limit ITT of the turboshaft--></ITT>
-              <OPR is_input="True">8.0<!--Limit OPR of the turboshaft--></OPR>
+              <OPR is_input="True">7.2<!--Limit OPR of the turboshaft--></OPR>
             </limit>
              <CG>
               <y_ratio is_input="True">0.28<!--Y position of the turboshaft center of gravity as a ratio of the wing half-span--></y_ratio>
@@ -589,15 +591,15 @@
           </turboshaft_1>
           <turboshaft_2>
             <power_offtake units="kW" is_input="True">30.0<!--Mechanical offtake on the turboshaft, is added to shaft power out--></power_offtake>
-            <power_rating units="kW" is_input="True">308.00<!--Flat rating of the turboshaft 503 for pt6a-114a--></power_rating>
+            <power_rating units="kW" is_input="True">373.00<!--Flat rating of the turboshaft 503 for pt6a-114a--></power_rating>
             <design_point>
-              <OPR is_input="True">8.0<!--OPR of the turboshaft at the design point--></OPR>
+              <OPR is_input="True">7.0<!--OPR of the turboshaft at the design point--></OPR>
               <T41t units="degK" is_input="True">1400.0<!--Total temperature at the output of the combustion chamber of the turboshaft at the design point--></T41t>
-              <power_ratio is_input="True">1.56<!--Ratio of the thermodynamic power divided by the rated power, typical values on the PT6A family is between 1.3 and 2.5--></power_ratio>
+              <power_ratio is_input="True">1.5<!--Ratio of the thermodynamic power divided by the rated power, typical values on the PT6A family is between 1.3 and 2.5--></power_ratio>
             </design_point>
             <limit>
               <ITT units="degK" is_input="True">1000.<!--Limit ITT of the turboshaft--></ITT>
-              <OPR is_input="True">8.0<!--Limit OPR of the turboshaft--></OPR>
+              <OPR is_input="True">7.2<!--Limit OPR of the turboshaft--></OPR>
             </limit>
              <CG>
               <y_ratio is_input="True">0.28<!--Y position of the turboshaft center of gravity as a ratio of the wing half-span--></y_ratio>
@@ -646,14 +648,14 @@
         </fuel_system>
         <fuel_tank>
           <fuel_tank_1>
-            <capacity units="kg">400.</capacity>
+            <capacity units="kg">450.</capacity>
             <fuel_type is_input="True">3.0<!--Type of fuel stored in the tank, 1.0 - gasoline, 2.0 - Diesel, 3.0 - Jet A1--></fuel_type>
             <CG>
               <y_ratio is_input="True">0.5<!--Y position of the fuel tank center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
           </fuel_tank_1>
           <fuel_tank_2>
-            <capacity units="kg">400.</capacity>
+            <capacity units="kg">450.</capacity>
             <fuel_type is_input="True">3.0<!--Type of fuel stored in the tank, 1.0 - gasoline, 2.0 - Diesel, 3.0 - Jet A1--></fuel_type>
             <CG>
               <y_ratio is_input="True">0.5<!--Y position of the fuel tank center of gravity as a ratio of the wing half-span--></y_ratio>
@@ -976,16 +978,16 @@
             <void_thickness units="m" is_input="True">5e-05</void_thickness>
           </insulation>
         </DC_bus>
-        <PMSM>
-          <motor_1>
+        <simple_PMSM>
+          <simple_motor_1>
             <k_efficiency is_input="True">0.97<!--K factor for the PMSM efficiency--></k_efficiency>
             <power_factor is_input="True">1.0</power_factor>
-          </motor_1>
-          <motor_2>
+          </simple_motor_1>
+          <simple_motor_2>
             <k_efficiency is_input="True">0.97<!--K factor for the PMSM efficiency--></k_efficiency>
             <power_factor is_input="True">1.0</power_factor>
-          </motor_2>
-        </PMSM>
+          </simple_motor_2>
+        </simple_PMSM>
         <inverter>
           <inverter_1>
             <reference_temperature units="degK" is_input="True">293.15</reference_temperature>
@@ -1032,11 +1034,11 @@
         <turboshaft>
           <turboshaft_1>
             <cg_in_nacelle is_input="True">0.5<!--Location of the engine CG in the nacelle, in percent of the nacelle length--></cg_in_nacelle>
-            <k_sfc is_input="True">1.10938<!--K-factor to adjust the sfc/fuel consumption of the turboshaft--></k_sfc>
+            <k_sfc is_input="True">1.1444<!--K-factor to adjust the sfc/fuel consumption of the turboshaft--></k_sfc>
           </turboshaft_1>
           <turboshaft_2>
             <cg_in_nacelle is_input="True">0.5<!--Location of the engine CG in the nacelle, in percent of the nacelle length--></cg_in_nacelle>
-            <k_sfc is_input="True">1.10938<!--K-factor to adjust the sfc/fuel consumption of the turboshaft--></k_sfc>
+            <k_sfc is_input="True">1.1444<!--K-factor to adjust the sfc/fuel consumption of the turboshaft--></k_sfc>
           </turboshaft_2>
         </turboshaft>
       </he_power_train>

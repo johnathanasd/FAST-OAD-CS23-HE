@@ -2,8 +2,8 @@
   <tank_temperature units="degK" is_input="True">300.0<!--Hydrogen gas tank temperature--></tank_temperature>
   <data>
     <TLAR>
-      <NPAX_design is_input="True">8.0<!--(POH) top-level requirement: number of passengers for the design mission, assuming a classic eco/business class repartition--></NPAX_design>
-      <luggage_mass_design units="kg" is_input="True">100.0<!--(for 19pax and 1375kg payload) top-level requirement: luggage mass for the design mission--></luggage_mass_design>
+      <NPAX_design is_input="True">19.0<!--(POH) top-level requirement: number of passengers for the design mission, assuming a classic eco/business class repartition--></NPAX_design>
+      <luggage_mass_design units="kg" is_input="True">200.0<!--(for 19pax and 1375kg payload) top-level requirement: luggage mass for the design mission--></luggage_mass_design>
       <range units="NM" is_input="True">400.0<!--(POH, for 1375kg payload) top-level requirement: design range--></range>
       <v_approach units="kn" is_input="True">75.4<!--(Jane, 1.3x63mph stall speed) top-level requirement: approach speed--></v_approach>
       <v_cruise units="kn" is_input="True">182.0<!--(POH, 10000ft) top-level requirement: cruise speed--></v_cruise>
@@ -102,6 +102,8 @@
         <twist units="deg" is_input="True">-2.0<!--Negative twist means tip AOA is smaller than root--></twist>
         <aileron>
           <chord_ratio is_input="True">0.23<!--aileron chord as a percentage of the wing chord--></chord_ratio>
+          <max_deflection units="deg" is_input="True">25.0</max_deflection>
+          <span_ratio is_input="True">0.51</span_ratio>
         </aileron>
         <kink>
           <span_ratio is_input="True">0.0<!--ratio (Y-position of kink)/(semi-span)--></span_ratio>
@@ -147,6 +149,7 @@
         <thrust_distribution is_input="True">[1.0, 1.0]</thrust_distribution>
         <DC_DC_converter>
           <dc_dc_converter_1>
+            <power_density units="W/kg" is_input="True">50000.0<!--Power density of the converter--></power_density>
             <current_ripple is_input="True">0.2<!--Amplitude of the current ripple as a percent of the current caliber--></current_ripple>
             <rear_length_ratio is_input="True">0.1<!--Location of the DC/DC converter CG as a ratio of the aircraft rear length--></rear_length_ratio>
             <switching_frequency_mission units="Hz" is_input="True">12000.0<!--Switching frequency of the DC/DC converter for the points--></switching_frequency_mission>
@@ -202,6 +205,7 @@
         </hydrogen_gas_tank>
         <inverter>
           <inverter_1>
+            <current_caliber units="A" is_input="False">2250.<!--Current caliber of the DC/DC converter--></current_caliber>
             <heat_sink_temperature_mission units="degK" is_input="True">288.15<!--Heat sink temperature of the inverter for the points--></heat_sink_temperature_mission>
             <power_factor is_input="True">1.0</power_factor>
             <switching_frequency_mission units="Hz" is_input="True">12000.0<!--Switching frequency of the inverter for the points--></switching_frequency_mission>
@@ -258,6 +262,7 @@
             </properties>
           </inverter_1>
           <inverter_2>
+            <current_caliber units="A" is_input="False">2250.<!--Current caliber of the DC/DC converter--></current_caliber>
             <heat_sink_temperature_mission units="degK" is_input="True">288.15<!--Heat sink temperature of the inverter for the points--></heat_sink_temperature_mission>
             <power_factor is_input="True">1.0</power_factor>
             <switching_frequency_mission units="Hz" is_input="True">12000.0<!--Switching frequency of the inverter for the points--></switching_frequency_mission>
@@ -471,8 +476,8 @@
     </handling_qualities>
     <weight>
       <aircraft>
-        <max_payload units="kg" is_input="True">1941.0<!--(Jane) max payload weight--></max_payload>
-        <payload units="kg" is_input="True">730.0<!--(POH) design payload weight--></payload>
+        <max_payload units="kg" is_input="True">1200.0<!--(Jane) max payload weight--></max_payload>
+        <payload units="kg" is_input="True">700.0<!--(POH) design payload weight--></payload>
         <CG>
           <aft>
             <MAC_limit is_input="True">0.15<!--most aft X-position of center of gravity as ratio of mean aerodynamic chord--></MAC_limit>
@@ -551,11 +556,22 @@
           <speed units="kn" is_input="True">20.0<!--ground velocity during taxi out phase--></speed>
         </taxi_out>
         <cs23>
+          <safety_factor is_input="True">1.5</safety_factor>
           <characteristic_speed>
+            <va units="knot" is_input="True">86.17<!--maneuvering speed Vs.sqrt(n)--></va>
+            <vc units="knot" is_input="True">182.0<!--design cruise speed--></vc>
             <vd units="knot" is_input="True">182.0<!--limit speed--></vd>
           </characteristic_speed>
           <sizing_factor>
             <ultimate_aircraft is_input="True">5.205<!--ultimate load factor that the aircraft will experience (default value is 5.7)--></ultimate_aircraft>
+            <ultimate_mtow>
+              <negative is_input="True">-1.78<!--CS-23 commuter airplane--></negative>
+              <positive is_input="True">3.47<!--CS-23 commuter airplane--></positive>
+            </ultimate_mtow>
+            <ultimate_mzfw>
+              <negative is_input="True">-1.78</negative>
+              <positive is_input="True">3.47</positive>
+            </ultimate_mzfw>
           </sizing_factor>
         </cs23>
         <main_route>
