@@ -350,7 +350,7 @@
             <from_LE units="m" is_input="True">0.05<!--Distance between the PMSM front face and the leading edge--></from_LE>
             <rpm_rating units="1/min" is_input="True">4000.0<!--Max continuous rpm of the motor--></rpm_rating>
             <voltage_caliber units="V" is_input="True">800.0<!--Max voltage of the motor--></voltage_caliber>
-            <torque_rating units="N*m" is_input="True">1783.0<!--Max continuous torque of the motor--></torque_rating>
+            <torque_rating units="N*m" is_input="True">1000.0<!--Max continuous torque of the motor--></torque_rating>
             <CG>
               <y_ratio is_input="True">0.28<!--Y position of the PMSM center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
@@ -362,7 +362,7 @@
             <from_LE units="m" is_input="True">0.05<!--Distance between the PMSM front face and the leading edge--></from_LE>
             <rpm_rating units="1/min" is_input="True">4000.0<!--Max continuous rpm of the motor--></rpm_rating>
             <voltage_caliber units="V" is_input="True">800.0<!--Max voltage of the motor--></voltage_caliber>
-            <torque_rating units="N*m" is_input="True">1783.0<!--Max continuous torque of the motor--></torque_rating>
+            <torque_rating units="N*m" is_input="True">1000.0<!--Max continuous torque of the motor--></torque_rating>
             <CG>
               <y_ratio is_input="True">0.28<!--Y position of the PMSM center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
@@ -452,7 +452,7 @@
               <gate_voltage units="V" is_input="True">1.3</gate_voltage>
             </igbt>
             <inductor>
-              <air_gap units="m" is_input="False">0.0023290059485161856<!--Air gap in the inductor--></air_gap>
+              <air_gap units="m" is_input="False">0.00023290059485161856<!--Air gap in the inductor--></air_gap>
               <inductance units="H" is_input="True">1.3612212793999764e-06<!--Inductance of the inductor--></inductance>
               <magnetic_field units="T" is_input="True">1.0<!--Magnetic field in the inductor core, will be taken at its maximum allowable value to reduce the weight--></magnetic_field>
               <wire_current_density units="A/m**2" is_input="True">5000000.0<!--Maximum current density allowed in the copper wire--></wire_current_density>
@@ -512,7 +512,7 @@
               <gate_voltage units="V" is_input="True">1.3</gate_voltage>
             </igbt>
             <inductor>
-              <air_gap units="m" is_input="False">0.0023290059485161856<!--Air gap in the inductor--></air_gap>
+              <air_gap units="m" is_input="False">0.00023290059485161856<!--Air gap in the inductor--></air_gap>
               <inductance units="H" is_input="True">1.3612212793999764e-06<!--Inductance of the inductor--></inductance>
               <magnetic_field units="T" is_input="True">1.0<!--Magnetic field in the inductor core, will be taken at its maximum allowable value to reduce the weight--></magnetic_field>
               <wire_current_density units="A/m**2" is_input="True">5000000.0<!--Maximum current density allowed in the copper wire--></wire_current_density>
@@ -698,7 +698,7 @@
               </tube>
             </heat_sink>
             <inductor>
-              <air_gap units="m" is_input="False">0.0023290059485161856<!--Air gap in the inductor--></air_gap>
+              <air_gap units="m" is_input="False">0.00023290059485161856<!--Air gap in the inductor--></air_gap>
               <inductance units="H" is_input="True">1.3612212793999764e-06<!--Inductance of the inductor--></inductance>
               <magnetic_field units="T" is_input="True">1.0<!--Magnetic field in the inductor core, will be taken at its maximum allowable value to reduce the weight--></magnetic_field>
               <wire_current_density units="A/m**2" is_input="True">5000000.0<!--Maximum current density allowed in the copper wire--></wire_current_density>
