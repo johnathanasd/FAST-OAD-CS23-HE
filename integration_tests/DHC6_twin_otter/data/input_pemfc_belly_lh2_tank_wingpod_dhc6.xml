@@ -566,7 +566,7 @@
               <y_ratio is_input="True">0.28</y_ratio>
             </CG>
             <tank_pressure units="Pa">850000</tank_pressure>
-            <Safety_factor>1.0</Safety_factor>
+            <Safety_factor>2.0</Safety_factor>
             <material>
                 <type>"carbon_composite"</type>
                 <yield_strength units="Pa">1.9e09</yield_strength>
