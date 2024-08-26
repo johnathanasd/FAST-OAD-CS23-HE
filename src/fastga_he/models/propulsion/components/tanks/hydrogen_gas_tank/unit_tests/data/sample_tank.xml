@@ -66,9 +66,9 @@
                             <y units="m">1.85</y>
                         </CG>
                         <fuel_consumed_mission units="kg">1.0</fuel_consumed_mission>
-                        <unusable_fuel_mission units="kg">0.01</unusable_fuel_mission>
-                        <fuel_total_mission units="kg">1.01</fuel_total_mission>
-                        <capacity units="kg">1.01</capacity>
+                        <unusable_fuel_mission units="kg">0.03</unusable_fuel_mission>
+                        <fuel_total_mission units="kg">1.03</fuel_total_mission>
+                        <capacity units="kg">1.03</capacity>
                         <inner_volume units="L">1240.288</inner_volume>
                         <tank_pressure units="Pa">1013250</tank_pressure>
                         <Safety_factor>1.0</Safety_factor>

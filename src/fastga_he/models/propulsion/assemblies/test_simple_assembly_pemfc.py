@@ -200,7 +200,7 @@ def test_assembly_sizing():
     ) == pytest.approx(327.988, rel=1e-2)
     assert problem.get_val(
         "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:mass", units="kg"
-    ) == pytest.approx(40.038, rel=1e-2)
+    ) == pytest.approx(40.6, rel=1e-2)
     assert problem.get_val(
         "data:propulsion:he_power_train:DC_SSPC:dc_sspc_1:mass", units="kg"
     ) == pytest.approx(6.47, rel=1e-2)
@@ -329,7 +329,7 @@ def test_assembly_sizing_from_pt_file():
     ) == pytest.approx(327.988, rel=1e-2)
     assert problem.get_val(
         "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:mass", units="kg"
-    ) == pytest.approx(20.02, rel=1e-2)
+    ) == pytest.approx(20.31, rel=1e-2)
     assert problem.get_val(
         "data:propulsion:he_power_train:DC_SSPC:dc_sspc_1:mass", units="kg"
     ) == pytest.approx(6.47, rel=1e-2)

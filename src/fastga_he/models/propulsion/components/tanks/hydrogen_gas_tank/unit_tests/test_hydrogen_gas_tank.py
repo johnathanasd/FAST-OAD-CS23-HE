@@ -68,7 +68,7 @@ def test_unusable_hydrogen_gas_mission():
             "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:unusable_fuel_mission",
             units="kg",
         )
-        == pytest.approx(0.01, rel=1e-2)
+        == pytest.approx(0.03, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True)
@@ -120,7 +120,7 @@ def test_inner_volume_hydrogen_gas_tank():
             "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:inner_volume",
             units="L",
         )
-        == pytest.approx(1240.288, rel=1e-2)
+        == pytest.approx(1272.265, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True)
@@ -605,7 +605,7 @@ def test_sizing_tank():
     )
     assert problem.get_val(
         "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:mass", units="kg"
-    ) == pytest.approx(2.409, rel=1e-2)
+    ) == pytest.approx(2.449, rel=1e-2)
     assert problem.get_val(
         "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:cruise:CD0"
     ) == pytest.approx(0.0, rel=1e-2)
@@ -621,7 +621,7 @@ def test_sizing_tank():
             "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:overall_length",
             units="m",
         )
-        == pytest.approx(1.97802, rel=1e-2)
+        == pytest.approx(2.02166, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True, step=1e-7)

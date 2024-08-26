@@ -485,14 +485,14 @@
         <hydrogen_gas_tank>
           <hydrogen_gas_tank_1>
             <Safety_factor is_input="True">1.0<!--Hydrogen gas tank design safety factor--></Safety_factor>
-            <capacity units="kg" is_input="False">14.14<!--Capacity of the tank in terms of weight--></capacity>
+            <capacity units="kg" is_input="False">14.42<!--Capacity of the tank in terms of weight--></capacity>
             <fuel_consumed_mission units="kg" is_input="True">14.0<!--Amount of hydrogen from that tank which will be consumed during mission--></fuel_consumed_mission>
-            <fuel_total_mission units="kg" is_input="False">14.14<!--Total amount of hydrogen loaded in the tank for the mission--></fuel_total_mission>
-            <gravimetric_index is_input="False">0.25840581685957204<!--Ratio between the mission used weight and overall weight--></gravimetric_index>
-            <inner_volume units="m**3" is_input="False">17.465845480584296<!--Capacity of the tank in terms of volume--></inner_volume>
-            <mass units="kg" is_input="False">40.03834695109884<!--Weight of the hydrogen gas tanks--></mass>
+            <fuel_total_mission units="kg" is_input="False">14.42<!--Total amount of hydrogen loaded in the tank for the mission--></fuel_total_mission>
+            <gravimetric_index is_input="False">0.25443955303472726<!--Ratio between the mission used weight and overall weight--></gravimetric_index>
+            <inner_volume units="m**3" is_input="False">17.811703806932503<!--Capacity of the tank in terms of volume--></inner_volume>
+            <mass units="kg" is_input="False">40.602891814659046<!--Weight of the hydrogen gas tanks--></mass>
             <tank_pressure units="Pa" is_input="True">1013250.0<!--Hydrogen gas tank static pressure--></tank_pressure>
-            <unusable_fuel_mission units="kg" is_input="False">0.14<!--Amount of trapped hydrogen in the tank--></unusable_fuel_mission>
+            <unusable_fuel_mission units="kg" is_input="False">0.42<!--Amount of trapped hydrogen in the tank--></unusable_fuel_mission>
             <CG>
               <x units="m" is_input="False">2.8846643019251306<!--X position of the tank center of gravity--></x>
               <y units="m" is_input="False">1.8474926765644417<!--Y position of the pemfc center of gravity--></y>
@@ -505,9 +505,9 @@
               <aspect_ratio is_input="False">1.0<!--Tank aspect between the overall length and outer diameter, the higher the more cylindrical--></aspect_ratio>
               <diameter units="m" is_input="False">3.0<!--Initial Outer diameter of the hydrogen gas tank input--></diameter>
               <inner_diameter units="m" is_input="False">2.998400984317179<!--Inner diameter of the hydrogen gas tanks--></inner_diameter>
-              <length units="m" is_input="False">0.47461381868250935<!--Value of the cylindrical length of the tank in the x-direction, computed differently based on the location of the tank--></length>
+              <length units="m" is_input="False">0.523594963399882<!--Value of the cylindrical length of the tank in the x-direction, computed differently based on the location of the tank--></length>
               <outer_diameter units="m" is_input="False">3.0<!--Outer diameter of the hydrogen gas tank--></outer_diameter>
-              <overall_length units="m" is_input="False">3.4746138186825095<!--Value of the length of the tank in the x-direction, computed differently based on the location of the tank--></overall_length>
+              <overall_length units="m" is_input="False">3.5235949633998818<!--Value of the length of the tank in the x-direction, computed differently based on the location of the tank--></overall_length>
               <stress_coefficient is_input="False">1.0<!--Coefficient at the denominator of the stress calculation--></stress_coefficient>
               <wall_thickness units="m" is_input="False">0.0007995078414104739<!--Inner diameter of the hydrogen gas tanks--></wall_thickness>
             </dimension>
