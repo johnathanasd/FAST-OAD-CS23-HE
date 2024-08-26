@@ -44,9 +44,9 @@
         <span_ratio is_input="True">0.865<!--flap span as a percentage of the wing span--></span_ratio>
       </flap>
       <fuselage>
-        <PAX_length units="m" is_input="True">5.64<!--(5.64 before) length of the passenger compartment--></PAX_length>
+        <PAX_length units="m" is_input="True">6.<!--(5.64 before) length of the passenger compartment--></PAX_length>
         <front_length units="m" is_input="True">2.59<!--(2.59) length of the front cone of the aircraft--></front_length>
-        <length units="m" is_input="True">15.77<!--(14.55, 15.77) total length of the aircraft--></length>
+        <length units="m" is_input="True">16.13<!--(14.55, 15.77) total length of the aircraft--></length>
         <luggage_length units="m" is_input="True">2.07<!--(2.07) length of the luggage compartment--></luggage_length>
         <maximum_height units="m" is_input="True">2.09<!--maximum fuselage height--></maximum_height>
         <maximum_width units="m" is_input="True">1.865<!--(1.42,1.71) maximum fuselage width--></maximum_width>
@@ -181,6 +181,7 @@
               </tube>
             </heat_sink>
             <inductor>
+              <air_gap units="m" is_input="True">0.007573447034428253<!--Air gap in the inductor--></air_gap>
               <magnetic_field units="T" is_input="True">1.0<!--Magnetic field in the inductor core, will be taken at its maximum allowable value to reduce the weight--></magnetic_field>
               <wire_current_density units="A/m**2" is_input="True">5000000.0<!--Maximum current density allowed in the copper wire--></wire_current_density>
             </inductor>
@@ -193,7 +194,7 @@
           <hydrogen_gas_tank_1>
             <capacity units="kg">180.</capacity>
             <Safety_factor is_input="True">1.0<!--Hydrogen gas tank design safety factor--></Safety_factor>
-            <tank_pressure units="Pa" is_input="True">35000000.0<!--Hydrogen gas tank static pressure--></tank_pressure>
+            <tank_pressure units="Pa" is_input="True">70000000.0<!--Hydrogen gas tank static pressure--></tank_pressure>
             <dimension>
               <rear_length_ratio is_input="True">0.5</rear_length_ratio>
             </dimension>
@@ -354,8 +355,8 @@
             </CG>
           </propeller_2>
         </propeller>
-        <PMSM>
-          <motor_1>
+        <simple_PMSM>
+          <simple_motor_1>
             <efficiency is_input="True">0.94</efficiency>
             <from_LE units="m" is_input="True">0.05<!--Distance between the PMSM front face and the leading edge--></from_LE>
             <rpm_rating units="1/min" is_input="True">4500.0<!--Max continuous rpm of the motor--></rpm_rating>
@@ -367,8 +368,8 @@
             <fairing>
               <fineness is_input="True">1.75<!--Ratio between the fairing length and the motor diameter--></fineness>
             </fairing>
-          </motor_1>
-          <motor_2>
+          </simple_motor_1>
+          <simple_motor_2>
             <efficiency is_input="True">0.94</efficiency>
             <from_LE units="m" is_input="True">0.05<!--Distance between the PMSM front face and the leading edge--></from_LE>
             <rpm_rating units="1/min" is_input="True">4500.0<!--Max continuous rpm of the motor--></rpm_rating>
@@ -380,8 +381,8 @@
             <fairing>
               <fineness is_input="True">1.75<!--Ratio between the fairing length and the motor diameter--></fineness>
             </fairing>
-          </motor_2>
-        </PMSM>
+          </simple_motor_2>
+        </simple_PMSM>
         <speed_reducer>
           <speed_reducer_1>
             <efficiency is_input="True">0.98<!--Efficiency of the planetary gear--></efficiency>
@@ -476,8 +477,8 @@
     </handling_qualities>
     <weight>
       <aircraft>
-        <max_payload units="kg" is_input="True">1200.0<!--(Jane) max payload weight--></max_payload>
-        <payload units="kg" is_input="True">700.0<!--(POH) design payload weight--></payload>
+        <max_payload units="kg" is_input="True">1441.0<!--(Jane) max payload weight--></max_payload>
+        <payload units="kg" is_input="True">1375.0<!--(POH) design payload weight--></payload>
         <CG>
           <aft>
             <MAC_limit is_input="True">0.15<!--most aft X-position of center of gravity as ratio of mean aerodynamic chord--></MAC_limit>
@@ -707,14 +708,14 @@
             <installation_effect is_input="True">0.95<!--Increase in the power coefficient due to installation effects on the propeller--></installation_effect>
           </propeller_2>
         </propeller>
-        <PMSM>
-          <motor_1>
+        <simple_PMSM>
+          <simple_motor_1>
             <power_factor is_input="True">1.0</power_factor>
-          </motor_1>
-          <motor_2>
+          </simple_motor_1>
+          <simple_motor_2>
             <power_factor is_input="True">1.0</power_factor>
-          </motor_2>
-        </PMSM>
+          </simple_motor_2>
+        </simple_PMSM>
         <DC_DC_converter>
           <dc_dc_converter_1>
             <inductor>
@@ -728,7 +729,7 @@
     </propulsion>
     <weight>
       <aircraft>
-        <MLW_MZFW_ratio is_input="True">1.025<!--(1.16) before--></MLW_MZFW_ratio>
+        <MLW_MZFW_ratio is_input="True">1.05<!--(1.16) before--></MLW_MZFW_ratio>
         <CG>
           <range is_input="True">0.2<!--(0.23) distance between front position and aft position of CG, as ratio of mean aerodynamic chord (allows to have front position of CG, as currently, FAST-OAD estimates only the aft position of CG)--></range>
           <aft>
