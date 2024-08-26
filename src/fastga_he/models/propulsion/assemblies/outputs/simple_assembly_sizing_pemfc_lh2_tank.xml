@@ -497,14 +497,14 @@
             <capacity units="kg" is_input="False">14.766<!--Capacity of the tank in terms of weight--></capacity>
             <fuel_consumed_mission units="kg" is_input="True">14.0<!--Amount of hydrogen from that tank which will be consumed during mission--></fuel_consumed_mission>
             <fuel_total_mission units="kg" is_input="False">14.766<!--Total amount of hydrogen loaded in the tank for the mission--></fuel_total_mission>
-            <gravimetric_index is_input="False">0.871948926934283<!--The amount ratio between the mission used weight and overall weight --></gravimetric_index>
+            <gravimetric_index is_input="False">0.63769784836536<!--The amount ratio between the mission used weight and overall weight --></gravimetric_index>
             <inner_volume units="m**3" is_input="False">0.2084121383203952<!--Capacity of the tank in terms of volume--></inner_volume>
-            <mass units="kg" is_input="False">1.289986271149055<!--Weight of the hydrogen gas tanks--></mass>
+            <mass units="kg" is_input="False">7.187970890582173<!--Weight of the hydrogen gas tanks--></mass>
             <overall_hydrogen_boil_off units="kg" is_input="True">0.766<!--Amount of trapped hydrogen in the tank--></overall_hydrogen_boil_off>
             <tank_pressure units="Pa" is_input="True">1013250.0<!--Cryogenic hydrogen tank static pressure--></tank_pressure>
-            <thermal_resistance units="degK/W" is_input="False">461.66605014015556<!--overall thermal resistance of the tank--></thermal_resistance>
+            <thermal_resistance units="degK/W" is_input="False">-33.957189462065514<!--overall thermal resistance of the tank--></thermal_resistance>
             <unusable_fuel_mission units="kg" is_input="False">0.766<!--Amount of trapped hydrogen in the tank--></unusable_fuel_mission>
-            <wall_thermal_resistance units="degK/W" is_input="False">6.147621185797751e-06<!--Thermal resistance of the tank wall --></wall_thermal_resistance>
+            <wall_thermal_resistance units="degK/W" is_input="False">-3.048468202655906e-06<!--Thermal resistance of the tank wall --></wall_thermal_resistance>
             <CG>
               <x units="m" is_input="False">1.2387085918711065<!--X position of the tank center of gravity--></x>
               <y units="m" is_input="False">0.0<!--Y position of the pemfc center of gravity--></y>
@@ -513,19 +513,21 @@
               <CD0 is_input="False">0.0</CD0>
             </cruise>
             <dimension>
-              <diameter units="m" is_input="False">0.6129<!--Initial Outer diameter of the hydrogen gas tank input--></diameter>
-              <inner_diameter units="m" is_input="False">0.6027392827425687<!--Inner diameter of the cryogenic hydrogen tank--></inner_diameter>
+              <aspect_ratio is_input="False">1.0<!--Tank aspect between the overall length and outer diameter, the higher the more cylindrical--></aspect_ratio>
+              <diameter units="m" is_input="False">2.09205<!--Initial Outer diameter of the hydrogen gas tank input--></diameter>
+              <inner_diameter units="m" is_input="False">2.080940256465861<!--Inner diameter of the cryogenic hydrogen tank--></inner_diameter>
               <insulation_thickness units="m" is_input="True">0.005<!--Insulation layer thickness of the cryogenic hydrogen tank--></insulation_thickness>
-              <length units="m" is_input="False">0.3285962970928001<!--Value of the cylindrical length of the tank in the x-direction, computed differently based on the location of the tank--></length>
-              <outer_diameter units="m" is_input="False">0.6129<!--Outer diameter of the hydrogen gas tank--></outer_diameter>
-              <overall_length units="m" is_input="False">0.9414962970928<!--Value of the length of the tank in the x-direction, computed differently based on the location of the tank--></overall_length>
-              <wall_diameter units="m" is_input="False">0.6029<!--Wall diameter of the hydrogen tank without insulation layer--></wall_diameter>
-              <wall_thickness units="m" is_input="False">0.005080358628715642<!--Inner diameter of the hydrogen gas tanks--></wall_thickness>
+              <length units="m" is_input="False">-1.3260141889622767<!--Value of the cylindrical length of the tank in the x-direction, computed differently based on the location of the tank--></length>
+              <outer_diameter units="m" is_input="False">2.09205<!--Outer diameter of the hydrogen gas tank--></outer_diameter>
+              <overall_length units="m" is_input="False">0.7660358110377232<!--Value of the length of the tank in the x-direction, computed differently based on the location of the tank--></overall_length>
+              <stress_coefficient is_input="False">1.0<!--Coefficient at the denominator of the stress calculation--></stress_coefficient>
+              <wall_diameter units="m" is_input="False">2.08205<!--Wall diameter of the hydrogen tank without insulation layer--></wall_diameter>
+              <wall_thickness units="m" is_input="False">0.00555487176706948<!--Inner diameter of the hydrogen gas tanks--></wall_thickness>
             </dimension>
             <insulation>
               <material_density units="kg/m**3" is_input="True">120.0<!--Choice of the insulation material,Some reference: Evacuated aluminum foil & glass paper laminate:120,Evacuated silica powder:160--></material_density>
               <thermal_conductivity units="W/m/degK" is_input="True">1.7e-05<!--Thermal conductivity of the insulation material--></thermal_conductivity>
-              <thermal_resistance units="degK/W" is_input="False">461.66604399253436<!--Thermal resistance of the the insulation layer--></thermal_resistance>
+              <thermal_resistance units="degK/W" is_input="False">-33.95718641359731<!--Thermal resistance of the the insulation layer--></thermal_resistance>
             </insulation>
             <low_speed>
               <CD0 is_input="False">0.0</CD0>
@@ -755,7 +757,7 @@
         <cryogenic_hydrogen_tank>
           <cryogenic_hydrogen_tank_1>
             <dimension>
-              <overall_length units="m" is_input="False">-0.535920886649413<!--Constraints on the tank length w.r.t the cabin/rear_fuselage length,  respected if <0--></overall_length>
+              <overall_length units="m" is_input="False">-0.7113813727044898<!--Constraints on the tank length w.r.t the cabin/rear_fuselage length,  respected if <0--></overall_length>
             </dimension>
           </cryogenic_hydrogen_tank_1>
         </cryogenic_hydrogen_tank>

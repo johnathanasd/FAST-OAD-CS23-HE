@@ -488,9 +488,9 @@
             <capacity units="kg" is_input="False">14.14<!--Capacity of the tank in terms of weight--></capacity>
             <fuel_consumed_mission units="kg" is_input="True">14.0<!--Amount of hydrogen from that tank which will be consumed during mission--></fuel_consumed_mission>
             <fuel_total_mission units="kg" is_input="False">14.14<!--Total amount of hydrogen loaded in the tank for the mission--></fuel_total_mission>
+            <gravimetric_index is_input="False">0.25840581685957204<!--Ratio between the mission used weight and overall weight--></gravimetric_index>
             <inner_volume units="m**3" is_input="False">17.465845480584296<!--Capacity of the tank in terms of volume--></inner_volume>
-            <mass units="kg" is_input="False">16.348062938958073<!--Weight of the hydrogen gas tanks--></mass>
-            <specific_weight is_input="False">1.1561572092615326<!--The amount of tank weight to keep 1 kg of hydrogen gas--></specific_weight>
+            <mass units="kg" is_input="False">40.03834695109884<!--Weight of the hydrogen gas tanks--></mass>
             <tank_pressure units="Pa" is_input="True">1013250.0<!--Hydrogen gas tank static pressure--></tank_pressure>
             <unusable_fuel_mission units="kg" is_input="False">0.14<!--Amount of trapped hydrogen in the tank--></unusable_fuel_mission>
             <CG>
@@ -499,18 +499,20 @@
               <y_ratio is_input="True">0.4<!--X position of the pemfc center of gravity as a ratio of the wing half-span--></y_ratio>
             </CG>
             <cruise>
-              <CD0 is_input="False">0.04837355313383311</CD0>
+              <CD0 is_input="False">0.09947802111579072</CD0>
             </cruise>
             <dimension>
-              <diameter units="m" is_input="True">2.092<!--Initial Outer diameter of the hydrogen gas tank input--></diameter>
-              <inner_diameter units="m" is_input="False">2.091442327910854<!--Inner diameter of the hydrogen gas tanks--></inner_diameter>
-              <length units="m" is_input="False">3.6897332547853687<!--Value of the cylindrical length of the tank in the x-direction, computed differently based on the location of the tank--></length>
-              <outer_diameter units="m" is_input="False">2.092<!--Outer diameter of the hydrogen gas tank--></outer_diameter>
-              <overall_length units="m" is_input="False">5.781733254785369<!--Value of the length of the tank in the x-direction, computed differently based on the location of the tank--></overall_length>
-              <wall_thickness units="m" is_input="False">0.0002788360445731275<!--Inner diameter of the hydrogen gas tanks--></wall_thickness>
+              <aspect_ratio is_input="False">1.0<!--Tank aspect between the overall length and outer diameter, the higher the more cylindrical--></aspect_ratio>
+              <diameter units="m" is_input="False">3.0<!--Initial Outer diameter of the hydrogen gas tank input--></diameter>
+              <inner_diameter units="m" is_input="False">2.998400984317179<!--Inner diameter of the hydrogen gas tanks--></inner_diameter>
+              <length units="m" is_input="False">0.47461381868250935<!--Value of the cylindrical length of the tank in the x-direction, computed differently based on the location of the tank--></length>
+              <outer_diameter units="m" is_input="False">3.0<!--Outer diameter of the hydrogen gas tank--></outer_diameter>
+              <overall_length units="m" is_input="False">3.4746138186825095<!--Value of the length of the tank in the x-direction, computed differently based on the location of the tank--></overall_length>
+              <stress_coefficient is_input="False">1.0<!--Coefficient at the denominator of the stress calculation--></stress_coefficient>
+              <wall_thickness units="m" is_input="False">0.0007995078414104739<!--Inner diameter of the hydrogen gas tanks--></wall_thickness>
             </dimension>
             <low_speed>
-              <CD0 is_input="False">0.04837355313383311</CD0>
+              <CD0 is_input="False">0.09947802111579072</CD0>
             </low_speed>
             <material>
               <density units="kg/m**3" is_input="True">1530.0<!--Choice of the tank material,Some reference: Steel(ASTM-A514):7860, Aluminum(2014-T6):2800, Titanium(6%Al,4%V):4460, Carbon Composite:1530--></density>
@@ -737,7 +739,7 @@
         <hydrogen_gas_tank>
           <hydrogen_gas_tank_1>
             <dimension>
-              <overall_length units="m" is_input="False">0.0<!--Constraints on the tank length w.r.t the cabin/rear_fuselage length,  respected if <0--></overall_length>
+              <overall_length units="m" is_input="False">0.0<!--Constraints on the tank length w.r.t the cabin/rear_fuselage/front_fuselage length,  respected if <0--></overall_length>
             </dimension>
           </hydrogen_gas_tank_1>
         </hydrogen_gas_tank>

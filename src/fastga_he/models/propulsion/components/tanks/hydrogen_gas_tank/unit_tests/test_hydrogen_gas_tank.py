@@ -22,6 +22,8 @@ from ..components.sizing_tank_diameter_update import SizingHydrogenGasTankDiamet
 from ..components.sizing_tank_weight import SizingHydrogenGasTankWeight
 from ..components.sizing_gravimetric_index import SizingHydrogenGasTankGravimetricIndex
 from ..components.sizing_tank_drag import SizingHydrogenGasTankDrag
+from ..components.sizing_tank_aspect_ratio import SizingHydrogenGasTankAspectRatio
+from ..components.sizing_tank_stress_coefficient import SizingHydrogenGasTankStressCoefficinet
 from ..components.sizing_tank_wall_thickness import SizingHydrogenGasTankWallThickness
 from ..components.sizing_tank_overall_length import SizingHydrogenGasTankOverallLength
 from ..components.sizing_tank_overall_length_fuselage_check import (
@@ -337,7 +339,6 @@ def test_tank_diameter_update():
 
     problem.check_partials(compact_print=True, step=1e-7)
 
-
 def test_tank_overall_length():
     # Research independent input value in .xml file
     ivc = get_indep_var_comp(
@@ -416,6 +417,50 @@ def test_tank_inner_diameter():
             units="m",
         )
         == pytest.approx(0.97776, rel=1e-2)
+    )
+
+    problem.check_partials(compact_print=True, step=1e-7)
+
+def test_tank_aspect_ratio():
+
+    ivc = get_indep_var_comp(
+        list_inputs(SizingHydrogenGasTankAspectRatio(hydrogen_gas_tank_id="hydrogen_gas_tank_1")),
+        __file__,
+        XML_FILE,
+    )
+
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        SizingHydrogenGasTankAspectRatio(hydrogen_gas_tank_id="hydrogen_gas_tank_1"),
+        ivc,
+    )
+    assert (
+        problem.get_val(
+            "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:aspect_ratio",
+        )
+        == pytest.approx(2.022, rel=1e-2)
+    )
+
+    problem.check_partials(compact_print=True, step=1e-7)
+
+def test_tank_stress_coefficient():
+
+    ivc = get_indep_var_comp(
+        list_inputs(SizingHydrogenGasTankStressCoefficinet(hydrogen_gas_tank_id="hydrogen_gas_tank_1")),
+        __file__,
+        XML_FILE,
+    )
+
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        SizingHydrogenGasTankStressCoefficinet(hydrogen_gas_tank_id="hydrogen_gas_tank_1"),
+        ivc,
+    )
+    assert (
+        problem.get_val(
+            "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:dimension:stress_coefficient",
+        )
+        == pytest.approx(0.747, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True, step=1e-7)
@@ -560,7 +605,7 @@ def test_sizing_tank():
     )
     assert problem.get_val(
         "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:mass", units="kg"
-    ) == pytest.approx(1.2179, rel=1e-2)
+    ) == pytest.approx(2.409, rel=1e-2)
     assert problem.get_val(
         "data:propulsion:he_power_train:hydrogen_gas_tank:hydrogen_gas_tank_1:cruise:CD0"
     ) == pytest.approx(0.0, rel=1e-2)

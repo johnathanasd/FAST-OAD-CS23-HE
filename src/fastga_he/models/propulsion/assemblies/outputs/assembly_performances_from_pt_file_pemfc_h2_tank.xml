@@ -184,8 +184,11 @@
             <current_max units="A" is_input="False">594.9621804600157<!--Maximum current to the pemfc during the mission--></current_max>
             <current_min units="A" is_input="False">567.0468837386705<!--Minimum current to the pemfc during the mission--></current_min>
             <effective_area units="cm**2" is_input="True">2000.0<!--Effective fuel cell area in the stack--></effective_area>
-            <efficiency is_input="False">[0.6342208105845542, 0.6338275526189372, 0.6334410724667673, 0.6330613939261523, 0.6326885414000188, 0.6323225398512771, 0.6319634147591512, 0.6316111920765847, 0.6312658981886352, 0.6309275598717786]</efficiency>
+            <mass units="kg" is_input="True">327.988</mass>
+            <max_power_density units="kW/kg" is_input="False">0.639945639579134</max_power_density>
             <number_of_layers is_input="True">450.0<!--Total number of layers in the pemfc stacks--></number_of_layers>
+            <power_max units="kW" is_input="False">207.60330216194185<!--Maximum power to the pemfc during the mission--></power_max>
+            <power_min units="kW" is_input="False">198.8951820350523<!--Minimum power to the pemfc during the mission--></power_min>
           </pemfc_stack_1>
         </pemfc_stack>
         <propeller>

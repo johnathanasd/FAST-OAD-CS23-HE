@@ -16,6 +16,8 @@ from .sizing_tank_inner_diameter import SizingCryogenicHydrogenTankInnerDiameter
 from .sizing_tank_weight import SizingCryogenicHydrogenTankWeight
 from .sizing_gravimetric_index import SizingCryogenicHydrogenTankGravimetricIndex
 from .sizing_tank_drag import SizingCryogenicHydrogenTankDrag
+from .sizing_tank_aspect_ratio import SizingCryogenicHydrogenTankAspectRatio
+from .sizing_tank_stress_coefficient import SizingCryogenicHydrogenTankStressCoefficinet
 from .sizing_tank_outer_diameter import SizingCryogenicHydrogenTankOuterDiameter
 from .sizing_tank_diameter_update import SizingCryogenicHydrogenTankDiameterUpdate
 from .sizing_tank_overall_length import SizingCryogenicHydrogenTankOverallLength
@@ -102,6 +104,30 @@ class SizingCryogenicHydrogenTank(om.Group):
         )
 
         self.add_subsystem(
+            name="tank_wall_diameter",
+            subsys=SizingCryogenicHydrogenTankWallDiameter(
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            name="tank_aspect_ratio",
+            subsys=SizingCryogenicHydrogenTankAspectRatio(
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            name="tank_stress_coefficient",
+            subsys=SizingCryogenicHydrogenTankStressCoefficinet(
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
             name="tank_inner_diameter",
             subsys=SizingCryogenicHydrogenTankInnerDiameter(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
@@ -112,14 +138,6 @@ class SizingCryogenicHydrogenTank(om.Group):
         self.add_subsystem(
             name="tank_wall_thickness",
             subsys=SizingCryogenicHydrogenTankWallThickness(
-                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
-            ),
-            promotes=["*"],
-        )
-
-        self.add_subsystem(
-            name="tank_wall_diameter",
-            subsys=SizingCryogenicHydrogenTankWallDiameter(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
             ),
             promotes=["*"],

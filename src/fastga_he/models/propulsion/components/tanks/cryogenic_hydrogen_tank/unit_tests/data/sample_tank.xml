@@ -87,6 +87,7 @@
                             <wall_diameter units="m">0.97802</wall_diameter>
                             <wall_thickness units="m">1.3034e-4</wall_thickness>
                             <overall_length units="m">1.98802</overall_length>
+                            <aspect_ratio>2.012</aspect_ratio>
                             <rear_length_ratio>0.5</rear_length_ratio>
                         </dimension>
                         <insulation>

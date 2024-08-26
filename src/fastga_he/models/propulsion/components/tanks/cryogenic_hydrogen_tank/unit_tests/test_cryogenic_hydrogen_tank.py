@@ -19,6 +19,8 @@ from ..components.sizing_tank_length import SizingCryogenicHydrogenTankLength
 from ..components.sizing_tank_inner_volume import SizingCryogenicHydrogenTankInnerVolume
 from ..components.sizing_tank_inner_diameter import SizingCryogenicHydrogenTankInnerDiameter
 from ..components.sizing_tank_weight import SizingCryogenicHydrogenTankWeight
+from ..components.sizing_tank_aspect_ratio import SizingCryogenicHydrogenTankAspectRatio
+from ..components.sizing_tank_stress_coefficient import SizingCryogenicHydrogenTankStressCoefficinet
 from ..components.sizing_gravimetric_index import SizingCryogenicHydrogenTankGravimetricIndex
 from ..components.sizing_tank_drag import SizingCryogenicHydrogenTankDrag
 from ..components.sizing_tank_outer_diameter import SizingCryogenicHydrogenTankOuterDiameter
@@ -484,7 +486,61 @@ def test_tank_overall_length_fuselage_check():
         )
 
         problem.check_partials(compact_print=True, step=1e-7)
+def test_tank_aspect_ratio():
 
+    ivc = get_indep_var_comp(
+        list_inputs(
+            SizingCryogenicHydrogenTankAspectRatio(
+                cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1"
+            )
+        ),
+        __file__,
+        XML_FILE,
+    )
+
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        SizingCryogenicHydrogenTankAspectRatio(
+            cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1"
+        ),
+        ivc,
+    )
+    assert (
+        problem.get_val(
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:dimension:aspect_ratio",
+        )
+        == pytest.approx(2.012, rel=1e-2)
+    )
+
+    problem.check_partials(compact_print=True, step=1e-7)
+
+def test_tank_stress_coefficient():
+
+    ivc = get_indep_var_comp(
+        list_inputs(
+            SizingCryogenicHydrogenTankStressCoefficinet(
+                cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1"
+            )
+        ),
+        __file__,
+        XML_FILE,
+    )
+
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        SizingCryogenicHydrogenTankStressCoefficinet(
+            cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1"
+        ),
+        ivc,
+    )
+    assert (
+        problem.get_val(
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:dimension:stress_coefficient",
+        )
+        == pytest.approx(0.7485, rel=1e-2)
+    )
+
+    problem.check_partials(compact_print=True, step=1e-7)
 
 def test_tank_inner_diameter():
 
@@ -782,7 +838,7 @@ def test_sizing_tank():
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
             units="kg",
         )
-        == pytest.approx(0.35796786, rel=1e-2)
+        == pytest.approx(1.0530342, rel=1e-2)
     )
     assert problem.get_val(
         "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:cruise:CD0"
@@ -792,7 +848,7 @@ def test_sizing_tank():
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:dimension:inner_diameter",
             units="m",
         )
-        == pytest.approx(0.6027, rel=1e-2)
+        == pytest.approx(0.96750504, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True, step=1e-7)

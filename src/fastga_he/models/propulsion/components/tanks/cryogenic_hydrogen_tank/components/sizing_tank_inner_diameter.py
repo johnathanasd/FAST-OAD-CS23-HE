@@ -28,19 +28,10 @@ class SizingCryogenicHydrogenTankInnerDiameter(om.ExplicitComponent):
         self.add_input(
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
             + cryogenic_hydrogen_tank_id
-            + ":dimension:outer_diameter",
+            + ":dimension:wall_diameter",
             units="m",
             val=np.nan,
-            desc="Outer diameter of the cryogenic hydrogen tank",
-        )
-
-        self.add_input(
-            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
-            + cryogenic_hydrogen_tank_id
-            + ":dimension:insulation_thickness",
-            units="m",
-            val=np.nan,
-            desc="Insulation layer thickness of the cryogenic hydrogen tank",
+            desc="wall diameter of the cryogenic hydrogen tank without insulation layer",
         )
 
         self.add_input(
@@ -69,6 +60,14 @@ class SizingCryogenicHydrogenTankInnerDiameter(om.ExplicitComponent):
             desc="Cryogenic hydrogen tank material yield stress",
         )
 
+        self.add_input(
+            name="data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                 + cryogenic_hydrogen_tank_id
+                 + ":dimension:stress_coefficient",
+            val=0.5,
+            desc="Coefficient at the denominator of the stress calculation",
+        )
+
         self.add_output(
             name="data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
             + cryogenic_hydrogen_tank_id
@@ -87,12 +86,9 @@ class SizingCryogenicHydrogenTankInnerDiameter(om.ExplicitComponent):
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id
         )
 
-        outputs[input_prefix + ":dimension:inner_diameter"] = (
-            inputs[input_prefix + ":dimension:outer_diameter"]
-            - 2 * inputs[input_prefix + ":dimension:insulation_thickness"]
-        ) / (
+        outputs[input_prefix + ":dimension:inner_diameter"] = inputs[input_prefix + ":dimension:wall_diameter"] / (
             1
-            + 0.5
+            + inputs[input_prefix + ":dimension:stress_coefficient"]
             * inputs[input_prefix + ":tank_pressure"]
             * inputs[input_prefix + ":Safety_factor"]
             / inputs[input_prefix + ":material:yield_strength"]
@@ -110,39 +106,35 @@ class SizingCryogenicHydrogenTankInnerDiameter(om.ExplicitComponent):
 
         sigma = inputs[input_prefix + ":material:yield_strength"]
 
-        d_outer = inputs[input_prefix + ":dimension:outer_diameter"]
+        d_wall = inputs[input_prefix + ":dimension:wall_diameter"]
 
-        t_insulation = inputs[input_prefix + ":dimension:insulation_thickness"]
-
-        partials[
-            input_prefix + ":dimension:inner_diameter",
-            input_prefix + ":dimension:outer_diameter",
-        ] = 1 / (1 + 0.5 * tank_pressure * sf / sigma)
+        c = inputs[input_prefix +":dimension:stress_coefficient"]
 
         partials[
             input_prefix + ":dimension:inner_diameter",
-            input_prefix + ":dimension:insulation_thickness",
-        ] = -2 / (1 + 0.5 * tank_pressure * sf / sigma)
+            input_prefix + ":dimension:wall_diameter",
+        ] = 1 / (1 + c * tank_pressure * sf / sigma)
 
         partials[input_prefix + ":dimension:inner_diameter", input_prefix + ":tank_pressure",] = (
-            -2 * (d_outer - 2 * t_insulation) * sf * sigma / (sf * tank_pressure + 2 * sigma) ** 2
+            -d_wall * sf * c * sigma / (sf * tank_pressure * c + sigma) ** 2
         )
 
         partials[input_prefix + ":dimension:inner_diameter", input_prefix + ":Safety_factor",] = (
-            -2
-            * (d_outer - 2 * t_insulation)
-            * tank_pressure
-            * sigma
-            / (tank_pressure * sf + 2 * sigma) ** 2
+            -d_wall * tank_pressure * c * sigma / (tank_pressure * sf * c + sigma) ** 2
+        )
+
+        partials[
+            input_prefix
+            + ":dimension:inner_diameter",
+            input_prefix
+            + ":dimension:stress_coefficient",
+        ] = (
+                -d_wall * tank_pressure * sf * sigma / (tank_pressure * sf * c + sigma) ** 2
         )
 
         partials[
             input_prefix + ":dimension:inner_diameter",
             input_prefix + ":material:yield_strength",
         ] = (
-            2
-            * tank_pressure
-            * sf
-            * (d_outer - 2 * t_insulation)
-            / (2 * sigma + tank_pressure * sf) ** 2
+            c * d_wall * sf * tank_pressure / (sigma + sf * tank_pressure * c) ** 2
         )

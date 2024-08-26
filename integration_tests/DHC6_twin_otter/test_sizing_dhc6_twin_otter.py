@@ -688,6 +688,3 @@ def test_ghc_6():
     print(residuals)
 
     problem.write_outputs()
-
-
-
