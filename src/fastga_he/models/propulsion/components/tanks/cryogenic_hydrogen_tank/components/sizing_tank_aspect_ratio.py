@@ -100,7 +100,7 @@ class SizingCryogenicHydrogenTankAspectRatio(om.ExplicitComponent):
             ]
         )
 
-        if unclipped_ar >= 1.:
+        if unclipped_ar >= 1.0:
 
             partials[
                 "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"

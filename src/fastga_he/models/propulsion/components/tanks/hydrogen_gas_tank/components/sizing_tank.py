@@ -78,7 +78,9 @@ class SizingHydrogenGasTank(om.Group):
 
         self.add_subsystem(
             name="tank_stree_coefficient",
-            subsys=SizingHydrogenGasTankStressCoefficinet(hydrogen_gas_tank_id=hydrogen_gas_tank_id),
+            subsys=SizingHydrogenGasTankStressCoefficinet(
+                hydrogen_gas_tank_id=hydrogen_gas_tank_id
+            ),
             promotes=["*"],
         )
 

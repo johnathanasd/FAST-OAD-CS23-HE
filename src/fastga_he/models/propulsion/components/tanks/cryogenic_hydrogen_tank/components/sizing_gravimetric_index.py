@@ -60,7 +60,7 @@ class SizingCryogenicHydrogenTankGravimetricIndex(om.ExplicitComponent):
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
             + cryogenic_hydrogen_tank_id
             + ":gravimetric_index",
-            val=10.0,
+            val=0.6,
             desc="The amount ratio between the mission used weight and overall weight ",
         )
 

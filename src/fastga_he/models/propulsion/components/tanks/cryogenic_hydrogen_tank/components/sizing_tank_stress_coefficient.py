@@ -12,7 +12,7 @@ class SizingCryogenicHydrogenTankStressCoefficinet(om.ExplicitComponent):
     """
 
     def initialize(self):
-        
+
         self.options.declare(
             name="cryogenic_hydrogen_tank_id",
             default=None,
@@ -78,4 +78,6 @@ class SizingCryogenicHydrogenTankStressCoefficinet(om.ExplicitComponent):
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
             + cryogenic_hydrogen_tank_id
             + ":dimension:aspect_ratio",
-        ] = (0.5 / ar ** 2 - 1 / ar ** 2)
+        ] = (
+            0.5 / ar ** 2 - 1 / ar ** 2
+        )

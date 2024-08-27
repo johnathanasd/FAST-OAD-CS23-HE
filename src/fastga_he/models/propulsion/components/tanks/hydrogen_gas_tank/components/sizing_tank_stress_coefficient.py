@@ -78,4 +78,6 @@ class SizingHydrogenGasTankStressCoefficinet(om.ExplicitComponent):
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
             + hydrogen_gas_tank_id
             + ":dimension:aspect_ratio",
-        ] = (0.5 / ar ** 2 - 1 / ar ** 2)
+        ] = (
+            0.5 / ar ** 2 - 1 / ar ** 2
+        )

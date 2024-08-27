@@ -486,6 +486,8 @@ def test_tank_overall_length_fuselage_check():
         )
 
         problem.check_partials(compact_print=True, step=1e-7)
+
+
 def test_tank_aspect_ratio():
 
     ivc = get_indep_var_comp(
@@ -514,6 +516,7 @@ def test_tank_aspect_ratio():
 
     problem.check_partials(compact_print=True, step=1e-7)
 
+
 def test_tank_stress_coefficient():
 
     ivc = get_indep_var_comp(
@@ -541,6 +544,7 @@ def test_tank_stress_coefficient():
     )
 
     problem.check_partials(compact_print=True, step=1e-7)
+
 
 def test_tank_inner_diameter():
 
@@ -1102,7 +1106,7 @@ def test_tank_skin_temperature():
     # Research independent input value in .xml file
     ivc = om.IndepVarComp()
     ivc.add_output(
-        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:insulation:thermal_resistance",
+        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:thermal_resistance",
         val=10.0,
         units="K/W",
     )
@@ -1160,9 +1164,10 @@ def test_air_conductivity():
 def test_tank_nusselt_number():
 
     expected_values = [
-        np.full(NB_POINTS_TEST, 1.126),
+        np.full(NB_POINTS_TEST, 1.594),
+        np.full(NB_POINTS_TEST, 1.594),
         np.full(NB_POINTS_TEST, 2.158),
-        np.full(NB_POINTS_TEST, 1.126),
+        np.full(NB_POINTS_TEST, 1.594),
         np.full(NB_POINTS_TEST, 2.158),
     ]
 
@@ -1235,7 +1240,7 @@ def test_tank_heat_convection():
             "heat_convection",
             units="W",
         )
-        == pytest.approx(np.full(NB_POINTS_TEST, 7.4947), rel=1e-2)
+        == pytest.approx(np.full(NB_POINTS_TEST, 2.488), rel=1e-2)
     )
 
     problem.check_partials(compact_print=True)
@@ -1279,6 +1284,7 @@ def test_tank_heat_conduction():
 def test_tank_radiation():
 
     expected_values = [
+        np.full(NB_POINTS_TEST, 68.2266),
         np.full(NB_POINTS_TEST, 68.2266),
         np.full(NB_POINTS_TEST, 1820.71),
         np.full(NB_POINTS_TEST, 68.2266),

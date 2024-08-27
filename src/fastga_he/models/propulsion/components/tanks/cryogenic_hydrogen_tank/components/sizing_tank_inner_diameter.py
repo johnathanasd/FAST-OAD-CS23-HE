@@ -62,8 +62,8 @@ class SizingCryogenicHydrogenTankInnerDiameter(om.ExplicitComponent):
 
         self.add_input(
             name="data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
-                 + cryogenic_hydrogen_tank_id
-                 + ":dimension:stress_coefficient",
+            + cryogenic_hydrogen_tank_id
+            + ":dimension:stress_coefficient",
             val=0.5,
             desc="Coefficient at the denominator of the stress calculation",
         )
@@ -86,7 +86,9 @@ class SizingCryogenicHydrogenTankInnerDiameter(om.ExplicitComponent):
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id
         )
 
-        outputs[input_prefix + ":dimension:inner_diameter"] = inputs[input_prefix + ":dimension:wall_diameter"] / (
+        outputs[input_prefix + ":dimension:inner_diameter"] = inputs[
+            input_prefix + ":dimension:wall_diameter"
+        ] / (
             1
             + inputs[input_prefix + ":dimension:stress_coefficient"]
             * inputs[input_prefix + ":tank_pressure"]
@@ -108,7 +110,7 @@ class SizingCryogenicHydrogenTankInnerDiameter(om.ExplicitComponent):
 
         d_wall = inputs[input_prefix + ":dimension:wall_diameter"]
 
-        c = inputs[input_prefix +":dimension:stress_coefficient"]
+        c = inputs[input_prefix + ":dimension:stress_coefficient"]
 
         partials[
             input_prefix + ":dimension:inner_diameter",
@@ -124,12 +126,10 @@ class SizingCryogenicHydrogenTankInnerDiameter(om.ExplicitComponent):
         )
 
         partials[
-            input_prefix
-            + ":dimension:inner_diameter",
-            input_prefix
-            + ":dimension:stress_coefficient",
+            input_prefix + ":dimension:inner_diameter",
+            input_prefix + ":dimension:stress_coefficient",
         ] = (
-                -d_wall * tank_pressure * sf * sigma / (tank_pressure * sf * c + sigma) ** 2
+            -d_wall * tank_pressure * sf * sigma / (tank_pressure * sf * c + sigma) ** 2
         )
 
         partials[

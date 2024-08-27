@@ -38,7 +38,7 @@ class PerformancesLiquidHydrogenTankSkinTemperature(om.ExplicitComponent):
         self.add_input(
             name="data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
             + cryogenic_hydrogen_tank_id
-            + ":insulation:thermal_resistance",
+            + ":thermal_resistance",
             units="K/W",
             val=14.5,
             desc="Thermal resistance of the tank wall including the insulation layer",
@@ -78,7 +78,7 @@ class PerformancesLiquidHydrogenTankSkinTemperature(om.ExplicitComponent):
         self.declare_partials(
             of="*",
             wrt=[
-                input_prefix + ":insulation:thermal_resistance",
+                input_prefix + ":thermal_resistance",
                 input_prefix + ":liquid_hydrogen_temperature",
             ],
             method="exact",
@@ -94,7 +94,7 @@ class PerformancesLiquidHydrogenTankSkinTemperature(om.ExplicitComponent):
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id
         )
 
-        unclipped_t_skin = inputs[input_prefix + ":insulation:thermal_resistance"] * inputs[
+        unclipped_t_skin = inputs[input_prefix + ":thermal_resistance"] * inputs[
             "heat_conduction"
         ] + inputs[input_prefix + ":liquid_hydrogen_temperature"] * np.ones(number_of_points)
 
@@ -110,11 +110,11 @@ class PerformancesLiquidHydrogenTankSkinTemperature(om.ExplicitComponent):
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:" + cryogenic_hydrogen_tank_id
         )
 
-        unclipped_t_skin = inputs[input_prefix + ":insulation:thermal_resistance"] * inputs[
+        unclipped_t_skin = inputs[input_prefix + ":thermal_resistance"] * inputs[
             "heat_conduction"
         ] + inputs[input_prefix + ":liquid_hydrogen_temperature"] * np.ones(number_of_points)
 
-        partials["skin_temperature", input_prefix + ":insulation:thermal_resistance",] = np.where(
+        partials["skin_temperature", input_prefix + ":thermal_resistance",] = np.where(
             (unclipped_t_skin <= SKIN_TEMPERATURE_MAX) & (unclipped_t_skin >= SKIN_TEMPERATURE_MIN),
             inputs["heat_conduction"],
             np.full_like(inputs["heat_conduction"], 1e-6),
@@ -122,7 +122,7 @@ class PerformancesLiquidHydrogenTankSkinTemperature(om.ExplicitComponent):
 
         partials["skin_temperature", "heat_conduction",] = np.where(
             (unclipped_t_skin <= SKIN_TEMPERATURE_MAX) & (unclipped_t_skin >= SKIN_TEMPERATURE_MIN),
-            inputs[input_prefix + ":insulation:thermal_resistance"] * np.ones(number_of_points),
+            inputs[input_prefix + ":thermal_resistance"] * np.ones(number_of_points),
             np.full_like(inputs["heat_conduction"], 1e-6),
         )
 

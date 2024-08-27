@@ -289,7 +289,7 @@ def test_performances_sizing_assembly_pemfc_enforce():
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
             units="kg",
         )
-        == pytest.approx(1.802, rel=1e-2)
+        == pytest.approx(1.59, rel=1e-2)
     )
 
 
@@ -436,7 +436,7 @@ def test_performances_sizing_assembly_pemfc_ensure():
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
             units="kg",
         )
-        == pytest.approx(1.55, rel=1e-2)
+        == pytest.approx(1.48, rel=1e-2)
     )
 
 

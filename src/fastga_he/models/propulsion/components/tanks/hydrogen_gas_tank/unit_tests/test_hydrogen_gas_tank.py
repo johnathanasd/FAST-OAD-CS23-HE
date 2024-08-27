@@ -339,6 +339,7 @@ def test_tank_diameter_update():
 
     problem.check_partials(compact_print=True, step=1e-7)
 
+
 def test_tank_overall_length():
     # Research independent input value in .xml file
     ivc = get_indep_var_comp(
@@ -421,6 +422,7 @@ def test_tank_inner_diameter():
 
     problem.check_partials(compact_print=True, step=1e-7)
 
+
 def test_tank_aspect_ratio():
 
     ivc = get_indep_var_comp(
@@ -443,10 +445,13 @@ def test_tank_aspect_ratio():
 
     problem.check_partials(compact_print=True, step=1e-7)
 
+
 def test_tank_stress_coefficient():
 
     ivc = get_indep_var_comp(
-        list_inputs(SizingHydrogenGasTankStressCoefficinet(hydrogen_gas_tank_id="hydrogen_gas_tank_1")),
+        list_inputs(
+            SizingHydrogenGasTankStressCoefficinet(hydrogen_gas_tank_id="hydrogen_gas_tank_1")
+        ),
         __file__,
         XML_FILE,
     )

@@ -100,7 +100,7 @@ class SizingHydrogenGasTankAspectRatio(om.ExplicitComponent):
             ]
         )
 
-        if unclipped_ar >= 1.:
+        if unclipped_ar >= 1.0:
 
             partials[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
