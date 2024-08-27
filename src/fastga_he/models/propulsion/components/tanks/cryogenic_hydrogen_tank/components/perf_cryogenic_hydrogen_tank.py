@@ -9,6 +9,7 @@ from ..components.perf_fuel_remaining import PerformancesLiquidHydrogenRemaining
 from ..components.perf_fuel_boil_off import PerformancesHydrogenBoilOffMission
 from ..components.perf_exterior_temperature import PerformancesExteriorTemperature
 from ..components.perf_nusselt_number import PerformancesCryogenicHydrogenTankNusseltNumber
+from ..components.perf_rayleigh_number import PerformancesCryogenicHydrogenTankRayleighNumber
 from ..components.perf_tank_skin_temperature import PerformancesLiquidHydrogenTankSkinTemperature
 from ..components.perf_air_kinematic_viscosity import PerformancesAirKinematicViscosity
 from ..components.perf_air_conductivity import PerformancesAirThermalConductivity
@@ -100,6 +101,15 @@ class PerformancesCryogenicHydrogenTank(om.Group):
         self.add_subsystem(
             "tank_skin_temperature",
             PerformancesLiquidHydrogenTankSkinTemperature(
+                number_of_points=number_of_points,
+                cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
+            ),
+            promotes=["*"],
+        )
+
+        self.add_subsystem(
+            "rayleigh_number",
+            PerformancesCryogenicHydrogenTankRayleighNumber(
                 number_of_points=number_of_points,
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id,
             ),

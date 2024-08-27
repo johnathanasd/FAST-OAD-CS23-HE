@@ -5,8 +5,6 @@
 import openmdao.api as om
 import numpy as np
 
-HYDROGEN_VAPORIZATION_LATENT_HEAT = 446592.0  # J/kg
-
 
 class PerformancesCryogenicHydrogenTankConvection(om.ExplicitComponent):
     """

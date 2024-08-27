@@ -24,7 +24,7 @@ class PerformancesAirThermalConductivity(om.ExplicitComponent):
 
         self.add_input(
             name="exterior_temperature",
-            units="degC",
+            units="K",
             val=np.full(number_of_points, np.nan),
         )
 
@@ -41,12 +41,25 @@ class PerformancesAirThermalConductivity(om.ExplicitComponent):
             method="exact",
             rows=np.arange(number_of_points),
             cols=np.arange(number_of_points),
-            val=np.full(number_of_points, 0.00007),
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         number_of_points = self.options["number_of_points"]
 
+        T = inputs["exterior_temperature"]
+
         outputs["air_thermal_conductivity"] = (
-            0.024 * np.ones(number_of_points) + 0.00007 * inputs["exterior_temperature"]
+            1.5207e-11 * T ** 3
+            - 4.8574e-08 * T ** 2
+            + 1.0184e-04 * T
+            - 3.9333e-04 * np.ones(number_of_points)
+        )
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        number_of_points = self.options["number_of_points"]
+
+        T = inputs["exterior_temperature"]
+
+        partials["air_thermal_conductivity", "exterior_temperature"] = (
+            3 * 1.5207e-11 * T ** 2 - 2 * 4.8574e-08 * T + 1.0184e-04 * np.ones(number_of_points)
         )

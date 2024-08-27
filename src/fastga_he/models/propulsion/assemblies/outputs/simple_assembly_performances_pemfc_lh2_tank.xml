@@ -120,13 +120,13 @@
           <cryogenic_hydrogen_tank_1>
             <fuel_consumed_mission units="kg" is_input="False">13.556743268938835<!--Amount of fuel from that tank which will be consumed during mission--></fuel_consumed_mission>
             <liquid_hydrogen_temperature units="degK" is_input="False">34.69409465334292<!--Liquid hydrogen temperature in the tank--></liquid_hydrogen_temperature>
-            <overall_hydrogen_boil_off units="kg" is_input="False">0.1755043700764186<!--Amount of trapped hydrogen in the tank--></overall_hydrogen_boil_off>
+            <overall_hydrogen_boil_off units="kg" is_input="False">0.1782891195377874<!--Amount of trapped hydrogen in the tank--></overall_hydrogen_boil_off>
             <tank_pressure units="Pa" is_input="True">1013250.0<!--Inner thank pressure --></tank_pressure>
             <thermal_resistance units="degK/W" is_input="True">14.5<!--Thermal resistance of the tank wall including the insulation layer--></thermal_resistance>
             <dimension>
+              <aspect_ratio is_input="True">2.0<!--Tank aspect between the overall length and outer diameter, the higher the more cylindrical--></aspect_ratio>
               <length units="m" is_input="True">0.521</length>
               <outer_diameter units="m" is_input="True">0.6129<!--Outer diameter of the hydrogen gas tank--></outer_diameter>
-              <overall_length units="m" is_input="True">1.1339<!--Value of the length of the tank in the x-direction, computed differently based on the location of the tank--></overall_length>
             </dimension>
             <insulation>
               <reflectivity_coefficient is_input="True">0.8<!--The reflectiveness of the material, values between 0 and 1, 0 means no reflectiveness--></reflectivity_coefficient>

@@ -45,6 +45,7 @@ from ..components.perf_fuel_mission_consumed import PerformancesLiquidHydrogenCo
 from ..components.perf_fuel_remaining import PerformancesLiquidHydrogenRemainingMission
 from ..components.perf_fuel_boil_off import PerformancesHydrogenBoilOffMission
 from ..components.perf_exterior_temperature import PerformancesExteriorTemperature
+from ..components.perf_rayleigh_number import PerformancesCryogenicHydrogenTankRayleighNumber
 from ..components.perf_nusselt_number import PerformancesCryogenicHydrogenTankNusseltNumber
 from ..components.perf_tank_skin_temperature import PerformancesLiquidHydrogenTankSkinTemperature
 from ..components.perf_air_kinematic_viscosity import PerformancesAirKinematicViscosity
@@ -629,7 +630,7 @@ def test_cryogenic_hydrogen_tank_weight():
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
             units="kg",
         )
-        == pytest.approx(4.882, rel=1e-2)
+        == pytest.approx(6.1025, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True)
@@ -842,7 +843,7 @@ def test_sizing_tank():
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
             units="kg",
         )
-        == pytest.approx(1.0530342, rel=1e-2)
+        == pytest.approx(1.3163, rel=1e-2)
     )
     assert problem.get_val(
         "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:cruise:CD0"
@@ -1161,14 +1162,46 @@ def test_air_conductivity():
     problem.check_partials(compact_print=True)
 
 
+def test_rayleigh_number():
+
+    # Research independent input value in .xml file
+    ivc = om.IndepVarComp()
+    ivc.add_output("exterior_temperature", val=np.full(NB_POINTS_TEST, 300.0), units="K")
+    ivc.add_output("skin_temperature", val=np.full(NB_POINTS_TEST, 200.0), units="K")
+    ivc.add_output("air_kinematic_viscosity", val=np.full(NB_POINTS_TEST, 1.0), units="m**2/s")
+    ivc.add_output(
+        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:dimension:outer_diameter",
+        val=0.98802,
+        units="m",
+    )
+
+    # Run problem and check obtained value(s) is/(are) correct
+    problem = run_system(
+        PerformancesCryogenicHydrogenTankRayleighNumber(
+            cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1",
+            number_of_points=NB_POINTS_TEST,
+        ),
+        ivc,
+    )
+
+    assert (
+        problem.get_val(
+            "tank_rayleigh_number",
+        )
+        == pytest.approx(np.full(NB_POINTS_TEST, 2.239), rel=1e-2)
+    )
+
+    problem.check_partials(compact_print=True)
+
+
 def test_tank_nusselt_number():
 
     expected_values = [
-        np.full(NB_POINTS_TEST, 1.594),
-        np.full(NB_POINTS_TEST, 1.594),
-        np.full(NB_POINTS_TEST, 2.158),
-        np.full(NB_POINTS_TEST, 1.594),
-        np.full(NB_POINTS_TEST, 2.158),
+        np.full(NB_POINTS_TEST, 1.3),
+        np.full(NB_POINTS_TEST, 1.3),
+        np.full(NB_POINTS_TEST, 1.425),
+        np.full(NB_POINTS_TEST, 1.3),
+        np.full(NB_POINTS_TEST, 1.425),
     ]
 
     for option, expected_value in zip(POSSIBLE_POSITION, expected_values):
@@ -1184,13 +1217,14 @@ def test_tank_nusselt_number():
             __file__,
             XML_FILE,
         )
-        ivc.add_output("air_kinematic_viscosity", val=np.full(NB_POINTS_TEST, 1.0), units="m**2/s")
 
         if option == "wing_pod" or option == "underbelly":
             ivc.add_output("true_airspeed", val=np.full(NB_POINTS_TEST, 100.0), units="m/s")
+            ivc.add_output(
+                "air_kinematic_viscosity", val=np.full(NB_POINTS_TEST, 1.0), units="m**2/s"
+            )
         else:
-            ivc.add_output("exterior_temperature", val=np.full(NB_POINTS_TEST, 300.0), units="K")
-            ivc.add_output("skin_temperature", val=np.full(NB_POINTS_TEST, 200.0), units="K")
+            ivc.add_output("exterior_temperature", val=np.full(NB_POINTS_TEST, 2.239))
 
         # Run problem and check obtained value(s) is/(are) correct
         problem = run_system(
@@ -1240,7 +1274,7 @@ def test_tank_heat_convection():
             "heat_convection",
             units="W",
         )
-        == pytest.approx(np.full(NB_POINTS_TEST, 2.488), rel=1e-2)
+        == pytest.approx(np.full(NB_POINTS_TEST, 7.494), rel=1e-2)
     )
 
     problem.check_partials(compact_print=True)
