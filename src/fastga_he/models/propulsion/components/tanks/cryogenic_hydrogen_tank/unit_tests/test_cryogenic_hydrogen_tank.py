@@ -1200,9 +1200,9 @@ def test_tank_nusselt_number():
     expected_values = [
         np.full(NB_POINTS_TEST, 1.3),
         np.full(NB_POINTS_TEST, 1.3),
-        np.full(NB_POINTS_TEST, 1.425),
+        np.full(NB_POINTS_TEST, 1.234),
         np.full(NB_POINTS_TEST, 1.3),
-        np.full(NB_POINTS_TEST, 1.425),
+        np.full(NB_POINTS_TEST, 1.234),
     ]
 
     for option, expected_value in zip(POSSIBLE_POSITION, expected_values):
@@ -1225,6 +1225,7 @@ def test_tank_nusselt_number():
                 "air_kinematic_viscosity", val=np.full(NB_POINTS_TEST, 1.0), units="m**2/s"
             )
         else:
+            ivc.add_output("true_airspeed", val=np.full(NB_POINTS_TEST, 100.0), units="m/s")
             ivc.add_output("exterior_temperature", val=np.full(NB_POINTS_TEST, 2.239))
 
         # Run problem and check obtained value(s) is/(are) correct
@@ -1375,6 +1376,7 @@ def test_performances_cryogenic_hydrogen_tank():
     )
     ivc.add_output("fuel_consumed_t", val=np.linspace(13.37, 42.0, NB_POINTS_TEST))
     ivc.add_output("time_step", val=np.full(NB_POINTS_TEST, 200.0), units="s")
+    ivc.add_output("true_airspeed", val=np.full(NB_POINTS_TEST, 100.0), units="m/s")
 
     problem = run_system(
         PerformancesCryogenicHydrogenTank(

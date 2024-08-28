@@ -546,6 +546,8 @@ def test_pemfc_wing_pod_lh2_retrofit():
     ref_inputs = pth.join(DATA_FOLDER_PATH, xml_file_name)
 
     problem.model_options["*propeller_*"] = {"mass_as_input": True}
+    problem.model_options["*nusselt_number*"] = {"position": "underbelly"}
+    problem.model_options["*heat_radiation*"] = {"position": "underbelly"}
 
     problem.write_needed_inputs(ref_inputs)
     problem.read_inputs()
@@ -594,6 +596,8 @@ def test_pemfc_belly_lh2_tank_wingpod_retrofit():
     ref_inputs = pth.join(DATA_FOLDER_PATH, xml_file_name)
 
     problem.model_options["*propeller_*"] = {"mass_as_input": True}
+    problem.model_options["*nusselt_number*"] = {"position": "wing_pod"}
+    problem.model_options["*heat_radiation*"] = {"position": "wing_pod"}
 
     problem.write_needed_inputs(ref_inputs)
     problem.read_inputs()
