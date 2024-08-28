@@ -625,18 +625,18 @@
             <material>
                 <type>"carbon_composite"</type>
                 <yield_strength units="Pa">1.9e09</yield_strength>
-                <density units="kg/m**3">1530</density>
-                <thermal_conductivity units="W/m/K">21.</thermal_conductivity>
+                <density units="kg/m**3">1900</density>
+                <thermal_conductivity units="W/m/K">120.</thermal_conductivity>
             </material>
             <dimension>
                 <diameter units="m">1.85<!--inital guess for the tank outer diameter --></diameter>
                 <insulation_thickness units="m">0.005</insulation_thickness>
             </dimension>
             <insulation>
-                <material_density units="kg/m**3">120.</material_density>
-                <thermal_conductivity units="W/m/K">0.000017</thermal_conductivity>
-                <thermal_emissivity>0.03</thermal_emissivity>
-                <reflectivity_coefficient>0.8</reflectivity_coefficient>
+                <material_density units="kg/m**3">33.</material_density>
+                <thermal_conductivity units="W/m/K">0.026</thermal_conductivity>
+                <thermal_emissivity>0.9</thermal_emissivity>
+                <reflectivity_coefficient>0.74</reflectivity_coefficient>
             </insulation>
           </cryogenic_hydrogen_tank_1>
         </cryogenic_hydrogen_tank>
