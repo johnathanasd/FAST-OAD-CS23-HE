@@ -217,7 +217,7 @@ class SizingCryogenicHydrogenTank(om.Group):
         )
 
         self.add_subsystem(
-            name="tank_weight",
+            name="tank_weight_lh2",
             subsys=SizingCryogenicHydrogenTankWeight(
                 cryogenic_hydrogen_tank_id=cryogenic_hydrogen_tank_id
             ),

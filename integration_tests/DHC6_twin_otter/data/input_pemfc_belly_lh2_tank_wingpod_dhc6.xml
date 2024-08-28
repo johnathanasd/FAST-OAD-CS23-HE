@@ -432,6 +432,7 @@
               <gate_voltage units="V" is_input="True">1.3</gate_voltage>
             </igbt>
             <inductor>
+              <air_gap units="m" is_input="False">0.00023290059485161856<!--Air gap in the inductor--></air_gap>
               <inductance units="H" is_input="True">1.3612212793999764e-06<!--Inductance of the inductor--></inductance>
               <magnetic_field units="T" is_input="True">1.0<!--Magnetic field in the inductor core, will be taken at its maximum allowable value to reduce the weight--></magnetic_field>
               <wire_current_density units="A/m**2" is_input="True">5000000.0<!--Maximum current density allowed in the copper wire--></wire_current_density>
@@ -491,6 +492,7 @@
               <gate_voltage units="V" is_input="True">1.3</gate_voltage>
             </igbt>
             <inductor>
+              <air_gap units="m" is_input="False">0.00023290059485161856<!--Air gap in the inductor--></air_gap>
               <inductance units="H" is_input="True">1.3612212793999764e-06<!--Inductance of the inductor--></inductance>
               <magnetic_field units="T" is_input="True">1.0<!--Magnetic field in the inductor core, will be taken at its maximum allowable value to reduce the weight--></magnetic_field>
               <wire_current_density units="A/m**2" is_input="True">5000000.0<!--Maximum current density allowed in the copper wire--></wire_current_density>
@@ -566,7 +568,7 @@
               <y_ratio is_input="True">0.28</y_ratio>
             </CG>
             <tank_pressure units="Pa">850000</tank_pressure>
-            <Safety_factor>2.0</Safety_factor>
+            <Safety_factor>6.0</Safety_factor>
             <material>
                 <type>"carbon_composite"</type>
                 <yield_strength units="Pa">1.9e09</yield_strength>
@@ -595,7 +597,7 @@
               <y_ratio is_input="True">0.28</y_ratio>
             </CG>
             <tank_pressure units="Pa">850000</tank_pressure>
-            <Safety_factor>2.0</Safety_factor>
+            <Safety_factor>6.0</Safety_factor>
             <material>
                 <type>"carbon_composite"</type>
                 <yield_strength units="Pa">1.9e09</yield_strength>
@@ -657,6 +659,7 @@
               </tube>
             </heat_sink>
             <inductor>
+              <air_gap units="m" is_input="False">0.00023290059485161856<!--Air gap in the inductor--></air_gap>
               <inductance units="H" is_input="True">1.3612212793999764e-06<!--Inductance of the inductor--></inductance>
               <magnetic_field units="T" is_input="True">1.0<!--Magnetic field in the inductor core, will be taken at its maximum allowable value to reduce the weight--></magnetic_field>
               <wire_current_density units="A/m**2" is_input="True">5000000.0<!--Maximum current density allowed in the copper wire--></wire_current_density>

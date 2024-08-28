@@ -206,7 +206,7 @@ def test_assembly_sizing():
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
             units="kg",
         )
-        == pytest.approx(10.28, rel=1e-2)
+        == pytest.approx(7.19, rel=1e-2)
     )
     assert problem.get_val(
         "data:propulsion:he_power_train:DC_SSPC:dc_sspc_1:mass", units="kg"
@@ -289,7 +289,7 @@ def test_performances_sizing_assembly_pemfc_enforce():
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
             units="kg",
         )
-        == pytest.approx(2.247, rel=1e-2)
+        == pytest.approx(1.57, rel=1e-2)
     )
 
 
@@ -343,7 +343,7 @@ def test_assembly_sizing_from_pt_file():
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
             units="kg",
         )
-        == pytest.approx(2.23, rel=1e-2)
+        == pytest.approx(1.56, rel=1e-2)
     )
     assert problem.get_val(
         "data:propulsion:he_power_train:DC_SSPC:dc_sspc_1:mass", units="kg"
@@ -436,7 +436,7 @@ def test_performances_sizing_assembly_pemfc_ensure():
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
             units="kg",
         )
-        == pytest.approx(1.996, rel=1e-2)
+        == pytest.approx(1.4, rel=1e-2)
     )
 
 

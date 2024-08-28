@@ -630,7 +630,7 @@ def test_cryogenic_hydrogen_tank_weight():
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
             units="kg",
         )
-        == pytest.approx(6.98, rel=1e-2)
+        == pytest.approx(4.88, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True)
@@ -843,7 +843,7 @@ def test_sizing_tank():
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
             units="kg",
         )
-        == pytest.approx(1.50, rel=1e-2)
+        == pytest.approx(1.05, rel=1e-2)
     )
     assert problem.get_val(
         "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:cruise:CD0"

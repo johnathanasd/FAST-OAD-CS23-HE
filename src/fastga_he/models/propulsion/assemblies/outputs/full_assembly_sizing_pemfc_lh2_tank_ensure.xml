@@ -510,10 +510,10 @@
             <capacity units="kg" is_input="False">12.96497165517166<!--Capacity of the tank in terms of weight--></capacity>
             <fuel_consumed_mission units="kg" is_input="False">12.948208039816986<!--Amount of fuel from that tank which will be consumed during mission--></fuel_consumed_mission>
             <fuel_total_mission units="kg" is_input="False">12.96497165517166<!--Total amount of hydrogen loaded in the tank for the mission--></fuel_total_mission>
-            <gravimetric_index is_input="False">0.8653033693238285<!--The amount ratio between the mission used weight and overall weight --></gravimetric_index>
+            <gravimetric_index is_input="False">0.9015138593068136<!--The amount ratio between the mission used weight and overall weight --></gravimetric_index>
             <inner_volume units="m**3" is_input="False">0.18299183705252872<!--Capacity of the tank in terms of volume--></inner_volume>
             <liquid_hydrogen_temperature units="degK" is_input="False">34.69409465334292<!--Liquid hydrogen temperature in the tank--></liquid_hydrogen_temperature>
-            <mass units="kg" is_input="False">1.9988069441594263<!--Weight of the hydrogen gas tanks--></mass>
+            <mass units="kg" is_input="False">1.3977670938177806<!--Weight of the hydrogen gas tanks--></mass>
             <overall_hydrogen_boil_off units="kg" is_input="False">0.017343333085298784<!--Amount of trapped hydrogen in the tank--></overall_hydrogen_boil_off>
             <tank_pressure units="Pa" is_input="True">1013250.0<!--Inner thank pressure --></tank_pressure>
             <thermal_resistance units="degK/W" is_input="False">26643.406081550114<!--overall thermal resistance of the tank--></thermal_resistance>
