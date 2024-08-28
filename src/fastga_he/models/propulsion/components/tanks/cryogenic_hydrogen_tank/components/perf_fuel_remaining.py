@@ -31,7 +31,7 @@ class PerformancesLiquidHydrogenRemainingMission(om.ExplicitComponent):
         self.add_input(
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
             + cryogenic_hydrogen_tank_id
-            + ":fuel_consumed_mission",
+            + ":fuel_total_mission",
             units="kg",
             val=np.nan,
             desc="Total amount of hydrogen loaded in the tank",
@@ -68,7 +68,7 @@ class PerformancesLiquidHydrogenRemainingMission(om.ExplicitComponent):
         total_fuel = inputs[
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
             + cryogenic_hydrogen_tank_id
-            + ":fuel_consumed_mission"
+            + ":fuel_total_mission"
         ]
 
         outputs["fuel_remaining_t"] = (
@@ -86,7 +86,7 @@ class PerformancesLiquidHydrogenRemainingMission(om.ExplicitComponent):
             "fuel_remaining_t",
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
             + cryogenic_hydrogen_tank_id
-            + ":fuel_consumed_mission",
+            + ":fuel_total_mission",
         ] = np.ones(number_of_points)
 
         partials["fuel_remaining_t", "fuel_consumed_t"] = -(

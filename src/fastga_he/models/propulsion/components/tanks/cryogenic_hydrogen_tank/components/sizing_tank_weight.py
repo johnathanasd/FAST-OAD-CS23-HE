@@ -28,7 +28,7 @@ class SizingCryogenicHydrogenTankWeight(om.ExplicitComponent):
 
         self.options.declare(
             "structure_factor",
-            default=1.25,
+            default=1.43,
             desc="Structure factor to consider other part of the tank system",
         )
 

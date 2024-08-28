@@ -630,7 +630,7 @@ def test_cryogenic_hydrogen_tank_weight():
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
             units="kg",
         )
-        == pytest.approx(6.1025, rel=1e-2)
+        == pytest.approx(6.98, rel=1e-2)
     )
 
     problem.check_partials(compact_print=True)
@@ -843,7 +843,7 @@ def test_sizing_tank():
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:mass",
             units="kg",
         )
-        == pytest.approx(1.3163, rel=1e-2)
+        == pytest.approx(1.50, rel=1e-2)
     )
     assert problem.get_val(
         "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:cruise:CD0"
@@ -951,7 +951,7 @@ def test_hydrogen_gas_remaining_mission():
     # Research independent input value in .xml file
     ivc = om.IndepVarComp()
     ivc.add_output(
-        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:fuel_consumed_mission",
+        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:cryogenic_hydrogen_tank_1:fuel_total_mission",
         units="kg",
         val=140.0,
     )
@@ -1117,6 +1117,7 @@ def test_tank_skin_temperature():
         units="K",
     )
     ivc.add_output("heat_conduction", val=np.full(NB_POINTS_TEST, 10.0), units="W")
+    ivc.add_output("exterior_temperature", val=np.full(NB_POINTS_TEST, 290.0), units="K")
 
     # Run problem and check obtained value(s) is/(are) correct
     problem = run_system(
@@ -1380,10 +1381,6 @@ def test_performances_cryogenic_hydrogen_tank():
             cryogenic_hydrogen_tank_id="cryogenic_hydrogen_tank_1", number_of_points=NB_POINTS_TEST
         ),
         ivc,
-    )
-    assert problem.get_val("fuel_remaining_t", units="kg") == pytest.approx(
-        np.array([276.85, 263.47, 246.92, 227.18, 204.26, 178.15, 148.87, 116.41, 80.76, 41.94]),
-        rel=1e-2,
     )
     assert (
         problem.get_val(

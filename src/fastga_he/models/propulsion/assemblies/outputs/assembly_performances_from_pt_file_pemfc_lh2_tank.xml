@@ -2,7 +2,7 @@
   <altitude units="m" is_input="True">[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]</altitude>
   <density units="kg/m**3" is_input="True">[1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587, 1.2249908312368587]</density>
   <exterior_temperature units="degK" is_input="True">[288.15, 288.15, 288.15, 288.15, 288.15, 288.15, 288.15, 288.15, 288.15, 288.15]<!--temperature outside of the cable--></exterior_temperature>
-  <fuel_consumed_t_econ units="kg" is_input="False">[1.3223436664397377, 1.3300931779093788, 1.3377157404810713, 1.3452104589394804, 1.3525764394400632, 1.3598127900159949, 1.366918621080627, 1.3738930459260021, 1.3807351812179796, 1.387444147488499]<!--fuel consumed at each time step--></fuel_consumed_t_econ>
+  <fuel_consumed_t_econ units="kg" is_input="False">[1.3223436664397379, 1.3300931779093788, 1.3377157404810722, 1.3452104589394802, 1.3525764394400634, 1.359812790015995, 1.3669186210806266, 1.3738930459260024, 1.3807351812179804, 1.387444147488499]<!--fuel consumed at each time step--></fuel_consumed_t_econ>
   <non_consumable_energy_t_econ units="W*h" is_input="False">[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]<!--Non consumable energy at each time step--></non_consumable_energy_t_econ>
   <thrust units="N" is_input="True">[1550.0, 1538.888888888889, 1527.7777777777778, 1516.6666666666667, 1505.5555555555557, 1494.4444444444443, 1483.3333333333333, 1472.2222222222222, 1461.111111111111, 1450.0]</thrust>
   <time_step units="s" is_input="True">[500.0, 500.0, 500.0, 500.0, 500.0, 500.0, 500.0, 500.0, 500.0, 500.0]</time_step>
@@ -17,7 +17,7 @@
             <losses_max units="W" is_input="False">5018.884891108982</losses_max>
             <switching_frequency_max units="Hz" is_input="False">12000.0</switching_frequency_max>
             <switching_frequency_mission units="Hz" is_input="True">12000.0<!--Switching frequency of the DC/DC converter for the points--></switching_frequency_mission>
-            <voltage_in_max units="V" is_input="False">350.75546455462484</voltage_in_max>
+            <voltage_in_max units="V" is_input="False">350.7554645546248</voltage_in_max>
             <voltage_out_max units="V" is_input="False">850.0</voltage_out_max>
             <voltage_out_target_mission units="V" is_input="True">850.0<!--Target output voltage of the DC/DC converter for the points--></voltage_out_target_mission>
             <capacitor>
@@ -45,7 +45,7 @@
               <c is_input="True">-3.005e-08</c>
             </energy_rr>
             <igbt>
-              <current_max units="A" is_input="False">689.5318546581576</current_max>
+              <current_max units="A" is_input="False">689.5318546581575</current_max>
               <resistance units="ohm" is_input="True">0.002265</resistance>
             </igbt>
             <inductor>
@@ -66,12 +66,12 @@
             <voltage_max units="V" is_input="False">823.9784327770047<!--Maximum voltage at the terminals SSPC--></voltage_max>
           </dc_sspc_1>
           <dc_sspc_2>
-            <current_max units="A" is_input="False">238.3365088082225<!--Maximum current flowing through the SSPC--></current_max>
+            <current_max units="A" is_input="False">238.3365088082098<!--Maximum current flowing through the SSPC--></current_max>
             <efficiency is_input="True">0.99<!--Value of the SSPC efficiency, assumed constant during operations (eases convergence)--></efficiency>
             <voltage_max units="V" is_input="False">832.3014472494998<!--Maximum voltage at the terminals SSPC--></voltage_max>
           </dc_sspc_2>
           <dc_sspc_412>
-            <current_max units="A" is_input="False">238.3365088082225<!--Maximum current flowing through the SSPC--></current_max>
+            <current_max units="A" is_input="False">238.3365088082098<!--Maximum current flowing through the SSPC--></current_max>
             <efficiency is_input="True">0.99<!--Value of the SSPC efficiency, assumed constant during operations (eases convergence)--></efficiency>
             <voltage_max units="V" is_input="False">841.5<!--Maximum voltage at the terminals SSPC--></voltage_max>
           </dc_sspc_412>
@@ -88,11 +88,11 @@
         </DC_bus>
         <DC_cable_harness>
           <harness_1>
-            <current_max units="A" is_input="False">238.3365088082225<!--Maximum current flowing through the harness, all cables included--></current_max>
+            <current_max units="A" is_input="False">238.3365088082098<!--Maximum current flowing through the harness, all cables included--></current_max>
             <length units="m" is_input="True">7.0</length>
-            <losses_max units="W" is_input="False">195.66430613512395<!--Maximum losses in one cable of the harness--></losses_max>
+            <losses_max units="W" is_input="False">195.66430613510306<!--Maximum losses in one cable of the harness--></losses_max>
             <number_cables is_input="True">1.0</number_cables>
-            <temperature_max units="degK" is_input="False">301.90179576420877</temperature_max>
+            <temperature_max units="degK" is_input="False">301.9017957642088</temperature_max>
             <voltage_max units="V" is_input="False">833.085</voltage_max>
             <cable>
               <radius units="mm" is_input="True">6.47</radius>
@@ -121,9 +121,10 @@
         </PMSM>
         <cryogenic_hydrogen_tank>
           <cryogenic_hydrogen_tank_1>
-            <fuel_consumed_mission units="kg" is_input="False">13.556743268938831<!--Amount of fuel from that tank which will be consumed during mission--></fuel_consumed_mission>
+            <fuel_consumed_mission units="kg" is_input="False">13.556743268938835<!--Amount of fuel from that tank which will be consumed during mission--></fuel_consumed_mission>
+            <fuel_total_mission units="kg" is_input="True">14.766<!--Total amount of hydrogen loaded in the tank--></fuel_total_mission>
             <liquid_hydrogen_temperature units="degK" is_input="False">34.69409465334292<!--Liquid hydrogen temperature in the tank--></liquid_hydrogen_temperature>
-            <overall_hydrogen_boil_off units="kg" is_input="False">0.17829045405246421<!--Amount of trapped hydrogen in the tank--></overall_hydrogen_boil_off>
+            <overall_hydrogen_boil_off units="kg" is_input="False">0.17104186664540916<!--Amount of trapped hydrogen in the tank--></overall_hydrogen_boil_off>
             <tank_pressure units="Pa" is_input="True">1013250.0<!--Inner thank pressure --></tank_pressure>
             <thermal_resistance units="degK/W" is_input="True">14.5<!--Thermal resistance of the tank wall including the insulation layer--></thermal_resistance>
             <dimension>
@@ -156,7 +157,7 @@
             <diode>
               <gate_voltage units="V" is_input="True">1.3</gate_voltage>
               <resistance units="ohm" is_input="True">0.00258995</resistance>
-              <temperature_max units="degK" is_input="False">349.83973787821276</temperature_max>
+              <temperature_max units="degK" is_input="False">349.8397378782128</temperature_max>
               <thermal_resistance units="degK/W" is_input="True">0.148195<!--Thermal resistance between the casing and the heat sink--></thermal_resistance>
             </diode>
             <energy_off>
@@ -200,8 +201,8 @@
             <mass units="kg" is_input="True">327.988</mass>
             <max_power_density units="kW/kg" is_input="False">0.6399459072204433</max_power_density>
             <number_of_layers is_input="True">450.0<!--Total number of layers in the pemfc stacks--></number_of_layers>
-            <power_max units="kW" is_input="False">207.60491737809812<!--Maximum power to the pemfc during the mission--></power_max>
-            <power_min units="kW" is_input="False">198.8966933914959<!--Minimum power to the pemfc during the mission--></power_min>
+            <power_max units="kW" is_input="False">207.6049173780981<!--Maximum power to the pemfc during the mission--></power_max>
+            <power_min units="kW" is_input="False">198.89669339149586<!--Minimum power to the pemfc during the mission--></power_min>
           </pemfc_stack_1>
         </pemfc_stack>
         <propeller>
