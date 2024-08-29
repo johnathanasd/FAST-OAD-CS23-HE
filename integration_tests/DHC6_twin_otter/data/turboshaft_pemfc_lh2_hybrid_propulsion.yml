@@ -70,7 +70,7 @@ power_train_components:
     symmetrical: fuel_tank_1
   cryogenic_hydrogen_tank_1:
     id: fastga_he.pt_component.cryogenic_hydrogen_tank
-    position: in_the_fuselage #"in_the_fuselage", "wing_pod", "in_the_back", "underbelly"
+    position: in_the_back #"in_the_fuselage", "wing_pod", "in_the_back", "underbelly"
 
 
 component_connections:
