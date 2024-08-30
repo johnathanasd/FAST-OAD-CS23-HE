@@ -1,8 +1,8 @@
 <FASTOAD_model>
   <data>
     <TLAR>
-      <NPAX_design is_input="True">19.0<!--(POH) top-level requirement: number of passengers for the design mission, assuming a classic eco/business class repartition--></NPAX_design>
-      <luggage_mass_design units="kg" is_input="True">200.<!--(for 19pax and 1375kg payload) top-level requirement: luggage mass for the design mission--></luggage_mass_design>
+      <NPAX_design is_input="True">15.0<!--(POH) top-level requirement: number of passengers for the design mission, assuming a classic eco/business class repartition--></NPAX_design>
+      <luggage_mass_design units="kg" is_input="True">175.<!--(for 19pax and 1375kg payload) top-level requirement: luggage mass for the design mission--></luggage_mass_design>
       <range units="NM" is_input="True">400.0<!--(POH, for 1375kg payload) top-level requirement: design range--></range>
       <v_approach units="kn" is_input="True">75.4<!--(Jane, 1.3x63mph stall speed) top-level requirement: approach speed--></v_approach>
       <v_cruise units="kn" is_input="True">182<!--(POH, 10000ft) top-level requirement: cruise speed--></v_cruise>
@@ -230,7 +230,7 @@
             </design_point>
             <limit>
               <ITT units="degK" is_input="True">1000.0<!--Limit ITT of the turboshaft--></ITT>
-              <OPR is_input="True">9.2<!--Limit OPR of the turboshaft--></OPR>
+              <OPR is_input="True">9.0<!--Limit OPR of the turboshaft--></OPR>
             </limit>
           </turboshaft_1>
           <turboshaft_2>
@@ -247,7 +247,7 @@
             </design_point>
             <limit>
               <ITT  units="degK" is_input="True">1000.0<!--Limit ITT of the turboshaft--></ITT>
-              <OPR is_input="True">9.2<!--Limit OPR of the turboshaft--></OPR>
+              <OPR is_input="True">9.0<!--Limit OPR of the turboshaft--></OPR>
             </limit>
           </turboshaft_2>
         </turboshaft>
@@ -294,22 +294,22 @@
       </propeller>
       <cooling>
         <cruise>
-          <CD0 is_input="True">0.0275<!--(Gudmundsson p.714) profile drag due to cooling in cruise conditions--></CD0>
+          <CD0 is_input="True">0.015<!--(Gudmundsson p.714) profile drag due to cooling in cruise conditions--></CD0>
         </cruise>
         <low_speed>
-          <CD0 is_input="True">0.0275<!--(Gudmundsson p.714) profile drag due to cooling in low speed conditions--></CD0>
+          <CD0 is_input="True">0.015<!--(Gudmundsson p.714) profile drag due to cooling in low speed conditions--></CD0>
         </low_speed>
       </cooling>
       <flaps>
         <landing>
           <CL is_input="True">1.4625<!--(Gudmundsson p.446) lift coefficient increment due to flaps deployment in landing configuration--></CL>
-          <CL_max is_input="True">1.135<!--maximum lift coefficient increment due to flaps deployment in landing configuration--></CL_max>
+          <CL_max is_input="True">1.235<!--maximum lift coefficient increment due to flaps deployment in landing configuration--></CL_max>
           <CM is_input="True">-0.24648012559668536<!--additional pitching moment coefficient ue to the deployment of flaps in landing configuration--></CM>
         </landing>
         <takeoff>
-          <CD is_input="True">0.00868<!--(Gudmundsson p.724) additional drag coefficient due to flaps deployment in takeoff configuration--></CD>
+          <CD is_input="True">0.00768<!--(Gudmundsson p.724) additional drag coefficient due to flaps deployment in takeoff configuration--></CD>
           <CL is_input="True">1.45<!--lift coefficient increment due to flaps deployment in takeoff configuration--></CL>
-          <CL_max is_input="True">1.08<!--maximum lift coefficient increment due to flaps deployment in takeoff configuration--></CL_max>
+          <CL_max is_input="True">1.18<!--maximum lift coefficient increment due to flaps deployment in takeoff configuration--></CL_max>
           <CM is_input="True">-0.08448449127122522<!--additional pitching moment coefficient due to the deployment of flaps in takeoff configuration--></CM>
         </takeoff>
       </flaps>
@@ -573,7 +573,7 @@
           </fwd>
         </CG>
         <payload>
-          <design_mass_per_passenger units="kg" is_input="True">72.0<!--design payload mass carried by passenger--></design_mass_per_passenger>
+          <design_mass_per_passenger units="kg" is_input="True">80.0<!--design payload mass carried by passenger--></design_mass_per_passenger>
         </payload>
       </aircraft>
       <airframe>
