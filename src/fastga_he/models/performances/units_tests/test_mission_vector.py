@@ -3165,3 +3165,41 @@ def test_payload_range_inner_with_builtin_sampling():  # TODO: using for pareto
         ],
         abs=1.0,
     )
+
+def test_payload_range_inner_with_builtin_sampling_dhc6():  # TODO: using for pareto
+
+    oad.RegisterSubmodel.active_models["submodel.performances.mission_vector.climb_speed"] = None
+    oad.RegisterSubmodel.active_models["submodel.performances.mission_vector.descent_speed"] = None
+
+    xml_file = "input_payload_range_dhc6.xml"
+    pt_file_path = pth.join(DATA_FOLDER_PATH, "turboshaft_propulsion_for_payload_range_dhc6.yml")
+
+    input_list = list_inputs(
+        ComputePayloadRangeInnerGroup(
+            number_of_sample=15, power_train_file_path=pt_file_path, generate_sample=True
+        )
+    )
+
+    # Research independent input value in .xml file
+    ivc = get_indep_var_comp(
+        input_list,
+        __file__,
+        xml_file,
+    )
+
+    problem = run_system(
+        ComputePayloadRangeInnerGroup(
+            number_of_sample=15, power_train_file_path=pt_file_path, generate_sample=True
+        ),
+        ivc,
+    )
+
+    fuel_array = problem.get_val("data:mission:inner_payload_range:fuel", units="kg")
+
+    energy_array = problem.get_val("data:mission:inner_payload_range:energy", units="kW*h")
+
+    payload_array = problem.get_val("data:mission:inner_payload_range:payload", units="kg")
+
+
+    range_array = problem.get_val("data:mission:inner_payload_range:range", units="NM")
+

@@ -63,7 +63,7 @@ submodels:
   submodel.propulsion.constraints.cryogenic_hydrogen_tank.capacity: fastga_he.submodel.propulsion.constraints.cryogenic_hydrogen_tank.capacity.enforce
   submodel.propulsion.performances.dc_line.temperature_profile: fastga_he.submodel.propulsion.performances.dc_line.temperature_profile.with_dynamics
   submodel.propulsion.constraints.inverter.current: fastga_he.submodel.propulsion.constraints.inverter.current.enforce
-  submodel.propulsion.constraints.simple_pmsm.torque: fastga_he.submodel.propulsion.constraints.simple_pmsm.torque.ensure
+  submodel.propulsion.constraints.simple_pmsm.torque: fastga_he.submodel.propulsion.constraints.simple_pmsm.torque.enforce
   submodel.performances_he.dep_effect: fastga_he.submodel.performances.dep_effect.from_pt_file
   submodel.weight.mass.propulsion: fastga_he.submodel.weight.mass.propulsion.power_train
   submodel.weight.cg.propulsion: fastga_he.submodel.weight.cg.propulsion.power_train
