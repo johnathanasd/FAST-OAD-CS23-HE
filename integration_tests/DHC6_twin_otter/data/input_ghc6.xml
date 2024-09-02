@@ -206,7 +206,7 @@
           <hydrogen_gas_tank_1>
             <capacity units="kg">180.</capacity>
             <Safety_factor is_input="True">2.0<!--Hydrogen gas tank design safety factor--></Safety_factor>
-            <tank_pressure units="Pa" is_input="True">70000000.0<!--Hydrogen gas tank static pressure--></tank_pressure>
+            <tank_pressure units="Pa" is_input="True">85000000.0<!--Hydrogen gas tank static pressure (reaching limit 85 MPa)--></tank_pressure>
             <dimension>
               <rear_length_ratio is_input="True">0.5</rear_length_ratio>
             </dimension>

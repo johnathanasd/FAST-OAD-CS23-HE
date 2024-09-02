@@ -3166,6 +3166,7 @@ def test_payload_range_inner_with_builtin_sampling():  # TODO: using for pareto
         abs=1.0,
     )
 
+
 def test_payload_range_inner_with_builtin_sampling_dhc6():  # TODO: using for pareto
 
     oad.RegisterSubmodel.active_models["submodel.performances.mission_vector.climb_speed"] = None
@@ -3200,6 +3201,4 @@ def test_payload_range_inner_with_builtin_sampling_dhc6():  # TODO: using for pa
 
     payload_array = problem.get_val("data:mission:inner_payload_range:payload", units="kg")
 
-
     range_array = problem.get_val("data:mission:inner_payload_range:range", units="NM")
-

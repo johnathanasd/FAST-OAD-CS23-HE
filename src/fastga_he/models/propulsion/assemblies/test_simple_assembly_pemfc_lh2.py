@@ -470,7 +470,6 @@ def test_performances_from_pt_file():
     )
     ivc.add_output("time_step", units="s", val=np.full(NB_POINTS_TEST, 500))
 
-
     problem = run_system(
         PowerTrainPerformancesFromFile(
             power_train_file_path=pt_file_path,

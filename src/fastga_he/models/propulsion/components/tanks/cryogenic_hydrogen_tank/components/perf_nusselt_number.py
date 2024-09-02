@@ -103,7 +103,7 @@ class PerformancesCryogenicHydrogenTankNusseltNumber(om.ExplicitComponent):
 
             self.declare_partials(
                 of="tank_nusselt_number",
-                wrt=["tank_rayleigh_number","true_airspeed"],
+                wrt=["tank_rayleigh_number", "true_airspeed"],
                 method="exact",
                 rows=np.arange(number_of_points),
                 cols=np.arange(number_of_points),
@@ -134,7 +134,7 @@ class PerformancesCryogenicHydrogenTankNusseltNumber(om.ExplicitComponent):
                 * inputs[input_prefix + ":dimension:outer_diameter"]
                 / inputs["air_kinematic_viscosity"]
             )
-            outputs["tank_nusselt_number"] =   (
+            outputs["tank_nusselt_number"] = (
                 0.03625 * PRANDTL_NUMBER ** 0.43 * reynolds_number ** 0.8
             )
         else:
@@ -154,7 +154,7 @@ class PerformancesCryogenicHydrogenTankNusseltNumber(om.ExplicitComponent):
 
         if position == "wing_pod" or position == "underbelly":
 
-            partials["tank_nusselt_number", "true_airspeed"] =  (
+            partials["tank_nusselt_number", "true_airspeed"] = (
                 0.03625
                 * PRANDTL_NUMBER ** 0.43
                 * 0.8
@@ -166,9 +166,7 @@ class PerformancesCryogenicHydrogenTankNusseltNumber(om.ExplicitComponent):
                 / inputs["true_airspeed"] ** 0.2
             )
 
-            partials[
-                "tank_nusselt_number", input_prefix + ":dimension:outer_diameter"
-            ] =  (
+            partials["tank_nusselt_number", input_prefix + ":dimension:outer_diameter"] = (
                 0.03625
                 * PRANDTL_NUMBER ** 0.43
                 * 0.8
