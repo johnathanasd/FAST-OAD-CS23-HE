@@ -43,19 +43,53 @@ class SizingCryogenicHydrogenTankDiameterUpdate(om.ExplicitComponent):
         self.declare_partials(
             of="*",
             wrt="*",
-            val=1.0,
             method="exact",
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
         cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
+        clipped_outer_diameter = np.clip(
+            inputs[
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":dimension:outer_diameter"
+                ],
+            0.01,
+            np.inf,
+        )
+
         outputs[
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
             + cryogenic_hydrogen_tank_id
             + ":dimension:diameter"
-        ] = inputs[
-            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
-            + cryogenic_hydrogen_tank_id
-            + ":dimension:outer_diameter"
-        ]
+            ] = clipped_outer_diameter
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
+
+        if (
+                inputs[
+                    "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                    + cryogenic_hydrogen_tank_id
+                    + ":dimension:outer_diameter"
+                ]
+                >= 0.01
+        ):
+            partials[
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":dimension:diameter",
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":dimension:outer_diameter",
+            ] = 1.0
+        else:
+            partials[
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":dimension:diameter",
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":dimension:outer_diameter",
+            ] = 0.0

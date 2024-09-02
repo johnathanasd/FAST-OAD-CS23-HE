@@ -63,7 +63,7 @@ submodels:
   submodel.propulsion.constraints.cryogenic_hydrogen_tank.capacity: fastga_he.submodel.propulsion.constraints.cryogenic_hydrogen_tank.capacity.enforce
   submodel.propulsion.performances.dc_line.temperature_profile: fastga_he.submodel.propulsion.performances.dc_line.temperature_profile.with_dynamics
   submodel.propulsion.constraints.inverter.current: fastga_he.submodel.propulsion.constraints.inverter.current.enforce
-  submodel.propulsion.constraints.simple_pmsm.torque: fastga_he.submodel.propulsion.constraints.simple_pmsm.torque.enforce
+  submodel.propulsion.constraints.simple_pmsm.torque: fastga_he.submodel.propulsion.constraints.simple_pmsm.torque.ensure
   submodel.performances_he.dep_effect: fastga_he.submodel.performances.dep_effect.from_pt_file
   submodel.weight.mass.propulsion: fastga_he.submodel.weight.mass.propulsion.power_train
   submodel.weight.cg.propulsion: fastga_he.submodel.weight.cg.propulsion.power_train
@@ -74,7 +74,7 @@ submodels:
   submodel.weight.mass.systems: fastga_he.submodel.weight.mass.systems.weight_nan
   submodel.geometry.nacelle.dimension: null
   submodel.aerodynamics.nacelle.cd0: fastga_he.submodel.aerodynamics.powertrain.cd0.from_pt_file
-  submodel.propulsion.constraints.inductor.air_gap: fastga_he.submodel.propulsion.constraints.inductor.air_gap.enforce
+  submodel.propulsion.constraints.inductor.air_gap: fastga_he.submodel.propulsion.constraints.inductor.air_gap.ensure
   submodel.propulsion.dc_dc_converter.inductor.inductance: null
   submodel.weight.mass.furniture.seats: null
   submodel.weight.cg.loadcase.flight: fastga_he.submodel.weight.cg.loadcase.flight.simple
