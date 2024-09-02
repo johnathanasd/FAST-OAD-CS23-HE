@@ -573,6 +573,8 @@
             </material>
             <dimension>
               <diameter units="m">1.85<!--inital guess for the tank outer diameter, d = 0.75 max height in the fuselage --></diameter>
+              <rear_length_ratio>0.5</rear_length_ratio>
+              <front_length_ratio>0.7</front_length_ratio>
             </dimension>
           </hydrogen_gas_tank_1>
         </hydrogen_gas_tank>
@@ -640,10 +642,10 @@
     <weight>
       <aircraft>
         <max_payload units="kg" is_input="True">1941.<!--max payload weight--></max_payload>
-        <MLW units="kg" is_input="False">5551.770053143031<!--maximum landing weight--></MLW>
-        <MZFW units="kg" is_input="False">5416.361027456616<!--maximum zero fuel weight--></MZFW>
-        <MFW units="kg" is_input="False">5033.98662572889<!--maximum fuel weight--></MFW>
-        <target_MTOW units="kg" is_input="False">5619.462722684249<!--maximum takeoff weight of the aircraft--></target_MTOW>
+        <MLW units="kg" is_input="False">5551.774629718968<!--maximum landing weight--></MLW>
+        <MZFW units="kg" is_input="False">5416.36549240875<!--maximum zero fuel weight--></MZFW>
+        <MFW units="kg" is_input="False">5034.9737362800015<!--maximum fuel weight--></MFW>
+        <target_MTOW units="kg" is_input="False">5639.502750917826<!--maximum takeoff weight of the aircraft--></target_MTOW>
         <CG>
           <aft>
             <MAC_limit is_input="True">0.15<!--position of the aft limit of the Weight and balance envelop as a percent of MAC--></MAC_limit>
