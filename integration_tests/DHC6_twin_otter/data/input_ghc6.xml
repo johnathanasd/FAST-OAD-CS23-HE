@@ -4,7 +4,7 @@
     <TLAR>
       <NPAX_design is_input="True">5.0<!--(POH) top-level requirement: number of passengers for the design mission, assuming a classic eco/business class repartition--></NPAX_design>
       <luggage_mass_design units="kg" is_input="True">95.<!--(for 19pax and 1375kg payload) top-level requirement: luggage mass for the design mission--></luggage_mass_design>
-      <range units="NM" is_input="True">400.0<!--(POH, for 1375kg payload) top-level requirement: design range--></range>
+      <range units="NM" is_input="True">300.0<!--(POH, for 1375kg payload) top-level requirement: design range--></range>
       <v_approach units="kn" is_input="True">75.4<!--(Jane, 1.3x63mph stall speed) top-level requirement: approach speed--></v_approach>
       <v_cruise units="kn" is_input="True">182<!--(POH, 10000ft) top-level requirement: cruise speed--></v_cruise>
       <v_max_sl units="kn" is_input="True">170</v_max_sl>
@@ -206,7 +206,7 @@
           <hydrogen_gas_tank_1>
             <capacity units="kg">180.</capacity>
             <Safety_factor is_input="True">2.0<!--Hydrogen gas tank design safety factor--></Safety_factor>
-            <tank_pressure units="Pa" is_input="True">85000000.0<!--Hydrogen gas tank static pressure (reaching limit 85 MPa)--></tank_pressure>
+            <tank_pressure units="Pa" is_input="True">70000000.0<!--Hydrogen gas tank static pressure (reaching limit 85 MPa)--></tank_pressure>
             <dimension>
               <diameter units="m">1.85<!--inital guess for the tank outer diameter --></diameter>
               <rear_length_ratio>0.5</rear_length_ratio>
@@ -497,7 +497,7 @@
     </handling_qualities>
     <weight>
       <aircraft>
-        <max_payload is_input="True" units="kg">1941.0<!--(Jane) max payload weight--></max_payload>
+        <max_payload is_input="True" units="kg">861.0<!--(Jane) max payload weight--></max_payload>
         <payload is_input="True" units="kg">655.0<!--(POH) design payload weight--></payload>
         <CG>
           <aft>
@@ -528,7 +528,7 @@
       </airframe>
       <furniture>
         <passenger_seats>
-          <mass units="kg" is_input="True">300.<!--(Roskam part 3, 7.7 lbs per seat) passenger/pilot seats total mass--></mass>
+          <mass units="kg" is_input="True">100.<!--(Roskam part 3, 7.7 lbs per seat) passenger/pilot seats total mass--></mass>
         </passenger_seats>
       </furniture>
       <propulsion>

@@ -54,7 +54,7 @@ class SizingCryogenicHydrogenTankDiameterUpdate(om.ExplicitComponent):
                 "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
                 + cryogenic_hydrogen_tank_id
                 + ":dimension:outer_diameter"
-                ],
+            ],
             0.01,
             np.inf,
         )
@@ -63,18 +63,18 @@ class SizingCryogenicHydrogenTankDiameterUpdate(om.ExplicitComponent):
             "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
             + cryogenic_hydrogen_tank_id
             + ":dimension:diameter"
-            ] = clipped_outer_diameter
+        ] = clipped_outer_diameter
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
         cryogenic_hydrogen_tank_id = self.options["cryogenic_hydrogen_tank_id"]
 
         if (
-                inputs[
-                    "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
-                    + cryogenic_hydrogen_tank_id
-                    + ":dimension:outer_diameter"
-                ]
-                >= 0.01
+            inputs[
+                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                + cryogenic_hydrogen_tank_id
+                + ":dimension:outer_diameter"
+            ]
+            >= 0.01
         ):
             partials[
                 "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
