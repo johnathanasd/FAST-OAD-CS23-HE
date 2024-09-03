@@ -294,10 +294,10 @@
       </propeller>
       <cooling>
         <cruise>
-          <CD0 is_input="True">0.015<!--(Gudmundsson p.714) profile drag due to cooling in cruise conditions--></CD0>
+          <CD0 is_input="True">0.026<!--(Gudmundsson p.714) profile drag due to cooling in cruise conditions--></CD0>
         </cruise>
         <low_speed>
-          <CD0 is_input="True">0.015<!--(Gudmundsson p.714) profile drag due to cooling in low speed conditions--></CD0>
+          <CD0 is_input="True">0.05<!--(Gudmundsson p.714) profile drag due to cooling in low speed conditions--></CD0>
         </low_speed>
       </cooling>
       <flaps>
@@ -307,7 +307,7 @@
           <CM is_input="True">-0.24648012559668536<!--additional pitching moment coefficient ue to the deployment of flaps in landing configuration--></CM>
         </landing>
         <takeoff>
-          <CD is_input="True">0.00768<!--(Gudmundsson p.724) additional drag coefficient due to flaps deployment in takeoff configuration--></CD>
+          <CD is_input="True">0.00868<!--(Gudmundsson p.724) additional drag coefficient due to flaps deployment in takeoff configuration--></CD>
           <CL is_input="True">1.45<!--lift coefficient increment due to flaps deployment in takeoff configuration--></CL>
           <CL_max is_input="True">1.18<!--maximum lift coefficient increment due to flaps deployment in takeoff configuration--></CL_max>
           <CM is_input="True">-0.08448449127122522<!--additional pitching moment coefficient due to the deployment of flaps in takeoff configuration--></CM>
@@ -375,7 +375,7 @@
         </recording>
         <power>
           <electric_systems>
-            <mass units="lbm" is_input="False">558.4829664102779<!--Mass of aircraft systems_inp_data:weight:systems:power:electric_systems:mass--></mass>
+            <mass units="lbm" is_input="False">608.4829664102779<!--Mass of aircraft systems_inp_data:weight:systems:power:electric_systems:mass--></mass>
             <CG>
               <x units="m" is_input="False">6.75<!--X-position of center of gravity of the electric power unit--></x>
             </CG>
@@ -441,8 +441,8 @@
             <v_cas units="knot" is_input="True">182.0</v_cas>
             <v_eas units="knot" is_input="True">130.</v_eas>
             <climb_rate>
-              <cruise_level units="ft/min" is_input="True">1600.0<!--(POH) target climb rate at the end of climb--></cruise_level>
-              <sea_level units="ft/min" is_input="True">1600.0<!--(Jane) target climb rate at sea level--></sea_level>
+              <cruise_level units="ft/min" is_input="True">500.0<!--(POH) target climb rate at the end of climb--></cruise_level>
+              <sea_level units="ft/min" is_input="True">1000.0<!--(Jane) target climb rate at sea level--></sea_level>
             </climb_rate>
           </climb>
           <cruise>
