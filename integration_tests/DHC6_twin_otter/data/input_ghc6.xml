@@ -29,7 +29,7 @@
         </windows>
         <seats>
           <passenger>
-            <NPAX_max is_input="True">19.0<!--maximum seating capability of the aircraft--></NPAX_max>
+            <NPAX_max is_input="True">15.0<!--maximum seating capability of the aircraft--></NPAX_max>
             <count_by_row is_input="True">3.0<!--passenger seats per row--></count_by_row>
             <length units="m" is_input="True">0.70<!--passenger seats length--></length>
           </passenger>
@@ -494,7 +494,7 @@
     </handling_qualities>
     <weight>
       <aircraft>
-        <max_payload is_input="True" units="kg">1941.0<!--(Jane) max payload weight--></max_payload>
+        <max_payload is_input="True" units="kg">1581.0<!--(Jane) max payload weight--></max_payload>
         <payload is_input="True" units="kg">1375.0<!--(POH) design payload weight--></payload>
         <CG>
           <aft>
@@ -525,7 +525,7 @@
       </airframe>
       <furniture>
         <passenger_seats>
-          <mass units="kg" is_input="True">300.<!--(Roskam part 3, 7.7 lbs per seat) passenger/pilot seats total mass--></mass>
+          <mass units="kg" is_input="True">243.<!--(Roskam part 3, 7.7 lbs per seat) passenger/pilot seats total mass--></mass>
         </passenger_seats>
       </furniture>
       <propulsion>

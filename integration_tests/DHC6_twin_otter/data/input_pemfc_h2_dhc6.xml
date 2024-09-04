@@ -311,6 +311,10 @@
               <density units="kg/m**3" is_input="True">1530.0<!--Choice of the tank material,Some reference: Steel(ASTM-A514):7860, Aluminum(2014-T6):2800, Titanium(6%Al,4%V):4460, Carbon Composite:1530--></density>
               <yield_strength units="Pa" is_input="True">1900000000.0<!--Hydrogen gas tank material yield stress--></yield_strength>
             </material>
+            <dimension>
+              <front_length_ratio>0.7</front_length_ratio>
+              <rear_length_ratio>0.5</rear_length_ratio>
+            </dimension>
           </hydrogen_gas_tank_1>
         </hydrogen_gas_tank>
         <inverter>
