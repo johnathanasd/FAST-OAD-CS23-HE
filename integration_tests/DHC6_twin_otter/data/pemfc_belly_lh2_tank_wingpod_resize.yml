@@ -74,7 +74,7 @@ submodels:
   submodel.weight.mass.systems: fastga_he.submodel.weight.mass.systems.weight_nan
   submodel.geometry.nacelle.dimension: null
   submodel.aerodynamics.nacelle.cd0: fastga_he.submodel.aerodynamics.powertrain.cd0.from_pt_file
-  submodel.propulsion.constraints.inductor.air_gap: fastga_he.submodel.propulsion.constraints.inductor.air_gap.ensure
+  submodel.propulsion.constraints.inductor.air_gap: fastga_he.submodel.propulsion.constraints.inductor.air_gap.enforce
   submodel.propulsion.dc_dc_converter.inductor.inductance: null
   submodel.weight.mass.furniture.seats: null
   submodel.weight.cg.loadcase.flight: fastga_he.submodel.weight.cg.loadcase.flight.simple
