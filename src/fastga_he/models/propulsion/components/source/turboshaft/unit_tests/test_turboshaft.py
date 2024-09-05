@@ -194,11 +194,11 @@ def test_fuel_consumption_pt6a_112():
     # Should be 0,637
 
 
-def test_fuel_consumption_pt6a_114a():
+def test_fuel_consumption_pt6a_114():
 
     ivc = om.IndepVarComp()
     ivc.add_output(
-        "data:propulsion:he_power_train:turboshaft:turboshaft_1:power_rating", units="kW", val=503
+        "data:propulsion:he_power_train:turboshaft:turboshaft_1:power_rating", units="kW", val=447
     )
     ivc.add_output(
         "data:propulsion:he_power_train:turboshaft:turboshaft_1:design_point:T41t",
@@ -209,11 +209,11 @@ def test_fuel_consumption_pt6a_114a():
         "data:propulsion:he_power_train:turboshaft:turboshaft_1:design_point:OPR", val=7.0
     )
     ivc.add_output(
-        "data:propulsion:he_power_train:turboshaft:turboshaft_1:design_point:power_ratio", val=1.3
+        "data:propulsion:he_power_train:turboshaft:turboshaft_1:design_point:power_ratio", val=1.5
     )
     ivc.add_output("density_ratio", val=1.0)
     ivc.add_output("mach", val=0.02)
-    ivc.add_output("power_required", val=503, units="kW")
+    ivc.add_output("power_required", val=447, units="kW")
 
     problem = run_system(
         PerformancesTurboshaftFuelConsumption(turboshaft_id="turboshaft_1", number_of_points=1),

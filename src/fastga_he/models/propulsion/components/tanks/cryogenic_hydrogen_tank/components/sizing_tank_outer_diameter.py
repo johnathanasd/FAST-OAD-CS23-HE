@@ -147,11 +147,7 @@ class SizingCryogenicHydrogenTankOuterDiameter(om.ExplicitComponent):
                 "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
                 + cryogenic_hydrogen_tank_id
                 + ":dimension:outer_diameter"
-            ] = inputs[
-                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
-                + cryogenic_hydrogen_tank_id
-                + ":dimension:diameter"
-            ]
+            ] = d
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 

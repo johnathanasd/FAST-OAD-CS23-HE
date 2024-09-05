@@ -81,6 +81,7 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
         ]
 
         not_under_wing = position != "wing_pod"
+        not_underbelly = position != "underbelly"
 
         not_fit_in_fuselage = (
             inputs[
@@ -100,7 +101,7 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
             >= 0
         )
 
-        if not_under_wing and not_fit_in_fuselage and positive_length:
+        if not_under_wing and not_fit_in_fuselage and positive_length and not_underbelly:
 
             outputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -141,17 +142,24 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
                 + ":dimension:outer_diameter"
             ] = (0.75 * inputs["data:geometry:fuselage:maximum_height"])
 
-        else:
+        elif not not_underbelly or not not_under_wing:
 
             outputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
                 + ":dimension:outer_diameter"
-            ] = inputs[
+                ] = (0.5 * inputs["data:geometry:fuselage:maximum_height"])
+
+            _LOGGER.warning(
+                msg="Tank dimension fixed to reduce drag"
+            )
+
+        else:
+            outputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
-                + ":dimension:diameter"
-            ]
+                + ":dimension:outer_diameter"
+                ] = d
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
@@ -159,6 +167,7 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
         position = self.options["position"]
 
         not_under_wing = position != "wing_pod"
+        not_underbelly = position != "underbelly"
 
         d = inputs[
             "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -184,7 +193,7 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
             >= 0
         )
 
-        if not_under_wing and not_fit_in_fuselage and positive_length:
+        if not_under_wing and not_fit_in_fuselage and positive_length and not_underbelly:
 
             partials[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -260,6 +269,14 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
                 "data:geometry:fuselage:maximum_height",
             ] = 0.75
 
+        elif not not_underbelly or not not_under_wing:
+            partials[
+                "data:propulsion:he_power_train:hydrogen_gas_tank:"
+                + hydrogen_gas_tank_id
+                + ":dimension:outer_diameter",
+                "data:geometry:fuselage:maximum_height",
+            ] = 0.5
+
         else:
             partials[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
@@ -269,3 +286,4 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
                 + hydrogen_gas_tank_id
                 + ":dimension:diameter",
             ] = 1.0
+

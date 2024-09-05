@@ -531,7 +531,7 @@
               <density units="kg/m**3">1530</density>
             </material>
             <dimension>
-              <diameter units="m">1.85<!--inital guess for the tank outer diameter --></diameter>
+              <diameter units="m">1.<!--inital guess for the tank outer diameter --></diameter>
             </dimension>
           </hydrogen_gas_tank_1>
         </hydrogen_gas_tank>
