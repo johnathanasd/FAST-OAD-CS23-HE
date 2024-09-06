@@ -7,14 +7,12 @@ power_train_components:
   propeller_2:
     id: fastga_he.pt_component.propeller
     position: on_the_wing  # "on_the_wing", "in_the_nose"
-
   speed_reducer_1:
     id: fastga_he.pt_component.speed_reducer
     position: inside_the_wing  # "inside_the_wing", "in_the_back"
   speed_reducer_2:
     id: fastga_he.pt_component.speed_reducer
     position: inside_the_wing  # "inside_the_wing", "in_the_back"
-
   simple_motor_1:
     id: fastga_he.pt_component.simple_pmsm
     position: on_the_wing # "on_the_wing", "in_the_nose"
@@ -36,7 +34,6 @@ power_train_components:
   dc_dc_converter_1:
     id: fastga_he.pt_component.dc_dc_converter
     position: in_the_back  # "inside_the_wing", "in_the_front", "in_the_back"
-
   pemfc_stack_1:
     id: fastga_he.pt_component.pemfc_stack
     position: underbelly  #"in_the_front", "wing_pod", "underbelly", "in_the_back"

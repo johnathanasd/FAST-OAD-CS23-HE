@@ -148,18 +148,16 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
                 + ":dimension:outer_diameter"
-                ] = (0.5 * inputs["data:geometry:fuselage:maximum_height"])
+            ] = (0.5 * inputs["data:geometry:fuselage:maximum_height"])
 
-            _LOGGER.warning(
-                msg="Tank dimension fixed to reduce drag"
-            )
+            _LOGGER.warning(msg="Tank dimension fixed to reduce drag")
 
         else:
             outputs[
                 "data:propulsion:he_power_train:hydrogen_gas_tank:"
                 + hydrogen_gas_tank_id
                 + ":dimension:outer_diameter"
-                ] = d
+            ] = d
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
 
@@ -286,4 +284,3 @@ class SizingHydrogenGasTankOuterDiameter(om.ExplicitComponent):
                 + hydrogen_gas_tank_id
                 + ":dimension:diameter",
             ] = 1.0
-
