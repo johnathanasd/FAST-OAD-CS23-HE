@@ -530,7 +530,7 @@
             </material>
             <dimension>
                 <diameter units="m">1.85<!--inital guess for the tank outer diameter --></diameter>
-                <insulation_thickness units="m">0.01</insulation_thickness>
+                <insulation_thickness units="m">0.005</insulation_thickness>
             </dimension>
             <insulation>
                 <material_density units="kg/m**3">33.</material_density>
