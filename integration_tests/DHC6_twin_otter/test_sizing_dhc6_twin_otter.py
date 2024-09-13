@@ -694,7 +694,6 @@ def test_ghc_6():
     _, _, residuals = problem.model.get_nonlinear_vectors()
     residuals = filter_residuals(residuals)
 
-
     problem.write_outputs()
     MLW = problem.get_val("data:weight:aircraft:MLW", units="kg")
     MTOW = problem.get_val("data:weight:aircraft:MTOW", units="kg")

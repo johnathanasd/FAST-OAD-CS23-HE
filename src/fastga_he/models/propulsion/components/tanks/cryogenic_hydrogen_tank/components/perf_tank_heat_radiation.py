@@ -93,6 +93,12 @@ class PerformancesCryogenicHydrogenTankRadiation(om.ExplicitComponent):
             val=np.nan,
             desc="The reflectiveness of the material, values between 0 and 1, 0 means no reflectiveness",
         )
+        if position == "wing_pod":
+            self.add_input(
+                "data:geometry:wing:MAC:length",
+                units="m",
+                val=np.nan,
+            )
 
         self.add_output(
             "heat_radiation",
@@ -108,7 +114,7 @@ class PerformancesCryogenicHydrogenTankRadiation(om.ExplicitComponent):
             rows=np.arange(number_of_points),
             cols=np.arange(number_of_points),
         )
-        if position == "wing_pod" or position == "underbelly":
+        if position == "underbelly":
 
             self.declare_partials(
                 of="heat_radiation",
@@ -117,6 +123,20 @@ class PerformancesCryogenicHydrogenTankRadiation(om.ExplicitComponent):
                     input_prefix + ":dimension:outer_diameter",
                     input_prefix + ":dimension:length",
                     input_prefix + ":insulation:reflectivity_coefficient",
+                ],
+                method="exact",
+                rows=np.arange(number_of_points),
+                cols=np.zeros(number_of_points),
+            )
+        elif position == "wing_pod":
+            self.declare_partials(
+                of="heat_radiation",
+                wrt=[
+                    input_prefix + ":insulation:thermal_emissivity",
+                    input_prefix + ":dimension:outer_diameter",
+                    input_prefix + ":dimension:length",
+                    input_prefix + ":insulation:reflectivity_coefficient",
+                    "data:geometry:wing:MAC:length",
                 ],
                 method="exact",
                 rows=np.arange(number_of_points),
@@ -145,20 +165,40 @@ class PerformancesCryogenicHydrogenTankRadiation(om.ExplicitComponent):
             + cryogenic_hydrogen_tank_id
             + ":dimension:outer_diameter"
         ]
-        area = (
-            np.pi * d ** 2
-            + np.pi
-            * d
-            * inputs[
-                "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
-                + cryogenic_hydrogen_tank_id
-                + ":dimension:length"
-            ]
-        )
-        if position == "wing_pod" or position == "underbelly":
+        l = inputs[
+            "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+            + cryogenic_hydrogen_tank_id
+            + ":dimension:length"
+        ]
+        area = np.pi * d ** 2 + np.pi * d * l
+        area_solar = 0.25 * np.pi * d ** 2 + d * l
+        if position == "underbelly":
+            solar_irradiation_factor = 0.06
             solar_radiation_heat = (
                 SOLAR_HEAT_FLUX
-                * area
+                * area_solar
+                * solar_irradiation_factor
+                * np.ones(number_of_points)
+                * (
+                    1
+                    - inputs[
+                        "data:propulsion:he_power_train:cryogenic_hydrogen_tank:"
+                        + cryogenic_hydrogen_tank_id
+                        + ":insulation:reflectivity_coefficient"
+                    ]
+                )
+            )
+        elif position == "wing_pod":
+            chord = inputs["data:geometry:wing:MAC:length"]
+            if (l + d) >= chord:
+                solar_irradiation_factor = 0.06
+            else:
+                solar_irradiation_factor = 0.06 * (l + d) / chord + 0.25 * (chord - l - d) / chord
+
+            solar_radiation_heat = (
+                SOLAR_HEAT_FLUX
+                * area_solar
+                * solar_irradiation_factor
                 * np.ones(number_of_points)
                 * (
                     1
@@ -193,6 +233,7 @@ class PerformancesCryogenicHydrogenTankRadiation(om.ExplicitComponent):
         d = inputs[input_prefix + ":dimension:outer_diameter"]
         l = inputs[input_prefix + ":dimension:length"]
         area = np.pi * d ** 2 + np.pi * d * l
+        area_solar = 0.25 * np.pi * d ** 2 + d * l
         r = inputs[input_prefix + ":insulation:reflectivity_coefficient"]
 
         partials["heat_radiation", input_prefix + ":insulation:thermal_emissivity"] = (
@@ -215,13 +256,13 @@ class PerformancesCryogenicHydrogenTankRadiation(om.ExplicitComponent):
             * inputs["skin_temperature"] ** 3
         )
 
-        if position == "wing_pod" or position == "underbelly":
-
+        if position == "underbelly":
+            solar_irradiation_factor = 0.06
             partials["heat_radiation", input_prefix + ":dimension:length"] = np.pi * d * inputs[
                 input_prefix + ":insulation:thermal_emissivity"
             ] * STEFAN_BOLTZMANN_CONSTANT * (
                 inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4
-            ) + SOLAR_HEAT_FLUX * np.pi * d * np.ones(
+            ) + SOLAR_HEAT_FLUX * d * solar_irradiation_factor * np.ones(
                 number_of_points
             ) * (
                 1 - r
@@ -229,16 +270,104 @@ class PerformancesCryogenicHydrogenTankRadiation(om.ExplicitComponent):
 
             partials["heat_radiation", input_prefix + ":dimension:outer_diameter"] = (
                 2 * np.pi * d + np.pi * l
+            ) * inputs[
+                input_prefix + ":insulation:thermal_emissivity"
+            ] * STEFAN_BOLTZMANN_CONSTANT * (
+                inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4
+            ) + (
+                np.pi * d / 2 + l
+            ) * SOLAR_HEAT_FLUX * np.ones(
+                number_of_points
             ) * (
-                inputs[input_prefix + ":insulation:thermal_emissivity"]
-                * STEFAN_BOLTZMANN_CONSTANT
-                * (inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4)
-                + SOLAR_HEAT_FLUX * np.ones(number_of_points) * (1 - r)
-            )
+                1 - r
+            ) * solar_irradiation_factor
 
             partials["heat_radiation", input_prefix + ":insulation:reflectivity_coefficient"] = (
-                -area * SOLAR_HEAT_FLUX * np.ones(number_of_points)
+                -area_solar * solar_irradiation_factor * SOLAR_HEAT_FLUX * np.ones(number_of_points)
             )
+        elif position == "wing_pod":
+            chord = inputs["data:geometry:wing:MAC:length"]
+            if (l + d) >= chord:
+                solar_irradiation_factor = 0.06
+                partials["heat_radiation", input_prefix + ":dimension:length"] = np.pi * d * inputs[
+                    input_prefix + ":insulation:thermal_emissivity"
+                ] * STEFAN_BOLTZMANN_CONSTANT * (
+                    inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4
+                ) + SOLAR_HEAT_FLUX * d * solar_irradiation_factor * np.ones(
+                    number_of_points
+                ) * (
+                    1 - r
+                )
+
+                partials["heat_radiation", input_prefix + ":dimension:outer_diameter"] = (
+                    2 * np.pi * d + np.pi * l
+                ) * inputs[
+                    input_prefix + ":insulation:thermal_emissivity"
+                ] * STEFAN_BOLTZMANN_CONSTANT * (
+                    inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4
+                ) + (
+                    np.pi * d / 2 + l
+                ) * SOLAR_HEAT_FLUX * np.ones(
+                    number_of_points
+                ) * (
+                    1 - r
+                ) * solar_irradiation_factor
+
+                partials[
+                    "heat_radiation", input_prefix + ":insulation:reflectivity_coefficient"
+                ] = (
+                    -area_solar
+                    * solar_irradiation_factor
+                    * SOLAR_HEAT_FLUX
+                    * np.ones(number_of_points)
+                )
+                partials["heat_radiation", "data:geometry:wing:MAC:length"] = 0.0
+
+            else:
+                solar_irradiation_factor = 0.06 * (l + d) / chord + 0.25 * (chord - l - d) / chord
+                partials["heat_radiation", input_prefix + ":dimension:length"] = np.pi * d * inputs[
+                    input_prefix + ":insulation:thermal_emissivity"
+                ] * STEFAN_BOLTZMANN_CONSTANT * (
+                    inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4
+                ) + SOLAR_HEAT_FLUX * d * (
+                    0.06 / chord - 0.25 / chord
+                ) * np.ones(
+                    number_of_points
+                ) * (
+                    1 - r
+                )
+                partials["heat_radiation", input_prefix + ":dimension:outer_diameter"] = (
+                    2 * np.pi * d + np.pi * l
+                ) * inputs[
+                    input_prefix + ":insulation:thermal_emissivity"
+                ] * STEFAN_BOLTZMANN_CONSTANT * (
+                    inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4
+                ) + (
+                    np.pi * d / 2 + l
+                ) * SOLAR_HEAT_FLUX * np.ones(
+                    number_of_points
+                ) * (
+                    1 - r
+                ) * (
+                    0.06 / chord - 0.25 / chord
+                )
+                partials[
+                    "heat_radiation", input_prefix + ":insulation:reflectivity_coefficient"
+                ] = (
+                    -area_solar
+                    * solar_irradiation_factor
+                    * SOLAR_HEAT_FLUX
+                    * np.ones(number_of_points)
+                )
+                partials["heat_radiation", "data:geometry:wing:MAC:length"] = (
+                    SOLAR_HEAT_FLUX
+                    * area_solar
+                    * 0.19
+                    * (d + l)
+                    / chord ** 2
+                    * np.ones(number_of_points)
+                    * (1 - r)
+                )
 
         else:
             partials["heat_radiation", input_prefix + ":dimension:length"] = (

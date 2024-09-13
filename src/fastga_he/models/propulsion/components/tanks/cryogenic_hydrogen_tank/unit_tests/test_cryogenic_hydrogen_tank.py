@@ -1322,9 +1322,9 @@ def test_tank_radiation():
     expected_values = [
         np.full(NB_POINTS_TEST, 68.2266),
         np.full(NB_POINTS_TEST, 68.2266),
-        np.full(NB_POINTS_TEST, 1820.71),
+        np.full(NB_POINTS_TEST, 98.127),
         np.full(NB_POINTS_TEST, 68.2266),
-        np.full(NB_POINTS_TEST, 1820.71),
+        np.full(NB_POINTS_TEST, 98.127),
     ]
 
     for option, expected_value in zip(POSSIBLE_POSITION, expected_values):
