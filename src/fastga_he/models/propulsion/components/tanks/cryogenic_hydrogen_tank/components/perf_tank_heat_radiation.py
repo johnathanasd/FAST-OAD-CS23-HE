@@ -151,8 +151,12 @@ class PerformancesCryogenicHydrogenTankRadiation(om.ExplicitComponent):
             + cryogenic_hydrogen_tank_id
             + ":dimension:length"
         ]
-        area = np.pi * d ** 2 + np.pi * d * l
-        area_solar = 0.25 * np.pi * d ** 2 + d * l
+        if l <= 0:
+            area = np.pi * d ** 2
+            area_solar = 0.25 * np.pi * d ** 2
+        else:
+            area = np.pi * d ** 2 + np.pi * d * l
+            area_solar = 0.25 * np.pi * d ** 2 + d * l
         if position == "underbelly" or position == "wing_pod":
             solar_irradiation_factor = 0.06
             solar_radiation_heat = (
@@ -193,8 +197,12 @@ class PerformancesCryogenicHydrogenTankRadiation(om.ExplicitComponent):
         )
         d = inputs[input_prefix + ":dimension:outer_diameter"]
         l = inputs[input_prefix + ":dimension:length"]
-        area = np.pi * d ** 2 + np.pi * d * l
-        area_solar = 0.25 * np.pi * d ** 2 + d * l
+        if l <= 0:
+            area = np.pi * d ** 2
+            area_solar = 0.25 * np.pi * d ** 2
+        else:
+            area = np.pi * d ** 2 + np.pi * d * l
+            area_solar = 0.25 * np.pi * d ** 2 + d * l
         r = inputs[input_prefix + ":insulation:reflectivity_coefficient"]
 
         partials["heat_radiation", input_prefix + ":insulation:thermal_emissivity"] = (
@@ -219,46 +227,75 @@ class PerformancesCryogenicHydrogenTankRadiation(om.ExplicitComponent):
 
         if position == "underbelly" or position == "wing_pod":
             solar_irradiation_factor = 0.06
-            partials["heat_radiation", input_prefix + ":dimension:length"] = np.pi * d * inputs[
-                input_prefix + ":insulation:thermal_emissivity"
-            ] * STEFAN_BOLTZMANN_CONSTANT * (
-                inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4
-            ) + SOLAR_HEAT_FLUX * d * solar_irradiation_factor * np.ones(
-                number_of_points
-            ) * (
-                1 - r
-            )
-
-            partials["heat_radiation", input_prefix + ":dimension:outer_diameter"] = (
-                2 * np.pi * d + np.pi * l
-            ) * inputs[
-                input_prefix + ":insulation:thermal_emissivity"
-            ] * STEFAN_BOLTZMANN_CONSTANT * (
-                inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4
-            ) + (
-                np.pi * d / 2 + l
-            ) * SOLAR_HEAT_FLUX * np.ones(
-                number_of_points
-            ) * (
-                1 - r
-            ) * solar_irradiation_factor
-
             partials["heat_radiation", input_prefix + ":insulation:reflectivity_coefficient"] = (
                 -area_solar * solar_irradiation_factor * SOLAR_HEAT_FLUX * np.ones(number_of_points)
             )
+            if l <= 0:
+                partials["heat_radiation", input_prefix + ":dimension:length"] = np.zeros(
+                    number_of_points
+                )
+                partials["heat_radiation", input_prefix + ":dimension:outer_diameter"] = (
+                    2 * np.pi * d
+                ) * inputs[
+                    input_prefix + ":insulation:thermal_emissivity"
+                ] * STEFAN_BOLTZMANN_CONSTANT * (
+                    inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4
+                ) + (
+                    np.pi * d / 2
+                ) * SOLAR_HEAT_FLUX * np.ones(
+                    number_of_points
+                ) * (
+                    1 - r
+                ) * solar_irradiation_factor
+            else:
+                partials["heat_radiation", input_prefix + ":dimension:length"] = np.pi * d * inputs[
+                    input_prefix + ":insulation:thermal_emissivity"
+                ] * STEFAN_BOLTZMANN_CONSTANT * (
+                    inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4
+                ) + SOLAR_HEAT_FLUX * d * solar_irradiation_factor * np.ones(
+                    number_of_points
+                ) * (
+                    1 - r
+                )
+
+                partials["heat_radiation", input_prefix + ":dimension:outer_diameter"] = (
+                    2 * np.pi * d + np.pi * l
+                ) * inputs[
+                    input_prefix + ":insulation:thermal_emissivity"
+                ] * STEFAN_BOLTZMANN_CONSTANT * (
+                    inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4
+                ) + (
+                    np.pi * d / 2 + l
+                ) * SOLAR_HEAT_FLUX * np.ones(
+                    number_of_points
+                ) * (
+                    1 - r
+                ) * solar_irradiation_factor
 
         else:
-            partials["heat_radiation", input_prefix + ":dimension:length"] = (
-                np.pi
-                * d
-                * inputs[input_prefix + ":insulation:thermal_emissivity"]
-                * STEFAN_BOLTZMANN_CONSTANT
-                * (inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4)
-            )
+            if l <= 0:
+                partials["heat_radiation", input_prefix + ":dimension:length"] = np.zeros(
+                    number_of_points
+                )
 
-            partials["heat_radiation", input_prefix + ":dimension:outer_diameter"] = (
-                (2 * np.pi * d + np.pi * l)
-                * inputs[input_prefix + ":insulation:thermal_emissivity"]
-                * STEFAN_BOLTZMANN_CONSTANT
-                * (inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4)
-            )
+                partials["heat_radiation", input_prefix + ":dimension:outer_diameter"] = (
+                    (2 * np.pi * d)
+                    * inputs[input_prefix + ":insulation:thermal_emissivity"]
+                    * STEFAN_BOLTZMANN_CONSTANT
+                    * (inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4)
+                )
+            else:
+                partials["heat_radiation", input_prefix + ":dimension:length"] = (
+                    np.pi
+                    * d
+                    * inputs[input_prefix + ":insulation:thermal_emissivity"]
+                    * STEFAN_BOLTZMANN_CONSTANT
+                    * (inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4)
+                )
+
+                partials["heat_radiation", input_prefix + ":dimension:outer_diameter"] = (
+                    (2 * np.pi * d + np.pi * l)
+                    * inputs[input_prefix + ":insulation:thermal_emissivity"]
+                    * STEFAN_BOLTZMANN_CONSTANT
+                    * (inputs["exterior_temperature"] ** 4 - inputs["skin_temperature"] ** 4)
+                )
